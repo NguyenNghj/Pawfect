@@ -1,0 +1,87 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : Feb 11, 2025, 5:26:33 PM
+    Author     : Admin
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.footer-title {
+    color: #4c4c4c;
+    margin-bottom: 20px;
+    padding: 0;
+}
+
+.links {
+    list-style-type: none;
+    padding: 0;
+}
+
+.links li {
+    margin: 10px 0;
+}
+
+.links li a {
+    text-decoration: none;
+}
+
+.social-icon a img {
+    width: 32px;
+}
+
+.social-icon .btn {
+    transform: scale(1);
+    transition: all 0.3s ease;
+}
+
+.social-icon .btn:hover {
+    transform: scale(1.2);
+    transition: all 0.3s ease;
+}
+
+footer {
+    margin-top: 50px;
+}
+
+.footer-top {
+    border-top: 5px solid #004aad;
+    padding-top: 40px;
+}
+
+.footer-logo>img {
+    width: 200px;
+}
+
+.footer-logo-1 img:nth-of-type(1) {
+    width: 130px;
+}
+
+.footer-logo-1 img:nth-of-type(2) {
+    height: 70px;
+}
+
+.footer-logo-2 img:nth-of-type(1) {
+    height: 28px;
+}
+
+.footer-logo-2 img:nth-of-type(2) {
+    height: 34px;
+}
+
+.footer-end {
+    margin-top: 50px;
+    padding: 20px 0;
+    border-top: 1px solid #dee2e6;
+}
+
+.footer-end span {
+    color: #4c4c4c;
+}
+
