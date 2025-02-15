@@ -1,0 +1,74 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : Feb 15, 2025, 10:31:59 PM
+    Author     : Admin
+*/
+
+
+/* Custom styles can be added here if needed */
+body {
+    background-color: #f4f4f4;
+}
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-title {
+    color: #1c49c2;
+    font-weight: 700;
+}
+
+.nav-tabs .nav-link {
+    color: #6c757d;
+}
+
+.nav-tabs .nav-link.active {
+    font-weight: bold;
+    color: #0d6efd;
+}
+
+/* Account Info */
+.account-action a {
+    padding: 20px 16px;
+}
+
+.account-info {
+    color: #4c4c4c;
+}
+
+.account-info-title {
+    font-weight: 700;
+    color: #4c4c4c;
+}
+
+
+/* Order Detail */
+.order-item {
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 0 15px;
+}
+
+.order-item::-webkit-scrollbar {
+    width: 7px;
+}
+
+.order-item::-webkit-scrollbar-track {
+    background: white;
+    border-radius: 10px;
+    /* margin: 5px 0; */
+}
+
+.order-item::-webkit-scrollbar-thumb {
+    background: #91a1ba;
+    border-radius: 10px;
+}
+
+.order-item::-webkit-scrollbar-thumb:hover {
+    background: #72839e;
+}
