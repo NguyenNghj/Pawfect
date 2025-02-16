@@ -29,7 +29,7 @@
                 <div class="col-md-8">
                     <!-- Top Cards -->
                     <div class="row g-4 mb-4">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="card h-100">
                                 <div class="card-body d-flex align-items-center gap-3">
                                     <i class="bi bi-clipboard-check fs-4 text-primary"></i>
@@ -37,7 +37,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <div class="card-body d-flex align-items-center gap-3">
+                                    <i class="bi bi-calendar-date fs-4 text-primary"></i>
+                                    <a href="#" class="text-decoration-none">Lịch sử đặt lịch</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
                             <div class="card h-100">
                                 <div class="card-body d-flex align-items-center gap-3">
                                     <i class="bi bi-person-circle fs-4"></i>
@@ -129,10 +137,14 @@
                                         </div>
                                     </div>
 
-                                    <div class="mb-4">
+                                    <div class="mb-3">
                                         <div class="fw-bold">Ghi chú giao hàng</div>
                                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" readonly>[Chèn ghi chú hoặc không có]</textarea>
-                                    </div>             
+                                    </div>
+                                    
+                                    <div class="mb-1">
+                                        <p><span style="color: chocolate;"><b>Nhân viên phụ trách:</b></span> [Tên nhân viên]</p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -212,6 +224,10 @@
                         <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-regular fa-user fa-lg" style="color: #0062ad;"></i>
                             <span>Thông tin cá nhân</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                            <i class="fa-solid fa-paw fa-lg" style="color: #8C6E63;"></i>
+                            <span>Thú cưng của tôi</span>
                         </a>
                         <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-solid fa-key fa-lg" style="color: #eabd1a;"></i>

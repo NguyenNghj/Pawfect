@@ -82,7 +82,7 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Order Management</h1>
+                                <h1>Quản lý đơn hàng</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
                                 <span>Username2025 (Employee)</span>
@@ -114,8 +114,8 @@
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item" style="color: #6c757d;">Dashboard</li>
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Orders</li>
+                                <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Đơn hàng</li>
                             </ol>
                         </nav>
                     </div>   
@@ -125,16 +125,17 @@
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
                                  style="background-color: #007BFF; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
                                 <i class="fa-solid fa-truck-ramp-box fa-lg"></i>
-                                <h4 class="mb-0">Order List</h4>
+                                <h4 class="mb-0">Danh sách đơn hàng</h4>
                             </div>
                             <div style="padding: 15px 15px 25px 15px;">
                                 <table class="table">
                                     <thead>
                                         <tr>
                                             <th scope="col" style="width: 9%;">Mã đơn</th>
-                                            <th scope="col" style="width: 20%;">Họ tên người nhận</th>
+                                            <th scope="col" style="width: 20%;">Họ tên người đặt</th>
                                             <th scope="col">Địa chỉ giao hàng</th>
-                                            <th scope="col" style="width: 13%;">Trạng thái</th>
+                                            <th scope="col" style="width: 12%;">Tổng tiền</th>
+                                            <th scope="col" style="width: 12%;">Trạng thái</th>
                                             <th scope="col" style="width: 19%;">Hành động</th>
                                         </tr>
                                     </thead>
@@ -146,6 +147,8 @@
                                             <td>[Họ tên người nhận]</td>
                                             <!-- Địa chỉ giao hàng -->
                                             <td>[Địa chỉ giao]</td>
+                                            <!-- Tổng tiền đơn hàng -->
+                                            <td>[Tổng tiền]</td>
                                             <!-- Trạng thái đơn hàng -->
                                             <td>[Trạng thái đơn]</td>
                                             <td>
