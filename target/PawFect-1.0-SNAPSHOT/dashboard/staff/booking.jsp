@@ -115,7 +115,7 @@
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item" style="color: #6c757d;">Dashboard</li>
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Kennel Booking</li>
+                                <li class="breadcrumb-item active" aria-current="page">Pet Hotel Booking</li>
                             </ol>
                         </nav>
                     </div>   
