@@ -1,0 +1,140 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : Feb 16, 2025, 11:43:49 AM
+    Author     : Admin
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.main {
+    padding: 20px 40px 10px 0;
+}
+
+.header-logo a img {
+    width: 178px;
+    height: 108px;
+    object-fit: cover;
+    margin-bottom: 30px;
+    border-radius: 7px;
+}
+
+.title-main {
+    margin-bottom: 15px;
+}
+
+.fieldset div label {
+    color: #999;
+}
+
+
+.shipping-method,
+.payment-method {
+    border: 1px solid #cecdcd;
+    border-radius: 7px;
+    padding: 12px 20px;
+}
+
+/* Shipping Method */
+.shipping-method .form-check:first-of-type {
+    border-bottom: 1px solid #cecdcd;
+    padding-bottom: 15px;
+}
+
+.shipping-method .form-check:last-of-type {
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
+
+/* Payment Method */
+.payment-method .form-check:first-of-type {
+    border-bottom: 1px solid #cecdcd;
+    padding-bottom: 10px;
+}
+
+.payment-method .form-check:last-of-type {
+    padding-top: 5px;
+    /* padding-bottom: 5px; */
+}
+
+.payment-method .form-check img {
+    width: 52px;
+}
+
+.main-content {
+    margin-bottom: 70px;
+}
+
+.main-footer {
+    padding-top: 10px;
+    margin-bottom: 30px;
+    border-top: 1px solid #cecdcd;
+}
+
+.main-footer div a {
+    text-decoration: none;
+}
+
+.title-sidebar {
+    padding: 20px 10px;
+}
+
+.item-info {
+    padding: 15px 5px 15px 0;
+    border-top: 1px solid #cecdcd;
+    max-height: 210px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.item-info::-webkit-scrollbar {
+    width: 7px;
+}
+
+.item-info::-webkit-scrollbar-track {
+    background: white;
+    border-radius: 10px;
+    /* margin: 5px 0; */
+}
+
+.item-info::-webkit-scrollbar-thumb {
+    background: #91a1ba;
+    border-radius: 10px;
+}
+
+.item-info::-webkit-scrollbar-thumb:hover {
+    background: #72839e;
+}
+
+.item-info div>div {
+    font-size: 15px;
+}
+
+.item-info div>div:first-of-type img {
+    width: 50px;
+}
+
+.price-and-cost {
+    padding: 20px 0;
+    border-top: 1px solid #cecdcd;
+    border-bottom: 1px solid #cecdcd;
+}
+
+.total-price {
+    padding: 20px 0;
+}
+
+.sidebar-footer div a {
+    text-decoration: none;
+}
+
+.btn-order {
+    padding: 10px 20px;
+}
+
