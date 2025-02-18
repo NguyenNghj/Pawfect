@@ -35,6 +35,34 @@ public class CartDAO {
             + "    Products AS p ON c.product_id = p.product_id\n"
             + "WHERE c.customer_id = ?";
 
+    protected static String Get_Total_Cart_Price_By_CustomerId = "SELECT SUM(c.quantity * p.product_price) AS TotalCartValue\n"
+            + "FROM CartItems c\n"
+            + "JOIN Products p ON c.product_id = p.product_id\n"
+            + "WHERE c.customer_id = ?";
+
+    protected static String Get_Subtotal_Of_Product = "SELECT (c.quantity * p.product_price) AS Subtotal\n"
+            + "FROM CartItems c\n"
+            + "JOIN Products p ON c.product_id = p.product_id\n"
+            + "WHERE c.customer_id = ? AND p.product_id = ?";
+
+    protected static String Remove_Product_From_Cart = "DELETE FROM CartItems WHERE product_id = ? AND customer_id = ?";
+
+    protected static String Increase_Quantity = "UPDATE CartItems\n"
+            + "SET quantity = CASE\n"
+            + "    WHEN quantity < (SELECT stock FROM Products WHERE product_id = CartItems.product_id) THEN quantity + 1\n"
+            + "    ELSE quantity\n"
+            + "END\n"
+            + "WHERE customer_id = ? AND product_id = ?;";
+
+    protected static String Decrease_Quantity = "UPDATE CartItems\n"
+            + "SET quantity = CASE\n"
+            + "    WHEN quantity > 0 THEN quantity - 1\n"
+            + "    ELSE 0\n"
+            + "END\n"
+            + "WHERE customer_id = ? AND product_id = ?";
+
+    protected static String Get_Quantity_Of_Product = "SELECT quantity FROM CartItems WHERE product_id = ? AND customer_id = ?";
+
     public static List<CartItem> getCartByCustomerId(int customerId) {
         List<CartItem> list = new ArrayList<>();
         try {
@@ -46,8 +74,8 @@ public class CartDAO {
             while (rs.next()) {
                 CartItem c = new CartItem(
                         rs.getInt("cartItem_id"),
-                        rs.getInt("product_id"),
                         rs.getInt("customer_id"),
+                        rs.getInt("product_id"),
                         rs.getInt("quantity"),
                         rs.getDouble("product_price"),
                         rs.getString("product_image"),
@@ -71,7 +99,164 @@ public class CartDAO {
         }
         return list;
     }
+
+    public static double getTotalCartByCustomerId(int customerId) {
+        double totalCartPrice = 0;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Get_Total_Cart_Price_By_CustomerId);
+            ps.setInt(1, customerId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                totalCartPrice = rs.getDouble(1);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return totalCartPrice;
+    }
     
+    public static double getSubtotalOfProduct(int customerId, int productId) {
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Get_Subtotal_Of_Product);
+            ps.setInt(1, customerId);
+            ps.setInt(2, productId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                return rs.getDouble(1);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return 0;
+    }
+
+    public static int getQuantityOfProduct(int customerId, int productId) {
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Get_Quantity_Of_Product);
+            ps.setInt(1, productId);
+            ps.setInt(2, customerId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                return rs.getInt(1);
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return 0;
+    }
+
+    public static boolean removeProductFromCart(int productId, int customerId) {
+        boolean rs = false;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Remove_Product_From_Cart);
+            ps.setInt(1, productId);
+            ps.setInt(2, customerId);
+            rs = ps.executeUpdate() > 0;
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return rs;
+    }
+
+    public static boolean increaseProductFromCart(int productId, int customerId) {
+        boolean rs = false;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Increase_Quantity);
+            ps.setInt(1, customerId);
+            ps.setInt(2, productId);
+            rs = ps.executeUpdate() > 0;
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return rs;
+    }
+
+    public static boolean decreseProductFromCart(int productId, int customerId) {
+        boolean rs = false;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Decrease_Quantity);
+            ps.setInt(1, customerId);
+            ps.setInt(2, productId);
+            rs = ps.executeUpdate() > 0;
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return rs;
+    }
+
 //    public static void main(String[] args) {
 //        List<CartItem> cartItems = getCartByCustomerId(1);
 //        for (CartItem cartItem : cartItems) {

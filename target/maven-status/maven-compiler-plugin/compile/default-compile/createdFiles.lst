@@ -1,2 +1,4 @@
-controller\CartServlet.class
+dao\CartDAO.class
+model\CartItem.class
 db\DBContext.class
+controller\CartServlet.class

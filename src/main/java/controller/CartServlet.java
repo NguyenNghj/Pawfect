@@ -14,6 +14,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
 import model.CartItem;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  *
@@ -59,34 +61,137 @@ public class CartServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String action = request.getServletPath();
-        System.out.println("Demo action: " + action);
+        String action = request.getParameter("action");
         try {
             switch (action) {
-                case "/cart":
+                case "view":
                     getCart(request, response);
+                    break;
+                case "remove":
+                    removeProductFromCart(request, response);
+                    break;
+                case "update":
+                    updateProductFromCart(request, response);
                     break;
                 default:
 //                    listNhanVien(request, response);
                     break;
             }
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (ServletException | IOException | SQLException e) {
+            throw new ServletException(e);
         }
     }
 
     private void getCart(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        List<CartItem> cartItems = new CartDAO().getCartByCustomerId(1);
-        
-        double totalCart = 0;
-        for (CartItem cartItem : cartItems) {
-            totalCart += cartItem.getSubtotal();
-        }
-        
+        int customerId = 1;
+
+        List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+
+        double totalCartPrice = CartDAO.getTotalCartByCustomerId(customerId);
+
         request.setAttribute("cartItems", cartItems);
-        request.setAttribute("totalCart", totalCart);
+        request.setAttribute("totalCartPrice", totalCartPrice);
         request.getRequestDispatcher("cart.jsp").forward(request, response);
+    }
+
+    private void removeProductFromCart(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        boolean remove = false;
+
+        try {
+            int productId = Integer.parseInt(request.getParameter("productId"));
+            int customerId = Integer.parseInt(request.getParameter("customerId"));
+            remove = CartDAO.removeProductFromCart(productId, customerId);
+            if (remove) {
+                
+                JSONObject json = new JSONObject();
+                response.setContentType("application/json");
+                
+                json.put("status", "success");
+                json.put("message", "Remove from cart successfully!");
+                json.put("removed", true);
+                
+                response.getWriter().write(json.toString());
+                
+                System.out.println("Xoa san pham ra gio hang thanh cong!");             
+            } else {
+                System.out.println("Xoa san pham ra gio hang that bai!!");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println(e);
+        }
+    }
+
+    private void updateProductFromCart(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        
+        boolean update = false;
+        JSONObject json = new JSONObject();
+        response.setContentType("application/json");
+        
+        try {
+            int productId = Integer.parseInt(request.getParameter("productId"));
+            int customerId = Integer.parseInt(request.getParameter("customerId"));
+            // Lay yeu cau Tang hoac Giam so luong san pham
+            String target = request.getParameter("target");
+
+            // Tang so luong san pham
+            if (target.equals("increase")) {
+                update = CartDAO.increaseProductFromCart(productId, customerId);
+                if (update) {
+                    System.out.println("Tang so luong thanh cong!");                   
+                    
+                    json.put("status", "success");
+                    json.put("message", "Update cart successfully!");
+                    
+                    int newQuantity = CartDAO.getQuantityOfProduct(customerId, productId);
+                    json.put("quantity", newQuantity);
+                    
+                    double newTotalCartPrice = CartDAO.getTotalCartByCustomerId(customerId);
+                    json.put("totalCartPrice", newTotalCartPrice);
+                    
+                    double newSubtotal = CartDAO.getSubtotalOfProduct(customerId, productId);
+                    json.put("subtotal", newSubtotal);
+                    
+                    response.getWriter().write(json.toString());
+                } else {
+                    System.out.println("Tang so luong that bai!!");
+                }
+
+                // Giam so luong san pham
+            } else if (target.equals("decrease")) {
+                update = CartDAO.decreseProductFromCart(productId, customerId);
+                if (update) {
+                    System.out.println("Giam so luong thanh cong!");
+                    
+                    json.put("status", "success");
+                    json.put("message", "Update cart successfully!");
+                    
+                    int newQuantity = CartDAO.getQuantityOfProduct(customerId, productId);
+                    json.put("quantity", newQuantity);
+                        
+                    double newSubtotal = CartDAO.getSubtotalOfProduct(customerId, productId);
+                    json.put("subtotal", newSubtotal);
+                    
+                    double newTotalCartPrice = CartDAO.getTotalCartByCustomerId(customerId);
+                    json.put("totalCartPrice", newTotalCartPrice);
+                    
+                    // Check xem so luong san pham do co = 0 hay khong
+                    // Neu so luong = 0 thi xoa san pham ra gio hang
+                    if (newQuantity == 0) {                       
+                        CartDAO.removeProductFromCart(productId, customerId);
+                        json.put("removed", true);
+                    }
+                    response.getWriter().write(json.toString());
+                                 
+                } else {
+                    System.out.println("Giam so luong that bai!!");
+                }
+            }
+        } catch (NumberFormatException e) {
+            System.out.println(e);
+        }
     }
 
     /**

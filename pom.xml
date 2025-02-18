@@ -12,8 +12,10 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>  <!-- Set Java version to 1.8 -->
+        <maven.compiler.target>1.8</maven.compiler.target>  <!-- Set Java version to 1.8 -->
     </properties>
-    
+
     <dependencies>
         <dependency>
             <groupId>javax</groupId>
@@ -25,7 +27,6 @@
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
             <version>12.8.0.jre8</version>
-            <!--<scope>compile</scope>-->
         </dependency>
         <dependency> <!-- Servlet -->
             <groupId>jakarta.servlet</groupId>
@@ -65,7 +66,13 @@
             <groupId>org.glassfish</groupId>
             <artifactId>javax.json</artifactId>
             <version>1.1.4</version>
-        </dependency>       
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20231013</version>
+        </dependency>   
     </dependencies>
 
     <build>
@@ -75,8 +82,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <!-- Removed source and target version from here -->
                     <compilerArguments>
                         <endorseddirs>${endorsed.dir}</endorseddirs>
                     </compilerArguments>
