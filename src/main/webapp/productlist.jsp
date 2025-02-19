@@ -8,6 +8,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@include file="./components/header.jsp" %>
 
 <!DOCTYPE html>
 <html>
@@ -141,9 +142,11 @@
                                         <p class="product-price">
                                             <fmt:formatNumber value="${product.productPrice}" pattern="#,##0" />đ
                                         </p>
-                                        <button class="add-to-cart">
-                                            <i class="cart-icon"></i>
-                                        </button>
+                                        <a href="#">
+                                            <button class="add-to-cart" data-product-id="${product.productId}" data-product-name="${product.productName}">
+                                                <i class="cart-icon"></i>
+                                            </button>
+                                        </a>
                                     </div>
                                 </div>
                             </c:if>
@@ -178,5 +181,54 @@
                 </div>
             </div>
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script>
+                    $('.add-to-cart').click(function (event) {
+                        event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
+
+                        var productId = $(this).data('product-id');
+                        console.log("productId:", productId);
+                        var productName = $(this).data('product-name');
+                        console.log("productName:", productName);
+                        var action = "add";
+                        console.log("productId:", action);
+                        var customerId = 1; // ID của khách hàng (cần lấy từ session hoặc cookie)
+
+                        $.ajax({
+                            url: "cart",
+                            type: "POST",
+                            data: {
+                                action: action,
+                                productId: productId,
+                                customerId: customerId,
+                                quantity: "1"
+                            },
+                            dataType: "json",
+                            success: function (response) {
+                                if (response.status === "success") {
+                                    console.log("Đã thêm sản phẩm vào giỏ hàng!");
+                                    Swal.fire({
+                                        position: "top-end",
+                                        icon: "success",
+                                        title: "Thêm giỏ hàng thành công!",
+                                        text: productName + " đã được thêm vào giỏ hàng.",
+                                        showConfirmButton: false,
+                                        backdrop: false,
+                                        width: '300px',
+                                        timer: 3000
+                                    });
+                                } else {
+                                    console.error("Lỗi thêm vào giỏ hàng:", response.message);
+                                    alert("Lỗi: " + response.message);
+                                }
+                            },
+                            error: function (error) {
+                                console.error("Lỗi AJAX:", error);
+                                alert("Lỗi kết nối đến server.");
+                            }
+                        });
+                    });
+        </script>
     </body>
 </html>
