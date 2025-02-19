@@ -15,6 +15,14 @@
         <servlet-name>CartServlet</servlet-name>
         <servlet-class>controller.CartServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ProductListServlet</servlet-name>
+        <servlet-class>controller.ProductListServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProductListServlet</servlet-name>
+        <url-pattern>/sanpham</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ShopControl</servlet-name>
         <url-pattern>/ShopControl</url-pattern>
