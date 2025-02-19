@@ -16,6 +16,15 @@
         <servlet-class>controller.CartServlet</servlet-class>
     </servlet>
     <servlet>
+
+        <servlet-name>PetRoomDetailServlet</servlet-name>
+        <servlet-class>controller.PetRoomDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PetRoomListServlet</servlet-name>
+        <servlet-class>controller.PetRoomListServlet</servlet-class>
+    </servlet>
+
         <servlet-name>ProductListServlet</servlet-name>
         <servlet-class>controller.ProductListServlet</servlet-class>
     </servlet>
@@ -23,6 +32,7 @@
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/sanpham</url-pattern>
     </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>ShopControl</servlet-name>
         <url-pattern>/ShopControl</url-pattern>
@@ -34,6 +44,14 @@
     <servlet-mapping>
         <servlet-name>CartServlet</servlet-name>
         <url-pattern>/cart</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PetRoomDetailServlet</servlet-name>
+        <url-pattern>/petroomdetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PetRoomListServlet</servlet-name>
+        <url-pattern>/PetRoomListServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

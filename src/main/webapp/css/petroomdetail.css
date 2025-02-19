@@ -1,0 +1,152 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Feb 19, 2025, 5:56:25 AM
+    Author     : Nguyen Tien Thanh
+*/
+
+* {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+.header {
+    background-color: #ffffff; /* Màu nền */
+    padding: 20px; /* Padding cho khung */
+    display: flex;
+    align-items: center; /* Căn giữa theo chiều dọc */
+    max-width: 1300px; /* Chiều dài tối đa */
+    margin: 20px auto; /* Căn giữa và tạo khoảng cách phía trên */
+    border-radius: 5px; /* Bo tròn các góc */
+}
+
+.title {
+    background-color: #ffffff; /* Màu nền */
+    font-size: 13px; /* Kích thước chữ cho tiêu đề */
+    color: #D6B58D; /* Màu chữ cho tiêu đề */
+    margin-right: 10px; /* Khoảng cách giữa tiêu đề và dấu phân cách */
+    text-decoration: none; /* Bỏ gạch chân */
+}
+
+.title:hover {
+    text-decoration: underline; /* Thêm gạch chân khi di chuột */
+}
+
+.separator {
+    background-color: #ffffff; /* Màu nền */
+    font-size: 13px; /* Kích thước chữ cho tiêu đề */
+    color: #D6B58D; /* Màu chữ cho tiêu đề */
+    margin-right: 10px; /* Khoảng cách giữa tiêu đề và dấu phân cách */
+    text-decoration: none; /* Bỏ gạch chân */
+}
+
+.subtitle1 {
+    background-color: #ffffff; /* Màu nền */
+    font-size: 13px; /* Kích thước chữ cho tiêu đề */
+    color: #D6B58D; /* Màu chữ cho tiêu đề */
+    margin-right: 10px; /* Khoảng cách giữa tiêu đề và dấu phân cách */
+    text-decoration: none; /* Bỏ gạch chân */
+}
+
+.subtitle1:hover {
+    text-decoration: underline; /* Thêm gạch chân khi di chuột */
+}
+
+.subtitle2 {
+    background-color: #ffffff; /* Màu nền */
+    font-size: 13px; /* Kích thước chữ cho phụ đề */
+    color: black; /* Màu chữ cho phụ đề */
+    font-weight: bold; /* In đậm */
+    margin-left: 0px; /* Khoảng cách giữa dấu phân cách và Pet Hotel */
+    text-decoration: none; /* Bỏ gạch chân */
+}
+
+.subtitle2:hover {
+    text-decoration: underline; /* Thêm gạch chân khi di chuột */
+}
+
+/* Hộp chứa chi tiết phòng */
+.room-detail {
+    padding: 20px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: 200px;
+}
+
+/* Tiêu đề phòng */
+.room-title {
+    font-size: 30px;
+    font-weight: bold;
+    color: #4b2e1e;
+}
+
+/* Giá phòng */
+.room-price {
+    font-size: 25px;
+    font-weight: bold;
+    color: #4b2e1e;
+}
+
+.room-price span {
+    color: #d4a373;
+}
+
+/* Loại phòng */
+.room-type {
+    font-size: 20px;
+    color: #d4a373;
+    font-weight: bold;
+}
+
+/* Phần thông tin */
+.room-info {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 2px solid #4b2e1e;
+}
+
+.room-info h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #4b2e1e;
+}
+
+.room-description {
+    font-size: 20px;
+    line-height: 1.5;
+    color: #4b2e1e;
+}
+
+/* Nút đặt phòng */
+.book-btn {
+    width: 100%;
+    background-color: #8d6953;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    margin-top: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.book-btn img {
+    width: 24px;
+    height: 24px;
+}
+
+.same{
+    font-size: 3em; /* Kích thước chữ lớn */
+    font-weight: bold; /* Chữ đậm */
+    color: #8C6E63; /* Màu chữ chính */
+    text-align: center; /* Căn giữa */
+    text-shadow:
+        2px 2px 0 rgba(255, 255, 255, 0.8), /* Viền trắng */
+        4px 4px 0 rgba(0, 0, 0, 0.2), /* Bóng đen */
+        6px 6px 0 rgba(0, 0, 0, 0.1); /* Bóng nhẹ hơn */
+    margin: 20px 0; /* Khoảng cách trên và dưới */
+}
