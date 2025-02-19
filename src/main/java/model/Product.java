@@ -1,0 +1,126 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package model;
+
+/**
+ *
+ * @author Nguyen Tri Nghi - CE180897
+ */
+public class Product {
+    private int productId;
+    private int categoryId;
+    private String categoryName;
+    private String productName;
+    private String productPetType;
+    private double productPrice;
+    private String productImage;
+    private int stock;
+    private String status;
+    private String description;
+    private boolean isActive;
+
+    public Product(int productId, int categoryId, String categoryName, String productName, String productPetType, double productPrice, String productImage, int stock, String status, String description, boolean isActive) {
+        this.productId = productId;
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.productName = productName;
+        this.productPetType = productPetType;
+        this.productPrice = productPrice;
+        this.productImage = productImage;
+        this.stock = stock;
+        this.status = status;
+        this.description = description;
+        this.isActive = isActive;
+    }
+    
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getProductPetType() {
+        return productPetType;
+    }
+
+    public void setProductPetType(String productPetType) {
+        this.productPetType = productPetType;
+    }
+
+    public double getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(double productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public String getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+}
+    

@@ -16,6 +16,7 @@
         <servlet-class>controller.CartServlet</servlet-class>
     </servlet>
     <servlet>
+
         <servlet-name>PetRoomDetailServlet</servlet-name>
         <servlet-class>controller.PetRoomDetailServlet</servlet-class>
     </servlet>
@@ -23,6 +24,15 @@
         <servlet-name>PetRoomListServlet</servlet-name>
         <servlet-class>controller.PetRoomListServlet</servlet-class>
     </servlet>
+
+        <servlet-name>ProductListServlet</servlet-name>
+        <servlet-class>controller.ProductListServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProductListServlet</servlet-name>
+        <url-pattern>/sanpham</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>ShopControl</servlet-name>
         <url-pattern>/ShopControl</url-pattern>
