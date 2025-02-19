@@ -32,15 +32,15 @@
 
             <div class="filter">
                 <div class="gia-box-filter filterbox">
-                    <label class="nut-loc" onclick="applyFilter('mucgia', 1)">Dưới 100.000đ</label>
-                    <label class="nut-loc" onclick="applyFilter('mucgia', 2)">100.000đ - 300.000đ</label>
-                    <label class="nut-loc" onclick="applyFilter('mucgia', 3)">Trên 300.000đ</label>
+                    <label class="nut-loc" onclick="applyFilter('price', 1)">Dưới 100.000đ</label>
+                    <label class="nut-loc" onclick="applyFilter('price', 2)">100.000đ - 300.000đ</label>
+                    <label class="nut-loc" onclick="applyFilter('price', 3)">Trên 300.000đ</label>
                 </div>
 
                 <div class="kieu-box-filter filterbox">
-                    <label class="nut-loc" for="tang-dan" onclick="applyFilter('sapxep', 1)">Tăng dần</label>
-                    <label class="nut-loc" for="giam-dan" onclick="applyFilter('sapxep', 2)">Giảm dần</label>
-                    <label class="nut-loc" for="chu-cai" onclick="applyFilter('sapxep', 3)">Chữ cái</label>
+                    <label class="nut-loc" for="tang-dan" onclick="applyFilter('sort', 1)">Tăng dần</label>
+                    <label class="nut-loc" for="giam-dan" onclick="applyFilter('sort', 2)">Giảm dần</label>
+                    <label class="nut-loc" for="chu-cai" onclick="applyFilter('sort', 3)">Chữ cái</label>
                 </div>
 
             </div>
@@ -53,11 +53,11 @@
                     urlParams.set(filterName, filterValue);
 
                     // Get the current category filter if any
-                    let currentCategory = urlParams.get('danhmuc');
+                    let currentCategory = urlParams.get('category');
 
                     // Append the category filter if it exists
                     if (currentCategory) {
-                        urlParams.set('danhmuc', currentCategory);
+                        urlParams.set('category', currentCategory);
                     }
 
                     // Redirect to the new URL with the updated parameters
@@ -70,7 +70,7 @@
                     <div class="category-header">DANH MỤC SẢN PHẨM</div>
                     <ul class="category-list">
                         <c:forEach var="category" items="${categories}">
-                            <li class="category-item" onclick="window.location.href = '?danhmuc=${category.categoryName}'">
+                            <li class="category-item" onclick="window.location.href = '?category=${category.categoryName}'">
                                 ${category.categoryName}
                             </li>
                         </c:forEach>

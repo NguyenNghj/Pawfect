@@ -56,9 +56,9 @@ public class ProductListServlet extends HttpServlet {
         request.setAttribute("categories", categories);
 
         // Lấy các tham số từ request
-        String categoryName = request.getParameter("danhmuc");
-        String priceFilter = request.getParameter("mucgia");
-        String sortFilter = request.getParameter("sapxep");
+        String categoryName = request.getParameter("category");
+        String priceFilter = request.getParameter("price");
+        String sortFilter = request.getParameter("sort");
 
         List<Product> products;
 
