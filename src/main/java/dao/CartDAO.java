@@ -35,6 +35,20 @@ public class CartDAO {
             + "    Products AS p ON c.product_id = p.product_id\n"
             + "WHERE c.customer_id = ?";
 
+    protected static String Check_Product_In_Cart = "SELECT\n"
+            + "	c.cartItem_id,\n"
+            + "	c.product_id,\n"
+            + "	c.customer_id,\n"
+            + "	c.quantity,\n"
+            + "    p.product_name,\n"
+            + "    p.product_price,\n"
+            + "    p.product_image  \n"
+            + "FROM\n"
+            + "    CartItems AS c\n"
+            + "INNER JOIN\n"
+            + "    Products AS p ON c.product_id = p.product_id\n"
+            + "WHERE c.customer_id = ? AND p.product_id = ?";
+
     protected static String Get_Total_Cart_Price_By_CustomerId = "SELECT SUM(c.quantity * p.product_price) AS TotalCartValue\n"
             + "FROM CartItems c\n"
             + "JOIN Products p ON c.product_id = p.product_id\n"
@@ -49,7 +63,7 @@ public class CartDAO {
 
     protected static String Increase_Quantity = "UPDATE CartItems\n"
             + "SET quantity = CASE\n"
-            + "    WHEN quantity < (SELECT stock FROM Products WHERE product_id = CartItems.product_id) THEN quantity + 1\n"
+            + "    WHEN quantity < (SELECT stock FROM Products WHERE product_id = CartItems.product_id) THEN quantity + ?\n"
             + "    ELSE quantity\n"
             + "END\n"
             + "WHERE customer_id = ? AND product_id = ?;";
@@ -62,6 +76,10 @@ public class CartDAO {
             + "WHERE customer_id = ? AND product_id = ?";
 
     protected static String Get_Quantity_Of_Product = "SELECT quantity FROM CartItems WHERE product_id = ? AND customer_id = ?";
+
+    protected static String Add_To_Cart = "INSERT INTO CartItems (customer_id, product_id, quantity)  \n"
+            + "VALUES  \n"
+            + "    (?, ?, ?)";
 
     public static List<CartItem> getCartByCustomerId(int customerId) {
         List<CartItem> list = new ArrayList<>();
@@ -99,6 +117,60 @@ public class CartDAO {
         }
         return list;
     }
+    
+    public static boolean addToCart(int customerId, int productId, int quantity) {
+        boolean rs = false;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Add_To_Cart);
+            ps.setInt(1, customerId);
+            ps.setInt(2, productId);
+            ps.setInt(3, quantity);
+            rs = ps.executeUpdate() > 0;
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return rs;
+    }
+
+    public static boolean checkProductInCart(int productId, int customerId) {
+        boolean productInCart = false;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Check_Product_In_Cart);
+            ps.setInt(1, customerId);
+            ps.setInt(2, productId);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                productInCart = true;
+            }
+
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return productInCart;
+    }
 
     public static double getTotalCartByCustomerId(int customerId) {
         double totalCartPrice = 0;
@@ -127,7 +199,7 @@ public class CartDAO {
         }
         return totalCartPrice;
     }
-    
+
     public static double getSubtotalOfProduct(int customerId, int productId) {
         try {
             Con = new DBContext().getConnection();
@@ -209,13 +281,14 @@ public class CartDAO {
         return rs;
     }
 
-    public static boolean increaseProductFromCart(int productId, int customerId) {
+    public static boolean increaseProductFromCart(int quantity, int productId, int customerId) {
         boolean rs = false;
         try {
             Con = new DBContext().getConnection();
             PreparedStatement ps = Con.prepareStatement(Increase_Quantity);
-            ps.setInt(1, customerId);
-            ps.setInt(2, productId);
+            ps.setInt(1, quantity);
+            ps.setInt(2, customerId);
+            ps.setInt(3, productId);
             rs = ps.executeUpdate() > 0;
             ps.close();
         } catch (SQLException e) {
