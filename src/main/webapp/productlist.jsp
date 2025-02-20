@@ -183,7 +183,12 @@
         </div>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <script>
+        <script>     
+                    // Gọi ban đầu để thiết lập số lượng khi trang được tải
+                    $(document).ready(function () {
+                        updateCartCount();
+                    });
+
                     $('.add-to-cart').click(function (event) {
                         event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
 
@@ -207,6 +212,9 @@
                             dataType: "json",
                             success: function (response) {
                                 if (response.status === "success") {
+                                    
+                                    $("#cart-count").text(response.totalQuantity); // Cập nhật phần tử trong header của bạn
+                                    
                                     console.log("Đã thêm sản phẩm vào giỏ hàng!");
                                     Swal.fire({
                                         position: "top-end",
@@ -216,7 +224,8 @@
                                         showConfirmButton: false,
                                         backdrop: false,
                                         width: '300px',
-                                        timer: 3000
+                                        timer: 3000,
+                                        returnFocus: false
                                     });
                                 } else {
                                     console.error("Lỗi thêm vào giỏ hàng:", response.message);

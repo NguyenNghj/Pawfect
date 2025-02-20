@@ -68,13 +68,14 @@
 
                             <!-- CART ICON -->
                             <div class="col-auto">
-                                <a class="btn position-relative" href="#" role="button">
+                                <a class="btn position-relative" href="cart?&action=view" role="button">
                                     <i class="fa-brands fa-opencart fa-2xl"></i>
-                                    <span class="product-quantity position-absolute translate-middle badge rounded-pill bg-danger"
+                                    <span id="cart-count" class="product-quantity position-absolute translate-middle badge rounded-pill bg-danger"
                                         style="top: 10%;"
                                     >
-                                        99
+                                        ${totalQuantity}
                                     <span class="visually-hidden">unread messages</span>
+                                    </span>
                                 </a>                     
                             </div>
                         </div>

@@ -80,6 +80,14 @@ public class CartDAO {
     protected static String Add_To_Cart = "INSERT INTO CartItems (customer_id, product_id, quantity)  \n"
             + "VALUES  \n"
             + "    (?, ?, ?)";
+    
+    protected static String Count_Quantity_From_Cart = "SELECT\n" +
+"    SUM(c.quantity) AS total_quantity\n" +
+"FROM\n" +
+"    CartItems AS c\n" +
+"INNER JOIN\n" +
+"    Products AS p ON c.product_id = p.product_id\n" +
+"WHERE c.customer_id = ?;";
 
     public static List<CartItem> getCartByCustomerId(int customerId) {
         List<CartItem> list = new ArrayList<>();

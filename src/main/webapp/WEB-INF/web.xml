@@ -27,11 +27,14 @@
         <servlet-name>ProductListServlet</servlet-name>
         <servlet-class>controller.ProductListServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CheckoutServlet</servlet-name>
+        <servlet-class>controller.CheckoutServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/products</url-pattern>
     </servlet-mapping>
-
     <servlet-mapping>
         <servlet-name>ShopControl</servlet-name>
         <url-pattern>/ShopControl</url-pattern>
@@ -51,6 +54,10 @@
     <servlet-mapping>
         <servlet-name>PetRoomListServlet</servlet-name>
         <url-pattern>/PetRoomListServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckoutServlet</servlet-name>
+        <url-pattern>/checkout</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

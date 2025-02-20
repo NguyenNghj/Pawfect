@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.CartDAO;
 import dao.CategoryDAO;
 import dao.ProductDAO;
 import jakarta.servlet.RequestDispatcher;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import model.CartItem;
 import model.Category;
 import model.Product;
 
@@ -68,6 +70,15 @@ public class ProductListServlet extends HttpServlet {
             products = productDAO.getAllProducts();
         }
 
+        int customerId = 1;
+        int totalQuantity = 0;
+        List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+        if (!cartItems.isEmpty()) {
+            for (CartItem cartItem : cartItems) {
+                totalQuantity += cartItem.getQuantity();
+            }
+        }
+
         // Áp dụng bộ lọc giá
         if (priceFilter != null) {
             products = productDAO.filterByPrice(products, priceFilter);
@@ -80,6 +91,9 @@ public class ProductListServlet extends HttpServlet {
 
         // Set danh sách sản phẩm cho request
         request.setAttribute("products", products);
+
+        // Set tong so luong san pham trong gio hang
+        request.setAttribute("totalQuantity", totalQuantity);
 
         // Forward request to JSP page
         RequestDispatcher dispatcher = request.getRequestDispatcher("productlist.jsp");

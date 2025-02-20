@@ -5,6 +5,7 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -31,7 +32,7 @@
             <!-- Cart Content -->
             <div class="row cart-content">
                 <div class="col" style="margin: 0 250px;">
-                    <h3 class="cart-title">GIỎ HÀNG (12)</h3>
+                    <h3 class="cart-title">GIỎ HÀNG (<span id="totalQuantity">${totalQuantity}</span>)</h3>
 
                     <c:choose>
                         <c:when test="${empty cartItems}">
@@ -62,10 +63,14 @@
                                                 <div class="row gap-1">
                                                     <div class="item-info d-flex justify-content-between">
                                                         <a href="#">${c.productName}</a>
-                                                        <span id="subtotal-${c.productId}" class="total-price-item">${c.getSubtotal()}</span>
+                                                        <span id="subtotal-${c.productId}" class="total-price-item">
+                                                            <f:formatNumber value="${c.getSubtotal()}" pattern="#,##0" />đ                                                       
+                                                        </span>
                                                     </div>
                                                     <div>
-                                                        <span class="price-item">${c.productPrice}</span>
+                                                        <span class="price-item">
+                                                            <f:formatNumber value="${c.productPrice}" pattern="#,##0" />đ     
+                                                        </span>
                                                     </div>
                                                 </div>
 
@@ -100,7 +105,9 @@
                                     <div>
                                         <b class="d-flex justify-content-between">
                                             <span>Tổng tiền</span>
-                                            <span id="total-price">${totalCartPrice}</span>
+                                            <span id="total-price">
+                                                <f:formatNumber value="${totalCartPrice}" pattern="#,##0" />đ                                          
+                                            </span>
                                         </b>
                                     </div>
                                     <div class="mt-1">
@@ -147,11 +154,14 @@
                     success: function (response) {
                         if (response.status === "success") {
                             // Cap nhat tong tien gio hang
-                            $("#total-price").text(response.totalCartPrice);
+                            $("#total-price").text(formatNumber(response.totalCartPrice));
 
                             if (response.removed) {
                                 // Xoa san pham khoi gio hang neu quantity = 0
                                 $("#item-product-" + productId).remove();
+                                
+                                $("#totalQuantity").text(response.totalQuantity);
+                                
                                 console.log("Đã xóa sản phẩm khỏi giỏ hàng!");
 
                                 // Kiểm tra xem giỏ hàng có còn sản phẩm nào không
@@ -169,7 +179,9 @@
                                 $("#quantity-" + productId).val(response.quantity);
 
                                 // Cap nhat tong tien san pham
-                                $("#subtotal-" + productId).text(response.subtotal);
+                                $("#subtotal-" + productId).text(formatNumber(response.subtotal));
+                                
+                                $("#totalQuantity").text(response.totalQuantity);
                             }
 
                             console.log("Cập nhật giỏ hàng thành công!");
@@ -181,6 +193,20 @@
                         console.error("Lỗi AJAX:", error);
                     }
                 });
+            }
+
+            // Hàm định dạng số (quan trọng!)
+            function formatNumber(number) {
+                // Cách 1: Sử dụng toLocaleString (khuyến nghị cho hầu hết các trường hợp)
+                const formattedNumber = new Intl.NumberFormat('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND',
+                }).format(number);
+                
+                return formattedNumber
+                        .replace(/\s/g, '') // Loại bỏ khoảng trắng
+                        .replace('₫', 'đ') // Thay thế ký hiệu "₫" bằng "đ"
+                        .replace(/\./g, ','); // Loại bỏ dấu chấm
             }
 
             function removeFromCart(action, productId, customerId) {
@@ -197,6 +223,8 @@
                         if (response.removed) {
                             // Xoa san pham khoi gio hang neu quantity = 0
                             $("#item-product-" + productId).remove();
+                            
+                            $("#totalQuantity").text(response.totalQuantity);
 
                             console.log("Xoa san pham khoi gio hang thanh cong!");
 

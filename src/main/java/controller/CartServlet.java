@@ -76,6 +76,9 @@ public class CartServlet extends HttpServlet {
                 case "add":
                     addToCart(request, response);
                     break;
+//                case "count":
+//                    countQuantityFromCart(request, response);
+//                    break;
                 default:
 //                    listNhanVien(request, response);
                     break;
@@ -85,6 +88,24 @@ public class CartServlet extends HttpServlet {
         }
     }
 
+//    private void countQuantityFromCart(HttpServletRequest request, HttpServletResponse response)
+//            throws SQLException, IOException, ServletException {
+//        int customerId = Integer.parseInt(request.getParameter("customerId"));
+//        
+//        JSONObject json = new JSONObject();
+//        response.setContentType("application/json");
+//        
+//        int totalQuantity = 0;
+//        List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+//        for (CartItem cartItem : cartItems) {
+//            totalQuantity += cartItem.getQuantity();
+//        }
+//
+//        json.put("totalQuantity", totalQuantity);
+//        
+//        response.getWriter().write(json.toString());
+//
+//    }
     private void addToCart(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         int customerId = Integer.parseInt(request.getParameter("customerId"));
@@ -105,6 +126,14 @@ public class CartServlet extends HttpServlet {
             json.put("message", "Add to cart successfully!");
         }
 
+        int totalQuantity = 0;
+        List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+        for (CartItem cartItem : cartItems) {
+            totalQuantity += cartItem.getQuantity();
+        }
+
+        json.put("totalQuantity", totalQuantity);
+
         response.getWriter().write(json.toString());
 
     }
@@ -115,10 +144,18 @@ public class CartServlet extends HttpServlet {
 
         List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
 
+        int totalQuantity = 0;
+        if (!cartItems.isEmpty()) {
+            for (CartItem cartItem : cartItems) {
+                totalQuantity += cartItem.getQuantity();
+            }
+        }
+
         double totalCartPrice = CartDAO.getTotalCartByCustomerId(customerId);
 
         request.setAttribute("cartItems", cartItems);
         request.setAttribute("totalCartPrice", totalCartPrice);
+        request.setAttribute("totalQuantity", totalQuantity);
         request.getRequestDispatcher("cart.jsp").forward(request, response);
     }
 
@@ -138,6 +175,16 @@ public class CartServlet extends HttpServlet {
                 json.put("status", "success");
                 json.put("message", "Remove from cart successfully!");
                 json.put("removed", true);
+
+                List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+
+                int totalQuantity = 0;
+                if (!cartItems.isEmpty()) {
+                    for (CartItem cartItem : cartItems) {
+                        totalQuantity += cartItem.getQuantity();
+                    }
+                }
+                json.put("totalQuantity", totalQuantity);
 
                 response.getWriter().write(json.toString());
 
@@ -172,6 +219,16 @@ public class CartServlet extends HttpServlet {
                     json.put("status", "success");
                     json.put("message", "Update cart successfully!");
 
+                    List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+
+                    int totalQuantity = 0;
+                    if (!cartItems.isEmpty()) {
+                        for (CartItem cartItem : cartItems) {
+                            totalQuantity += cartItem.getQuantity();
+                        }
+                    }
+                    json.put("totalQuantity", totalQuantity);
+
                     int newQuantity = CartDAO.getQuantityOfProduct(customerId, productId);
                     json.put("quantity", newQuantity);
 
@@ -194,6 +251,16 @@ public class CartServlet extends HttpServlet {
 
                     json.put("status", "success");
                     json.put("message", "Update cart successfully!");
+
+                    List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+
+                    int totalQuantity = 0;
+                    if (!cartItems.isEmpty()) {
+                        for (CartItem cartItem : cartItems) {
+                            totalQuantity += cartItem.getQuantity();
+                        }
+                    }
+                    json.put("totalQuantity", totalQuantity);
 
                     int newQuantity = CartDAO.getQuantityOfProduct(customerId, productId);
                     json.put("quantity", newQuantity);
