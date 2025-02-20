@@ -41,13 +41,22 @@ body {
 }
 
 h2 {
-    color: #8C6E63;
-    font-size: 48px;
-    margin: 0;
-    text-transform: uppercase;
+  font-size: 48px;
     font-weight: bold;
+    color: #8C6E63;
     text-align: center;
-    padding: 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: Arial, sans-serif;
+
+
+    text-shadow:
+        -2px -2px 0 #ffffff,
+        2px 2px 0 #ffffff,
+        4px 4px 4px rgba(0, 0, 0, 0.3);
+
+    margin: 20px 0;
+    padding: 20px
 }
 
 .filter {
