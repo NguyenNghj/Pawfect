@@ -5,6 +5,7 @@
 package controller;
 
 import dao.CartDAO;
+import dao.OrderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.List;
 import model.CartItem;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -22,11 +24,6 @@ import org.json.JSONObject;
  * @author VU QUANG DUC - CE181221
  */
 public class CheckoutServlet extends HttpServlet {
-    
-    private double totalCartPrice;
-    private double shippingCost;
-    private int totalQuantity;
-    private List<CartItem> cartItems;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -54,7 +51,8 @@ public class CheckoutServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -73,81 +71,96 @@ public class CheckoutServlet extends HttpServlet {
                 case "view":
                     viewCheckout(request, response);
                     break;
-                case "get":
-                    getDataToOrder(request, response);
-                    break;
                 case "order":
                     submitOrder(request, response);
                     break;
                 default:
-//                    listNhanVien(request, response);
+                    // listNhanVien(request, response);
                     break;
             }
         } catch (ServletException | IOException | SQLException e) {
             throw new ServletException(e);
         }
     }
-    
+
     private void submitOrder(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         int customerId = 1;
 
-        cartItems = CartDAO.getCartByCustomerId(customerId);
-        
-        totalQuantity = 0;
-        if (!cartItems.isEmpty()) {
-            for (CartItem cartItem : cartItems) {
-                totalQuantity += cartItem.getQuantity();
-            }
-        }
-
-        totalCartPrice = CartDAO.getTotalCartByCustomerId(customerId);
-
-        request.setAttribute("cartItems", cartItems);
-        request.setAttribute("totalCartPrice", (totalCartPrice + shippingCost));
-        request.setAttribute("shippingCost", shippingCost);
-        request.setAttribute("totalQuantity", totalQuantity);
-        
-        request.getRequestDispatcher("checkoutsuccess.jsp").forward(request, response);
-    }
-
-    private void getDataToOrder(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException {
-        int customerId = 1;
-
-        cartItems = CartDAO.getCartByCustomerId(customerId);
-
-        totalQuantity = 0;
-        if (!cartItems.isEmpty()) {
-            for (CartItem cartItem : cartItems) {
-                totalQuantity += cartItem.getQuantity();
-            }
-        }
-
-        totalCartPrice = Double.parseDouble(request.getParameter("totalPrice"));
-        shippingCost = Double.parseDouble(request.getParameter("shippingCost"));
-        
         JSONObject json = new JSONObject();
         response.setContentType("application/json");
-        json.put("status", "success");
-             
-        response.getWriter().write(json.toString());
+
+        try {
+            String name = request.getParameter("name");
+            String email = request.getParameter("email");
+            String address = request.getParameter("address");
+            String note = request.getParameter("note");
+            String phone = request.getParameter("phone");
+            String shippingMethod = request.getParameter("shippingMethod");
+            String paymentMethod = request.getParameter("paymentMethod");
+            double totalCartPrice = Double.parseDouble(request.getParameter("totalPrice"));
+//            double shippingCost = Double.parseDouble(request.getParameter("shippingCost"));
+
+            String status = "";
+            int shippingMethod_id = 0;
+            int paymentMethod_id = 0;
+
+            if (shippingMethod.equals("shipping-hoatoc")) {
+                shippingMethod_id = 2;
+            } else {
+                shippingMethod_id = 1;
+            }
+
+            if (paymentMethod.equals("payment-cash")) {
+                paymentMethod_id = 1;
+                status = "Chờ xác nhận";
+            } else {
+                paymentMethod_id = 2;
+                status = "Chờ lấy hàng";
+            }
+
+            double orderId = 0;
+            orderId = OrderDAO.insertOrder(customerId, paymentMethod_id, shippingMethod_id, name, phone, address, note, totalCartPrice, status);
+            if (orderId != 0) {
+                orderId += 2500000;
+                System.out.println("Them don hang thanh cong.");
+                HttpSession session = request.getSession();
+                session.setAttribute("orderId", orderId);
+                boolean remove = CartDAO.removeCart(customerId);
+                json.put("status", "success");
+                if (remove) {
+                    System.out.println("Xoa gio hang thanh cong.");
+                    json.put("status", "success");
+                } else {
+                    System.out.println("Xoa gio hang that bai!!");
+                    json.put("status", "error");
+                }
+            } else {
+                System.out.println("Them don hang that bai!!");
+                json.put("status", "error");
+            }
+
+            response.getWriter().write(json.toString());
+        } catch (IOException | NumberFormatException | JSONException e) {
+            System.out.println(e);
+        }
+
     }
 
     private void viewCheckout(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         int customerId = 1;
 
-        cartItems = CartDAO.getCartByCustomerId(customerId);
+        List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
 
-        totalQuantity = 0;
+        int totalQuantity = 0;
         if (!cartItems.isEmpty()) {
             for (CartItem cartItem : cartItems) {
                 totalQuantity += cartItem.getQuantity();
             }
         }
 
-        totalCartPrice = CartDAO.getTotalCartByCustomerId(customerId);
+        double totalCartPrice = CartDAO.getTotalCartByCustomerId(customerId);
 
         request.setAttribute("cartItems", cartItems);
         request.setAttribute("totalCartPrice", totalCartPrice);

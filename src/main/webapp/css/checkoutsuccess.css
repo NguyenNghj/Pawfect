@@ -15,14 +15,14 @@ body {
 }
 
 .success-icon {
-    width: 64px;
-    height: 64px;
+    width: 74px;
+    height: 74px;
     background-color: #7ac142;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1rem;
+    margin: 0 auto 1.5rem;
 }
 
 .order-card {
@@ -109,4 +109,16 @@ body {
 
 .container-items::-webkit-scrollbar-thumb:hover {
     background: #72839e;
+}
+
+.container-order-success {
+    margin: 0 150px;
+    padding: 50px 0;
+    border: 1px solid #ddd;
+    /* Softer border color */
+    background-color: white;
+    box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.2);
+    /* Subtle shadow */
+    border-radius: 5px;
+    /* Optional: Slightly rounded corners */
 }

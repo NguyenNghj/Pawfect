@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -90,34 +92,39 @@
                             </div> -->
 
                             <!-- TH2: Khách hàng 'có' đơn hàng  -->
-                            <!-- Order Item -->                           
-                            <div class="card mb-3 hover-card">
-                                <a href="#chitiet" style="text-decoration: none; color: inherit;">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col">
-                                                <h6 class="mb-3">
-                                                    [Mã đơn hàng] - <span class="text-warning">Chờ xác nhận</span>
-                                                </h6>
-                                                <p class="text-secondary mb-2">
-                                                    Địa chỉ: 600 Nguyễn Văn Cừ, Ninh Kiều, Cần Thơ
-                                                </p>
-                                                <p class="text-secondary">Ngày: 15/02/2025</p>
-                                            </div>
-                                            <div class="col-auto text-end">
-                                                <h5 class="mb-3">789.000VND</h5>
-    
-                                                <!-- Đơn hàng có trạng thái "Chờ xác nhận" thì mới được huỷ đơn -->
-                                                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#cancelModal" 
-                                                        style="padding: 4px 12px;"
-                                                        >
-                                                    Huỷ đơn
-                                                </button>                                          
+                            <c:forEach items="${orders}" var="o">
+                                <!-- Order Item -->                           
+                                <div class="card mb-3 hover-card">
+                                    <a href="order?&action=viewdetail&orderId=${o.orderId}" style="text-decoration: none; color: inherit;">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h6 class="mb-3">
+                                                        #${o.orderId + 2500000} - <span class="text-warning">${o.status}</span>
+                                                    </h6>
+                                                    <p class="text-secondary mb-2">
+                                                        Địa chỉ: ${o.address}
+                                                    </p>
+                                                    <p class="text-secondary">Ngày: ${o.orderDate}</p>
+                                                </div>
+                                                <div class="col-auto text-end">
+                                                    <h5 class="mb-3">
+                                                        <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ                                               
+                                                    </h5>
+
+                                                    <!-- Đơn hàng có trạng thái "Chờ xác nhận" thì mới được huỷ đơn -->
+                                                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#cancelModal" 
+                                                            style="padding: 4px 12px;"
+                                                            onclick="huyDon(event)"
+                                                            >
+                                                        Huỷ đơn
+                                                    </button>                                          
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </a>                               
-                            </div>    
+                                    </a>                               
+                                </div> 
+                            </c:forEach>
 
                             <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -166,5 +173,24 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
+        <script>
+                                                                const navLinks = document.querySelectorAll('.nav-link');
+
+                                                                navLinks.forEach(navLink => {
+                                                                    navLink.addEventListener('click', function (event) {
+                                                                        event.preventDefault(); // Ngăn chặn thẻ <a> chuyển hướng trang
+
+                                                                        navLinks.forEach(link => {
+                                                                            link.classList.remove('active');
+                                                                        });
+
+                                                                        this.classList.add('active');
+                                                                    });
+                                                                });
+
+                                                                function huyDon(event) {
+                                                                    event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ <a>
+                                                                }
+        </script>
     </body>
 </html>
