@@ -61,6 +61,9 @@ public class CartDAO {
 
     protected static String Remove_Product_From_Cart = "DELETE FROM CartItems WHERE product_id = ? AND customer_id = ?";
 
+    protected static String Remove_Cart = "DELETE FROM CartItems\n"
+            + "WHERE customer_id = ?";
+
     protected static String Increase_Quantity = "UPDATE CartItems\n"
             + "SET quantity = CASE\n"
             + "    WHEN quantity < (SELECT stock FROM Products WHERE product_id = CartItems.product_id) THEN quantity + ?\n"
@@ -80,14 +83,14 @@ public class CartDAO {
     protected static String Add_To_Cart = "INSERT INTO CartItems (customer_id, product_id, quantity)  \n"
             + "VALUES  \n"
             + "    (?, ?, ?)";
-    
-    protected static String Count_Quantity_From_Cart = "SELECT\n" +
-"    SUM(c.quantity) AS total_quantity\n" +
-"FROM\n" +
-"    CartItems AS c\n" +
-"INNER JOIN\n" +
-"    Products AS p ON c.product_id = p.product_id\n" +
-"WHERE c.customer_id = ?;";
+
+    protected static String Count_Quantity_From_Cart = "SELECT\n"
+            + "    SUM(c.quantity) AS total_quantity\n"
+            + "FROM\n"
+            + "    CartItems AS c\n"
+            + "INNER JOIN\n"
+            + "    Products AS p ON c.product_id = p.product_id\n"
+            + "WHERE c.customer_id = ?;";
 
     public static List<CartItem> getCartByCustomerId(int customerId) {
         List<CartItem> list = new ArrayList<>();
@@ -125,7 +128,7 @@ public class CartDAO {
         }
         return list;
     }
-    
+
     public static boolean addToCart(int customerId, int productId, int quantity) {
         boolean rs = false;
         try {
@@ -263,6 +266,29 @@ public class CartDAO {
 
         }
         return 0;
+    }
+    
+    public static boolean removeCart(int customerId) {
+        boolean rs = false;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Remove_Cart);
+            ps.setInt(1, customerId);
+            rs = ps.executeUpdate() > 0;
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return rs;
     }
 
     public static boolean removeProductFromCart(int productId, int customerId) {

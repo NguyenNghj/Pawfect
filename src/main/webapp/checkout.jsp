@@ -109,7 +109,7 @@
                                     </div>
                                     <div class="form-check d-flex justify-content-between align-items-center">
                                         <div class="d-flex gap-3">
-                                            <input class="form-check-input" type="radio" name="payment-method" id="shipping-cash" checked>
+                                            <input class="form-check-input" type="radio" name="payment-method" id="payment-cash" checked>
                                             <label class="form-check-label" for="shipping-cash">
                                                 Thanh toán tiền mặt (COD)
                                             </label>
@@ -188,7 +188,7 @@
                         <!-- Back to Cart or Submit Order -->
                         <div class="sidebar-footer">
                             <div class="d-flex justify-content-between align-items-center">                  
-                                <a href="">
+                                <a href="cart?&action=view">
                                     <i class="fa-solid fa-angle-left me-1"></i>
                                     <span>Quay về giỏ hàng</span>
                                 </a>
@@ -276,7 +276,18 @@
                                                 const totalPrice = parseFloat($('#total-price-value').text().replace(/[.,đ]/g, ''));
                                                 const shippingCost = parseFloat($('#shipping-cost-value').text().replace(/[.,đ]/g, ''));
                                                 // **Lấy giá trị của radio button được chọn
-                                                const shippingMethod = $('input[name="payment-method"]:checked').attr('id');
+                                                const shippingMethod = $('input[name="shipping-method"]:checked').attr('id');
+                                                const paymentMethod = $('input[name="payment-method"]:checked').attr('id');
+                                                
+                                                console.log("Gui du lieu email: " + email);
+                                                console.log("Gui du lieu name: " + name);
+                                                console.log("Gui du lieu phone: " + phone);
+                                                console.log("Gui du lieu address: " + address);
+                                                console.log("Gui du lieu note: " + note);
+                                                console.log("Gui du lieu totalPrice: " + totalPrice);
+                                                console.log("Gui du lieu shippingCost: " + shippingCost);
+                                                console.log("Gui du lieu shippingMethod: " + shippingMethod);
+                                                console.log("Gui du lieu paymentMethod " + paymentMethod);
 
                                                 let isValid = true;
 
@@ -358,21 +369,12 @@
                                                     return;
                                                 }
 
-                                                console.log("Gui du lieu email: " + email);
-                                                console.log("Gui du lieu name: " + name);
-                                                console.log("Gui du lieu phone: " + phone);
-                                                console.log("Gui du lieu address: " + address);
-                                                console.log("Gui du lieu note: " + note);
-                                                console.log("Gui du lieu totalPrice: " + totalPrice);
-                                                console.log("Gui du lieu shippingCost: " + shippingCost);
-                                                console.log("Gui du lieu shippingMethod: " + shippingMethod);
-
                                                 // 3. Gọi AJAX
                                                 $.ajax({
                                                     url: 'checkout',
                                                     type: 'POST',
                                                     data: {
-                                                        action: "get",
+                                                        action: "order",
                                                         name: name,
                                                         email: email,
                                                         address: address,
@@ -380,20 +382,23 @@
                                                         phone: phone,
                                                         totalPrice: totalPrice,
                                                         shippingCost: shippingCost,
+                                                        shippingMethod: shippingMethod,
+                                                        paymentMethod: paymentMethod
                                                     },
                                                     dataType: "json",
                                                     success: function (response) {
                                                         if (response.status === "success") {
                                                             console.log("Đã gửi dữ liệu thành công, đợi chuyển hướng từ server...");
-                                                            window.location.href = "checkout?&action=order";
+                                                            window.location.href = "checkoutsuccess.jsp";
                                                         } else {
                                                             console.log("Lỗi đặt đơn hàng!");
                                                         }
                                                         
                                                     },
-                                                    error: function (error) {
+                                                    error: function (xhr, status, error) {
                                                         // Xử lý lỗi
-                                                        console.error("Lỗi khi gọi servlet:", error);
+                                                        console.error("Lỗi khi gọi servlet:", status, error);
+                                                        console.error("Response Text:", xhr.responseText);
                                                         alert("Có lỗi xảy ra. Vui lòng thử lại sau.");
                                                     }
                                                 });
