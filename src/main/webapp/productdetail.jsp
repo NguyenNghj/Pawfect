@@ -112,7 +112,7 @@
                                     </c:forEach>
 
                                     <!-- Nút Next -->
-                                    <li class="page-item ${currentPage >= (totalPages-1) ? 'disabled' : ''}">
+                                    <li class="page-item ${currentPage >= totalPages ? 'disabled' : ''}">
                                         <a class="page-link" href="?${queryParams}&page=${currentPage + 1}">Next</a>
                                     </li>
                                 </ul>
@@ -124,33 +124,29 @@
 
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
-                    // Phục hồi vị trí cuộn khi trang load lại
-                    if (localStorage.getItem("scrollPosition")) {
+                    // Nếu là chuyển trang trong chi tiết sản phẩm, khôi phục vị trí cuộn
+                    if (localStorage.getItem("scrollPosition") && localStorage.getItem("isPagination") === "true") {
                         window.scrollTo(0, localStorage.getItem("scrollPosition"));
                     }
 
-                    // Lưu vị trí cuộn trước khi chuyển trang
+                    // Xóa dữ liệu sau khi khôi phục để tránh lỗi khi quay lại trang trước
+                    localStorage.removeItem("scrollPosition");
+                    localStorage.removeItem("isPagination");
+
+                    // Lưu vị trí cuộn khi nhấn phân trang trong trang chi tiết sản phẩm
                     document.querySelectorAll(".page-link").forEach(link => {
                         link.addEventListener("click", function () {
                             localStorage.setItem("scrollPosition", window.scrollY);
+                            localStorage.setItem("isPagination", "true"); // Đánh dấu là phân trang
                         });
                     });
 
-                    // Xử lý tăng/giảm số lượng sản phẩm
-                    const subButton = document.querySelector(".sub");
-                    const addButton = document.querySelector(".add");
-                    const inputField = document.querySelector("input[type='number']");
-
-                    subButton.addEventListener("click", function () {
-                        let currentValue = parseInt(inputField.value);
-                        if (currentValue > 1) {
-                            inputField.value = currentValue - 1;
-                        }
-                    });
-
-                    addButton.addEventListener("click", function () {
-                        let currentValue = parseInt(inputField.value);
-                        inputField.value = currentValue + 1;
+                    // Khi click vào sản phẩm trong danh sách (chuyển trang chi tiết), không lưu vị trí cuộn
+                    document.querySelectorAll(".product-card a").forEach(link => {
+                        link.addEventListener("click", function () {
+                            localStorage.removeItem("scrollPosition"); // Xóa để luôn cuộn lên đầu
+                            localStorage.removeItem("isPagination");
+                        });
                     });
                 });
             </script>
