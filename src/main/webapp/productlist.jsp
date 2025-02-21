@@ -48,7 +48,7 @@
                     let urlParams = new URLSearchParams(window.location.search);
 
                     // Nếu đã chọn filter đó thì bỏ filter đi
-                    if (urlParams.get(filterName) == filterValue) {
+                    if (urlParams.get(filterName) === filterValue) {
                         urlParams.delete(filterName);
                     } else {
                         urlParams.set(filterName, filterValue);
@@ -76,7 +76,7 @@
                         let urlParams = new URLSearchParams(window.location.search);
 
                         // Nếu đã chọn category đó thì bỏ category đi
-                        if (urlParams.get('category') == category) {
+                        if (urlParams.get('category') === category) {
                             urlParams.delete('category');
                         } else {
                             urlParams.set('category', category);
@@ -183,7 +183,7 @@
         </div>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <script>     
+        <script>
                     // Gọi ban đầu để thiết lập số lượng khi trang được tải
                     $(document).ready(function () {
                         updateCartCount();
@@ -212,9 +212,9 @@
                             dataType: "json",
                             success: function (response) {
                                 if (response.status === "success") {
-                                    
+
                                     $("#cart-count").text(response.totalQuantity); // Cập nhật phần tử trong header của bạn
-                                    
+
                                     console.log("Đã thêm sản phẩm vào giỏ hàng!");
                                     Swal.fire({
                                         position: "top-end",
