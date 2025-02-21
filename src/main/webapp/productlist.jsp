@@ -48,7 +48,7 @@
                     let urlParams = new URLSearchParams(window.location.search);
 
                     // Nếu đã chọn filter đó thì bỏ filter đi
-                    if (urlParams.get(filterName) == filterValue) {
+                    if (urlParams.get(filterName) === filterValue) {
                         urlParams.delete(filterName);
                     } else {
                         urlParams.set(filterName, filterValue);
@@ -57,7 +57,24 @@
                     urlParams.set('page', 1); // Khi lọc, reset về trang 1
                     window.location.search = urlParams.toString();
                 }
+
+                function applyFilter(filterName, filterValue) {
+                    let urlParams = new URLSearchParams(window.location.search);
+
+                    // Nếu đã chọn filter đó thì bỏ filter đi
+                    if (urlParams.get(filterName) === filterValue.toString()) {
+                        urlParams.delete(filterName);
+                    } else {
+                        urlParams.set(filterName, filterValue);
+                    }
+
+                    urlParams.set('page', 1); // Khi lọc, reset về trang 1
+                    window.location.search = urlParams.toString();
+                }
+
             </script>
+
+
 
             <div class="row">
                 <div class="col-12 col-md-3 mb-4 category-container">
@@ -76,7 +93,7 @@
                         let urlParams = new URLSearchParams(window.location.search);
 
                         // Nếu đã chọn category đó thì bỏ category đi
-                        if (urlParams.get('category') == category) {
+                        if (urlParams.get('category') === category) {
                             urlParams.delete('category');
                         } else {
                             urlParams.set('category', category);
@@ -138,7 +155,7 @@
                                         <img src="https://katybpetcare.com/watermark/product/292x292x1/upload/product/1035d7d836e1c7c15f261bc83d59e15a-4771.jpeg" alt="${product.productName}">
                                     </div>
                                     <div class="product-info">
-                                        <h3 class="product-name">${product.productName}</h3>
+                                        <a class="product-name" href="product?id=${product.productId}">${product.productName}</a>
                                         <p class="product-price">
                                             <fmt:formatNumber value="${product.productPrice}" pattern="#,##0" />đ
                                         </p>
@@ -181,63 +198,89 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Khôi phục vị trí cuộn khi trang tải lại
+                if (localStorage.getItem("scrollPosition")) {
+                    window.scrollTo(0, localStorage.getItem("scrollPosition"));
+                    localStorage.removeItem("scrollPosition"); // Xóa dữ liệu sau khi dùng để tránh lỗi cuộn không mong muốn
+                }
+
+                // Hàm lưu vị trí cuộn trước khi làm mới trang
+                function saveScrollPosition() {
+                    localStorage.setItem("scrollPosition", window.scrollY);
+                }
+
+                // Bắt sự kiện khi người dùng nhấn vào phân trang
+                document.querySelectorAll(".pagination .page-link").forEach(link => {
+                    link.addEventListener("click", saveScrollPosition);
+                });
+
+                // Bắt sự kiện khi người dùng nhấn vào bộ lọc hoặc sắp xếp
+                document.querySelectorAll(".nut-loc, .category-item").forEach(button => {
+                    button.addEventListener("click", saveScrollPosition);
+                });
+            });
+        </script>
+
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <script>     
-                    // Gọi ban đầu để thiết lập số lượng khi trang được tải
-                    $(document).ready(function () {
-                        updateCartCount();
-                    });
+        <script>
+            // Gọi ban đầu để thiết lập số lượng khi trang được tải
+            $(document).ready(function () {
+                updateCartCount();
+            });
 
-                    $('.add-to-cart').click(function (event) {
-                        event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
+            $('.add-to-cart').click(function (event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
 
-                        var productId = $(this).data('product-id');
-                        console.log("productId:", productId);
-                        var productName = $(this).data('product-name');
-                        console.log("productName:", productName);
-                        var action = "add";
-                        console.log("productId:", action);
-                        var customerId = 1; // ID của khách hàng (cần lấy từ session hoặc cookie)
+                var productId = $(this).data('product-id');
+                console.log("productId:", productId);
+                var productName = $(this).data('product-name');
+                console.log("productName:", productName);
+                var action = "add";
+                console.log("productId:", action);
+                var customerId = 1; // ID của khách hàng (cần lấy từ session hoặc cookie)
 
-                        $.ajax({
-                            url: "cart",
-                            type: "POST",
-                            data: {
-                                action: action,
-                                productId: productId,
-                                customerId: customerId,
-                                quantity: "1"
-                            },
-                            dataType: "json",
-                            success: function (response) {
-                                if (response.status === "success") {
-                                    
-                                    $("#cart-count").text(response.totalQuantity); // Cập nhật phần tử trong header của bạn
-                                    
-                                    console.log("Đã thêm sản phẩm vào giỏ hàng!");
-                                    Swal.fire({
-                                        position: "top-end",
-                                        icon: "success",
-                                        title: "Thêm giỏ hàng thành công!",
-                                        text: productName + " đã được thêm vào giỏ hàng.",
-                                        showConfirmButton: false,
-                                        backdrop: false,
-                                        width: '300px',
-                                        timer: 3000,
-                                        returnFocus: false
-                                    });
-                                } else {
-                                    console.error("Lỗi thêm vào giỏ hàng:", response.message);
-                                    alert("Lỗi: " + response.message);
-                                }
-                            },
-                            error: function (error) {
-                                console.error("Lỗi AJAX:", error);
-                                alert("Lỗi kết nối đến server.");
-                            }
-                        });
-                    });
+                $.ajax({
+                    url: "cart",
+                    type: "POST",
+                    data: {
+                        action: action,
+                        productId: productId,
+                        customerId: customerId,
+                        quantity: "1"
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status === "success") {
+
+                            $("#cart-count").text(response.totalQuantity); // Cập nhật phần tử trong header của bạn
+
+                            console.log("Đã thêm sản phẩm vào giỏ hàng!");
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: "Thêm giỏ hàng thành công!",
+                                text: productName + " đã được thêm vào giỏ hàng.",
+                                showConfirmButton: false,
+                                backdrop: false,
+                                width: '300px',
+                                timer: 3000,
+                                returnFocus: false
+                            });
+                        } else {
+                            console.error("Lỗi thêm vào giỏ hàng:", response.message);
+                            alert("Lỗi: " + response.message);
+                        }
+                    },
+                    error: function (error) {
+                        console.error("Lỗi AJAX:", error);
+                        alert("Lỗi kết nối đến server.");
+                    }
+                });
+            });
         </script>
     </body>
 </html>
