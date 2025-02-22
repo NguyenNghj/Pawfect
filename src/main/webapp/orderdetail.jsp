@@ -205,7 +205,7 @@
                                             <div class="d-flex justify-content-between mb-2">
                                                 <div class="text-secondary">Phí vận chuyển</div>
                                                 <div class="text-success">
-                                                    <f:formatNumber value="${o.shipping_method_fee}" pattern="#,##0" />đ                                                  
+                                                    <f:formatNumber value="${o.shippingMethodFee}" pattern="#,##0" />đ                                                  
                                                 </div>
                                             </div>
                                             <!-- <div class="d-flex justify-content-between mb-2">

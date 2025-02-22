@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -128,75 +130,83 @@
                                 <h4 class="mb-0">Danh sách đơn hàng</h4>
                             </div>
                             <div style="padding: 15px 15px 25px 15px;">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col" style="width: 9%;">Mã đơn</th>
-                                            <th scope="col" style="width: 20%;">Họ tên người đặt</th>
-                                            <th scope="col">Địa chỉ giao hàng</th>
-                                            <th scope="col" style="width: 12%;">Tổng tiền</th>
-                                            <th scope="col" style="width: 12%;">Trạng thái</th>
-                                            <th scope="col" style="width: 19%;">Hành động</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <!-- Mã đơn hàng -->
-                                            <th scope="row">25000001</th>
-                                            <!-- Họ tên người nhận -->
-                                            <td>[Họ tên người nhận]</td>
-                                            <!-- Địa chỉ giao hàng -->
-                                            <td>[Địa chỉ giao]</td>
-                                            <!-- Tổng tiền đơn hàng -->
-                                            <td>[Tổng tiền]</td>
-                                            <!-- Trạng thái đơn hàng -->
-                                            <td>[Trạng thái đơn]</td>
-                                            <td>
-                                                <button type="button" class="btn btn-success">Xem chi tiết</button>
-                                                <!-- Được huỷ đơn nếu đơn hàng ở trạng thái "Chờ xác nhận" hoặc "Chờ lấy hàng" -->
-                                                <button type="button" class="btn btn-danger"
-                                                    data-bs-toggle="modal" data-bs-target="#cancelModal"
-                                                >
-                                                    Huỷ đơn
-                                                </button>
+                                <!-- Order Tabs -->
+                                <ul class="nav nav-tabs mb-4">
+                                    <li class="nav-item">
+                                        <a class="nav-link <c:if test="${orderStatus == 'tc'}">active</c:if>" href="ordermanagement?&action=view&status=tc"">Tất cả</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link <c:if test="${orderStatus == 'cxn'}">active</c:if>" href="ordermanagement?&action=view&status=cxn">Chờ xác nhận</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link <c:if test="${orderStatus == 'clh'}">active</c:if>" href="ordermanagement?&action=view&status=clh">Chờ lấy hàng</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link <c:if test="${orderStatus == 'cgh'}">active</c:if>" href="ordermanagement?&action=view&status=cgh">Chờ giao hàng</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link <c:if test="${orderStatus == 'ht'}">active</c:if>" href="ordermanagement?&action=view&status=ht">Hoàn thành</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link <c:if test="${orderStatus == 'dh'}">active</c:if>" href="ordermanagement?&action=view&status=dh">Đã huỷ</a>
+                                        </li>
+                                    </ul>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" style="width: 9%;">Mã đơn</th>
+                                                <th scope="col" style="width: 20%;">Họ tên</th>
+                                                <th scope="col">Địa chỉ giao hàng</th>
+                                                <th scope="col" style="width: 12%;">Tổng tiền</th>
+                                                <th scope="col" style="width: 12%;">Trạng thái</th>
+                                                <th scope="col" style="width: 19%;">Hành động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach items="${orders}" var="o">
+                                            <tr>
+                                                <!-- Mã đơn hàng -->
+                                                <th scope="row">#${o.orderId + 2500000}</th>
+                                                <!-- Họ tên đặt -->
+                                                <td class="bodycolor-name-address-total">${o.customerName}</td>
+                                                <!-- Địa chỉ giao hàng -->
+                                                <td class="bodycolor-name-address-total">${o.address}</td>
+                                                <!-- Tổng tiền đơn hàng -->
+                                                <td class="bodycolor-name-address-total"><f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ</td>                                              
+                                                <!-- Trạng thái đơn hàng -->
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${o.status == 'Chờ xác nhận'}"><span class="text-warning fw-bold">${o.status}</span></c:when>
+                                                        <c:when test="${o.status == 'Chờ lấy hàng'}"><span class="text-secondary fw-bold">${o.status}</span></c:when>
+                                                        <c:when test="${o.status == 'Chờ giao hàng'}"><span class="text-primary fw-bold">${o.status}</span></c:when>
+                                                        <c:when test="${o.status == 'Hoàn thành'}"><span class="text-success fw-bold">${o.status}</span></c:when>
+                                                        <c:otherwise><span class="text-danger fw-bold">${o.status}</span></c:otherwise> 
+                                                    </c:choose>
+                                                </td>
+                                                <td>
+                                                    <a href="ordermanagement?&action=viewdetail&orderId=${o.orderId}" class="btn btn-success">Xem chi tiết</a>
+                                                    <!-- Được huỷ đơn nếu đơn hàng ở trạng thái "Chờ xác nhận" hoặc "Chờ lấy hàng" -->
+                                                    <button type="button" class="btn btn-danger btn-cancel"
+                                                            data-product-id="${o.orderId + 2500000}"
+                                                            >
+                                                        Huỷ đơn
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
 
-                                                <!-- Modal xác nhận huỷ đơn -->
-                                                <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h1 class="modal-title fs-5" id="cancelModalLabel">Xác nhận huỷ đơn</h1>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <p style="text-align: left;">Bạn muốn chắc chắn huỷ đơn hàng [Mã đơn hàng]</p>   
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                                                <a href="#" class="btn btn-danger">Huỷ</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                            <td>@fat</td>
-                                            <td>@mdo</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>Larry the Bird</td>
-                                            <td>@twitter</td>
-                                            <td>@mdo</td>
-                                            <td>@mdo</td>
-                                        </tr>                             
                                     </tbody>
                                 </table>
+
+                                <!-- Nếu 'không' có đơn hàng nào! -->
+                                <c:if test="${empty orders}">                     
+                                    <div>
+                                        <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
+                                            Không có đơn hàng nào!
+                                        </h5>
+                                    </div>
+                                </c:if>
+                                
                             </div>
                         </div>
                     </div>          
@@ -206,9 +216,40 @@
             </div>
         </div>
 
-
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script>
+            $(document).ready(function () { // Đảm bảo code chạy sau khi trang đã load xong
+                $('.btn-cancel').click(function () { // Sử dụng class selector
+                    let productId = $(this).data('product-id'); // $(this) là nút được click
+
+                    Swal.fire({
+                        title: 'Bạn chắc chắn muốn huỷ đơn #' + productId + '?',
+                        text: 'Hành động này không thể hoàn tác!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Có, huỷ đơn!',
+                        cancelButtonText: 'Không, quay lại'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: 'Đã huỷ!',
+                                text: 'Đơn hàng của bạn đã được huỷ.',
+                                icon: 'success',
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+//                                window.location.href = "order?&action=view&status=tc";
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
     </body>
 </html>

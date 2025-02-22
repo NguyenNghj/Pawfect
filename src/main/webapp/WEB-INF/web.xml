@@ -35,6 +35,10 @@
         <servlet-name>OrderServlet</servlet-name>
         <servlet-class>controller.OrderServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>OrderManagementServlet</servlet-name>
+        <servlet-class>controller.OrderManagementServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/products</url-pattern>
@@ -66,6 +70,10 @@
     <servlet-mapping>
         <servlet-name>OrderServlet</servlet-name>
         <url-pattern>/order</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderManagementServlet</servlet-name>
+        <url-pattern>/ordermanagement</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

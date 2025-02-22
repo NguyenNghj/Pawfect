@@ -32,33 +32,77 @@ public class OrderDAO {
     protected static String Get_Order_By_CustomerId_Vs_Status = "SELECT\n"
             + "    o.*,\n"
             + "    s.fullName AS staff_name,\n"
-            + "    pm.name AS payment_method_name,\n"
-            + "    sm.name AS shipping_method_name,\n"
-            + "	sm.shipping_fee AS shipping_method_fee\n"
+            + "    pm.name AS payment_method_name,  -- Lấy tên phương thức thanh toán\n"
+            + "    sm.name AS shipping_method_name,   -- Lấy tên phương thức giao hàng\n"
+            + "	sm.shipping_fee AS shipping_method_fee,\n"
+            + "	c.fullName AS customer_name\n"
             + "FROM\n"
             + "    Orders o\n"
             + "LEFT JOIN\n"
+            + "	Customers c ON o.customer_id = c.customer_id\n"
+            + "LEFT JOIN\n"
             + "    Staffs s ON o.staff_id = s.staff_id\n"
-            + "LEFT JOIN\n"
+            + "LEFT JOIN  -- Nối với bảng PaymentMethods\n"
             + "    PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
-            + "LEFT JOIN\n"
+            + "LEFT JOIN  -- Nối với bảng ShippingMethods\n"
             + "    ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
             + "WHERE\n"
             + "    o.customer_id = ? AND o.status = ?";
 
-    protected static String Get_Order_By_CustomerId = "SELECT\n"
+    protected static String Get_All_Order_By_Status = "SELECT\n"
             + "    o.*,\n"
             + "    s.fullName AS staff_name,\n"
-            + "    pm.name AS payment_method_name,\n"
-            + "    sm.name AS shipping_method_name,\n"
-            + "	sm.shipping_fee AS shipping_method_fee\n"
+            + "    pm.name AS payment_method_name,  -- Lấy tên phương thức thanh toán\n"
+            + "    sm.name AS shipping_method_name,   -- Lấy tên phương thức giao hàng\n"
+            + "	sm.shipping_fee AS shipping_method_fee,\n"
+            + "	c.fullName AS customer_name\n"
             + "FROM\n"
             + "    Orders o\n"
             + "LEFT JOIN\n"
+            + "	Customers c ON o.customer_id = c.customer_id\n"
+            + "LEFT JOIN\n"
             + "    Staffs s ON o.staff_id = s.staff_id\n"
-            + "LEFT JOIN\n"
+            + "LEFT JOIN  -- Nối với bảng PaymentMethods\n"
             + "    PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
+            + "LEFT JOIN  -- Nối với bảng ShippingMethods\n"
+            + "    ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
+            + "WHERE\n"
+            + "    o.status = ?";
+
+    protected static String Get_All_Order = "SELECT\n"
+            + "    o.*,\n"
+            + "    s.fullName AS staff_name,\n"
+            + "    pm.name AS payment_method_name,  -- Lấy tên phương thức thanh toán\n"
+            + "    sm.name AS shipping_method_name,   -- Lấy tên phương thức giao hàng\n"
+            + "	sm.shipping_fee AS shipping_method_fee,\n"
+            + "	c.fullName AS customer_name\n"
+            + "FROM\n"
+            + "    Orders o\n"
             + "LEFT JOIN\n"
+            + "	Customers c ON o.customer_id = c.customer_id\n"
+            + "LEFT JOIN\n"
+            + "    Staffs s ON o.staff_id = s.staff_id\n"
+            + "LEFT JOIN  -- Nối với bảng PaymentMethods\n"
+            + "    PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
+            + "LEFT JOIN  -- Nối với bảng ShippingMethods\n"
+            + "    ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id";
+
+    protected static String Get_Order_By_CustomerId = "SELECT\n"
+            + "    o.*,\n"
+            + "    s.fullName AS staff_name,\n"
+            + "    pm.name AS payment_method_name,  -- Lấy tên phương thức thanh toán\n"
+            + "    sm.name AS shipping_method_name,   -- Lấy tên phương thức giao hàng\n"
+            + "	sm.shipping_fee AS shipping_method_fee,\n"
+            + "	c.fullName AS customer_name\n"
+            + "FROM\n"
+            + "    Orders o\n"
+            + "LEFT JOIN\n"
+            + "	Customers c ON o.customer_id = c.customer_id\n"
+            + "LEFT JOIN\n"
+            + "    Staffs s ON o.staff_id = s.staff_id\n"
+            + "LEFT JOIN  -- Nối với bảng PaymentMethods\n"
+            + "    PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
+            + "LEFT JOIN  -- Nối với bảng ShippingMethods\n"
             + "    ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
             + "WHERE\n"
             + "    o.customer_id = ?";
@@ -66,11 +110,14 @@ public class OrderDAO {
     protected static String Get_Order_By_OrderId = "SELECT\n"
             + "    o.*,\n"
             + "    s.fullName AS staff_name,\n"
-            + "    pm.name AS payment_method_name,\n"
-            + "    sm.name AS shipping_method_name,\n"
-            + "	sm.shipping_fee AS shipping_method_fee\n"
+            + "    pm.name AS payment_method_name,  -- Lấy tên phương thức thanh toán\n"
+            + "    sm.name AS shipping_method_name,   -- Lấy tên phương thức giao hàng\n"
+            + "	sm.shipping_fee AS shipping_method_fee,\n"
+            + "	c.fullName AS customer_name\n"
             + "FROM\n"
             + "    Orders o\n"
+            + "LEFT JOIN\n"
+            + "	Customers c ON o.customer_id = c.customer_id\n"
             + "LEFT JOIN\n"
             + "    Staffs s ON o.staff_id = s.staff_id\n"
             + "LEFT JOIN  -- Nối với bảng PaymentMethods\n"
@@ -96,8 +143,54 @@ public class OrderDAO {
             + "    Orders AS o ON oi.order_id = o.order_id\n"
             + "WHERE\n"
             + "    oi.order_id = ?";
-    
-    
+
+    public static List<Order> getAllOrderByStatus(String status) {
+        List<Order> list = new ArrayList<>();
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Get_All_Order_By_Status);
+            ps.setString(1, status);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Order o = new Order(
+                        rs.getInt("order_id"),
+                        rs.getInt("customer_id"),
+                        rs.getInt("staff_id"),
+                        rs.getInt("paymentMethod_id"),
+                        rs.getInt("shippingMethod_id"),
+                        rs.getString("recipient_name"),
+                        rs.getString("recipient_phone"),
+                        rs.getString("shipping_address"),
+                        rs.getString("delivery_notes"),
+                        rs.getDouble("total_amount"),
+                        rs.getString("status"),
+                        rs.getTimestamp("order_date"),
+                        rs.getString("staff_name"),
+                        rs.getString("payment_method_name"),
+                        rs.getString("shipping_method_name"),
+                        rs.getDouble("shipping_method_fee"),
+                        rs.getString("customer_name")
+                );
+                list.add(o);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return list;
+    }
+
     public static List<Order> getOrderByCustomerIdVsStatus(int customerId, String status) {
         List<Order> list = new ArrayList<>();
         try {
@@ -124,7 +217,8 @@ public class OrderDAO {
                         rs.getString("staff_name"),
                         rs.getString("payment_method_name"),
                         rs.getString("shipping_method_name"),
-                        rs.getDouble("shipping_method_fee")
+                        rs.getDouble("shipping_method_fee"),
+                        rs.getString("customer_name")
                 );
                 list.add(o);
             }
@@ -207,7 +301,54 @@ public class OrderDAO {
                         rs.getString("staff_name"),
                         rs.getString("payment_method_name"),
                         rs.getString("shipping_method_name"),
-                        rs.getDouble("shipping_method_fee")
+                        rs.getDouble("shipping_method_fee"),
+                        rs.getString("customer_name")
+                );
+                list.add(o);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return list;
+    }
+
+    public static List<Order> getAllOrder() {
+        List<Order> list = new ArrayList<>();
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Get_All_Order);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Order o = new Order(
+                        rs.getInt("order_id"),
+                        rs.getInt("customer_id"),
+                        rs.getInt("staff_id"),
+                        rs.getInt("paymentMethod_id"),
+                        rs.getInt("shippingMethod_id"),
+                        rs.getString("recipient_name"),
+                        rs.getString("recipient_phone"),
+                        rs.getString("shipping_address"),
+                        rs.getString("delivery_notes"),
+                        rs.getDouble("total_amount"),
+                        rs.getString("status"),
+                        rs.getTimestamp("order_date"),
+                        rs.getString("staff_name"),
+                        rs.getString("payment_method_name"),
+                        rs.getString("shipping_method_name"),
+                        rs.getDouble("shipping_method_fee"),
+                        rs.getString("customer_name")
                 );
                 list.add(o);
             }
@@ -253,7 +394,8 @@ public class OrderDAO {
                         rs.getString("staff_name"),
                         rs.getString("payment_method_name"),
                         rs.getString("shipping_method_name"),
-                        rs.getDouble("shipping_method_fee")
+                        rs.getDouble("shipping_method_fee"),
+                        rs.getString("customer_name")
                 );
                 list.add(o);
             }
