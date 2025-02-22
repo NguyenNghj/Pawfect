@@ -117,7 +117,7 @@ public class CartServlet extends HttpServlet {
 
         boolean checkProdut = CartDAO.checkProductInCart(productId, customerId);
         if (checkProdut) {
-            CartDAO.increaseProductFromCart(1, productId, customerId);
+            CartDAO.increaseProductFromCart(quantity, productId, customerId);
             json.put("status", "success");
             json.put("message", "Add to cart successfully!");
         } else {

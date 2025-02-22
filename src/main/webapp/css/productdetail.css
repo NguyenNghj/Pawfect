@@ -7,6 +7,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : Nguyen Tri Nghi - CE180897
 */
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 body {
     font-family: 'Inter', sans-serif;
     background-color: #F4F4F4;
@@ -139,7 +145,7 @@ body {
 }
 
 .input-number {
-    width: 40px;
+    width: 50px;
     text-align: center;
     border: none;
     font-size: 16px;

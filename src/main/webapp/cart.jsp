@@ -7,6 +7,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@include file="./components/header.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,7 +21,7 @@
         <div class="container-fluid">
 
             <!-- Breadcrumb -->
-            <div class="row bread">
+            <div class="row bread" style="background-color: white;">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb m-0">
                         <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
@@ -31,7 +32,7 @@
 
             <!-- Cart Content -->
             <div class="row cart-content">
-                <div class="col" style="margin: 0 250px;">
+                <div class="col">
                     <h3 class="cart-title">GIỎ HÀNG (<span id="totalQuantity">${totalQuantity}</span>)</h3>
 
                     <c:choose>
@@ -116,7 +117,7 @@
 
                                     <!-- Go to Checkout or Continue Shopping -->
                                     <div class="d-flex flex-column align-items-center gap-3 end-cart">
-                                        <a class="btn btn-primary" href="#" role="button">THANH TOÁN</a>
+                                        <a class="btn btn-primary" href="checkout?&action=view" role="button">THANH TOÁN</a>
                                         <p class="m-0">
                                             hoặc
                                             <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#">
@@ -276,4 +277,5 @@
             });
         </script>
     </body>
+    <%@include file="./components/footer.jsp" %>
 </html>

@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.CartDAO;
 import dao.ProductDAO;
 import dao.ProductDAO;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import model.CartItem;
 import model.Product;
 
 /**
@@ -75,6 +77,17 @@ public class ProductDetailServlet extends HttpServlet {
 //            response.sendRedirect("sanpham"); // Chuyển hướng nếu sản phẩm không tồn tại
 //            return;
 //        }
+
+        int customerId = 1;
+        int totalQuantity = 0;
+        List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+        if (!cartItems.isEmpty()) {
+            for (CartItem cartItem : cartItems) {
+                totalQuantity += cartItem.getQuantity();
+            }
+        }
+        // Set tong so luong san pham trong gio hang
+        request.setAttribute("totalQuantity", totalQuantity);
 
         // Gửi dữ liệu sản phẩm sang trang JSP
         List<Product> productList = productDAO.getAllProductsByCategoryName(product.getCategoryName());
