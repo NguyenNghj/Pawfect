@@ -29,6 +29,23 @@ public class OrderDAO {
 
     protected static String Create_Order_Item = "INSERT INTO OrderItems (order_id, product_id, quantity) VALUES (?, ?, ?)";
 
+    protected static String Get_Order_By_CustomerId_Vs_Status = "SELECT\n"
+            + "    o.*,\n"
+            + "    s.fullName AS staff_name,\n"
+            + "    pm.name AS payment_method_name,\n"
+            + "    sm.name AS shipping_method_name,\n"
+            + "	sm.shipping_fee AS shipping_method_fee\n"
+            + "FROM\n"
+            + "    Orders o\n"
+            + "LEFT JOIN\n"
+            + "    Staffs s ON o.staff_id = s.staff_id\n"
+            + "LEFT JOIN\n"
+            + "    PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
+            + "LEFT JOIN\n"
+            + "    ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
+            + "WHERE\n"
+            + "    o.customer_id = ? AND o.status = ?";
+
     protected static String Get_Order_By_CustomerId = "SELECT\n"
             + "    o.*,\n"
             + "    s.fullName AS staff_name,\n"
@@ -79,6 +96,54 @@ public class OrderDAO {
             + "    Orders AS o ON oi.order_id = o.order_id\n"
             + "WHERE\n"
             + "    oi.order_id = ?";
+    
+    
+    public static List<Order> getOrderByCustomerIdVsStatus(int customerId, String status) {
+        List<Order> list = new ArrayList<>();
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Get_Order_By_CustomerId_Vs_Status);
+            ps.setInt(1, customerId);
+            ps.setString(2, status);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Order o = new Order(
+                        rs.getInt("order_id"),
+                        rs.getInt("customer_id"),
+                        rs.getInt("staff_id"),
+                        rs.getInt("paymentMethod_id"),
+                        rs.getInt("shippingMethod_id"),
+                        rs.getString("recipient_name"),
+                        rs.getString("recipient_phone"),
+                        rs.getString("shipping_address"),
+                        rs.getString("delivery_notes"),
+                        rs.getDouble("total_amount"),
+                        rs.getString("status"),
+                        rs.getTimestamp("order_date"),
+                        rs.getString("staff_name"),
+                        rs.getString("payment_method_name"),
+                        rs.getString("shipping_method_name"),
+                        rs.getDouble("shipping_method_fee")
+                );
+                list.add(o);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return list;
+    }
 
     public static List<OrderItem> getOrderItemsByOrderId(int orderId) {
         List<OrderItem> list = new ArrayList<>();

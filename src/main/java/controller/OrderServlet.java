@@ -26,15 +26,15 @@ public class OrderServlet extends HttpServlet {
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -48,14 +48,15 @@ public class OrderServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the
+    // + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -66,14 +67,11 @@ public class OrderServlet extends HttpServlet {
                 case "view":
                     viewOrderHistory(request, response);
                     break;
-                case "viewbystatus":
-                    viewOrderHistoryByStatus(request, response);
-                    break;
                 case "viewdetail":
                     viewOrderDetail(request, response);
                     break;
                 default:
-//                    listNhanVien(request, response);
+                    // listNhanVien(request, response);
                     break;
             }
         } catch (ServletException | IOException | SQLException e) {
@@ -99,36 +97,50 @@ public class OrderServlet extends HttpServlet {
         request.getRequestDispatcher("orderdetail.jsp").forward(request, response);
 
     }
-    
-    private void viewOrderHistoryByStatus(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException {
-        int customerId = 1;
-
-        List<Order> orders = OrderDAO.getOrderByCustomerId(customerId);
-
-        request.setAttribute("orders", orders);
-        request.getRequestDispatcher("orderhistory.jsp").forward(request, response);
-
-    }
 
     private void viewOrderHistory(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        int customerId = 1;
+        List<Order> orders = null;
+        try {
+            int customerId = 1;
+            String status = request.getParameter("status");
 
-        List<Order> orders = OrderDAO.getOrderByCustomerId(customerId);
+            switch (status) {
+                case "cxn":
+                    orders = OrderDAO.getOrderByCustomerIdVsStatus(customerId, "Chờ xác nhận");
+                    break;
+                case "clh":
+                    orders = OrderDAO.getOrderByCustomerIdVsStatus(customerId, "Chờ lấy hàng");
+                    break;
+                case "cgh":
+                    orders = OrderDAO.getOrderByCustomerIdVsStatus(customerId, "Chờ giao hàng");
+                    break;
+                case "ht":
+                    orders = OrderDAO.getOrderByCustomerIdVsStatus(customerId, "Hoàn thành");
+                    break;
+                case "dh":
+                    orders = OrderDAO.getOrderByCustomerIdVsStatus(customerId, "Đã huỷ");
+                    break;
+                default:
+                    orders = OrderDAO.getOrderByCustomerId(customerId);
+            }
 
-        request.setAttribute("orders", orders);
-        request.getRequestDispatcher("orderhistory.jsp").forward(request, response);
+            request.setAttribute("orderStatus", status);
+            request.setAttribute("orders", orders);
+            request.getRequestDispatcher("orderhistory.jsp").forward(request, response);
+        } catch (ServletException | IOException e) {
+            System.out.println(e);
+        }
 
     }
 
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request servlet request
+     * @param request  servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws IOException      if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

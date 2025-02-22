@@ -35,7 +35,7 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex align-items-center gap-3">
                                     <i class="bi bi-clipboard-check fs-4 text-primary"></i>
-                                    <a href="#" class="text-decoration-none text-dark">
+                                    <a href="order?&action=view&status=tc" class="text-decoration-none text-dark">
                                         Lịch sử đơn hàng
                                     </a>
                                 </div>
@@ -69,15 +69,15 @@
                             <div class="d-grid gap-2 account-info">
                                 <div class="mb-2 mt-2">
                                     <label for="formGroupExampleInput" class="form-label">Mật khẩu cũ <span style="color: red;">*</span></label>
-                                    <input type="text" class="form-control" id="formGroupExampleInput" required>
+                                    <input type="password" class="form-control" id="formGroupExampleInput" required>
                                   </div>
                                 <div class="mb-2">
                                     <label for="formGroupExampleInput2" class="form-label">Mật khẩu mới <span style="color: red;">*</span></label>
-                                    <input type="text" class="form-control" id="formGroupExampleInput2" required>
+                                    <input type="password" class="form-control" id="formGroupExampleInput2" required>
                                 </div>
                                 <div class="mb-2">
                                     <label for="formGroupExampleInput2" class="form-label">Xác nhận lại mật khẩu <span style="color: red;">*</span></label>
-                                    <input type="text" class="form-control" id="formGroupExampleInput2" required>
+                                    <input type="password" class="form-control" id="formGroupExampleInput2" required>
                                 </div>
                             </div>
                             <div class="mt-2">

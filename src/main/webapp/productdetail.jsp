@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@include file="./components/header.jsp" %>
 
 <html lang="vi">
     <head>
@@ -10,7 +11,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-        <link rel="stylesheet" href="css/productdetail.css">
+        <link rel="stylesheet" href="./css/productdetail.css">
         <title>${product.productName}</title>
     </head>
 
@@ -53,8 +54,11 @@
                                     </form>
 
                                     <div class="buttons">
-                                        <button class="add-to-cart-nut nutnhan"><i class='bx bx-cart-add add-to-cart-logo'></i> THÊM VÀO GIỎ HÀNG</button>
-                                        <button class="buy-now nutnhan">MUA NGAY</button>
+                                        <button class="add-to-cart add-to-cart-nut nutnhan" data-product-id="${product.productId}" data-product-name="${product.productName}">
+                                            <i class='bx bx-cart-add add-to-cart-logo'></i>
+                                            THÊM VÀO GIỎ HÀNG
+                                        </button>
+                                        <button class="buy-now nutnhan" data-product-id="${product.productId}">MUA NGAY</button>
                                     </div>
                                 </div>
                             </div>
@@ -122,6 +126,8 @@
                 </div>
             </div>
 
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
                     // Nếu là chuyển trang trong chi tiết sản phẩm, khôi phục vị trí cuộn
@@ -162,11 +168,102 @@
                         if (currentValue > 1) {
                             inputField.value = currentValue - 1;
                         }
+                        const value = $('.input-number').val();
+                        console.log(value); // In giá trị ra console
                     });
 
                     addButton.addEventListener("click", function () {
                         let currentValue = parseInt(inputField.value);
                         inputField.value = currentValue + 1;
+                        const value = $('.input-number').val();
+                        console.log(value); // In giá trị ra console
+                    });
+                });
+            </script>
+
+            <script>
+                $('.add-to-cart').click(function (event) {
+                    event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
+                    const value = $('.input-number').val();
+                    var productId = $(this).data('product-id');
+                    console.log("productId:", productId);
+                    var productName = $(this).data('product-name');
+                    console.log("productName:", productName);
+                    var action = "add";
+                    var customerId = 1; // ID của khách hàng (cần lấy từ session hoặc cookie)
+
+                    $.ajax({
+                        url: "cart",
+                        type: "POST",
+                        data: {
+                            action: action,
+                            productId: productId,
+                            customerId: customerId,
+                            quantity: value
+                        },
+                        dataType: "json",
+                        success: function (response) {
+                            if (response.status === "success") {
+
+                                $("#cart-count").text(response.totalQuantity); // Cập nhật phần tử trong header của bạn
+
+                                console.log("Đã thêm sản phẩm vào giỏ hàng!");
+                                Swal.fire({
+                                    position: "top-end",
+                                    icon: "success",
+                                    title: "Thêm giỏ hàng thành công!",
+                                    text: productName + " đã được thêm vào giỏ hàng.",
+                                    showConfirmButton: false,
+                                    backdrop: false,
+                                    width: '300px',
+                                    timer: 3000,
+                                    returnFocus: false
+                                });
+                            } else {
+                                console.error("Lỗi thêm vào giỏ hàng:", response.message);
+                                alert("Lỗi: " + response.message);
+                            }
+                        },
+                        error: function (error) {
+                            console.error("Lỗi AJAX:", error);
+                            alert("Lỗi kết nối đến server.");
+                        }
+                    });
+                });
+                
+                
+                $('.buy-now').click(function (event) {
+                    const value = $('.input-number').val();
+                    var productId = $(this).data('product-id');
+                    console.log("productId:", productId);
+                    var action = "add";
+                    var customerId = 1; // ID của khách hàng (cần lấy từ session hoặc cookie)
+
+                    $.ajax({
+                        url: "cart",
+                        type: "POST",
+                        data: {
+                            action: action,
+                            productId: productId,
+                            customerId: customerId,
+                            quantity: value
+                        },
+                        dataType: "json",
+                        success: function (response) {
+                            if (response.status === "success") {
+
+                                console.log("Đã chuyển tới giỏ hàng!");
+                                window.location.href = "cart?&action=view";
+
+                            } else {
+                                console.error("Lỗi mua ngay!!", response.message);
+                                alert("Lỗi: " + response.message);
+                            }
+                        },
+                        error: function (error) {
+                            console.error("Lỗi AJAX:", error);
+                            alert("Lỗi kết nối đến server.");
+                        }
                     });
                 });
             </script>

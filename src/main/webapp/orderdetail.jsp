@@ -72,7 +72,8 @@
                                 <div class="text-secondary mb-4">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span>Đơn hàng: #${o.orderId + 2500000}</span>
-                                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#cancelModal" 
+                                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#cancelModal"
+                                                data-orderid="#${o.orderId + 2500000}"
                                                 style="padding: 8px 18px;"
                                                 >
                                             <span style="font-size: 16px;">Huỷ đơn</span>
@@ -89,11 +90,11 @@
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                <p style="text-align: left;">Bạn muốn chắc chắn huỷ đơn hàng [Mã đơn hàng]</p>   
+                                                <p style="text-align: left;">Bạn muốn chắc chắn huỷ đơn hàng <span id="orderId"></span></p>   
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                                <a href="#" class="btn btn-danger">Huỷ</a>
+                                                <a href="#" class="btn btn-danger">Xác nhận</a>
                                             </div>
                                         </div>
                                     </div>
@@ -173,7 +174,7 @@
                                                     <div class="d-flex">
                                                         <div class="position-relative">
                                                             <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/order-conf-OihWsyJ9gZFXHQz5DOkVEQLUjY8Evl.png" alt="Product" class="rounded me-3" width="80" height="80">
-                                                            <span class="position-absolute top-0 translate-middle badge rounded-pill bg-danger" style="left: 75%;">
+                                                            <span class="position-absolute top-0 translate-middle badge rounded-pill bg-danger" style="left: 77%;">
                                                                 ${oi.quantity}
                                                                 <span class="visually-hidden">unread messages</span>
                                                             </span>
@@ -253,6 +254,19 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script>
+            const cancelModal = document.getElementById('cancelModal')
+            if (cancelModal) {
+                cancelModal.addEventListener('show.bs.modal', event => {
+                    // Button that triggered the modal
+                    const button = event.relatedTarget
+                    // Extract info from data-bs-* attributes
+                    const orderId = button.getAttribute('data-orderid')
+                    // Update the modal's content.
+                    const orderIdSpan = cancelModal.querySelector('#orderId')
+
+                    orderIdSpan.textContent = orderId
+                })
+            }
         </script>
     </body>
 </html>

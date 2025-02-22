@@ -226,11 +226,7 @@
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <script>
-            // Gọi ban đầu để thiết lập số lượng khi trang được tải
-            $(document).ready(function () {
-                updateCartCount();
-            });
+        <script>          
 
             $('.add-to-cart').click(function (event) {
                 event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
@@ -240,7 +236,6 @@
                 var productName = $(this).data('product-name');
                 console.log("productName:", productName);
                 var action = "add";
-                console.log("productId:", action);
                 var customerId = 1; // ID của khách hàng (cần lấy từ session hoặc cookie)
 
                 $.ajax({
