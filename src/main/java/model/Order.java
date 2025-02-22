@@ -27,12 +27,13 @@ public class Order {
     private String staffName;
     private String paymentMethodName;
     private String shippingMethodName;
-    private double shipping_method_fee;
+    private double shippingMethodFee;
+    private String customerName;
 
     public Order() {
     }
 
-    public Order(int orderId, int customerId, Integer staffId, int paymentMethodId, int shippingMethodId, String name, String phone, String address, String note, double totalAmount, String status, Timestamp orderDate, String staffName, String paymentMethodName, String shippingMethodName, double shipping_method_fee) {
+    public Order(int orderId, int customerId, Integer staffId, int paymentMethodId, int shippingMethodId, String name, String phone, String address, String note, double totalAmount, String status, Timestamp orderDate, String staffName, String paymentMethodName, String shippingMethodName, double shippingMethodFee, String customerName) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.staffId = staffId;
@@ -48,7 +49,8 @@ public class Order {
         this.staffName = staffName;
         this.paymentMethodName = paymentMethodName;
         this.shippingMethodName = shippingMethodName;
-        this.shipping_method_fee = shipping_method_fee;
+        this.shippingMethodFee = shippingMethodFee;
+        this.customerName = customerName;
     }
 
     public int getOrderId() {
@@ -172,18 +174,26 @@ public class Order {
         this.shippingMethodName = shippingMethodName;
     }
 
-    public double getShipping_method_fee() {
-        return shipping_method_fee;
+    public double getShippingMethodFee() {
+        return shippingMethodFee;
     }
 
-    public void setShipping_method_fee(double shipping_method_fee) {
-        this.shipping_method_fee = shipping_method_fee;
+    public void setShippingMethodFee(double shippingMethodFee) {
+        this.shippingMethodFee = shippingMethodFee;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     @Override
     public String toString() {
-        return "Order{" + "orderId=" + orderId + ", customerId=" + customerId + ", staffId=" + staffId + ", paymentMethodId=" + paymentMethodId + ", shippingMethodId=" + shippingMethodId + ", name=" + name + ", phone=" + phone + ", address=" + address + ", note=" + note + ", totalAmount=" + totalAmount + ", status=" + status + ", orderDate=" + orderDate + ", staffName=" + staffName + ", paymentMethodName=" + paymentMethodName + ", shippingMethodName=" + shippingMethodName + ", shipping_method_fee=" + shipping_method_fee + '}';
+        return "Order{" + "orderId=" + orderId + ", customerId=" + customerId + ", staffId=" + staffId + ", paymentMethodId=" + paymentMethodId + ", shippingMethodId=" + shippingMethodId + ", name=" + name + ", phone=" + phone + ", address=" + address + ", note=" + note + ", totalAmount=" + totalAmount + ", status=" + status + ", orderDate=" + orderDate + ", staffName=" + staffName + ", paymentMethodName=" + paymentMethodName + ", shippingMethodName=" + shippingMethodName + ", shippingMethodFee=" + shippingMethodFee + ", customerName=" + customerName + '}';
     }
-
-    
+  
+      
 }
