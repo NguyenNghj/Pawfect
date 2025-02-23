@@ -41,7 +41,7 @@ body {
 }
 
 h2 {
-  font-size: 48px;
+    font-size: 48px;
     font-weight: bold;
     color: #8C6E63;
     text-align: center;
@@ -101,7 +101,12 @@ h2 {
 
 .product-image img {
     width: 318px;
+    min-width: 318px;
+    max-width: 318px;
+
     height: 287px;
+    min-height: 287px;
+    max-height: 287px;
     border-radius: 20px 20px 0 0;
     object-fit: contain;
 }
