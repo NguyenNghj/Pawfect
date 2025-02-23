@@ -40,7 +40,7 @@
 </head>
 <body>
     <div class="wrapper">
-        <form action="LoginController" method="POST" onsubmit="return validateForm()">
+        <form action="LoginServlet" method="POST" onsubmit="return validateForm()">
             <h1>Login</h1>
             
             <% if (request.getParameter("error") != null) { %>
