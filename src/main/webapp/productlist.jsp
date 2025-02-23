@@ -152,7 +152,7 @@
                             <c:if test="${loop.index >= start && loop.index < end}">
                                 <div class="col-md-4 col-6 mb-4 product-card">
                                     <div class="product-image">
-                                        <img src="https://katybpetcare.com/watermark/product/292x292x1/upload/product/1035d7d836e1c7c15f261bc83d59e15a-4771.jpeg" alt="${product.productName}">
+                                        <img src="${product.productImage}" alt="${product.productName}">
                                     </div>
                                     <div class="product-info">
                                         <a class="product-name" href="product?id=${product.productId}">${product.productName}</a>
