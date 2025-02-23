@@ -39,6 +39,10 @@
         <servlet-name>OrderManagementServlet</servlet-name>
         <servlet-class>controller.OrderManagementServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GoogleLoginServlet</servlet-name>
+        <servlet-class>controller.GoogleLoginServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/products</url-pattern>
@@ -74,6 +78,10 @@
     <servlet-mapping>
         <servlet-name>OrderManagementServlet</servlet-name>
         <url-pattern>/ordermanagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GoogleLoginServlet</servlet-name>
+        <url-pattern>/GoogleLoginServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
