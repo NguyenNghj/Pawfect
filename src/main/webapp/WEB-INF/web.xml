@@ -42,6 +42,12 @@
     <servlet>
         <servlet-name>EmailServlet</servlet-name>
         <servlet-class>controller.EmailServlet</servlet-class>
+        <servlet-name>GoogleLoginServlet</servlet-name>
+        <servlet-class>controller.GoogleLoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>controller.LoginServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
@@ -82,6 +88,12 @@
     <servlet-mapping>
         <servlet-name>EmailServlet</servlet-name>
         <url-pattern>/email</url-pattern>
+        <servlet-name>GoogleLoginServlet</servlet-name>
+        <url-pattern>/GoogleLoginServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
