@@ -59,7 +59,7 @@ public class Email {
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
 
             // Tieu de email
-            msg.setSubject(subject, "text/HTML; charset=UTF-8");
+            msg.setSubject(subject);
 
             // Quy dinh ngay gui
             msg.setSentDate(new Date());
