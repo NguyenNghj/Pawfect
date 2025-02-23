@@ -6,6 +6,7 @@
 package controller;
 
 import dao.GoogleDAO;
+import dao.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -36,24 +37,24 @@ public class GoogleLoginServlet extends HttpServlet {
  String accessToken = gg.getToken(code);
         System.out.print(accessToken);
         GoogleAccount acc = gg.getUserInfo(accessToken);
-  //      UserDAO userDAO = new UserDAO();
-//       // if(userDAO.checkGoogleExists(acc.getId()))
-//        {
-//         String customer=  userDAO.getCustomerId(acc.getId());
-//             Cookie customerId = new Cookie("customerId", customer);
-//            customerId.setMaxAge(60 * 60 * 24 * 1);
-//            response.addCookie(customerId);
-//        response.sendRedirect("home.jsp");
-//        }
-//        else{
-//            userDAO.insertGoogleAcc(acc);
-//          String customer=  userDAO.getCustomerId(acc.getId());
-//             Cookie customerId = new Cookie("customerId", customer);
-//            customerId.setMaxAge(60 * 60 * 24 * 1);
-//            response.addCookie(customerId);
+     UserDAO userDAO = new UserDAO();
+      if(userDAO.checkGoogleExists(acc.getId()))
+       {
+        String customer=  userDAO.getCustomerId(acc.getId());
+             Cookie customerId = new Cookie("customerId", customer);
+           customerId.setMaxAge(60 * 60 * 24 * 1);
+            response.addCookie(customerId);
+        response.sendRedirect("home.jsp");
+       }
+        else{
+            userDAO.insertGoogleAcc(acc);
+          String customer=  userDAO.getCustomerId(acc.getId());
+             Cookie customerId = new Cookie("customerId", customer);
+            customerId.setMaxAge(60 * 60 * 24 * 1);
+            response.addCookie(customerId);
         response.sendRedirect("products");
         
-
+}
     } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
