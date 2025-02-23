@@ -51,6 +51,10 @@
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>controller.LoginServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewFinancialStatisticsServlet</servlet-name>
+        <servlet-class>controller.ViewFinancialStatisticsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/products</url-pattern>
@@ -90,7 +94,7 @@
     <servlet-mapping>
         <servlet-name>EmailServlet</servlet-name>
         <url-pattern>/email</url-pattern>
-    </servlet-mapping>    
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GoogleLoginServlet</servlet-name>
         <url-pattern>/GoogleLoginServlet</url-pattern>
@@ -98,6 +102,10 @@
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewFinancialStatisticsServlet</servlet-name>
+        <url-pattern>/viewfinancialstatistics</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

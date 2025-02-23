@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  */
 public class DBContext {
 
-    private Connection conn;
+    public Connection conn;
 
     public DBContext() {
         try {
