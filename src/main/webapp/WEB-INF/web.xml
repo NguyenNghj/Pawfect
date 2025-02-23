@@ -39,6 +39,10 @@
         <servlet-name>OrderManagementServlet</servlet-name>
         <servlet-class>controller.OrderManagementServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EmailServlet</servlet-name>
+        <servlet-class>controller.EmailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/products</url-pattern>
@@ -74,6 +78,10 @@
     <servlet-mapping>
         <servlet-name>OrderManagementServlet</servlet-name>
         <url-pattern>/ordermanagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EmailServlet</servlet-name>
+        <url-pattern>/email</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
