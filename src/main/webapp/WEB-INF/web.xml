@@ -40,6 +40,8 @@
         <servlet-class>controller.OrderManagementServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>EmailServlet</servlet-name>
+        <servlet-class>controller.EmailServlet</servlet-class>
         <servlet-name>GoogleLoginServlet</servlet-name>
         <servlet-class>controller.GoogleLoginServlet</servlet-class>
     </servlet>
@@ -84,6 +86,8 @@
         <url-pattern>/ordermanagement</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>EmailServlet</servlet-name>
+        <url-pattern>/email</url-pattern>
         <servlet-name>GoogleLoginServlet</servlet-name>
         <url-pattern>/GoogleLoginServlet</url-pattern>
     </servlet-mapping>
