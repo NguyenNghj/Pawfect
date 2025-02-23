@@ -51,7 +51,7 @@ public class GoogleLoginServlet extends HttpServlet {
 //             Cookie customerId = new Cookie("customerId", customer);
 //            customerId.setMaxAge(60 * 60 * 24 * 1);
 //            response.addCookie(customerId);
-        response.sendRedirect("home.jsp");
+        response.sendRedirect("products");
         
 
     } 
