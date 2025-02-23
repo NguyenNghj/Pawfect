@@ -49,7 +49,12 @@ body {
 
 .product-image-info img {
     width: 619px;
+    min-width: 619px;
+    max-width: 619px;
+
     height: 606px;
+    min-height: 606px;
+    max-height: 606px;
     border-radius: 20px;
     object-fit: contain;
 }
@@ -227,7 +232,12 @@ body {
 
 .product-card {
     width: 318px;
-    height: 405px;
+    min-width: 318px;
+    max-width: 318px;
+
+    height: 287px;
+    min-height: 287px;
+    max-height: 287px;
     background-color: white;
     border-radius: 20px;
     position: relative;
