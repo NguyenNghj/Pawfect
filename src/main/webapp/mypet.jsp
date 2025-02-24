@@ -33,7 +33,7 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex align-items-center gap-3">
                                     <i class="bi bi-clipboard-check fs-4 text-primary"></i>
-                                    <a href="#" class="text-decoration-none text-dark">Lịch sử đơn hàng</a>
+                                    <a href="order?&action=view&status=tc" class="text-decoration-none text-dark">Lịch sử đơn hàng</a>
                                 </div>
                             </div>
                         </div>

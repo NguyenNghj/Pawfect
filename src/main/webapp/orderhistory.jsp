@@ -5,6 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -63,62 +65,74 @@
                             <!-- Order Tabs -->
                             <ul class="nav nav-tabs mb-4">
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="#">Tất cả</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Chờ xác nhận</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Chờ lấy hàng</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Chờ giao hàng</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Hoàn thành</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Đã huỷ</a>
-                                </li>
-                            </ul>
+                                    <a class="nav-link <c:if test="${orderStatus == 'tc'}">active</c:if>" href="order?&action=view&status=tc"">Tất cả</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link <c:if test="${orderStatus == 'cxn'}">active</c:if>" href="order?&action=view&status=cxn">Chờ xác nhận</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link <c:if test="${orderStatus == 'clh'}">active</c:if>" href="order?&action=view&status=clh">Chờ lấy hàng</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link <c:if test="${orderStatus == 'cgh'}">active</c:if>" href="order?&action=view&status=cgh">Chờ giao hàng</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link <c:if test="${orderStatus == 'ht'}">active</c:if>" href="order?&action=view&status=ht">Hoàn thành</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link <c:if test="${orderStatus == 'dh'}">active</c:if>" href="order?&action=view&status=dh">Đã huỷ</a>
+                                    </li>
+                                </ul>
 
-                            <!-- TH1: Khách hàng 'không' có đơn hàng -->
-                            <!-- <div>
-                                <h5 style="color: #ff7d0a; text-align: center;">
-                                    Bạn không có đơn hàng nào!
-                                </h5>
-                            </div> -->
-
-                            <!-- TH2: Khách hàng 'có' đơn hàng  -->
-                            <!-- Order Item -->                           
-                            <div class="card mb-3 hover-card">
-                                <a href="#chitiet" style="text-decoration: none; color: inherit;">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col">
-                                                <h6 class="mb-3">
-                                                    [Mã đơn hàng] - <span class="text-warning">Chờ xác nhận</span>
-                                                </h6>
-                                                <p class="text-secondary mb-2">
-                                                    Địa chỉ: 600 Nguyễn Văn Cừ, Ninh Kiều, Cần Thơ
-                                                </p>
-                                                <p class="text-secondary">Ngày: 15/02/2025</p>
-                                            </div>
-                                            <div class="col-auto text-end">
-                                                <h5 class="mb-3">789.000VND</h5>
-    
-                                                <!-- Đơn hàng có trạng thái "Chờ xác nhận" thì mới được huỷ đơn -->
-                                                <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#cancelModal" 
-                                                        style="padding: 4px 12px;"
-                                                        >
-                                                    Huỷ đơn
-                                                </button>                                          
-                                            </div>
-                                        </div>
+                            <c:choose>
+                                <c:when test="${empty orders}">
+                                    <!-- TH1: Khách hàng 'không' có đơn hàng -->
+                                    <div>
+                                        <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px;">
+                                            Bạn không có đơn hàng nào!
+                                        </h5>
                                     </div>
-                                </a>                               
-                            </div>    
+                                </c:when>
+                                <c:otherwise>
+                                    <!-- TH2: Khách hàng 'có' đơn hàng  -->
+                                    <c:forEach items="${orders}" var="o">
+                                        <!-- Order Item -->                           
+                                        <div class="card mb-3 hover-card">
+                                            <a href="order?&action=viewdetail&orderId=${o.orderId}" style="text-decoration: none; color: inherit;">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <h6 class="mb-3">
+                                                                #${o.orderId + 2500000} - <span class="text-warning">${o.status}</span>
+                                                            </h6>
+                                                            <p class="text-secondary mb-2">
+                                                                Địa chỉ: ${o.address}
+                                                            </p>
+                                                            <p class="text-secondary">Ngày đặt: ${o.orderDate}</p>
+                                                        </div>
+                                                        <div class="col-auto text-end">
+                                                            <h5 class="mb-3">
+                                                                <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ                                               
+                                                            </h5>
 
+                                                            <!-- Đơn hàng có trạng thái "Chờ xác nhận" thì mới được huỷ đơn -->
+                                                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#cancelModal"
+                                                                    data-orderid="#${o.orderId + 2500000}"
+                                                                    style="padding: 6px 15px;"
+                                                                    onclick="huyDon(event)"
+                                                                    >
+                                                                Huỷ đơn
+                                                            </button>                                          
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>                               
+                                        </div> 
+                                    </c:forEach>
+                                </c:otherwise>
+                            </c:choose>
+
+                            <!-- Modal huỷ đơn hàng -->
                             <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -127,11 +141,11 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <p style="text-align: left;">Bạn muốn chắc chắn huỷ đơn hàng [Mã đơn hàng]</p>   
+                                            <p style="text-align: left;">Bạn muốn chắc chắn huỷ đơn hàng <span id="orderId"></span></p>   
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                            <a href="#" class="btn btn-danger">Huỷ</a>
+                                            <a href="#" class="btn btn-danger">Xác nhận</a>
                                         </div>
                                     </div>
                                 </div>
@@ -166,5 +180,24 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
+        <script>
+                                                                        function huyDon(event) {
+                                                                            event.preventDefault();
+                                                                        }
+
+                                                                        const cancelModal = document.getElementById('cancelModal')
+                                                                        if (cancelModal) {
+                                                                            cancelModal.addEventListener('show.bs.modal', event => {
+                                                                                // Button that triggered the modal
+                                                                                const button = event.relatedTarget
+                                                                                // Extract info from data-bs-* attributes
+                                                                                const orderId = button.getAttribute('data-orderid')
+                                                                                // Update the modal's content.
+                                                                                const orderIdSpan = cancelModal.querySelector('#orderId')
+
+                                                                                orderIdSpan.textContent = orderId
+                                                                            })
+                                                                        }
+        </script>
     </body>
 </html>

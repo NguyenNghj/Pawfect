@@ -14,12 +14,12 @@ import java.util.logging.Logger;
  */
 public class DBContext {
 
-    private Connection conn;
+    public Connection conn;
 
     public DBContext() {
         try {
             String user = "sa";
-            String url = "jdbc:sqlserver://127.0.0.1:1433;databaseName=pawfect;encrypt=false";
+            String url = "jdbc:sqlserver://127.0.0.1:1433;databaseName=Pawfect;encrypt=false";
             String pass = "123456789"; // Đổi lại theo pass sa
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             conn = DriverManager.getConnection(url, user, pass);

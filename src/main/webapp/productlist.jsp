@@ -7,7 +7,9 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page import="java.net.URLEncoder" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@include file="./components/header.jsp" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,91 +21,261 @@
     </head>
     <body>
         <ol class="breadcrumb">
-            <li>
-                <a class="trang-chu" href="index.html">Trang chủ</a>
-            </li>
+            <li><a class="trang-chu" href="index.html">Trang chủ</a></li>
             <li>Sản phẩm</li>
         </ol>
 
         <div class="all">
-            <h2> 
-                Sản phẩm
-            </h2>
+            <h2>Sản phẩm</h2>
 
+            <!-- Bộ lọc -->
             <div class="filter">
                 <div class="gia-box-filter filterbox">
-                    <label class="nut-loc" onclick="applyFilter('mucgia', 1)">Dưới 100.000đ</label>
-                    <label class="nut-loc" onclick="applyFilter('mucgia', 2)">100.000đ - 300.000đ</label>
-                    <label class="nut-loc" onclick="applyFilter('mucgia', 3)">Trên 300.000đ</label>
+                    <label class="nut-loc" onclick="applyFilter('price', 1)">Dưới 100.000đ</label>
+                    <label class="nut-loc" onclick="applyFilter('price', 2)">100.000đ - 300.000đ</label>
+                    <label class="nut-loc" onclick="applyFilter('price', 3)">Trên 300.000đ</label>
                 </div>
 
                 <div class="kieu-box-filter filterbox">
-                    <label class="nut-loc" for="tang-dan" onclick="applyFilter('sapxep', 1)">Tăng dần</label>
-                    <label class="nut-loc" for="giam-dan" onclick="applyFilter('sapxep', 2)">Giảm dần</label>
-                    <label class="nut-loc" for="chu-cai" onclick="applyFilter('sapxep', 3)">Chữ cái</label>
+                    <label class="nut-loc" onclick="applyFilter('sort', 1)">Tăng dần</label>
+                    <label class="nut-loc" onclick="applyFilter('sort', 2)">Giảm dần</label>
+                    <label class="nut-loc" onclick="applyFilter('sort', 3)">Chữ cái</label>
                 </div>
-
             </div>
 
             <script>
                 function applyFilter(filterName, filterValue) {
                     let urlParams = new URLSearchParams(window.location.search);
 
-                    // Update the filter parameter in the URL
-                    urlParams.set(filterName, filterValue);
-
-                    // Get the current category filter if any
-                    let currentCategory = urlParams.get('danhmuc');
-
-                    // Append the category filter if it exists
-                    if (currentCategory) {
-                        urlParams.set('danhmuc', currentCategory);
+                    // Nếu đã chọn filter đó thì bỏ filter đi
+                    if (urlParams.get(filterName) === filterValue) {
+                        urlParams.delete(filterName);
+                    } else {
+                        urlParams.set(filterName, filterValue);
                     }
 
-                    // Redirect to the new URL with the updated parameters
+                    urlParams.set('page', 1); // Khi lọc, reset về trang 1
                     window.location.search = urlParams.toString();
                 }
+
+                function applyFilter(filterName, filterValue) {
+                    let urlParams = new URLSearchParams(window.location.search);
+
+                    // Nếu đã chọn filter đó thì bỏ filter đi
+                    if (urlParams.get(filterName) === filterValue.toString()) {
+                        urlParams.delete(filterName);
+                    } else {
+                        urlParams.set(filterName, filterValue);
+                    }
+
+                    urlParams.set('page', 1); // Khi lọc, reset về trang 1
+                    window.location.search = urlParams.toString();
+                }
+
             </script>
+
+
 
             <div class="row">
                 <div class="col-12 col-md-3 mb-4 category-container">
                     <div class="category-header">DANH MỤC SẢN PHẨM</div>
                     <ul class="category-list">
                         <c:forEach var="category" items="${categories}">
-                            <li class="category-item" onclick="window.location.href = '?danhmuc=${category.categoryName}'">
+                            <li class="category-item" onclick="applyCategory('${category.categoryName}')">
                                 ${category.categoryName}
                             </li>
                         </c:forEach>
                     </ul>
                 </div>
 
+                <script>
+                    function applyCategory(category) {
+                        let urlParams = new URLSearchParams(window.location.search);
+
+                        // Nếu đã chọn category đó thì bỏ category đi
+                        if (urlParams.get('category') === category) {
+                            urlParams.delete('category');
+                        } else {
+                            urlParams.set('category', category);
+                        }
+
+                        urlParams.set('page', 1); // Khi đổi category, reset về trang 1
+                        window.location.search = urlParams.toString();
+                    }
+                </script>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        let urlParams = new URLSearchParams(window.location.search);
+
+                        let selectedPrice = urlParams.get("price");
+                        let selectedSort = urlParams.get("sort");
+                        let selectedCategory = urlParams.get("category");
+
+                        // Thêm class 'active' vào nút lọc giá
+                        document.querySelectorAll(".gia-box-filter .nut-loc").forEach(label => {
+                            let filterValue = label.getAttribute("onclick").match(/\d+/)[0]; // Lấy số từ onclick
+                            if (selectedPrice === filterValue) {
+                                label.classList.add("active");
+                            }
+                        });
+
+                        // Thêm class 'active' vào nút lọc kiểu sắp xếp
+                        document.querySelectorAll(".kieu-box-filter .nut-loc").forEach(label => {
+                            let filterValue = label.getAttribute("onclick").match(/\d+/)[0]; // Lấy số từ onclick
+                            if (selectedSort === filterValue) {
+                                label.classList.add("active");
+                            }
+                        });
+
+                        // Thêm class 'active' vào danh mục sản phẩm
+                        document.querySelectorAll(".category-item").forEach(item => {
+                            let categoryValue = item.textContent.trim();
+                            if (selectedCategory && categoryValue === selectedCategory) {
+                                item.classList.add("active");
+                            }
+                        });
+                    });</script>
+
+
                 <div class="col-12 col-md-9">
                     <div class="row row-20">
-                        <c:forEach var="product" items="${products}">
-                            <div class="col-md-4 col-6 mb-4 product-card">
-                                <div class="product-image">
-                                    <img src="https://katybpetcare.com/watermark/product/292x292x1/upload/product/1035d7d836e1c7c15f261bc83d59e15a-4771.jpeg" alt="${product.productName}">
-                                </div>
-                                <div class="product-info">
-                                    <h3 class="product-name">${product.productName}</h3>
-                                    <p class="product-price">
-                                        <fmt:formatNumber value="${product.productPrice}" pattern="#,##0" />đ
-                                    </p>
-                                    <button class="add-to-cart">
-                                        <i class="cart-icon"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </c:forEach>
-                    </div>
+                        <c:set var="itemsPerPage" value="9" />
+                        <c:set var="totalProducts" value="${fn:length(products)}" />
+                        <c:set var="totalPages" value="${(totalProducts + itemsPerPage - 1) / itemsPerPage}" />
 
+                        <c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
+                        <c:set var="start" value="${(currentPage - 1) * itemsPerPage}" />
+                        <c:set var="end" value="${start + itemsPerPage}" />
+
+                        <c:forEach var="product" items="${products}" varStatus="loop">
+                            <c:if test="${loop.index >= start && loop.index < end}">
+                                <div class="col-md-4 col-6 mb-4 product-card">
+                                    <div class="product-image">
+                                        <img src="${product.productImage}" alt="${product.productName}">
+                                    </div>
+                                    <div class="product-info">
+                                        <a class="product-name" href="product?id=${product.productId}">${product.productName}</a>
+                                        <p class="product-price">
+                                            <fmt:formatNumber value="${product.productPrice}" pattern="#,##0" />đ
+                                        </p>
+                                        <a href="#">
+                                            <button class="add-to-cart" data-product-id="${product.productId}" data-product-name="${product.productName}">
+                                                <i class="cart-icon"></i>
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </c:if>
+                        </c:forEach>
+
+                        <!-- PHÂN TRANG -->
+                        <c:if test="${totalPages > 1}">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    <c:set var="queryParams" value="category=${param.category}&sort=${param.sort}" />
+
+                                    <!-- Nút Previous -->
+                                    <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                        <a class="page-link" href="?${queryParams}&page=${currentPage - 1}">Previous</a>
+                                    </li>
+
+                                    <!-- Hiển thị số trang -->
+                                    <c:forEach var="i" begin="1" end="${totalPages}">
+                                        <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                            <a class="page-link" href="?${queryParams}&page=${i}">${i}</a>
+                                        </li>
+                                    </c:forEach>
+
+                                    <!-- Nút Next -->
+                                    <li class="page-item ${currentPage >= (totalPages-1) ? 'disabled' : ''}">
+                                        <a class="page-link" href="?${queryParams}&page=${currentPage + 1}">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </c:if>
+                    </div>
                 </div>
             </div>
-
-      
-
         </div>
 
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Khôi phục vị trí cuộn khi trang tải lại
+                if (localStorage.getItem("scrollPosition")) {
+                    window.scrollTo(0, localStorage.getItem("scrollPosition"));
+                    localStorage.removeItem("scrollPosition"); // Xóa dữ liệu sau khi dùng để tránh lỗi cuộn không mong muốn
+                }
 
+                // Hàm lưu vị trí cuộn trước khi làm mới trang
+                function saveScrollPosition() {
+                    localStorage.setItem("scrollPosition", window.scrollY);
+                }
+
+                // Bắt sự kiện khi người dùng nhấn vào phân trang
+                document.querySelectorAll(".pagination .page-link").forEach(link => {
+                    link.addEventListener("click", saveScrollPosition);
+                });
+
+                // Bắt sự kiện khi người dùng nhấn vào bộ lọc hoặc sắp xếp
+                document.querySelectorAll(".nut-loc, .category-item").forEach(button => {
+                    button.addEventListener("click", saveScrollPosition);
+                });
+            });
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script>          
+
+            $('.add-to-cart').click(function (event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
+
+                var productId = $(this).data('product-id');
+                console.log("productId:", productId);
+                var productName = $(this).data('product-name');
+                console.log("productName:", productName);
+                var action = "add";
+                var customerId = 1; // ID của khách hàng (cần lấy từ session hoặc cookie)
+
+                $.ajax({
+                    url: "cart",
+                    type: "POST",
+                    data: {
+                        action: action,
+                        productId: productId,
+                        customerId: customerId,
+                        quantity: "1"
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status === "success") {
+
+                            $("#cart-count").text(response.totalQuantity); // Cập nhật phần tử trong header của bạn
+
+                            console.log("Đã thêm sản phẩm vào giỏ hàng!");
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: "Thêm giỏ hàng thành công!",
+                                text: productName + " đã được thêm vào giỏ hàng.",
+                                showConfirmButton: false,
+                                backdrop: false,
+                                width: '300px',
+                                timer: 3000,
+                                returnFocus: false
+                            });
+                        } else {
+                            console.error("Lỗi thêm vào giỏ hàng:", response.message);
+                            alert("Lỗi: " + response.message);
+                        }
+                    },
+                    error: function (error) {
+                        console.error("Lỗi AJAX:", error);
+                        alert("Lỗi kết nối đến server.");
+                    }
+                });
+            });
+        </script>
     </body>
 </html>

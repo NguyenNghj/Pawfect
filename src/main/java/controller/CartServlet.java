@@ -73,6 +73,12 @@ public class CartServlet extends HttpServlet {
                 case "update":
                     updateProductFromCart(request, response);
                     break;
+                case "add":
+                    addToCart(request, response);
+                    break;
+//                case "count":
+//                    countQuantityFromCart(request, response);
+//                    break;
                 default:
 //                    listNhanVien(request, response);
                     break;
@@ -82,16 +88,74 @@ public class CartServlet extends HttpServlet {
         }
     }
 
+//    private void countQuantityFromCart(HttpServletRequest request, HttpServletResponse response)
+//            throws SQLException, IOException, ServletException {
+//        int customerId = Integer.parseInt(request.getParameter("customerId"));
+//        
+//        JSONObject json = new JSONObject();
+//        response.setContentType("application/json");
+//        
+//        int totalQuantity = 0;
+//        List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+//        for (CartItem cartItem : cartItems) {
+//            totalQuantity += cartItem.getQuantity();
+//        }
+//
+//        json.put("totalQuantity", totalQuantity);
+//        
+//        response.getWriter().write(json.toString());
+//
+//    }
+    private void addToCart(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        int customerId = Integer.parseInt(request.getParameter("customerId"));
+        int productId = Integer.parseInt(request.getParameter("productId"));
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+
+        JSONObject json = new JSONObject();
+        response.setContentType("application/json");
+
+        boolean checkProdut = CartDAO.checkProductInCart(productId, customerId);
+        if (checkProdut) {
+            CartDAO.increaseProductFromCart(quantity, productId, customerId);
+            json.put("status", "success");
+            json.put("message", "Add to cart successfully!");
+        } else {
+            CartDAO.addToCart(customerId, productId, quantity);
+            json.put("status", "success");
+            json.put("message", "Add to cart successfully!");
+        }
+
+        int totalQuantity = 0;
+        List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+        for (CartItem cartItem : cartItems) {
+            totalQuantity += cartItem.getQuantity();
+        }
+
+        json.put("totalQuantity", totalQuantity);
+
+        response.getWriter().write(json.toString());
+
+    }
+
     private void getCart(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         int customerId = 1;
 
         List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
 
+        int totalQuantity = 0;
+        if (!cartItems.isEmpty()) {
+            for (CartItem cartItem : cartItems) {
+                totalQuantity += cartItem.getQuantity();
+            }
+        }
+
         double totalCartPrice = CartDAO.getTotalCartByCustomerId(customerId);
 
         request.setAttribute("cartItems", cartItems);
         request.setAttribute("totalCartPrice", totalCartPrice);
+        request.setAttribute("totalQuantity", totalQuantity);
         request.getRequestDispatcher("cart.jsp").forward(request, response);
     }
 
@@ -104,17 +168,27 @@ public class CartServlet extends HttpServlet {
             int customerId = Integer.parseInt(request.getParameter("customerId"));
             remove = CartDAO.removeProductFromCart(productId, customerId);
             if (remove) {
-                
+
                 JSONObject json = new JSONObject();
                 response.setContentType("application/json");
-                
+
                 json.put("status", "success");
                 json.put("message", "Remove from cart successfully!");
                 json.put("removed", true);
-                
+
+                List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+
+                int totalQuantity = 0;
+                if (!cartItems.isEmpty()) {
+                    for (CartItem cartItem : cartItems) {
+                        totalQuantity += cartItem.getQuantity();
+                    }
+                }
+                json.put("totalQuantity", totalQuantity);
+
                 response.getWriter().write(json.toString());
-                
-                System.out.println("Xoa san pham ra gio hang thanh cong!");             
+
+                System.out.println("Xoa san pham ra gio hang thanh cong!");
             } else {
                 System.out.println("Xoa san pham ra gio hang that bai!!");
             }
@@ -125,11 +199,11 @@ public class CartServlet extends HttpServlet {
 
     private void updateProductFromCart(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        
+
         boolean update = false;
         JSONObject json = new JSONObject();
         response.setContentType("application/json");
-        
+
         try {
             int productId = Integer.parseInt(request.getParameter("productId"));
             int customerId = Integer.parseInt(request.getParameter("customerId"));
@@ -138,22 +212,32 @@ public class CartServlet extends HttpServlet {
 
             // Tang so luong san pham
             if (target.equals("increase")) {
-                update = CartDAO.increaseProductFromCart(productId, customerId);
+                update = CartDAO.increaseProductFromCart(1, productId, customerId);
                 if (update) {
-                    System.out.println("Tang so luong thanh cong!");                   
-                    
+                    System.out.println("Tang so luong thanh cong!");
+
                     json.put("status", "success");
                     json.put("message", "Update cart successfully!");
-                    
+
+                    List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+
+                    int totalQuantity = 0;
+                    if (!cartItems.isEmpty()) {
+                        for (CartItem cartItem : cartItems) {
+                            totalQuantity += cartItem.getQuantity();
+                        }
+                    }
+                    json.put("totalQuantity", totalQuantity);
+
                     int newQuantity = CartDAO.getQuantityOfProduct(customerId, productId);
                     json.put("quantity", newQuantity);
-                    
+
                     double newTotalCartPrice = CartDAO.getTotalCartByCustomerId(customerId);
                     json.put("totalCartPrice", newTotalCartPrice);
-                    
+
                     double newSubtotal = CartDAO.getSubtotalOfProduct(customerId, productId);
                     json.put("subtotal", newSubtotal);
-                    
+
                     response.getWriter().write(json.toString());
                 } else {
                     System.out.println("Tang so luong that bai!!");
@@ -164,27 +248,37 @@ public class CartServlet extends HttpServlet {
                 update = CartDAO.decreseProductFromCart(productId, customerId);
                 if (update) {
                     System.out.println("Giam so luong thanh cong!");
-                    
+
                     json.put("status", "success");
                     json.put("message", "Update cart successfully!");
-                    
+
+                    List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+
+                    int totalQuantity = 0;
+                    if (!cartItems.isEmpty()) {
+                        for (CartItem cartItem : cartItems) {
+                            totalQuantity += cartItem.getQuantity();
+                        }
+                    }
+                    json.put("totalQuantity", totalQuantity);
+
                     int newQuantity = CartDAO.getQuantityOfProduct(customerId, productId);
                     json.put("quantity", newQuantity);
-                        
+
                     double newSubtotal = CartDAO.getSubtotalOfProduct(customerId, productId);
                     json.put("subtotal", newSubtotal);
-                    
+
                     double newTotalCartPrice = CartDAO.getTotalCartByCustomerId(customerId);
                     json.put("totalCartPrice", newTotalCartPrice);
-                    
+
                     // Check xem so luong san pham do co = 0 hay khong
                     // Neu so luong = 0 thi xoa san pham ra gio hang
-                    if (newQuantity == 0) {                       
+                    if (newQuantity == 0) {
                         CartDAO.removeProductFromCart(productId, customerId);
                         json.put("removed", true);
                     }
                     response.getWriter().write(json.toString());
-                                 
+
                 } else {
                     System.out.println("Giam so luong that bai!!");
                 }

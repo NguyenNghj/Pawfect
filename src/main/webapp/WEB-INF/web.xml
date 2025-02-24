@@ -16,7 +16,6 @@
         <servlet-class>controller.CartServlet</servlet-class>
     </servlet>
     <servlet>
-
         <servlet-name>PetRoomDetailServlet</servlet-name>
         <servlet-class>controller.PetRoomDetailServlet</servlet-class>
     </servlet>
@@ -24,15 +23,42 @@
         <servlet-name>PetRoomListServlet</servlet-name>
         <servlet-class>controller.PetRoomListServlet</servlet-class>
     </servlet>
-
+    <servlet>
         <servlet-name>ProductListServlet</servlet-name>
         <servlet-class>controller.ProductListServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CheckoutServlet</servlet-name>
+        <servlet-class>controller.CheckoutServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderServlet</servlet-name>
+        <servlet-class>controller.OrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrderManagementServlet</servlet-name>
+        <servlet-class>controller.OrderManagementServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EmailServlet</servlet-name>
+        <servlet-class>controller.EmailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GoogleLoginServlet</servlet-name>
+        <servlet-class>controller.GoogleLoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>controller.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewFinancialStatisticsServlet</servlet-name>
+        <servlet-class>controller.ViewFinancialStatisticsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
-        <url-pattern>/sanpham</url-pattern>
+        <url-pattern>/products</url-pattern>
     </servlet-mapping>
-
     <servlet-mapping>
         <servlet-name>ShopControl</servlet-name>
         <url-pattern>/ShopControl</url-pattern>
@@ -52,6 +78,34 @@
     <servlet-mapping>
         <servlet-name>PetRoomListServlet</servlet-name>
         <url-pattern>/petroomslist</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckoutServlet</servlet-name>
+        <url-pattern>/checkout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderServlet</servlet-name>
+        <url-pattern>/order</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrderManagementServlet</servlet-name>
+        <url-pattern>/ordermanagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EmailServlet</servlet-name>
+        <url-pattern>/email</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GoogleLoginServlet</servlet-name>
+        <url-pattern>/GoogleLoginServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewFinancialStatisticsServlet</servlet-name>
+        <url-pattern>/viewfinancialstatistics</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

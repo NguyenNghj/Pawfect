@@ -175,7 +175,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     max-height: 300px;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 0 15px;
+    padding: 12px 20px 0 0;
+}
+
+.order-item>div:not(:last-of-type) {
+    border-bottom: 1px dashed darkgray;
+    padding-bottom: 20px;
+}
+
+.order-item>div:last-of-type {
+    margin: 0 !important;
 }
 
 .order-item::-webkit-scrollbar {
@@ -185,7 +194,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
 .order-item::-webkit-scrollbar-track {
     background: white;
     border-radius: 10px;
-    /* margin: 5px 0; */
+    margin-top: 12px;
 }
 
 .order-item::-webkit-scrollbar-thumb {
@@ -195,4 +204,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
 
 .order-item::-webkit-scrollbar-thumb:hover {
     background: #72839e;
+}
+
+.nav-tabs .nav-link {
+    color: #6c757d;
+}
+
+.nav-tabs .nav-link.active {
+    font-weight: bold;
+    color: #0d6efd;
+}
+
+.bodycolor-name-address-total {
+    color: #212529 !important;
 }

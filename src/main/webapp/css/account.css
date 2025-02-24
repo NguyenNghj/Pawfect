@@ -56,10 +56,10 @@ body {
 
 /* Order Detail */
 .order-item {
-    max-height: 300px;
+    max-height: 310px;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 0 15px;
+    padding: 12px 15px 0 15px;
 }
 
 .order-item::-webkit-scrollbar {

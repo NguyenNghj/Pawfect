@@ -4,6 +4,8 @@
     Author     : Vu Quang Duc - CE181221
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -39,19 +41,19 @@
                             <!-- Fieldset -->
                             <div class="fieldset">
                                 <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                                    <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
                                     <label for="email">Email</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="name" placeholder="name@example.com">
+                                    <input type="text" class="form-control" id="name" placeholder="name@example.com" required>
                                     <label for="name">Họ và tên</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="tel" class="form-control" id="phone" placeholder="name@example.com">
+                                    <input type="tel" class="form-control" id="phone" placeholder="name@example.com" required>
                                     <label for="phone">Số điện thoại</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="address" placeholder="name@example.com">
+                                    <input type="text" class="form-control" id="address" placeholder="name@example.com" required>
                                     <label for="address">Địa chỉ</label>
                                 </div>
                                 <div class="form-floating">
@@ -70,7 +72,7 @@
                                 </div>
                                 <div class="shipping-method">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="shipping-method" id="shipping-tietkem">
+                                        <input class="form-check-input" type="radio" name="shipping-method" id="shipping-tietkem" value="40000" onclick="handleShippingChange('tietkiem')" checked>
                                         <div class="d-flex justify-content-between align-items-center gap-3">
                                             <label class="form-check-label" for="shipping-tietkem">
                                                 Giao hàng tiết kiệm
@@ -79,7 +81,7 @@
                                         </div>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="shipping-method" id="shipping-hoatoc">
+                                        <input class="form-check-input" type="radio" name="shipping-method" id="shipping-hoatoc" value="50000" onclick="handleShippingChange('hoatoc')">
                                         <div class="d-flex justify-content-between align-items-center gap-3">
                                             <label class="form-check-label" for="shipping-hoatoc">
                                                 Giao hàng hoả tốc
@@ -98,8 +100,8 @@
                                 <div class="payment-method">
                                     <div class="form-check d-flex justify-content-between align-items-center">
                                         <div class="d-flex gap-3">
-                                            <input class="form-check-input" type="radio" name="shipping-method" id="shipping-tietkem">
-                                            <label class="form-check-label" for="shipping-tietkem">
+                                            <input class="form-check-input" type="radio" name="payment-method" id="payment-vnpay">
+                                            <label class="form-check-label" for="payment-vnpay">
                                                 Thanh toán qua VietQR
                                             </label>
                                         </div>                      
@@ -107,8 +109,8 @@
                                     </div>
                                     <div class="form-check d-flex justify-content-between align-items-center">
                                         <div class="d-flex gap-3">
-                                            <input class="form-check-input" type="radio" name="shipping-method" id="shipping-tietkem">
-                                            <label class="form-check-label" for="shipping-tietkem">
+                                            <input class="form-check-input" type="radio" name="payment-method" id="payment-cash" checked>
+                                            <label class="form-check-label" for="shipping-cash">
                                                 Thanh toán tiền mặt (COD)
                                             </label>
                                         </div>                      
@@ -134,64 +136,44 @@
                 <div class="col" style="border-left: 1px solid #cecdcd;">
                     <div class="p-2">
                         <div class="title-sidebar">
-                            <h5>Đơn hàng (8)</h5>
+                            <h5>Đơn hàng (${totalQuantity})</h5>
                         </div>
                         <!-- Item List -->
                         <div class="item-info d-grid gap-3">
-                            <!-- Each Item -->
-                            <div class="d-flex align-items-center">
-                                <div class="col-auto">
-                                    <img src="https://bizweb.dktcdn.net/100/091/443/products/hieuunganh-com-5e9066b48c276.png?v=1586522083473" alt="">
+                            <c:forEach items="${cartItems}" var="c">
+                                <!-- Each Item -->
+                                <div class="d-flex align-items-center">
+                                    <div class="col-auto">
+                                        <img src="https://bizweb.dktcdn.net/100/091/443/products/hieuunganh-com-5e9066b48c276.png?v=1586522083473" alt="">
+                                    </div>
+                                    <div class="col p-0">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span style="max-width: 280px;">${c.productName}</span>
+                                            <span>
+                                                <f:formatNumber value="${c.getSubtotal()}" pattern="#,##0" />đ                                              
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span>
+                                                <f:formatNumber value="${c.productPrice}" pattern="#,##0" />đ                                             
+                                            </span>
+                                        </div>
+                                    </div>               
                                 </div>
-                                <div class="col p-0">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span style="max-width: 280px;">Thức ăn hạt Whiskas Adult 1+ cho mèo</span>
-                                        <span>65.000đ</span>
-                                    </div>
-                                    <div>
-                                        <span>25.000đ</span>
-                                    </div>
-                                </div>               
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <div class="col-auto">
-                                    <img src="https://bizweb.dktcdn.net/100/091/443/products/hieuunganh-com-5e9066b48c276.png?v=1586522083473" alt="">
-                                </div>
-                                <div class="col p-0">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span style="max-width: 280px;">Thức ăn hạt Whiskas Adult 1+ cho mèo</span>
-                                        <span>65.000đ</span>
-                                    </div>
-                                    <div>
-                                        <span>25.000đ</span>
-                                    </div>
-                                </div>               
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <div class="col-auto">
-                                    <img src="https://bizweb.dktcdn.net/100/091/443/products/hieuunganh-com-5e9066b48c276.png?v=1586522083473" alt="">
-                                </div>
-                                <div class="col p-0">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span style="max-width: 280px;">Thức ăn hạt Whiskas Adult 1+ cho mèo</span>
-                                        <span>65.000đ</span>
-                                    </div>
-                                    <div>
-                                        <span>25.000đ</span>
-                                    </div>
-                                </div>               
-                            </div>
+                            </c:forEach>
                         </div>
 
                         <!-- Price & other Cost of Order -->
                         <div class="price-and-cost d-grid gap-2">
                             <div class="d-flex justify-content-between">
                                 <span>Tạm tính</span>
-                                <span>275.000đ</span>
+                                <span id="base-price" data-price="${totalCartPrice}">
+                                    <f:formatNumber value="${totalCartPrice}" pattern="#,##0" />đ                                   
+                                </span>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <span>Phí vận chuyển</span>
-                                <span>40.000đ</span>
+                                <span id="shipping-cost-value">40.000đ</span>
                             </div>         
                         </div>
 
@@ -199,18 +181,20 @@
                         <div class="total-price">
                             <div class="d-flex justify-content-between">
                                 <span>Tổng cộng</span>
-                                <span>315.000đ</span>
+                                <span id="total-price-value"></span>
                             </div>
                         </div>
 
                         <!-- Back to Cart or Submit Order -->
                         <div class="sidebar-footer">
                             <div class="d-flex justify-content-between align-items-center">                  
-                                <a href="">
+                                <a href="cart?&action=view">
                                     <i class="fa-solid fa-angle-left me-1"></i>
                                     <span>Quay về giỏ hàng</span>
                                 </a>
-                                <button type="button" class="btn btn-primary btn-order">ĐẶT HÀNG</button>
+                                <button id="submit-btn" type="button" class="btn btn-primary btn-order">
+                                    ĐẶT HÀNG
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -279,19 +263,208 @@
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-            function handleRadioChange() {
-                const radio1 = document.getElementById('flexRadioDefault1');
-                const radio2 = document.getElementById('flexRadioDefault2');
+                                            $('#submit-btn').click(function () { // Khi người dùng nhấp vào nút submit
+                                                // 1. Lấy dữ liệu
+                                                const email = $('#email').val().trim();
+                                                const name = $('#name').val().trim();
+                                                const phone = $('#phone').val().trim();
+                                                const address = $('#address').val().trim();
+                                                const note = $('#comment').val().trim();
+                                                const totalPrice = parseFloat($('#total-price-value').text().replace(/[.,đ]/g, ''));
+                                                const shippingCost = parseFloat($('#shipping-cost-value').text().replace(/[.,đ]/g, ''));
+                                                // **Lấy giá trị của radio button được chọn
+                                                const shippingMethod = $('input[name="shipping-method"]:checked').attr('id');
+                                                const paymentMethod = $('input[name="payment-method"]:checked').attr('id');
+                                                
+                                                console.log("Gui du lieu email: " + email);
+                                                console.log("Gui du lieu name: " + name);
+                                                console.log("Gui du lieu phone: " + phone);
+                                                console.log("Gui du lieu address: " + address);
+                                                console.log("Gui du lieu note: " + note);
+                                                console.log("Gui du lieu totalPrice: " + totalPrice);
+                                                console.log("Gui du lieu shippingCost: " + shippingCost);
+                                                console.log("Gui du lieu shippingMethod: " + shippingMethod);
+                                                console.log("Gui du lieu paymentMethod " + paymentMethod);
 
-                if (radio1.checked) {
-                    // Chuyển hướng khi "Giao hàng tiết kiệm" được chọn
-                    window.location.href = 'your-url-for-tiet-kiem'; // Thay 'your-url-for-tiet-kiem' bằng URL bạn muốn chuyển đến
-                } else if (radio2.checked) {
-                    // Chuyển hướng khi "Giao hàng hoả tốc" được chọn
-                    window.location.href = 'your-url-for-hoatoc'; // Thay 'your-url-for-hoatoc' bằng URL bạn muốn chuyển đến
-                }
-            }
+                                                let isValid = true;
+
+                                                // Kiểm tra email
+                                                if (email === "") {
+                                                    Swal.fire({
+                                                        position: "top",
+                                                        icon: "warning",
+                                                        title: "Email không được để trống.",
+                                                        showConfirmButton: false,
+                                                        width: 350,
+                                                        timer: 2500
+                                                    });
+                                                    isValid = false;
+                                                    return;
+                                                } else if(!isValidEmail(email)){
+                                                    Swal.fire({
+                                                        position: "top",
+                                                        icon: "warning",
+                                                        title: "Email không đúng định dạng.",
+                                                        showConfirmButton: false,
+                                                        width: 350,
+                                                        timer: 2500
+                                                    });
+                                                    isValid = false;
+                                                    return;
+                                                }
+
+                                                // Kiểm tra họ và tên (ví dụ: không được để trống)
+                                                if (name === "") {
+                                                    Swal.fire({
+                                                        position: "top",
+                                                        icon: "warning",
+                                                        title: "Họ và tên không được để trống.",
+                                                        showConfirmButton: false,
+                                                        width: 350,
+                                                        timer: 2500
+                                                    });
+                                                    isValid = false;
+                                                    return;
+                                                }
+
+                                                // Kiểm tra số điện thoại
+                                                if(phone === ""){
+                                                    Swal.fire({
+                                                        position: "top",
+                                                        icon: "warning",
+                                                        title: "Số điện thoại không được để trống.",
+                                                        showConfirmButton: false,
+                                                        width: 350,
+                                                        timer: 2500
+                                                    });
+                                                    isValid = false;
+                                                    return;
+                                                } else if (!isValidPhone(phone)) {
+                                                    Swal.fire({
+                                                        position: "top",
+                                                        icon: "warning",
+                                                        title: "Số điện thoại không đúng định dạng.",
+                                                        showConfirmButton: false,
+                                                        width: 350,
+                                                        timer: 2500
+                                                    });
+                                                    isValid = false;
+                                                    return;
+                                                }
+
+                                                // Kiểm tra địa chỉ (ví dụ: không được để trống)
+                                                if (address === "") {
+                                                    Swal.fire({
+                                                        position: "top",
+                                                        icon: "warning",
+                                                        title: "Địa chỉ không được để trống.",
+                                                        showConfirmButton: false,
+                                                        width: 350,
+                                                        timer: 2500
+                                                    });
+                                                    isValid = false;
+                                                    return;
+                                                }
+
+                                                // 3. Gọi AJAX
+                                                $.ajax({
+                                                    url: 'checkout',
+                                                    type: 'POST',
+                                                    data: {
+                                                        action: "order",
+                                                        name: name,
+                                                        email: email,
+                                                        address: address,
+                                                        note: note,
+                                                        phone: phone,
+                                                        totalPrice: totalPrice,
+                                                        shippingCost: shippingCost,
+                                                        shippingMethod: shippingMethod,
+                                                        paymentMethod: paymentMethod
+                                                    },
+                                                    dataType: "json",
+                                                    success: function (response) {
+                                                        if (response.status === "success") {
+                                                            console.log("Đã gửi dữ liệu thành công, đợi chuyển hướng từ server...");
+                                                            window.location.href = "checkoutsuccess.jsp";
+                                                        } else {
+                                                            console.log("Lỗi đặt đơn hàng!");
+                                                        }
+                                                        
+                                                    },
+                                                    error: function (xhr, status, error) {
+                                                        // Xử lý lỗi
+                                                        console.error("Lỗi khi gọi servlet:", status, error);
+                                                        console.error("Response Text:", xhr.responseText);
+                                                        alert("Có lỗi xảy ra. Vui lòng thử lại sau.");
+                                                    }
+                                                });
+                                            });
+
+                                            function isValidEmail(email) {
+                                                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                                                return emailRegex.test(email);
+                                            }
+
+                                            function isValidPhone(phone) {
+                                                // Biểu thức chính quy kiểm tra số điện thoại (ví dụ: 10-11 số)
+                                                const phoneRegex = /^\d{10,11}$/; // Hoặc biểu thức phức tạp hơn tùy theo yêu cầu
+                                                return phoneRegex.test(phone);
+                                            }
+
+                                            // Gọi handleShippingChange() khi trang web được tải
+                                            window.addEventListener('DOMContentLoaded', (event) => {
+                                                handleShippingChange();
+                                            });
+
+                                            // Hàm này sẽ được gọi khi một radio button được chọn.
+                                            // Hàm này sẽ cho biết thông tin về phương thức vận chuyển đã chọn cùng với giá tiền
+                                            function handleShippingChange() {
+                                                // Neu phuong thuc van chuyen nao duoc chon thi se lay id cua input tuong ung
+                                                let selectedMethod = document.querySelector('input[name="shipping-method"]:checked').id;
+                                                console.log("Đã chọn phương thức có ID:", selectedMethod);
+
+                                                // Neu phuong thuc van chuyen nao duoc chon thi se lay value cua input tuong ung
+                                                let shippingCost = document.querySelector('input[name="shipping-method"]:checked').value;
+                                                console.log("Chi phí vận chuyển:", shippingCost);
+
+                                                // Sử dụng shippingCost ở đây, ví dụ: cập nhật tổng giá
+                                                updateTotalPrice(parseFloat(shippingCost)); // Chuyển thành số nguyên                             
+                                            }
+
+                                            function updateTotalPrice(shippingCost) {
+                                                // Lay gia tien tam tinh (chua bao gom phi van chuyen)
+                                                let basePriceString = $('#base-price').data("price");
+                                                // Chuyen basePriceString sang kieu so
+                                                let basePrice = parseFloat(basePriceString);
+                                                console.log("Base price: " + basePrice);
+                                                // Tinh tong gia tien cuoi cung
+                                                let totalPrice = basePrice + shippingCost;
+                                                console.log("Total price: " + totalPrice);
+                                                console.log(``);
+
+                                                // 'totalPriceElement' se tro toi thanh phan co id 'total-price-value'
+                                                let shippingCostElement = document.getElementById('shipping-cost-value');
+                                                // Thay noi dung 'shippingCost' vao bien 'shippingCostElement' da co toi id tuong ung
+                                                shippingCostElement.textContent = formatCurrency(shippingCost);
+
+                                                // 'totalPriceElement' se tro toi thanh phan co id 'total-price-value'
+                                                let totalPriceElement = document.getElementById('total-price-value');
+                                                // Thay noi dung 'totalPrice' vao bien 'totalPriceElement' da co toi id tuong ung
+                                                totalPriceElement.textContent = formatCurrency(totalPrice);
+
+                                            }
+
+                                            // Ham format lai gia tien
+                                            function formatCurrency(amount) {
+                                                return amount.toLocaleString('vi-VN', {
+                                                    style: 'currency',
+                                                    currency: 'VND'
+                                                }).replace(/\s/g, '').replace('₫', 'đ').replace(/\./g, ',');
+                                            }
         </script>
     </body>
 </html>

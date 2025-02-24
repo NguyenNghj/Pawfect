@@ -5,13 +5,14 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link rel="stylesheet" href="<%= request.getContextPath() %>/css/header.css">
+        <link rel="stylesheet" href="<%= request.getContextPath()%>/css/header.css">
         <title>JSP Page</title>
     </head>
     <body>
@@ -68,8 +69,22 @@
 
                             <!-- CART ICON -->
                             <div class="col-auto">
-                                <a class="btn" href="#" role="button">
+                                <a class="btn position-relative" href="cart?&action=view" role="button">
                                     <i class="fa-brands fa-opencart fa-2xl"></i>
+                                    <span id="cart-count" class="product-quantity position-absolute translate-middle badge rounded-pill bg-danger"
+                                          style="top: 10%;"
+                                          >
+                                        <c:choose>
+                                            <c:when test="${empty totalQuantity}">
+                                                0
+                                            </c:when>
+                                            <c:otherwise>
+                                                ${totalQuantity}
+                                            </c:otherwise>
+                                        </c:choose>
+
+                                        <span class="visually-hidden">unread messages</span>
+                                    </span>
                                 </a>                     
                             </div>
                         </div>

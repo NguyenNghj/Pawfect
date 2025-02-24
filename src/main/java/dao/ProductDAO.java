@@ -83,6 +83,38 @@ public class ProductDAO {
         return productList;
     }
 
+    public Product getProductById(int productId) {
+        String query = "SELECT p.product_id, p.category_id, c.category_name, p.product_name, p.product_petType, "
+                + "p.product_price, p.product_image, p.stock, p.status, p.description, p.is_active "
+                + "FROM Products p "
+                + "JOIN Category c ON p.category_id = c.category_id "
+                + "WHERE p.product_id = ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, productId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Product(
+                        rs.getInt(1),
+                        rs.getInt(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getDouble(6),
+                        rs.getString(7),
+                        rs.getInt(8),
+                        rs.getString(9),
+                        rs.getString(10),
+                        rs.getBoolean(11)
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<Product> filterByPrice(List<Product> products, String giaFilter) {
         List<Product> filteredList = new ArrayList<>();
         for (Product product : products) {
