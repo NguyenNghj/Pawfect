@@ -7,7 +7,7 @@
     <head>
         <meta charset="UTF-8">
         <title>PetHotel</title>
-        <link rel="stylesheet" href="./css/petrooms_v3.css">
+        <link rel="stylesheet" href="./css/petrooms_v4.css">
     </head>
     <body>
         <div class="header">
@@ -20,7 +20,7 @@
 
         <div class="filter-wrapper">
             <div class="filter">
-                                <button class="filter-btn" data-filter="cat">MÈO</button>
+                <button class="filter-btn" data-filter="cat">MÈO</button>
                 <button class="filter-btn" data-filter="dog">CHÓ</button>
                 <button class="filter-btn" data-filter="below-100k">DƯỚI 100.000đ</button>
                 <button class="filter-btn" data-filter="100k-300k">100.000đ - 200.000đ</button>
@@ -53,17 +53,59 @@
                 </div>
             </div>
             <div class="grid-container responsive-grid">
-                <% List<PetRooms> list = PetRoomDAO.getAllPetRooms();
-                    for (PetRooms room : list) {%>
+                <%
+                    List<PetRooms> list = (List<PetRooms>) request.getAttribute("roomList");
+                    if (list == null) {
+                        list = PetRoomDAO.getAllPetRooms(); // Nếu danh sách null, lấy tất cả phòng
+                    }
+                    if (!list.isEmpty()) {
+                        for (PetRooms room : list) {
+                %>
                 <div class="card">
                     <h3><%= room.getRoomName()%></h3>
+                    <br>
                     <p><%= room.getPricePerNight()%>đ/Ngày</p>
-                    <p><%= room.getRoomType()%></p>     
-                    <br><br><br><br> 
+                    <br>
+                    <p><%= room.getRoomType()%></p>  
+                    <br>
+                    <img src="<%= room.getRoomImage()%>" alt="<%= room.getRoomName()%>" class="room-image">
                     <a href="petroomdetail?id=<%= room.getRoomId()%>">Xem Chi Tiết</a>
                 </div>
+                <%
+                    }
+                } else {
+                %>
+                <p>Không có phòng nào phù hợp với bộ lọc này.</p>
                 <% }%>
             </div>
         </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const filterButtons = document.querySelectorAll(".filter-btn");
+                const urlParams = new URLSearchParams(window.location.search);
+                let currentFilter = urlParams.get("filter") || "";
+
+                // Khi trang load, đánh dấu button đang được chọn
+                filterButtons.forEach(button => {
+                    if (button.getAttribute("data-filter") === currentFilter) {
+                        button.classList.add("active");
+                    }
+                });
+
+                filterButtons.forEach(button => {
+                    button.addEventListener("click", function () {
+                        const filterValue = this.getAttribute("data-filter");
+
+                        if (currentFilter === filterValue) {
+                            // Nếu nhấn lại cùng filter -> Hủy filter, hiển thị tất cả phòng
+                            window.location.href = "petrooms";
+                        } else {
+                            // Chọn filter mới -> Cập nhật URL
+                            window.location.href = "petrooms?filter=" + filterValue;
+                        }
+                    });
+                });
+            });
+        </script>
     </body>
 </html>

@@ -16,14 +16,6 @@
         <servlet-class>controller.CartServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>PetRoomDetailServlet</servlet-name>
-        <servlet-class>controller.PetRoomDetailServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>PetRoomListServlet</servlet-name>
-        <servlet-class>controller.PetRoomListServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ProductListServlet</servlet-name>
         <servlet-class>controller.ProductListServlet</servlet-class>
     </servlet>
@@ -55,6 +47,14 @@
         <servlet-name>ViewFinancialStatisticsServlet</servlet-name>
         <servlet-class>controller.ViewFinancialStatisticsServlet</servlet-class>
     </servlet>
+        <servlet>
+        <servlet-name>PetRoomDetailServlet</servlet-name>
+        <servlet-class>controller.PetRoomDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PetRoomListServlet</servlet-name>
+        <servlet-class>controller.PetRoomListServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/products</url-pattern>
@@ -70,14 +70,6 @@
     <servlet-mapping>
         <servlet-name>CartServlet</servlet-name>
         <url-pattern>/cart</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PetRoomDetailServlet</servlet-name>
-        <url-pattern>/petroomdetail</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PetRoomListServlet</servlet-name>
-        <url-pattern>/petroomslist</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CheckoutServlet</servlet-name>
@@ -106,6 +98,14 @@
     <servlet-mapping>
         <servlet-name>ViewFinancialStatisticsServlet</servlet-name>
         <url-pattern>/viewfinancialstatistics</url-pattern>
+    </servlet-mapping>
+        <servlet-mapping>
+        <servlet-name>PetRoomDetailServlet</servlet-name>
+        <url-pattern>/petroomdetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PetRoomListServlet</servlet-name>
+        <url-pattern>/petrooms</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
