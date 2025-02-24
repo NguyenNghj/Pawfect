@@ -77,7 +77,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PetRoomListServlet</servlet-name>
-        <url-pattern>/PetRoomListServlet</url-pattern>
+        <url-pattern>/petroomslist</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CheckoutServlet</servlet-name>
