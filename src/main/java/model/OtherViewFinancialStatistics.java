@@ -45,7 +45,6 @@ public class OtherViewFinancialStatistics {
     public OtherViewFinancialStatistics() {
     }
 
-
     public Date getOrder_date() {
         return order_date;
     }

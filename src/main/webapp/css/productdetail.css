@@ -248,7 +248,12 @@ body {
 
 .product-image img {
     width: 318px;
+    min-width: 318px;
+    max-width: 318px;
+
     height: 287px;
+    min-height: 287px;
+    max-height: 287px;
     border-radius: 20px 20px 0 0;
     object-fit: contain;
 }

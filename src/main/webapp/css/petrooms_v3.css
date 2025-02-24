@@ -1,0 +1,186 @@
+/* Reset CSS */
+* {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f5f5f5;
+    text-align: center; /* Căn giữa nội dung */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header {
+    background-color: #ffffff; /* Màu nền */
+    padding: 20px; /* Padding cho khung */
+    display: flex;
+    align-items: center; /* Căn giữa theo chiều dọc */
+    width: 90%; /* Chiều rộng gần bằng toàn trang */
+    max-width: 100%; /* Đảm bảo không vượt quá trang */
+    margin: 20px auto; /* Căn giữa và tạo khoảng cách phía trên */
+    border-radius: 5px; /* Bo tròn các góc */
+}
+
+.title {
+    background-color: #ffffff; /* Màu nền */
+    font-size: 13px; /* Kích thước chữ cho tiêu đề */
+    color: #D6B58D; /* Màu chữ cho tiêu đề */
+    margin-right: 10px; /* Khoảng cách giữa tiêu đề và dấu phân cách */
+    text-decoration: none; /* Bỏ gạch chân */
+}
+
+.title:hover {
+    text-decoration: underline; /* Thêm gạch chân khi di chuột */
+}
+
+.separator {
+    background-color: #ffffff; /* Màu nền */
+    font-size: 13px; /* Kích thước chữ cho dấu phân cách */
+    color: black; /* Màu chữ cho dấu phân cách */
+    font-weight: bold; /* Dấu phân cách đậm */
+}
+
+.subtitle {
+    background-color: #ffffff; /* Màu nền */
+    font-size: 13px; /* Kích thước chữ cho phụ đề */
+    color: black; /* Màu chữ cho phụ đề */
+    font-weight: bold; /* In đậm */
+    margin-left: 8px; /* Khoảng cách giữa dấu phân cách và Pet Hotel */
+    text-decoration: none; /* Bỏ gạch chân */
+}
+
+.subtitle:hover {
+    text-decoration: underline; /* Thêm gạch chân khi di chuột */
+}
+
+.name {
+    font-size: 4em; /* Kích thước chữ lớn */
+    font-weight: bold; /* Chữ đậm */
+    color: #8C6E63; /* Màu chữ chính */
+    text-align: center; /* Căn giữa */
+    text-shadow:
+        2px 2px 0 rgba(255, 255, 255, 0.8), /* Viền trắng */
+        4px 4px 0 rgba(0, 0, 0, 0.2), /* Bóng đen */
+        6px 6px 0 rgba(0, 0, 0, 0.1); /* Bóng nhẹ hơn */
+    margin: 20px 0; /* Khoảng cách trên và dưới */
+}
+
+.filter {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: white;
+    padding: 15px; 
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.filter-btn {
+    background-color: #8C6E63;
+    color: white;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.filter-btn:hover, .filter-btn.active {
+    background-color: #D3A376;
+    color: black;
+    transform: scale(1.05);
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 20px 50px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    width: 100%;
+    justify-content: center;
+    margin: 0 auto;
+    padding-right: 50px; /* Tạo khoảng trống bên phải */
+}
+
+.card {
+    background-color: #8C6E63;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    color: #FFF2DF;
+}
+
+.card a {
+    display: inline-block;
+    background-color: #8C6E63; /* Màu nền */
+    color: white; /* Màu chữ */
+    padding: 8px 12px; /* Kích thước padding */
+    border-radius: 5px; /* Bo góc */
+    text-decoration: none; /* Bỏ gạch chân */
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-top: 10px; /* Khoảng cách trên */
+}
+
+.card a:hover {
+    
+    background-color: #FFF2DF; /* Đổi màu khi hover */
+    color: #8C6E63;
+    transform: scale(1.05); /* Hiệu ứng phóng to nhẹ */
+}
+
+
+.service {
+    display: flex;
+    justify-content: center; /* Căn giữa các dịch vụ */
+    gap: 20px; /* Khoảng cách giữa các dịch vụ */
+    flex-wrap: wrap; /* Cho phép xuống dòng khi không đủ chỗ */
+    padding: 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.service-container {
+    background-color: #8C6E63;
+    color: #FFF2DF;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+    width: 45%; /* Định dạng chiều rộng khoảng 45% để nằm ngang */
+    min-width: 300px; /* Đảm bảo không bị quá nhỏ */
+    text-align: left;
+}
+
+.service-container h2 {
+    text-align: center;
+    color: #FFF2DF;
+    margin-bottom: 15px;
+}
+
+.service-container ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.service-container li {
+    padding: 5px 0;
+    border-bottom: 1px solid #ddd; /* Đường gạch nhẹ giữa các mục */
+}
+
+.service-container li:last-child {
+    border-bottom: none;
+}
+

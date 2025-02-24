@@ -7,7 +7,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : Nguyen Tien Thanh
 */
 
-* {
+body {
     font-family: Arial, sans-serif;
     background-color: #f5f5f5;
     margin: 0;
@@ -74,57 +74,70 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     max-width: 400px;
     margin-left: auto;
     margin-right: 200px;
+    background-color: #FFF2DF  ; /* Màu nền trắng kem */
+    border-radius: 10px; /* Bo góc mềm mại */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ để tạo sự nổi bật */
 }
 
 /* Tiêu đề phòng */
 .room-title {
+    background-color: #FFF2DF  ; /* Màu nền trắng kem */
     font-size: 30px;
     font-weight: bold;
-    color: #4b2e1e;
+    color: #3E2522 /*Nâu đậm*/;
 }
 
 /* Giá phòng */
 .room-price {
+    background-color: #FFF2DF  ; /* Màu nền trắng kem */
     font-size: 25px;
     font-weight: bold;
-    color: #4b2e1e;
+    color: #3E2522 /*Nâu đậm*/;
 }
 
 .room-price span {
+    background-color: #FFF2DF  ; /* Màu nền trắng kem */
     color: #d4a373;
 }
 
 /* Loại phòng */
 .room-type {
+    background-color: #FFF2DF  ; /* Màu nền trắng kem */
     font-size: 20px;
-    color: #d4a373;
+    color: #3E2522 /*Nâu đậm*/;
     font-weight: bold;
 }
 
 /* Phần thông tin */
 .room-info {
+    background-color: #FFF2DF  ; /* Màu nền trắng kem */
     margin-top: 20px;
-    padding-top: 10px;
-    border-top: 2px solid #4b2e1e;
+    color: #3E2522; /*Nâu đậm*/
 }
 
 .room-info h3 {
+    background-color: #FFF2DF  ; /* Màu nền trắng kem */
     font-size: 20px;
     font-weight: bold;
-    color: #4b2e1e;
+    color: #3E2522; /*Nâu đậm*/
+    
 }
 
 .room-description {
+    border-top: 2px solid #4b2e1e;
+    background-color: #FFF2DF  ; /* Màu nền trắng kem */
     font-size: 20px;
     line-height: 1.5;
     color: #4b2e1e;
 }
 
 /* Nút đặt phòng */
-.book-btn {
+.book-room-btn {
+    margin: 10px auto; /* Căn giữa trang */
     width: 100%;
+    max-width: 300px; /* Giới hạn chiều rộng tối đa */
     background-color: #8d6953;
-    padding: 10px;
+    padding: 15px;
     border: none;
     border-radius: 10px;
     margin-top: 20px;
@@ -132,21 +145,41 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-.book-btn img {
-    width: 24px;
-    height: 24px;
+.book-room-btn:hover {
+    background-color: #7a5a45;
+    transform: scale(1.05);
 }
 
-.same{
-    font-size: 3em; /* Kích thước chữ lớn */
-    font-weight: bold; /* Chữ đậm */
-    color: #8C6E63; /* Màu chữ chính */
-    text-align: center; /* Căn giữa */
-    text-shadow:
-        2px 2px 0 rgba(255, 255, 255, 0.8), /* Viền trắng */
-        4px 4px 0 rgba(0, 0, 0, 0.2), /* Bóng đen */
-        6px 6px 0 rgba(0, 0, 0, 0.1); /* Bóng nhẹ hơn */
-    margin: 20px 0; /* Khoảng cách trên và dưới */
+.book-room-btn:active {
+    background-color: #6a4d3a;
+    transform: scale(0.98);
+}
+
+/* Popup SweetAlert */
+.swal2-popup {
+    background-color: #FFF2DF !important;
+    border: 2px solid #D3A376;
+    border-radius: 15px;
+}
+
+.swal2-title {
+    color: #3E2522 !important;
+    font-weight: bold;
+}
+
+.swal2-content {
+    color: #8C6E63 !important;
+}
+
+.swal2-confirm {
+    background-color: #D3A376 !important;
+    color: #FFF2DF !important;
 }
