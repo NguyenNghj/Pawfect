@@ -4,16 +4,16 @@
  */
 package util;
 
+import jakarta.mail.Authenticator;
+import jakarta.mail.Message;
+import jakarta.mail.MessagingException;
+import jakarta.mail.PasswordAuthentication;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 import java.util.Date;
 import java.util.Properties;
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 /**
  *
@@ -53,13 +53,13 @@ public class Email {
             msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
 
             // Nguoi gui
-            msg.setFrom(new InternetAddress(from));
+            msg.setFrom(from);
 
             // Nguoi nhan
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
 
             // Tieu de email
-            msg.setSubject(subject);
+            msg.setSubject(subject, "UTF-8");
 
             // Quy dinh ngay gui
             msg.setSentDate(new Date());
