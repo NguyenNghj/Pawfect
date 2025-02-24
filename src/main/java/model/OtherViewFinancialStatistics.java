@@ -42,9 +42,9 @@ public class OtherViewFinancialStatistics {
         this.total_amount = total_amount;
     }
 
-
-public OtherViewFinancialStatistics(){
+    public OtherViewFinancialStatistics() {
     }
+
 
     public Date getOrder_date() {
         return order_date;
