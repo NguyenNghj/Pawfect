@@ -79,6 +79,10 @@
         <servlet-name>LoginStaffServlet</servlet-name>
         <servlet-class>controller.LoginStaffServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>HomePageServlet</servlet-name>
+        <servlet-class>controller.HomePageServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/products</url-pattern>
@@ -154,6 +158,10 @@
     <servlet-mapping>
         <servlet-name>LoginStaffServlet</servlet-name>
         <url-pattern>/loginstaff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomePageServlet</servlet-name>
+        <url-pattern>/pawfect</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
