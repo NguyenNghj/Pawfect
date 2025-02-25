@@ -14,6 +14,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap">
         <link rel="stylesheet" href="./css/header.css">
     </head>
@@ -36,21 +37,27 @@
                                 <a class="btn" href="#">Về PawPect</a>
                             </div>
                             <div class="col-auto dropdown">
-                                <a class="btn dropdown-toggle" href="#" role="button">Sản phẩm cho Chó</a>
+                                <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Sản phẩm cho Chó
+                                </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="#">Đồ ăn</a></li>
                                     <li><a class="dropdown-item" href="#">Phụ kiện</a></li>
                                     <li><a class="dropdown-item" href="#">Đồ chơi</a></li>
                                 </ul>
                             </div>
+
                             <div class="col-auto dropdown">
-                                <a class="btn dropdown-toggle" href="#" role="button">Sản phẩm cho Mèo</a>
+                                <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Sản phẩm cho Mèo
+                                </a>
                                 <ul class="dropdown-menu">
                                     <li><a class="dropdown-item" href="#">Đồ ăn</a></li>
                                     <li><a class="dropdown-item" href="#">Phụ kiện</a></li>
                                     <li><a class="dropdown-item" href="#">Đồ chơi</a></li>
                                 </ul>
                             </div>
+
                             <div class="col-auto">
                                 <a class="btn" href="#">Khách sạn thú cưng</a>
                             </div>
@@ -66,13 +73,13 @@
                         <!-- USER ICON -->
                         <div class="dropdown">
                             <a class="btn" href="#" role="button" data-bs-toggle="dropdown">
-                                <i class="fa-solid fa-circle-user fa-2xl"></i>
+                                <i class='bx bxs-user-circle' ></i>
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item d-flex align-items-center gap-3" href="#"><i
-                                            class="fa-solid fa-right-to-bracket"></i>Đăng nhập</a></li>
+                                            class="bx bxs-key"></i>Đăng nhập</a></li> 
                                 <li><a class="dropdown-item d-flex align-items-center gap-3" href="#"><i
-                                            class="fa-solid fa-file-pen"></i>Đăng ký</a></li>
+                                            class="bx bx-lock-alt"></i>Đăng ký</a></li>
                             </ul>
                         </div>
 

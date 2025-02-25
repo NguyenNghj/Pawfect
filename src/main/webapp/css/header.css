@@ -41,6 +41,10 @@ header {
     font-size: 20px;
 }
 
+.btn.show{
+    border: none;
+}
+
 .content-header-menu>div>a:hover,
 .dropdown>a.btn:hover {
     color: #FFF2DF;
@@ -49,19 +53,21 @@ header {
 }
 
 /* Dropdown */
-.dropdown-menu {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(0px);
-    transition: all 0.3s ease;
-    display: block;
-}
-
+/* Khi hover vào dropdown, hiển thị menu */
 .dropdown:hover .dropdown-menu {
+    display: block;
     opacity: 1;
     visibility: visible;
-    transform: translateY(10px);
 }
+
+/* Giữ dropdown-menu hiển thị mượt mà */
+.dropdown-menu {
+    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
 
 
 .bi-search {
@@ -85,8 +91,8 @@ header {
 
 .search-container {
     position: absolute;
-    top: 80px; /* Điều chỉnh khoảng cách so với nút */
-    right: 250px; /* Canh chỉnh vị trí */
+    top: 102px; /* Điều chỉnh khoảng cách so với nút */
+    right: 270px; /* Canh chỉnh vị trí */
     display: none;
     background: white;
     border-radius: 10px;
@@ -105,14 +111,19 @@ header {
 }
 
 /* User icon */
-.fa-circle-user {
+.bxs-user-circle {
+    font-size: 42px;
     color: white;
     transition: transform 0.3s ease;
 }
 
-.fa-circle-user:hover {
+.bxs-user-circle:hover {
     color: #FFF2DF;
     transform: scale(1.2);
+}
+
+.bx bxs-key , .bx-lock-alt{
+    color: black;
 }
 
 /* Cart */
