@@ -91,6 +91,14 @@
         <servlet-name>HomePageServlet</servlet-name>
         <servlet-class>controller.HomePageServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CustomersListServlet</servlet-name>
+        <servlet-class>controller.CustomersListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomersBanServlet</servlet-name>
+        <servlet-class>controller.CustomersBanServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/products</url-pattern>
@@ -178,6 +186,14 @@
     <servlet-mapping>
         <servlet-name>HomePageServlet</servlet-name>
         <url-pattern>/pawfect</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomersListServlet</servlet-name>
+        <url-pattern>/dashboard/admin/customers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomersBanServlet</servlet-name>
+        <url-pattern>/dashboard/admin/customersban</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
