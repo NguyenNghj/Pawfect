@@ -40,7 +40,7 @@
 </head>
 <body>
     <div class="wrapper">
-        <form action="LoginServlet" method="POST" onsubmit="return validateForm()">
+        <form action="Login" method="POST" onsubmit="return validateForm()">
             <h1>Login</h1>
             
             <% if (request.getParameter("error") != null) { %>
@@ -60,13 +60,13 @@
             </div>
             
             <div class="forget-password">
-                <a href="forgot-password.jsp">Forget password?</a>
+                <a href="ForgetPassword">Forget password?</a>
             </div>
             
             <button type="submit" class="btn">Login</button>
 
             <div class="register-link">
-                <p>Don't have an account? <a href="regiser.jsp">Register</a></p>
+                <p>Don't have an account? <a href="RegisterServlet">Register</a></p>
             </div>
         </form>
                <a href="https://accounts.google.com/o/oauth2/auth?
