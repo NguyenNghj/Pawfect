@@ -5,22 +5,21 @@
 
 package controller;
 
-import dao.GoogleDAO;
-import dao.UserDAO;
+import dao.RegisterDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.GoogleAccount;
+import java.sql.Date;
+import model.User;
 
 /**
  *
  * @author LENOVO
  */
-public class GoogleLoginServlet extends HttpServlet {
+public class RegisterServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -31,32 +30,21 @@ public class GoogleLoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-          
-       String code = request.getParameter("code");
-   GoogleDAO gg = new GoogleDAO();
- String accessToken = gg.getToken(code);
-        System.out.print(accessToken);
-        GoogleAccount acc = gg.getUserInfo(accessToken);
-        UserDAO userDAO = new UserDAO();
-        if(userDAO.checkGoogleExists(acc.getId()))
-       {
-         String customer=  userDAO.getCustomerId(acc.getId());
-            Cookie customerId = new Cookie("customerId", customer);
-            customerId.setMaxAge(60 * 60 * 24 * 1);
-            response.addCookie(customerId);
-       response.sendRedirect("/products");
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet RegisterServlet</title>");  
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet RegisterServlet at " + request.getContextPath () + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        else{
-            userDAO.insertGoogleAcc(acc);
-          String customer=  userDAO.getCustomerId(acc.getId());
-             Cookie customerId = new Cookie("customerId", customer);
-            customerId.setMaxAge(60 * 60 * 24 * 1);
-           response.addCookie(customerId);
-        response.sendRedirect("/products");
-        
-
     } 
-}
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
      * Handles the HTTP <code>GET</code> method.
@@ -68,7 +56,7 @@ public class GoogleLoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+            request.getRequestDispatcher("register.jsp").forward(request, response);
     } 
 
     /** 
@@ -81,7 +69,25 @@ public class GoogleLoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+      String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String confirmPassword = request.getParameter("confirmPassword");
+        String fullName = request.getParameter("fullName");
+   String birthDateStr = request.getParameter("birthDate");
+     Date birthDate = Date.valueOf(birthDateStr); 
+        String gender = request.getParameter("gender");
+        String address = request.getParameter("address");
+        String phoneNumber = request.getParameter("phoneNumber");
+        
+        RegisterDAO registerDAO = new RegisterDAO();
+        if(registerDAO.userExists(email)){
+        registerDAO.register(new User(email,password,fullName,phoneNumber,address,gender,birthDate));
+                  response.sendRedirect("Login.jsp");
+            
+        }else{
+      request.setAttribute("error", "Email bạn đăng ký đã tồn tại");
+request.getRequestDispatcher("register.jsp").forward(request, response);
+        }
     }
 
     /** 

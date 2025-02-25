@@ -5,8 +5,8 @@
 
 package controller;
 
-import dao.GoogleDAO;
 import dao.UserDAO;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,13 +14,13 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.GoogleAccount;
+import model.Account;
 
 /**
  *
  * @author LENOVO
  */
-public class GoogleLoginServlet extends HttpServlet {
+public class LoginStaffServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -31,32 +31,21 @@ public class GoogleLoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-          
-       String code = request.getParameter("code");
-   GoogleDAO gg = new GoogleDAO();
- String accessToken = gg.getToken(code);
-        System.out.print(accessToken);
-        GoogleAccount acc = gg.getUserInfo(accessToken);
-        UserDAO userDAO = new UserDAO();
-        if(userDAO.checkGoogleExists(acc.getId()))
-       {
-         String customer=  userDAO.getCustomerId(acc.getId());
-            Cookie customerId = new Cookie("customerId", customer);
-            customerId.setMaxAge(60 * 60 * 24 * 1);
-            response.addCookie(customerId);
-       response.sendRedirect("/products");
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet LoginStaffServlet</title>");  
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet LoginStaffServlet at " + request.getContextPath () + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        else{
-            userDAO.insertGoogleAcc(acc);
-          String customer=  userDAO.getCustomerId(acc.getId());
-             Cookie customerId = new Cookie("customerId", customer);
-            customerId.setMaxAge(60 * 60 * 24 * 1);
-           response.addCookie(customerId);
-        response.sendRedirect("/products");
-        
-
     } 
-}
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /** 
      * Handles the HTTP <code>GET</code> method.
@@ -68,7 +57,8 @@ public class GoogleLoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("loginadmin.jsp");
+        dispatcher.forward(request, response);
     } 
 
     /** 
@@ -81,7 +71,20 @@ public class GoogleLoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+       String email = request.getParameter("email");
+        String password = request.getParameter("password");
+
+        UserDAO userDAO = new UserDAO();
+        Account account = new Account();
+        account = userDAO.loginStaff(email, password);
+        if (!Account.IsEmpty(account)) {
+            Cookie staffId = new Cookie("staffId", account.getCustomerId());
+            staffId.setMaxAge(60 * 60 * 24 * 1);
+            response.addCookie(staffId);
+            response.sendRedirect("products");
+        } else {
+            response.sendRedirect("loginadmin.jsp?error=Invalid Credentials");
+        }
     }
 
     /** 

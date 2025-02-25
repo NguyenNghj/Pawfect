@@ -5,8 +5,8 @@
 
 package controller;
 
-import dao.UserDAO;
-import jakarta.servlet.RequestDispatcher;
+import dao.ChangePasswordDAO;
+import dao.ProfileDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,13 +14,13 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Account;
+import model.User;
 
 /**
  *
  * @author LENOVO
  */
-public class LoginServlet extends HttpServlet {
+public class ChangePasswordServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,10 +37,10 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");  
+            out.println("<title>Servlet ChangePasswordServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ChangePasswordServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,8 +57,20 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-         RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
-        dispatcher.forward(request, response);
+    String customerId = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("customerId".equals(cookie.getName())) {
+                    customerId = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        ProfileDAO profileDAO = new ProfileDAO();
+        User user = profileDAO.getUser(customerId);
+        request.setAttribute("customer", user);
+        request.getRequestDispatcher("changepassword.jsp").forward(request, response);
     } 
 
     /** 
@@ -71,24 +83,30 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       String email = request.getParameter("email");
-        String password = request.getParameter("password");
-
-        UserDAO userDAO = new UserDAO();
-        Account account = new Account();
-        account = userDAO.login(email, password);
-        if (!Account.IsEmpty(account)) {
-            Cookie customerId = new Cookie("customerId", account.getCustomerId());
-            customerId.setMaxAge(60 * 60 * 24 * 1);
-            response.addCookie(customerId);
-            response.sendRedirect("products");
-        } else {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
-request.setAttribute("error", "sai email hoặc mật khẩu");
-dispatcher.forward(request, response);
+        String customerId = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("customerId".equals(cookie.getName())) {
+                    customerId = cookie.getValue();
+                    break;
+                }
+            }
         }
+        String password = request.getParameter("password");
+        String newPassword = request.getParameter("newPassword");
+       ChangePasswordDAO fw = new ChangePasswordDAO();
+        if (fw.checkPassword(password, customerId)) {
+fw.changePassword(newPassword, customerId);
+  request.getSession().setAttribute("message", "Mật khẩu đã được thay đổi thành công!");
+    request.getSession().setAttribute("messageType", "success");
+  response.sendRedirect(request.getContextPath()+"/profile");
+        } else {
+            request.getSession().setAttribute("message", "Mật khẩu cũ không đúng. Vui lòng thử lại!");
+    request.getSession().setAttribute("messageType", "error");
+             response.sendRedirect(request.getContextPath()+"/changepassword"); 
     }
-
+}
     /** 
      * Returns a short description of the servlet.
      * @return a String containing servlet description

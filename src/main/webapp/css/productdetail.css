@@ -13,8 +13,11 @@ input[type="number"]::-webkit-outer-spin-button {
     margin: 0;
 }
 
+* {
+    font-family: 'Baloo 2', sans-serif !important;
+}
+
 body {
-    font-family: 'Inter', sans-serif;
     background-color: #F4F4F4;
 }
 
@@ -70,6 +73,19 @@ body {
     gap: 75px;
 }
 
+.phantren-thongtin{
+    display: flex;
+    flex-direction: column;
+}
+
+
+.phanduoi-thongtin{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
 .product-ten {
     font-weight: bold;
     color: #3E2522;
@@ -124,6 +140,7 @@ body {
 .description {
     text-align: justify;
 }
+
 
 .data-quantity {
     display: flex;
@@ -218,15 +235,6 @@ body {
     color: #8C6E63;
     text-align: center;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    font-family: Arial, sans-serif;
-
-
-    text-shadow:
-        -2px -2px 0 #ffffff,
-        2px 2px 0 #ffffff,
-        4px 4px 4px rgba(0, 0, 0, 0.3);
-
     margin: 20px 0;
 }
 
@@ -294,7 +302,7 @@ body {
 }
 
 .product-card .add-to-cart {
-    background-image: url('../img/add-to-cart.png');
+    background-image: url('../img/productlist/add-to-cart.png');
     position: absolute;
     background-size: contain;
     background-repeat: no-repeat;

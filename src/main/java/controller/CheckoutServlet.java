@@ -6,18 +6,26 @@ package controller;
 
 import dao.CartDAO;
 import dao.OrderDAO;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponseWrapper;
 import jakarta.servlet.http.HttpSession;
+import java.io.StringWriter;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import model.CartItem;
+import model.Order;
+import model.OrderItem;
 import org.json.JSONException;
 import org.json.JSONObject;
+import util.Email;
 
 /**
  *
@@ -119,14 +127,39 @@ public class CheckoutServlet extends HttpServlet {
                 status = "Chờ lấy hàng";
             }
 
-            double orderId = 0;
+            int orderId = 0;
             orderId = OrderDAO.insertOrder(customerId, paymentMethod_id, shippingMethod_id, name, phone, address, note, totalCartPrice, status);
             if (orderId != 0) {
-                orderId += 2500000;
-                System.out.println("Them don hang thanh cong.");
                 HttpSession session = request.getSession();
                 session.setAttribute("orderId", orderId);
+                System.out.println("Them don hang thanh cong.");
                 boolean remove = CartDAO.removeCart(customerId);
+
+                List<OrderItem> orderitems = OrderDAO.getOrderItemsByOrderId(orderId);
+                double basicPrice = 0;
+                for (OrderItem orderitem : orderitems) {
+                    basicPrice += orderitem.getSubtotal();
+                }
+                List<Order> orders = OrderDAO.getOrderByOrderId(orderId);
+
+                request.setAttribute("basicPrice", basicPrice);
+                request.setAttribute("orderitems", orderitems);
+                request.setAttribute("orders", orders);
+                
+                String emailContent = Email.renderJSPToString(request, response, "sendemail.jsp");
+
+                ExecutorService executor = Executors.newFixedThreadPool(10); // Tạo một ExecutorService với 10 luồng
+
+                executor.submit(() -> {
+                    try {
+                        Email.sendEmail("vuquangduc1404@gmail.com", "Xác nhận đơn hàng", emailContent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                
+                executor.shutdown();              
+
                 json.put("status", "success");
                 if (remove) {
                     System.out.println("Xoa gio hang thanh cong.");

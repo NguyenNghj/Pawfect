@@ -185,12 +185,21 @@
                                                 </td>
                                                 <td>
                                                     <a href="ordermanagement?&action=viewdetail&orderId=${o.orderId}" class="btn btn-success">Xem chi tiết</a>
-                                                    <!-- Được huỷ đơn nếu đơn hàng ở trạng thái "Chờ xác nhận" hoặc "Chờ lấy hàng" -->
-                                                    <button type="button" class="btn btn-danger btn-cancel"
-                                                            data-product-id="${o.orderId + 2500000}"
-                                                            >
-                                                        Huỷ đơn
-                                                    </button>
+                                                    <c:if test="${o.status == 'Chờ xác nhận' || o.status == 'Chờ lấy hàng'}">
+                                                        <!-- Được huỷ đơn nếu đơn hàng ở trạng thái "Chờ xác nhận" hoặc "Chờ lấy hàng" -->
+                                                        <button type="button" class="btn btn-danger btn-cancel"
+                                                                data-order-id="${o.orderId}"
+                                                                >
+                                                            Huỷ đơn
+                                                        </button>
+                                                    </c:if>
+                                                    <form id="cancelOrder${o.orderId}" action="ordermanagement" method="POST">
+                                                        <input type="hidden" name="action" value="cancel">
+                                                        <input type="hidden" name="actionBack" value="viewdetail">
+                                                        <input type="hidden" name="orderId" value="${o.orderId}">
+                                                        <input type="hidden" name="statusOrder" value="Đã huỷ">
+                                                        <input type="hidden" name="status" value="${param.status}">
+                                                    </form>
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -206,7 +215,7 @@
                                         </h5>
                                     </div>
                                 </c:if>
-                                
+
                             </div>
                         </div>
                     </div>          
@@ -223,11 +232,12 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
             $(document).ready(function () { // Đảm bảo code chạy sau khi trang đã load xong
+
                 $('.btn-cancel').click(function () { // Sử dụng class selector
-                    let productId = $(this).data('product-id'); // $(this) là nút được click
+                    let orderId = $(this).data('order-id'); // $(this) là nút được click                  
 
                     Swal.fire({
-                        title: 'Bạn chắc chắn muốn huỷ đơn #' + productId + '?',
+                        title: 'Bạn chắc chắn muốn huỷ đơn #' + (2500000 + orderId) + '?',
                         text: 'Hành động này không thể hoàn tác!',
                         icon: 'warning',
                         showCancelButton: true,
@@ -238,18 +248,37 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             Swal.fire({
-                                title: 'Đã huỷ!',
-                                text: 'Đơn hàng của bạn đã được huỷ.',
-                                icon: 'success',
-                                timer: 2000,
-                                showConfirmButton: false
+                                title: 'Đang huỷ...',
+                                text: 'Vui lòng chờ trong giây lát.',
+                                icon: 'info',
+                                timer: 1300,
+                                timerProgressBar: true,
+                                showConfirmButton: false,
+                                allowOutsideClick: false, // Không cho bấm ra ngoài
+                                allowEscapeKey: false // Không cho nhấn ESC để thoát
                             }).then(() => {
-//                                window.location.href = "order?&action=view&status=tc";
+                                Swal.fire({
+                                    title: 'Đã huỷ!',
+                                    text: 'Đơn hàng của bạn đã được huỷ.',
+                                    icon: 'success',
+                                    timer: 1600,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false
+                                }).then(() => {
+                                    let formId = "cancelOrder" + orderId; // Tạo ID duy nhất cho form
+                                    let form = document.getElementById(formId);
+                                    if (form) {
+                                        form.submit();
+                                    } else {
+                                        console.error("Không tìm thấy form với ID: " + formId);
+                                    }
+                                });
                             });
                         }
                     });
                 });
             });
+
         </script>
     </body>
 </html>

@@ -1,0 +1,137 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Feb 19, 2025, 8:37:16 PM
+    Author     : LENOVO
+*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('imge.jpg') no-repeat;
+}
+
+.wrapper {
+    width: 420px;
+    background: rgba(140, 110, 99, 0.7); /* Màu nâu với độ trong suốt */
+    border: 2px solid White;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px #8C6E63;
+    color: black;
+    border-radius: 10px;
+    padding: 30px 40px;
+}
+
+.wrapper h1 {
+    font-size: 36px;
+    text-align: center;
+    color: #FFF2DF;
+}
+
+.wrapper .input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 30px 0;
+}
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    outline: none;
+    border: none;
+    border: 2px solid #FFF2DF;
+    border-radius: 40px;
+    font-size: 16px;
+    color: #FFF2DF;
+    display: flex;
+    padding: 20px 45px 20px 20px;
+}
+
+.input-box input::placeholder {
+    color: #FFF2DF;
+}
+
+.input-box i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+
+.wrapper .forget-password {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.5px;
+    margin: 15px 0 15px;
+}
+
+.forget-password label input {
+    accent-color: white;
+    margin-right: 3px;
+}
+
+.forget-password a {
+    color: #FFF2DF;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.forget-password a:hover {
+    text-decoration: underline;
+}
+
+.wrapper .btn {
+    width: 100%;
+    height: 45px;
+    background: #FFF2DF;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px black;
+    cursor: pointer;
+    font-size: 16px;
+    color: gray;
+    font-weight: 600;
+}
+
+.wrapper .register-link {
+    font-size: 14.5px;
+    text-align: center;
+    margin: 20px 0 15px;
+}
+
+.register-link p a {
+    color: #FFF2DF;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.register-link p a:hover {
+    text-decoration: underline;
+}
+
+.icon {
+ color: #FFF2DF;
+}
+
+p{
+    color: #FFF2DF;
+    font-weight: bold;
+
+}
+.gender{
+    margin: 20px;
+}

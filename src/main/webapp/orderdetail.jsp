@@ -62,7 +62,7 @@
                         <c:forEach items="${orders}" var="o">
                             <div class="card-body">
                                 <header class="d-flex align-items-center mb-2">
-                                    <a href="#" class="text-secondary me-3">
+                                    <a href="order?&action=view&status=tc" class="text-secondary me-3">
                                         <i class="bi bi-arrow-left"></i>
                                     </a>
                                     <h1 class="h4 mb-0">Đơn hàng của bạn</h1>
@@ -72,32 +72,20 @@
                                 <div class="text-secondary mb-4">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span>Đơn hàng: #${o.orderId + 2500000}</span>
-                                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#cancelModal"
-                                                data-orderid="#${o.orderId + 2500000}"
+                                        <button class="btn btn-danger btn-sm btn-cancel"
+                                                data-order-id="${o.orderId}"
                                                 style="padding: 8px 18px;"
                                                 >
                                             <span style="font-size: 16px;">Huỷ đơn</span>
-                                        </button> 
-                                    </div>                              
-                                </div>
-
-                                <!-- Modal xác nhận huỷ đơn -->
-                                <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="cancelModalLabel">Xác nhận huỷ đơn</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p style="text-align: left;">Bạn muốn chắc chắn huỷ đơn hàng <span id="orderId"></span></p>   
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                                <a href="#" class="btn btn-danger">Xác nhận</a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        </button>                             
+                                    </div>   
+                                    <form id="cancelOrder${o.orderId}" action="order" method="POST">
+                                        <input type="hidden" name="action" value="cancel">
+                                        <input type="hidden" name="actionBack" value="viewdetail">
+                                        <input type="hidden" name="orderId" value="${o.orderId}">
+                                        <input type="hidden" name="statusOrder" value="Đã huỷ">
+                                        <input type="hidden" name="status" value="${param.status}">
+                                    </form>
                                 </div>
 
                                 <!-- Package Tracking -->
@@ -253,20 +241,56 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
-            const cancelModal = document.getElementById('cancelModal')
-            if (cancelModal) {
-                cancelModal.addEventListener('show.bs.modal', event => {
-                    // Button that triggered the modal
-                    const button = event.relatedTarget
-                    // Extract info from data-bs-* attributes
-                    const orderId = button.getAttribute('data-orderid')
-                    // Update the modal's content.
-                    const orderIdSpan = cancelModal.querySelector('#orderId')
+            $(document).ready(function () { // Đảm bảo code chạy sau khi trang đã load xong
 
-                    orderIdSpan.textContent = orderId
-                })
-            }
+                $('.btn-cancel').click(function () { // Sử dụng class selector
+                    let orderId = $(this).data('order-id'); // $(this) là nút được click                  
+
+                    Swal.fire({
+                        title: 'Bạn chắc chắn muốn huỷ đơn #' + (2500000 + orderId) + '?',
+                        text: 'Hành động này không thể hoàn tác!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Có, huỷ đơn!',
+                        cancelButtonText: 'Không, quay lại'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: 'Đang huỷ...',
+                                text: 'Vui lòng chờ trong giây lát.',
+                                icon: 'info',
+                                timer: 1300,
+                                timerProgressBar: true,
+                                showConfirmButton: false,
+                                allowOutsideClick: false, // Không cho bấm ra ngoài
+                                allowEscapeKey: false // Không cho nhấn ESC để thoát
+                            }).then(() => {
+                                Swal.fire({
+                                    title: 'Đã huỷ!',
+                                    text: 'Đơn hàng của bạn đã được huỷ.',
+                                    icon: 'success',
+                                    timer: 1600,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false
+                                }).then(() => {
+                                    let formId = "cancelOrder" + orderId; // Tạo ID duy nhất cho form
+                                    let form = document.getElementById(formId);
+                                    if (form) {
+                                        form.submit();
+                                    } else {
+                                        console.error("Không tìm thấy form với ID: " + formId);
+                                    }
+                                });
+                            });
+                        }
+                    });
+                });
+            });
         </script>
     </body>
 </html>

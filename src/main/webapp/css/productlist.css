@@ -6,9 +6,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Created on : Feb 18, 2025, 10:44:21 AM
     Author     : Nguyen Tri Nghi - CE180897
 */
+* {
+    font-family: 'Baloo 2', sans-serif !important;
+}
 
 body {
-    font-family: 'Inter', sans-serif;
     background-color: #F4F4F4;
 }
 
@@ -47,14 +49,6 @@ h2 {
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 2px;
-    font-family: Arial, sans-serif;
-
-
-    text-shadow:
-        -2px -2px 0 #ffffff,
-        2px 2px 0 #ffffff,
-        4px 4px 4px rgba(0, 0, 0, 0.3);
-
     margin: 20px 0;
     padding: 20px
 }
@@ -147,7 +141,7 @@ h2 {
 }
 
 .product-card .add-to-cart {
-    background-image: url('../img/add-to-cart.png');
+    background-image: url('../img/productlist/add-to-cart.png');
     position: absolute;
     background-size: contain;
     background-repeat: no-repeat;
