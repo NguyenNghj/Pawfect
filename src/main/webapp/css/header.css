@@ -16,8 +16,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
 
 header {
     background-color: #8C6E63;
-    padding: 10px 60px;
+    padding: 10px;
 }
+
 
 .logo-header {
     width: 120px;
@@ -28,10 +29,9 @@ header {
 /* Menu */
 .content-header-menu>div>a,
 .content-header-menu .dropdown>a {
-    padding:10px;
     color: white;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 18px;
     text-decoration: none;
 }
 
@@ -69,7 +69,6 @@ header {
 }
 
 
-
 .bi-search {
     color: #8C6E63;
     background-color: white;
@@ -92,7 +91,7 @@ header {
 .search-container {
     position: absolute;
     top: 102px; /* Điều chỉnh khoảng cách so với nút */
-    right: 270px; /* Canh chỉnh vị trí */
+    right: 230px; /* Canh chỉnh vị trí */
     display: none;
     background: white;
     border-radius: 10px;
