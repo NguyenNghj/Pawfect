@@ -6,19 +6,21 @@
 package controller;
 
 import dao.UserDAO;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import util.SendMail;
+import model.Account;
 
 /**
  *
  * @author LENOVO
  */
-public class ForgetPasswordServlet extends HttpServlet {
+public class LoginStaffServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -35,10 +37,10 @@ public class ForgetPasswordServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ForgetPasswordServlet</title>");  
+            out.println("<title>Servlet LoginStaffServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ForgetPasswordServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet LoginStaffServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -55,7 +57,8 @@ public class ForgetPasswordServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       request.getRequestDispatcher("forgetpassword.jsp").forward(request, response);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("loginadmin.jsp");
+        dispatcher.forward(request, response);
     } 
 
     /** 
@@ -68,21 +71,20 @@ public class ForgetPasswordServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String email = request.getParameter("email");
+       String email = request.getParameter("email");
+        String password = request.getParameter("password");
 
         UserDAO userDAO = new UserDAO();
-        String pass = userDAO.getPassword(email);
-
-        if (!pass.isEmpty()) {
-            String subject = "Your Password Recovery";
-            String messageText = "Your password is: " + pass;
-            SendMail.sendEmail(email, subject, messageText);
-            request.setAttribute("message", "Password has been sent to your email.");
+        Account account = new Account();
+        account = userDAO.loginStaff(email, password);
+        if (!Account.IsEmpty(account)) {
+            Cookie staffId = new Cookie("staffId", account.getCustomerId());
+            staffId.setMaxAge(60 * 60 * 24 * 1);
+            response.addCookie(staffId);
+            response.sendRedirect("products");
         } else {
-            request.setAttribute("error", "Email not found!");
+            response.sendRedirect("loginadmin.jsp?error=Invalid Credentials");
         }
-
-        request.getRequestDispatcher("forgetpassword.jsp").forward(request, response);
     }
 
     /** 

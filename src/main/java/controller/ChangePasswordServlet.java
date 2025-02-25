@@ -100,11 +100,11 @@ public class ChangePasswordServlet extends HttpServlet {
 fw.changePassword(newPassword, customerId);
   request.getSession().setAttribute("message", "Mật khẩu đã được thay đổi thành công!");
     request.getSession().setAttribute("messageType", "success");
-  response.sendRedirect(request.getContextPath()+"/ProfileServlet");
+  response.sendRedirect(request.getContextPath()+"/profile");
         } else {
             request.getSession().setAttribute("message", "Mật khẩu cũ không đúng. Vui lòng thử lại!");
     request.getSession().setAttribute("messageType", "error");
-             response.sendRedirect(request.getContextPath()+"/ChangePassword"); 
+             response.sendRedirect(request.getContextPath()+"/changepassword"); 
     }
 }
     /** 
