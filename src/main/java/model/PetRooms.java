@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 /**
@@ -11,6 +7,7 @@ package model;
 public class PetRooms {
     private int roomId;
     private String roomName;
+    private String roomImage;
     private String roomType;
     private double minWeight;
     private double maxWeight;
@@ -22,9 +19,10 @@ public class PetRooms {
     // Constructor
     public PetRooms() {}
 
-    public PetRooms(int roomId, String roomName, String roomType, double minWeight, double maxWeight, int quantity, double pricePerNight, String status, boolean isActive) {
+    public PetRooms(int roomId, String roomName, String roomImage, String roomType, double minWeight, double maxWeight, int quantity, double pricePerNight, String status, boolean isActive) {
         this.roomId = roomId;
         this.roomName = roomName;
+        this.roomImage = roomImage;
         this.roomType = roomType;
         this.minWeight = minWeight;
         this.maxWeight = maxWeight;
@@ -40,6 +38,9 @@ public class PetRooms {
 
     public String getRoomName() { return roomName; }
     public void setRoomName(String roomName) { this.roomName = roomName; }
+
+    public String getRoomImage() { return roomImage; }
+    public void setRoomImage(String roomImage) { this.roomImage = roomImage; }
 
     public String getRoomType() { return roomType; }
     public void setRoomType(String roomType) { this.roomType = roomType; }
@@ -62,4 +63,3 @@ public class PetRooms {
     public boolean isActive() { return isActive; }
     public void setActive(boolean isActive) { this.isActive = isActive; }
 }
-

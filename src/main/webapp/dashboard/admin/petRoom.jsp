@@ -4,11 +4,15 @@
     Author     : Vu Quang Duc - CE181221
 --%>
 
+<%@page import="model.PetRooms"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="../../css/dashboard.css">
@@ -77,9 +81,9 @@
                             </a>
                         </nav>
                         <nav class="navbar bg-body-tertiary active">                                            
-                            <a class="navbar-brand d-flex align-items-center gap-3" style="color: white; pointer-events: none;" href="#">
+                            <a class="navbar-brand d-flex align-items-center gap-3" style="color: white; pointer-events: none;" href="petroom">
                                 <i class="fa-solid fa-hotel fa-lg"></i>  
-                                <span>Pet Rooms</span>
+                                <span>Pet Hotel</span>
                             </a>
                         </nav>
                         <!-- <nav class="navbar bg-body-tertiary">                        
@@ -133,7 +137,7 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Pet Room Management</h1>
+                                <h1>Quản lí Pet Hotel</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
                                 <span>Username2025 (Admin)</span>
@@ -170,62 +174,110 @@
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item" style="color: #6c757d;">Dashboard</li>
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Pet Rooms</li>
+                                <li class="breadcrumb-item active" aria-current="page">PetHotels</li>
                             </ol>
                         </nav>
                     </div>   
 
-                    <div class="row">
-                        <div class="col-3 p-0" style="margin-top: 60px;">
-                            <button type="button" class="btn btn-primary">
-                                <i class="fa-solid fa-plus"></i>
-                                New Kennel
-                            </button>
-                        </div>        
-                    </div>
+                    <button class="btn btn-primary">Thêm Phòng Mới</button>
 
+                    <%
+                        List<PetRooms> petRooms = (List<PetRooms>) request.getAttribute("petRooms");
+                    %>
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <div class="main-dashboard-table">
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
                                  style="background-color: #007BFF; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
                                 <i class="fa-solid fa-hotel fa-lg"></i>
-                                <h4 class="mb-0">Pet Room List</h4>
+                                <h4 class="mb-0">Danh sách phòng thú cưng</h4>
                             </div>
+
                             <div style="padding: 15px 15px 25px 15px;">
-                                <table class="table">
-                                    <thead>
+                                <table class="table table-hover">
+                                    <thead class="table-primary">
                                         <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">First</th>
-                                            <th scope="col">Last</th>
-                                            <th scope="col">Handle</th>
+                                            <th scope="col">Tên phòng</th>
+                                            <th scope="col">Loại</th>
+                                            <th scope="col">Cân nặng tối thiểu (kg)</th>
+                                            <th scope="col">Cân nặng tối đa (kg)</th>
+                                            <th scope="col">Giá (VNĐ)</th>
+                                            <th scope="col">Số lượng</th>
+                                            <th scope="col">Trạng thái</th>
+                                            <th scope="col">Hành động</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <% if (petRooms != null && !petRooms.isEmpty()) {
+                                                for (PetRooms room : petRooms) {%>
                                         <tr>
-                                            <th scope="row">1</th>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
+                                            <td><%= room.getRoomName()%></td>
+                                            <td><%= room.getRoomType()%></td>
+                                            <td><%= room.getMinWeight()%></td>
+                                            <td><%= room.getMaxWeight()%></td>
+                                            <td><%= room.getPricePerNight()%></td>
+                                            <td><%= room.getQuantity()%></td>
+                                            <td>
+                                                <span style="font-weight: bold; color: white; padding: 5px; color: <%= room.getStatus().equals("Còn phòng") ? "green" : "red"%>;">
+                                                    <%= room.getStatus()%>
+                                                </span>
+                                            </td>
+
+
+                                            <td>
+                                                <button type="button" class="btn btn-primary">Sửa</button>
+                                                <!-- Nút Xóa -->
+                                                <button type="button" class="btn btn-danger btn-sm" 
+                                                        onclick="confirmDelete('<%= room.getRoomId()%>')">
+                                                    <i class="fa fa-trash"></i> Xóa
+                                                </button>
+
+                                                <script>
+                                                    function confirmDelete(roomId) {
+                                                        Swal.fire({
+                                                            title: `Bạn có chắc chắn muốn xóa phòng có ID ${roomId} không?`,
+                                                            text: "Hành động này không thể hoàn tác!",
+                                                            icon: "warning",
+                                                            showCancelButton: true,
+                                                            confirmButtonColor: "#007BFF",
+                                                            cancelButtonColor: "#DC3545",
+                                                            confirmButtonText: "Có, xóa phòng",
+                                                            cancelButtonText: "Hủy, quay lại"
+                                                        }).then((result) => {
+                                                            if (result.isConfirmed) {
+                                                                let form = document.createElement("form");
+                                                                form.method = "POST";
+                                                                form.action = "/deleteroom";
+                                                                let input = document.createElement("input");
+                                                                input.type = "hidden";
+                                                                input.name = "roomId";
+                                                                input.value = roomId;
+                                                                form.appendChild(input);
+                                                                document.body.appendChild(form);
+                                                                form.submit();
+                                                            }
+                                                        });
+                                                    }
+
+                                                </script>
+
+                                            </td>
                                         </tr>
+                                        <% }
+                                        } else { %>
                                         <tr>
-                                            <th scope="row">2</th>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                            <td>@fat</td>
+                                            <td colspan="5" class="text-center">
+                                                <div class="alert alert-warning" role="alert">
+                                                    Không có phòng nào được tìm thấy.
+                                                </div>
+                                            </td>
                                         </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td colspan="2">Larry the Bird</td>
-                                            <td>@twitter</td>
-                                        </tr>                             
+                                        <% }%>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                    </div>          
-
+                    </div>        
                 </div>
 
             </div>

@@ -5,22 +5,20 @@
 package controller;
 
 import dao.PetRoomDAO;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
-import java.util.List;
-import model.PetRooms;
 
 /**
  *
  * @author Nguyen Tien Thanh
  */
-public class PetRoomListServlet extends HttpServlet {
+public class AdminDeleteRoomServlet extends HttpServlet {
+
+    private PetRoomDAO roomDAO = new PetRoomDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +37,10 @@ public class PetRoomListServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet PetRoomListServlet</title>");
+            out.println("<title>Servlet AdminDeleteRoomServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet PetRoomListServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AdminDeleteRoomServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,23 +58,7 @@ public class PetRoomListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String filter = request.getParameter("filter");
-        List<PetRooms> roomList;
-
-        if (filter == null || filter.isEmpty()) {
-            // Nếu không có filter -> Lấy toàn bộ danh sách phòng
-            roomList = PetRoomDAO.getAllPetRooms();
-        } else {
-            // Lọc danh sách phòng dựa trên filter
-            roomList = PetRoomDAO.filterPetRooms(filter);
-        }
-
-        // Đưa danh sách vào request scope
-        request.setAttribute("roomList", roomList);
-
-        // Chuyển hướng đến JSP
-        RequestDispatcher dispatcher = request.getRequestDispatcher("petrooms.jsp");
-        dispatcher.forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -90,7 +72,18 @@ public class PetRoomListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            int roomId = Integer.parseInt(request.getParameter("roomId"));
+            boolean success = roomDAO.deletePetRoom(roomId);
+            if (success) {
+                request.getSession().setAttribute("message", "Xóa phòng thành công!");
+            } else {
+                request.getSession().setAttribute("error", "Không thể xóa phòng!");
+            }
+        } catch (Exception e) {
+            request.getSession().setAttribute("error", "Lỗi: " + e.getMessage());
+        }
+        response.sendRedirect(request.getContextPath() + "/dashboard/admin/petroom");
     }
 
     /**

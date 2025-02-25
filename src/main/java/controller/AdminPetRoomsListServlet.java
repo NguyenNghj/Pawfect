@@ -5,14 +5,12 @@
 package controller;
 
 import dao.PetRoomDAO;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
 import java.util.List;
 import model.PetRooms;
 
@@ -20,7 +18,7 @@ import model.PetRooms;
  *
  * @author Nguyen Tien Thanh
  */
-public class PetRoomListServlet extends HttpServlet {
+public class AdminPetRoomsListServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +37,10 @@ public class PetRoomListServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet PetRoomListServlet</title>");
+            out.println("<title>Servlet PetRoomsListServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet PetRoomListServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet PetRoomsListServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,23 +58,9 @@ public class PetRoomListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String filter = request.getParameter("filter");
-        List<PetRooms> roomList;
-
-        if (filter == null || filter.isEmpty()) {
-            // Nếu không có filter -> Lấy toàn bộ danh sách phòng
-            roomList = PetRoomDAO.getAllPetRooms();
-        } else {
-            // Lọc danh sách phòng dựa trên filter
-            roomList = PetRoomDAO.filterPetRooms(filter);
-        }
-
-        // Đưa danh sách vào request scope
-        request.setAttribute("roomList", roomList);
-
-        // Chuyển hướng đến JSP
-        RequestDispatcher dispatcher = request.getRequestDispatcher("petrooms.jsp");
-        dispatcher.forward(request, response);
+        List<PetRooms> petRooms = PetRoomDAO.getAllPetRooms(); // Lấy danh sách phòng từ DB
+        request.setAttribute("petRooms", petRooms); // Gửi dữ liệu sang JSP
+        request.getRequestDispatcher("/dashboard/admin/petRoom.jsp").forward(request, response);
     }
 
     /**
