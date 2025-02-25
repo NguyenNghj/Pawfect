@@ -54,7 +54,7 @@
                                             <!-- Item Images -->
                                             <div class="col-auto">
                                                 <div class="item-images">
-                                                    <img src="https://bizweb.dktcdn.net/100/091/443/products/hieuunganh-com-5e9066b48c276.png?v=1586522083473" alt="">
+                                                    <img src="${c.productImage}" alt="">
                                                 </div>
                                             </div>
 
