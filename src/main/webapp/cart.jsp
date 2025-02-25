@@ -163,6 +163,8 @@
                                 
                                 $("#totalQuantity").text(response.totalQuantity);
                                 
+                                $("#cart-count").text(response.totalQuantity);
+                                
                                 console.log("Đã xóa sản phẩm khỏi giỏ hàng!");
 
                                 // Kiểm tra xem giỏ hàng có còn sản phẩm nào không
@@ -183,6 +185,8 @@
                                 $("#subtotal-" + productId).text(formatNumber(response.subtotal));
                                 
                                 $("#totalQuantity").text(response.totalQuantity);
+                                
+                                $("#cart-count").text(response.totalQuantity);
                             }
 
                             console.log("Cập nhật giỏ hàng thành công!");
