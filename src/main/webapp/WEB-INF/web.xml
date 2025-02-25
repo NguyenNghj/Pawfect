@@ -47,13 +47,21 @@
         <servlet-name>ViewFinancialStatisticsServlet</servlet-name>
         <servlet-class>controller.ViewFinancialStatisticsServlet</servlet-class>
     </servlet>
-        <servlet>
+    <servlet>
         <servlet-name>PetRoomDetailServlet</servlet-name>
         <servlet-class>controller.PetRoomDetailServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PetRoomListServlet</servlet-name>
         <servlet-class>controller.PetRoomListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminPetRoomsListServlet</servlet-name>
+        <servlet-class>controller.AdminPetRoomsListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminDeleteRoomServlet</servlet-name>
+        <servlet-class>controller.AdminDeleteRoomServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
@@ -99,13 +107,21 @@
         <servlet-name>ViewFinancialStatisticsServlet</servlet-name>
         <url-pattern>/viewfinancialstatistics</url-pattern>
     </servlet-mapping>
-        <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>PetRoomDetailServlet</servlet-name>
         <url-pattern>/petroomdetail</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PetRoomListServlet</servlet-name>
         <url-pattern>/petrooms</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminPetRoomsListServlet</servlet-name>
+        <url-pattern>/dashboard/admin/petroom</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminDeleteRoomServlet</servlet-name>
+        <url-pattern>/deleteroom</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
