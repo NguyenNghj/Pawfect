@@ -5,7 +5,7 @@
         <servlet-class>controller.ShopControl</servlet-class>
     </servlet>
     <welcome-file-list>
-        <welcome-file>bookingdetail.jsp</welcome-file>
+        <welcome-file>pawfect</welcome-file>
     </welcome-file-list>
     <servlet>
         <servlet-name>ManagerControl</servlet-name>

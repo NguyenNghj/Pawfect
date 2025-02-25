@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller;
 
 import dao.OrderDAO;
@@ -14,42 +13,48 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import model.Order;
 import model.OrderItem;
+import util.Email;
 
 /**
  *
  * @author VU QUANG DUC - CE181221
  */
 public class OrderManagementServlet extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet OrderManagementServlet</title>");  
+            out.println("<title>Servlet OrderManagementServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet OrderManagementServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet OrderManagementServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -57,7 +62,7 @@ public class OrderManagementServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         String action = request.getParameter("action");
         try {
             switch (action) {
@@ -67,6 +72,9 @@ public class OrderManagementServlet extends HttpServlet {
                 case "viewdetail":
                     viewOrderDetail(request, response);
                     break;
+                case "cancel":
+                    cancelOrder(request, response);
+                    break;
                 default:
                     // listNhanVien(request, response);
                     break;
@@ -75,7 +83,51 @@ public class OrderManagementServlet extends HttpServlet {
             throw new ServletException(e);
         }
     }
-    
+
+    private void cancelOrder(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+
+        try {
+            int orderId = Integer.parseInt(request.getParameter("orderId"));
+            String statusOrder = request.getParameter("statusOrder");
+            String statusShow = request.getParameter("status");
+            String actionBack = request.getParameter("actionBack");
+
+            boolean cancel = OrderDAO.cancelOrder(statusOrder, orderId);
+            if (cancel) {
+                System.out.println("Hủy đơn thành công.");
+
+                List<Order> orders = OrderDAO.getOrderByOrderId(orderId);
+                String customerName = orders.get(0).getCustomerName();
+                String orderDate = orders.get(0).getOrderDate();
+                String supportLink = "https://example.com/support";
+
+                String contentEmail = Email.emailCancel;
+                String finalContentEmail = String.format(contentEmail, customerName, (orderId + 2500000), orderDate, supportLink);
+
+                ExecutorService executor = Executors.newFixedThreadPool(10); // Tạo một ExecutorService với 10 luồng
+
+                executor.submit(() -> {
+                    try {
+                        Email.sendEmail("vuquangduc1404@gmail.com", "Xác nhận đơn hàng", finalContentEmail);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                if (actionBack.equals("viewdetail")){
+                    response.sendRedirect("ordermanagement?action=" + actionBack + "&orderId=" + orderId);
+                } else {
+                    response.sendRedirect("ordermanagement?action=" + actionBack + "&status=" + statusShow);
+                }
+
+            } else {
+                System.out.println("Cancel that bai!!");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println(e);
+        }
+    }
+
     private void viewOrderDetail(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
 //        int customerId = Integer.parseInt(request.getParameter("customerId"));
@@ -94,7 +146,7 @@ public class OrderManagementServlet extends HttpServlet {
         request.getRequestDispatcher("/dashboard/staff/orderDetail.jsp").forward(request, response);
 
     }
-    
+
     private void viewOrderHistory(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         List<Order> orders = null;
@@ -131,8 +183,9 @@ public class OrderManagementServlet extends HttpServlet {
 
     }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -140,12 +193,13 @@ public class OrderManagementServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         doGet(request, response);
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

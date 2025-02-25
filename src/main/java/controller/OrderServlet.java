@@ -13,8 +13,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import model.Order;
 import model.OrderItem;
+import util.Email;
 
 /**
  *
@@ -26,15 +29,15 @@ public class OrderServlet extends HttpServlet {
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -53,10 +56,10 @@ public class OrderServlet extends HttpServlet {
     /**
      * Handles the HTTP <code>GET</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -70,6 +73,9 @@ public class OrderServlet extends HttpServlet {
                 case "viewdetail":
                     viewOrderDetail(request, response);
                     break;
+                case "cancel":
+                    cancelOrder(request, response);
+                    break;
                 default:
                     // listNhanVien(request, response);
                     break;
@@ -79,9 +85,52 @@ public class OrderServlet extends HttpServlet {
         }
     }
 
+    private void cancelOrder(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+
+        try {
+            int orderId = Integer.parseInt(request.getParameter("orderId"));
+            String statusOrder = request.getParameter("statusOrder");
+            String statusShow = request.getParameter("status");
+            String actionBack = request.getParameter("actionBack");
+
+            boolean cancel = OrderDAO.cancelOrder(statusOrder, orderId);
+            if (cancel) {
+                System.out.println("Hủy đơn thành công.");
+
+                List<Order> orders = OrderDAO.getOrderByOrderId(orderId);
+                String customerName = orders.get(0).getCustomerName();
+                String orderDate = orders.get(0).getOrderDate();
+                String supportLink = "https://example.com/support";
+
+                String contentEmail = Email.emailCancel;
+                String finalContentEmail = String.format(contentEmail, customerName, (orderId + 2500000), orderDate, supportLink);
+
+                ExecutorService executor = Executors.newFixedThreadPool(10); // Tạo một ExecutorService với 10 luồng
+
+                executor.submit(() -> {
+                    try {
+                        Email.sendEmail("vuquangduc1404@gmail.com", "Xác nhận đơn hàng", finalContentEmail);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+                if (actionBack.equals("viewdetail")){
+                    response.sendRedirect("order?action=" + actionBack + "&orderId=" + orderId);
+                } else {
+                    response.sendRedirect("order?action=" + actionBack + "&status=" + statusShow);
+                }
+                
+            } else {
+                System.out.println("Cancel that bai!!");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println(e);
+        }
+    }
+
     private void viewOrderDetail(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-//        int customerId = 1;
         int orderId = Integer.parseInt(request.getParameter("orderId"));
 
         List<OrderItem> orderitems = OrderDAO.getOrderItemsByOrderId(orderId);
@@ -137,10 +186,10 @@ public class OrderServlet extends HttpServlet {
     /**
      * Handles the HTTP <code>POST</code> method.
      *
-     * @param request  servlet request
+     * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException      if an I/O error occurs
+     * @throws IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

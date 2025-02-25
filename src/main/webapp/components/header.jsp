@@ -86,7 +86,18 @@
                         <!-- CART ICON -->
                         <a class="cart-btn" href="cart?action=view">
                             <i class="bi bi-cart-fill cart-icon"></i>
-                            <span class="cart-text">2 Items</span>
+                            <span id="cart-count" class="cart-text">
+                                <c:choose>
+                                    <c:when test="${empty totalQuantity}">
+                                        0
+                                    </c:when>
+                                    <c:otherwise>
+                                        ${totalQuantity} 
+                                    </c:otherwise>
+                                </c:choose>
+                                
+                            </span>
+                            &nbsp;<span class="cart-text">Items</span>
                         </a>
                     </div>
                 </div>
