@@ -24,14 +24,14 @@
             <div class="container-fluid">
                 <div class="row align-items-center">
                     <!-- LOGO HEADER -->
-                    <div class="col">
+                    <div class="col-auto">
                         <a href="#">
                             <img class="logo-header" src="./img/header/logo.png" alt="PawPect Logo">
                         </a>
                     </div>
 
                     <!-- NAVIGATION -->
-                    <div class="col-6">
+                    <div class="col-6 col-lg">
                         <nav class="row content-header-menu align-items-center justify-content-center text-center">
                             <div class="col-auto">
                                 <a class="btn" href="#">Về PawPect</a>
@@ -65,7 +65,7 @@
                     </div>
 
                     <!-- ICONS: Search, User, Cart -->
-                    <div class="col d-flex justify-content-end align-items-center gap-3">
+                    <div class="col-auto d-flex justify-content-end align-items-center gap-3">
                         <a class="btn" href="#"><i class="bi bi-search"></i></a>
                         <div class="search-container">
                             <input type="text" id="search-box" class="search-box" placeholder="Nhập từ khóa cần tìm...">
