@@ -218,10 +218,11 @@
                                             <td><%= room.getPricePerNight()%></td>
                                             <td><%= room.getQuantity()%></td>
                                             <td>
-                                                <span class="status-badge <%= room.getStatus().equals("Còn phòng") ? "bg-success" : "bg-danger"%>">
+                                                <span style="font-weight: bold; color: white; padding: 5px; color: <%= room.getStatus().equals("Còn phòng") ? "green" : "red"%>;">
                                                     <%= room.getStatus()%>
                                                 </span>
                                             </td>
+
 
                                             <td>
                                                 <button type="button" class="btn btn-primary">Sửa</button>

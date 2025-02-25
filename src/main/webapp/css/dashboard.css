@@ -219,18 +219,3 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     color: #212529 !important;
 }
 
-.bg-success {
-    background-color: #28a745 !important; /* Màu xanh lá */
-    color: white !important; /* Chữ trắng */
-    font-weight: bold !important; /* In đậm */
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-
-.bg-danger {
-    background-color: #dc3545 !important; /* Màu đỏ */
-    color: white !important; /* Chữ trắng */
-    font-weight: bold !important; /* In đậm */
-    padding: 5px 10px;
-    border-radius: 5px;
-}
