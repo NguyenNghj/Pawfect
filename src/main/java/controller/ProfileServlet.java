@@ -5,7 +5,7 @@
 
 package controller;
 
-import dao.UserDAO;
+import dao.ProfileDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,13 +13,14 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Account;
+import java.sql.Date;
+import model.User;
 
 /**
  *
  * @author LENOVO
  */
-public class LoginServlet extends HttpServlet {
+public class ProfileServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -36,10 +37,10 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");  
+            out.println("<title>Servlet ProfileServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ProfileServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,7 +57,20 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        response.sendRedirect("Login.jsp");
+         String customerId = null;   
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {            
+                if ("customerId".equals(cookie.getName())) {
+                         customerId  = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        ProfileDAO profileDAO = new ProfileDAO();
+User user = profileDAO.getUser(customerId);
+request.setAttribute("customer", user);
+ request.getRequestDispatcher("profile.jsp").forward(request, response);
     } 
 
     /** 
@@ -69,20 +83,27 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       String email = request.getParameter("email");
-        String password = request.getParameter("password");
-
-        UserDAO userDAO = new UserDAO();
-        Account account = new Account();
-        account = userDAO.login(email, password);
-        if (!Account.IsEmpty(account)) {
-            Cookie customerId = new Cookie("customerId", account.getCustomerId());
-            customerId.setMaxAge(60 * 60 * 24 * 1);
-            response.addCookie(customerId);
-            response.sendRedirect("products");
-        } else {
-            response.sendRedirect("Login.jsp?error=Invalid Credentials");
+         String customerId = null;   
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {            
+                if ("customerId".equals(cookie.getName())) {
+                         customerId  = cookie.getValue();
+                    break;
+                }
+            }
         }
+       String email = request.getParameter("email");
+        String fullName = request.getParameter("fullName");
+   String birthDateStr = request.getParameter("birthDate");
+     Date birthDate = Date.valueOf(birthDateStr); 
+        String gender = request.getParameter("gender");
+        String address = request.getParameter("address");
+        String phoneNumber = request.getParameter("phoneNumber");
+          String password = request.getParameter("password");
+            ProfileDAO profileDAO = new ProfileDAO();
+         profileDAO.editProfil( new User(email,password,fullName,phoneNumber,address,gender,birthDate),customerId);
+         response.sendRedirect(request.getContextPath()+"/ProfileServlet");
     }
 
     /** 

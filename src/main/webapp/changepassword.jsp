@@ -12,7 +12,7 @@
         <title>JSP Page</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <link rel="stylesheet" href="./css/account.css">
+        <link rel="stylesheet" href="CSS/account.css">
     </head>
     <body>
         <div class="container py-4">
@@ -23,7 +23,7 @@
                     <li class="breadcrumb-item active" aria-current="page">Tài khoản</li>
                 </ol>
             </nav>
-    
+
             <div class="row g-4">
                 <!-- Main Content -->
                 <div class="col-md-8">
@@ -35,7 +35,7 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex align-items-center gap-3">
                                     <i class="bi bi-clipboard-check fs-4 text-primary"></i>
-                                    <a href="order?&action=view&status=tc" class="text-decoration-none text-dark">
+                                    <a href="#" class="text-decoration-none text-dark">
                                         Lịch sử đơn hàng
                                     </a>
                                 </div>
@@ -55,44 +55,62 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex align-items-center gap-3">
                                     <i class="bi bi-person-circle fs-4"></i>
-                                    <span>Xin chào, <span class="text-primary">[tên khách hàng]</span></span>
+                                    <span>Xin chào, <span class="text-primary">[${customer.fullName}]</span></span>
                                 </div>
                             </div>
                         </div>
                     </div>
-    
-                    <!-- Orders Section -->
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title mb-2">Đổi mật khẩu</h5>
-                            <p style="color: #4c4c4c;">Để đảm bảo tính bảo mật vui lòng đặt mật khẩu với ít nhất 8 kí tự</p>
-                            <div class="d-grid gap-2 account-info">
-                                <div class="mb-2 mt-2">
-                                    <label for="formGroupExampleInput" class="form-label">Mật khẩu cũ <span style="color: red;">*</span></label>
-                                    <input type="password" class="form-control" id="formGroupExampleInput" required>
-                                  </div>
-                                <div class="mb-2">
-                                    <label for="formGroupExampleInput2" class="form-label">Mật khẩu mới <span style="color: red;">*</span></label>
-                                    <input type="password" class="form-control" id="formGroupExampleInput2" required>
+                    <form action="ChangePassword" method="POST" onsubmit="return validatePasswordForm()">
+                        <!-- Orders Section -->
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title mb-2">Đổi mật khẩu</h5>
+                                <% 
+    String message = (String) session.getAttribute("message");
+    String messageType = (String) session.getAttribute("messageType");
+    if (message != null) { 
+%>
+    <div class="alert alert-<%= "success".equals(messageType) ? "success" : "danger" %>">
+        <%= message %>
+    </div>
+<% 
+    session.removeAttribute("message");
+    session.removeAttribute("messageType");
+    } 
+%>
+
+                                <p style="color: #4c4c4c;">Để đảm bảo tính bảo mật vui lòng đặt mật khẩu với ít nhất 6 kí tự</p>
+                                <div class="d-grid gap-2 account-info">
+                                    <div class="mb-2 mt-2">
+                                        <label class="form-label">Mật khẩu cũ <span style="color: red;">*</span></label>
+                                        <input type="password" class="form-control" name="password" id="oldPassword">
+                                        <small id="oldPasswordError" class="text-danger"></small>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Mật khẩu mới <span style="color: red;">*</span></label>
+                                        <input type="password" name="newPassword" class="form-control" id="newPassword">
+                                        <small id="newPasswordError" class="text-danger"></small>
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">Xác nhận lại mật khẩu <span style="color: red;">*</span></label>
+                                        <input type="password" class="form-control" id="confirmPassword">
+                                        <small id="confirmPasswordError" class="text-danger"></small>
+                                    </div>
                                 </div>
-                                <div class="mb-2">
-                                    <label for="formGroupExampleInput2" class="form-label">Xác nhận lại mật khẩu <span style="color: red;">*</span></label>
-                                    <input type="password" class="form-control" id="formGroupExampleInput2" required>
-                                </div>
+                                <div class="mt-2">
+                                    <button type="submit" class="btn btn-primary" >Đổi mật khẩu</button>
+                                </div>                        
                             </div>
-                            <div class="mt-2">
-                                <a href="#" class="btn btn-primary">Đặt lại mật khẩu</a>
-                            </div>                         
                         </div>
-                    </div>
+                    </form>
                 </div>
-    
+
                 <!-- Sidebar -->
                 <div class="col-md-4">
                     <div class="list-group account-action">
-                        
+
                         <!-- Thông tin cá nhân -->
-                        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                        <a href="Profile" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-regular fa-user fa-lg" style="color: #0062ad;"></i>
                             <span>Thông tin cá nhân</span>
                         </a>
@@ -102,12 +120,12 @@
                             <span>Thú cưng của tôi</span>
                         </a>
                         <!-- Đổi mật khẩu -->
-                        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                        <a href="ChangePassword" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-solid fa-key fa-lg" style="color: #eabd1a;"></i>
                             <span style="color: #1c49c2;"><b>Đổi mật khẩu</b></span>
                         </a>
                         <!-- Đăng xuất -->
-                        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                        <a href="Logout" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-solid fa-arrow-right-from-bracket fa-lg" style="color: #d01616;"></i>
                             <span>Đăng xuất</span>
                         </a>
@@ -115,8 +133,49 @@
                 </div>
             </div>
         </div>
-    
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
     </body>
+    <script>
+                        function validatePasswordForm() {
+                            let isValid = true;
+
+                            // Lấy giá trị input
+                            let oldPassword = document.getElementById("oldPassword").value.trim();
+                            let newPassword = document.getElementById("newPassword").value.trim();
+                            let confirmPassword = document.getElementById("confirmPassword").value.trim();
+
+                            // Xóa thông báo lỗi cũ
+                            document.getElementById("oldPasswordError").innerHTML = "";
+                            document.getElementById("newPasswordError").innerHTML = "";
+                            document.getElementById("confirmPasswordError").innerHTML = "";
+
+                            // Kiểm tra Mật khẩu cũ
+                            if (oldPassword === "") {
+                                document.getElementById("oldPasswordError").innerHTML = "Vui lòng nhập mật khẩu cũ!";
+                                isValid = false;
+                            }
+ if (oldPassword.length < 6) {
+                document.getElementById("oldPasswordError").innerHTML = "Mật khẩu phải có ít nhất 6 ký tự!";
+                isValid = false;
+            }
+                            // Kiểm tra Mật khẩu mới
+                            if (newPassword.length < 6) {
+                                document.getElementById("newPasswordError").innerHTML = "Mật khẩu mới phải có ít nhất 6 ký tự!";
+                                isValid = false;
+                            }
+
+                            // Kiểm tra Xác nhận mật khẩu
+                            if (confirmPassword === "") {
+                                document.getElementById("confirmPasswordError").innerHTML = "Vui lòng nhập lại mật khẩu!";
+                                isValid = false;
+                            } else if (confirmPassword !== newPassword) {
+                                document.getElementById("confirmPasswordError").innerHTML = "Mật khẩu xác nhận không khớp!";
+                                isValid = false;
+                            }
+
+                            return isValid;
+                        }
+    </script>
 </html>
