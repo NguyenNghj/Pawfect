@@ -1,0 +1,508 @@
+* {
+    font-family: 'Baloo 2', sans-serif !important;
+}
+
+.info {
+    display: flex;
+    margin-bottom: 50px;
+}
+
+.right-info {
+    padding: 2rem 0 2rem 15rem;
+}
+
+.left-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 50px;
+}
+
+.infologo {
+    color: white;
+    padding: 10px;
+    aspect-ratio: 1 / 1;
+    border-radius: 100%;
+    background-color: #D3A376;
+    transition: all 0.4s ease-in-out;
+}
+
+.infologo:hover {
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+
+.out-infologo {
+    width: auto;
+    border-radius: 100%;
+    padding: 5px;
+    border: 2px dashed #8C6E63;
+}
+
+
+.all-inflogo {
+    display: flex;
+    gap: 10px;
+}
+
+.contact {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.slide-hinhanh {
+    aspect-ratio: 16 / 9;
+    max-width: 100rem;
+}
+
+.infoimg {
+    width: 400px;
+}
+
+.diachi {
+    font-size: 20px;
+}
+
+
+.pawfect {
+    width: auto;
+    margin-bottom: 50px;
+    background-color: #FFF2DF;
+}
+
+.pawfect-text {
+    text-align: center;
+    font-weight: bold;
+    color: #8c6e63;
+    font-size: 85px;
+    font-family: 'Baloo 2', sans-serif;
+    text-transform: uppercase;
+}
+
+.we-are {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+h1 {
+    font-weight: bold;
+    font-size: 30px;
+    margin: 0;
+    padding: 10px;
+    color: #8c6e63;
+}
+
+.finding {
+    text-align: justify;
+    font-size: 20px;
+    padding: 10px;
+}
+
+.about-us {
+    display: flex;
+    justify-content: center;
+
+}
+
+.logo {
+    font-size: 70px;
+    color: white;
+    padding: 10px;
+    aspect-ratio: 1 / 1;
+    border-radius: 100%;
+    border: 2px dashed #D3A376;
+    background-color: #D3A376;
+}
+
+.logo-vuong {
+    color: white;
+    padding: 10px;
+    aspect-ratio: 1 / 1;
+    border-radius: 10%;
+    background-color: #D3A376;
+}
+
+
+.dang-tim-kiem {
+    box-sizing: border-box;
+    font-size: 20px;
+    text-align: center;
+}
+
+.chitiet {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.chitiet-hover {
+    transition: all 0.4s ease-in-out;
+}
+
+.chitiet-hover:hover {
+    transform: scale(1.05);
+}
+
+.chitiet a {
+    width: 145px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #a88f79;
+    font-size: 20px;
+    overflow: hidden;
+    margin: auto;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.dich-vu-box {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.4s ease-in-out;
+    cursor: pointer;
+}
+
+.dich-vu-box:hover {
+    transform: scale(1.2);
+}
+
+.dich-vu-icon {
+    color: white;
+    background-color: #D3A376;
+    padding: 10px;
+    border-radius: 100%;
+    position: absolute;
+    font-size: 40px;
+    top: -20px;
+    /* Điều chỉnh icon nằm trên h3 */
+    z-index: 1;
+    /* Đảm bảo icon hiển thị trên cùng */
+}
+
+.dich-vu-box h3 {
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    border: 2px solid #D3A376;
+    position: relative;
+    margin-top: 20px;
+    /* Tạo khoảng trống phía trên để icon không bị che */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.dich-vu-noi-bat {
+    margin-bottom: 50px;
+}
+
+.dich-vu-noi-bat-text {
+    text-align: center;
+    font-weight: bold;
+    color: #8c6e63;
+    font-size: 40px;
+    font-family: 'Baloo 2', sans-serif;
+    text-transform: uppercase;
+    padding-bottom: 30px;
+}
+
+.dich-vu-noi-bat-chi-tiet {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    gap: 50px;
+}
+
+.chi-tiet-dich-vu {
+    font-size: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+.chi-tiet-dich-vu h3{
+    font-weight: bold;
+    color: Black;
+}
+
+
+.motsohinhanh {
+    margin-bottom: 50px;
+}
+
+.motsohinhanh-text {
+    text-align: center;
+    font-weight: bold;
+    color: #8c6e63;
+    font-size: 40px;
+    font-family: 'Baloo 2', sans-serif;
+    text-transform: uppercase;
+    padding-bottom: 30px;
+}
+
+.hinhanh {
+    display: block;
+
+}
+
+.hinhanh-hang1,
+.hinhanh-hang2,
+.hinhanh-hang3 {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
+.hinhanh img {
+    width: 350px;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.motsosanpham {
+    margin-bottom: 40px;
+}
+
+.motsosanpham-text {
+    text-align: center;
+    font-weight: bold;
+    color: #8c6e63;
+    font-size: 40px;
+    font-family: 'Baloo 2', sans-serif;
+    text-transform: uppercase;
+    padding-bottom: 30px;
+}
+
+.motsosanpham-sanpham {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+
+.product-card {
+    width: 318px;
+    height: 405px;
+    background-color: white;
+    border-radius: 20px;
+    position: relative;
+    padding: 0;
+    margin: 10px;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.product-image img {
+    width: 318px;
+    min-width: 318px;
+    max-width: 318px;
+
+    height: 287px;
+    min-height: 287px;
+    max-height: 287px;
+    border-radius: 20px 20px 0 0;
+    object-fit: contain;
+}
+
+.product-info {
+    background-color: #8C6E63;
+    border-radius: 0 0 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 318px;
+    height: 118px;
+    gap: 15px;
+}
+
+.product-name{
+    text-align: center;
+    margin: 0;
+    font-size: 18px;
+    color: #FFF2DF;
+    text-transform: uppercase;
+    padding: 0 10px  0 10px;
+    text-decoration: none;
+}
+
+.product-name:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.product-price {
+    text-align: center;
+    margin: 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: #FFF2DF;
+}
+
+.product-card .add-to-cart {
+    background-image: url('../img/homepage/add-to-cart.png');
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 64px;
+    height: 64px;
+    border: none;
+    padding: 0;
+    bottom: 5px;
+    right: 5px;
+    background-color: transparent;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.add-to-cart:hover {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.phanhoi-text {
+    text-align: center;
+    font-weight: bold;
+    color: #8c6e63;
+    font-size: 35px;
+    font-family: 'Baloo 2', sans-serif;
+    text-transform: uppercase;
+    padding-bottom: 30px;
+}
+
+
+.phanhoi-tren {
+    text-align: left;
+}
+
+.phanhoi-muiten {
+    display: flex;
+    gap: 20px;
+    width: 42px;
+    height: 42px;
+}
+
+.muitentrai,
+.muitenphai {
+    font-size: 30px;
+    border: 3px dashed #3E2522;
+    padding: 3px;
+    color: #3E2522;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.4s ease-in-out;
+}
+
+.muitentrai:hover,
+.muitenphai:hover {
+    color: #FFE0B2;
+    transform: scale(1.2);
+}
+
+.phanhoi {
+    padding-bottom: 40px;
+}
+
+.phanhoi-ten {
+    display: inline;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+    color: #8C6E63;
+}
+
+.divider {
+    margin: 0;
+}
+
+.phanhoi-phanhoi {
+    background-color: #FFF2DF;
+    padding: 3px;
+    border-radius: 10px;
+    margin: 0;
+}
+
+.phanhoi-card {
+    padding: 10px;
+    display: block;
+    justify-content: center;
+    width: 250px;
+    height: auto;
+    border: 2px dashed #D3A376;
+    display: flex;
+    flex-direction: column;
+    margin: 0 90px;
+    gap: 5px;
+    border-radius: 10px;
+}
+
+
+.tieuchi {
+    padding: 50px 0;
+    text-align: center;
+}
+
+.tieuchi-item {
+    background: #fff;
+    padding: 40px 20px 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: transform 0.3s ease-in-out;
+    margin-top: 40px;
+    height: 160px;
+}
+
+.tieuchi-item:hover {
+    transform: translateY(-5px);
+}
+
+.tieuchi-icon {
+    font-size: 40px;
+    color: #3E2522;
+    background: #FFE0B2;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+.tieuchi-text {
+    font-size: 18px;
+    font-weight: bold;
+    display: block;
+    margin-top: 30px;
+}
+
