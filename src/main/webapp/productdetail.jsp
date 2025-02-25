@@ -18,8 +18,8 @@
 
     <body>
         <ol class="breadcrumb">
-            <li><a class="trang-chu" href="/p">Trang chủ</a></li>
-            <li>${product.categoryName}</li>
+            <li><a class="trang-chu" href="/products">Trang chủ</a></li>
+            <li><a class="trang-chu" href="/products?category=${product.categoryName}">${product.categoryName}</a></li>
             <li>${product.productName}</li>
         </ol>
 
