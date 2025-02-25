@@ -18,16 +18,11 @@
 
 <body>
     <div class="wrapper">
-        <form action="RegisterServlet" method="POST" onsubmit="return validateForm()">
+        <form action="register" method="POST" onsubmit="return validateForm()">
 
             <h1>Đăng ký</h1>
-<% 
-    String error = request.getParameter("error");
-    if (error != null) { 
-%>
-    <div style="color: black; margin-bottom: 10px;">
-     email bạn đăng ký đã tồn tại
-    </div>
+<% if (request.getAttribute("error") != null) { %>
+    <p style="color: black;"><%= request.getAttribute("error") %></p>
 <% } %>
 
             <div class="input-box">  

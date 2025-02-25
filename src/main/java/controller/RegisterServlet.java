@@ -56,7 +56,7 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-         response.sendRedirect("register.jsp");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
     } 
 
     /** 
@@ -85,7 +85,8 @@ public class RegisterServlet extends HttpServlet {
                   response.sendRedirect("Login.jsp");
             
         }else{
-        response.sendRedirect("regiser.jsp?error=Invalid Credentials");
+      request.setAttribute("error", "Email bạn đăng ký đã tồn tại");
+request.getRequestDispatcher("register.jsp").forward(request, response);
         }
     }
 

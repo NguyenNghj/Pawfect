@@ -75,6 +75,10 @@
         <servlet-name>ForgetPasswordServlet</servlet-name>
         <servlet-class>controller.ForgetPasswordServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoginStaffServlet</servlet-name>
+        <servlet-class>controller.LoginStaffServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/products</url-pattern>
@@ -121,7 +125,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/Login</url-pattern>
+        <url-pattern>/login</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ViewFinancialStatisticsServlet</servlet-name>
@@ -129,23 +133,27 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
-        <url-pattern>/RegisterServlet</url-pattern>
+        <url-pattern>/register</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProfileServlet</servlet-name>
-        <url-pattern>/Profile</url-pattern>
+        <url-pattern>/profile</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ChangePasswordServlet</servlet-name>
-        <url-pattern>/ChangePassword</url-pattern>
+        <url-pattern>/changepassword</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
-        <url-pattern>/Logout</url-pattern>
+        <url-pattern>/logout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ForgetPasswordServlet</servlet-name>
-        <url-pattern>/ForgetPassword</url-pattern>
+        <url-pattern>/forgetpassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginStaffServlet</servlet-name>
+        <url-pattern>/loginstaff</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

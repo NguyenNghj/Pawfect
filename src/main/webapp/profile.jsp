@@ -91,7 +91,7 @@
                                         >
                                     Chỉnh sửa thông tin
                                 </button>
-                                <form action="Profile" method="POST" onsubmit="return validateForm()">
+                                <form action="profile" method="POST" onsubmit="return validateForm()">
                                     <!-- Modal -->
                                     <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -167,7 +167,7 @@
                     <div class="list-group account-action">
 
                         <!-- Thông tin cá nhân -->
-                        <a href="Profile" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                        <a href="profile" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-regular fa-user fa-lg" style="color: #0062ad;"></i>
                             <span style="color: #1c49c2;"><b>Thông tin cá nhân</b></span>
                         </a>
@@ -177,12 +177,12 @@
                             <span>Thú cưng của tôi</span>
                         </a>
                         <!-- Đổi mật khẩu -->
-                        <a href="ChangePassword" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                        <a href="changepassword" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-solid fa-key fa-lg" style="color: #eabd1a;"></i>
                             <span>Đổi mật khẩu</span>
                         </a>
                         <!-- Đăng xuất -->
-                        <a href="Logout" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                        <a href="logout" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-solid fa-arrow-right-from-bracket fa-lg" style="color: #d01616;"></i>
                             <span>Đăng xuất</span>
                         </a>

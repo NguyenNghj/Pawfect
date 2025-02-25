@@ -29,7 +29,7 @@
 </head>
 <body>
     <div class="wrapper">
-        <form action="ForgetPassword" method="POST" onsubmit="return validateEmail()">
+        <form action="forgetpassword" method="POST" onsubmit="return validateEmail()">
             <h1>Forgot Password</h1>
             
             <% if (request.getAttribute("message") != null) { %>
@@ -49,7 +49,7 @@
             <button type="submit" class="btn">Submit</button>
             
             <div class="register-link">
-                <p>Remember your password? <a href="LoginServlet">Login</a></p>
+                <p>Remember your password? <a href="login">Login</a></p>
             </div>
         </form>
     </div>

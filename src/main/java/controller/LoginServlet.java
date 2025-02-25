@@ -6,6 +6,7 @@
 package controller;
 
 import dao.UserDAO;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -56,7 +57,8 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        response.sendRedirect("Login.jsp");
+         RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+        dispatcher.forward(request, response);
     } 
 
     /** 
@@ -81,7 +83,9 @@ public class LoginServlet extends HttpServlet {
             response.addCookie(customerId);
             response.sendRedirect("products");
         } else {
-            response.sendRedirect("Login.jsp?error=Invalid Credentials");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+request.setAttribute("error", "sai email hoặc mật khẩu");
+dispatcher.forward(request, response);
         }
     }
 

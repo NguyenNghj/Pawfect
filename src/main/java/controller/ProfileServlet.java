@@ -103,7 +103,7 @@ request.setAttribute("customer", user);
           String password = request.getParameter("password");
             ProfileDAO profileDAO = new ProfileDAO();
          profileDAO.editProfil( new User(email,password,fullName,phoneNumber,address,gender,birthDate),customerId);
-         response.sendRedirect(request.getContextPath()+"/ProfileServlet");
+         response.sendRedirect(request.getContextPath()+"/profile");
     }
 
     /** 
