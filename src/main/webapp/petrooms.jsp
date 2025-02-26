@@ -1,7 +1,7 @@
+<%@page import="dao.PetHotelDAO"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
-<%@page import="model.PetRooms"%>
-<%@page import="dao.PetRoomDAO"%>
+<%@page import="model.PetHotel"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -54,12 +54,12 @@
             </div>
             <div class="grid-container responsive-grid">
                 <%
-                    List<PetRooms> list = (List<PetRooms>) request.getAttribute("roomList");
+                    List<PetHotel> list = (List<PetHotel>) request.getAttribute("roomList");
                     if (list == null) {
-                        list = PetRoomDAO.getAllPetRooms(); // Nếu danh sách null, lấy tất cả phòng
+                        list = PetHotelDAO.getAllPetRooms(); // Nếu danh sách null, lấy tất cả phòng
                     }
                     if (!list.isEmpty()) {
-                        for (PetRooms room : list) {
+                        for (PetHotel room : list) {
                 %>
                 <div class="card">
                     <h3><%= room.getRoomName()%></h3>

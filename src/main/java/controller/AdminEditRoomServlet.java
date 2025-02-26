@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dao.PetRoomDAO;
+import dao.PetHotelDAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
-import model.PetRooms;
+import model.PetHotel;
 
 /**
  *
@@ -60,7 +60,7 @@ public class AdminEditRoomServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         int roomId = Integer.parseInt(request.getParameter("room_id"));
-        PetRooms room = PetRoomDAO.getPetRoomById(roomId);
+        PetHotel room = PetHotelDAO.getPetRoomById(roomId);
         if (room != null) {
             request.setAttribute("room", room);
             RequestDispatcher dispatcher = request.getRequestDispatcher("editroom.jsp");
@@ -89,10 +89,11 @@ public class AdminEditRoomServlet extends HttpServlet {
         double maxWeight = Double.parseDouble(request.getParameter("max_weight"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
         double pricePerNight = Double.parseDouble(request.getParameter("price_per_night"));
+        String description = request.getParameter("description");
         String status = request.getParameter("status");
         boolean isActive = Boolean.parseBoolean(request.getParameter("is_active"));
 
-        PetRooms room = new PetRooms();
+        PetHotel room = new PetHotel();
         room.setRoomId(roomId);
         room.setRoomName(roomName);
         room.setRoomImage(roomImage);
@@ -101,10 +102,11 @@ public class AdminEditRoomServlet extends HttpServlet {
         room.setMaxWeight(maxWeight);
         room.setQuantity(quantity);
         room.setPricePerNight(pricePerNight);
+        room.setDescription(description);
         room.setStatus(status);
         
 
-        PetRoomDAO dao = new PetRoomDAO();
+        PetHotelDAO dao = new PetHotelDAO();
         boolean isUpdated = dao.updatePetRoom(room);
 
         if (isUpdated) {

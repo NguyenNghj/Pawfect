@@ -4,8 +4,8 @@
     Author     : Nguyen Tien Thanh - CE181342
 --%>
 
-<%@page import="dao.PetRoomDAO"%>
-<%@page import="model.PetRooms"%>
+<%@page import="dao.PetHotelDAO"%>
+<%@page import="model.PetHotel"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -186,9 +186,10 @@
                     </div>
                     <%
                         int roomId = Integer.parseInt(request.getParameter("room_id"));
-                        PetRooms room = PetRoomDAO.getPetRoomById(roomId);
+                        PetHotel room = PetHotelDAO.getPetRoomById(roomId);
                     %>
                     <div class="editroom" style="background-color: white;" method="post">
+                        <br>
                         <form id="editRoomForm" action="editroom" method="post" style="max-width: 400px; margin:  auto;" >
                             <input type="hidden" name="room_id" value="<%= room.getRoomId()%>">
 
@@ -199,8 +200,9 @@
                             <input type="text" name="room_image" class="form-control" value="<%= room.getRoomImage()%>" required style="margin-bottom: 10px;">
 
                             <label>Loại phòng:</label><br>
-                            <input type="radio" name="room_type" value="Dành cho chó" <%= room.getRoomType().equals("Dành cho chó") ? "checked" : ""%> /> Dành cho chó <br>
-                            <input type="radio" name="room_type" value="Dành cho mèo" <%= room.getRoomType().equals("Dành cho mèo") ? "checked" : ""%> style="margin-bottom: 10px;"/> Dành cho mèo <br>
+                            <input type="radio" name="room_type" value="Tiêu chuẩn" <%= room.getRoomType().equals("Tiêu chuẩn") ? "checked" : ""%> /> Tiêu chuẩn <br>
+                            <input type="radio" name="room_type" value="VIP" <%= room.getRoomType().equals("VIP") ? "checked" : ""%> /> VIP <br>
+                            <input type="radio" name="room_type" value="Luxury" <%= room.getRoomType().equals("Luxury") ? "checked" : ""%> /> Luxury <br>
 
                             <label>Cân nặng tối thiểu (kg):</label>
                             <input type="number" name="min_weight" step="0.1" class="form-control" value="<%= room.getMinWeight()%>" required style="margin-bottom: 10px;">
@@ -214,13 +216,17 @@
                             <label>Giá mỗi đêm (VNĐ):</label>
                             <input type="number" name="price_per_night" step="0.01" class="form-control" value="<%= room.getPricePerNight()%>" required style="margin-bottom: 10px;">
 
-                            <label>Trạng thái:</label>
-                            <input type="text" name="status" class="form-control" value="<%= room.getStatus()%>" required style="margin-bottom: 10px;">
+                            <label>Mô tả:</label>
+                            <input type="text" name="description" class="form-control" value="<%= room.getDescription()%>" required style="margin-bottom: 10px;">
 
+                            <select id="status" name="status" class="form-control">
+                                <option value="Còn phòng" <%= room.getStatus().equals("Còn phòng") ? "selected" : ""%>>Còn phòng</option>
+                                <option value="Hết phòng" <%= room.getStatus().equals("Hết phòng") ? "selected" : ""%>>Hết phòng</option>
+                            </select>
                             <button type="submit" class="btn btn-primary mt-3">Lưu thay đổi</button>
                             <button type="button" class="btn btn-secondary mt-3"  onclick="location.href = 'petroom'">Quay lại</button>
                         </form>
-                            <br><br>
+                        <br><br>
                     </div>
                 </div>
             </div>

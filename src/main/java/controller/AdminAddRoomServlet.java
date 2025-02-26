@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dao.PetRoomDAO;
+import dao.PetHotelDAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,7 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.PetRooms;
+import model.PetHotel;
 
 /**
  *
@@ -81,11 +81,12 @@ public class AdminAddRoomServlet extends HttpServlet {
         double maxWeight = Double.parseDouble(request.getParameter("maxWeight"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
         double pricePerNight = Double.parseDouble(request.getParameter("pricePerNight"));
+        String description = request.getParameter("description");
 
         // Tạo object PetRoom mà KHÔNG yêu cầu status và isActive
-        PetRooms room = new PetRooms(roomName, roomImage, roomType, minWeight, maxWeight, quantity, pricePerNight);
+        PetHotel room = new PetHotel(roomName, roomImage, roomType, minWeight, maxWeight, quantity, pricePerNight, description);
 
-        PetRoomDAO roomDAO = new PetRoomDAO();
+        PetHotelDAO roomDAO = new PetHotelDAO();
         if (roomDAO.addRoom(room)) {
             response.sendRedirect("petroom");
         } else {

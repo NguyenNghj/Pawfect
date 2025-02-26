@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dao.PetRoomDAO;
+import dao.PetHotelDAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
-import model.PetRooms;
+import model.PetHotel;
 
 /**
  *
@@ -69,13 +69,13 @@ public class PetRoomDetailServlet extends HttpServlet {
 
         try {
             int roomId = Integer.parseInt(idParam);
-            PetRooms room = PetRoomDAO.getPetRoomById(roomId);
+            PetHotel room = PetHotelDAO.getPetRoomById(roomId);
 
             if (room != null) {
                 request.setAttribute("room", room);
 
                 // Lấy danh sách phòng tương tự
-                List<PetRooms> similarRooms = PetRoomDAO.getSimilarRooms(room.getRoomType(), roomId);
+                List<PetHotel> similarRooms = PetHotelDAO.getSimilarRooms(room.getRoomType(), roomId);
                 request.setAttribute("similarRooms", similarRooms);
 
                 RequestDispatcher dispatcher = request.getRequestDispatcher("petroomdetail.jsp");

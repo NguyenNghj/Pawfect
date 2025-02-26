@@ -1,10 +1,10 @@
 <%-- 
     Document   : petRoom
     Created on : Feb 11, 2025, 3:54:33 PM
-    Author     : Vu Quang Duc - CE181221
+    Author     : Nguyen Tien Thanh - CE181342
 --%>
 
-<%@page import="model.PetRooms"%>
+<%@page import="model.PetHotel"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -179,10 +179,14 @@
                         </nav>
                     </div>   
 
-                    <button class="btn btn-primary">Thêm Phòng Mới</button>
+                    <button class="btn btn-primary" onclick="window.location.href = 'addroom'">
+                        <i class="fa fa-plus"></i> Thêm Phòng Mới
+                    </button>
+
+
 
                     <%
-                        List<PetRooms> petRooms = (List<PetRooms>) request.getAttribute("petRooms");
+                        List<PetHotel> petRooms = (List<PetHotel>) request.getAttribute("petRooms");
                     %>
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
@@ -195,13 +199,14 @@
 
                             <div style="padding: 15px 15px 25px 15px;">
                                 <table class="table table-hover">
-                                    <thead class="table-primary">
+                                    <thead class="table-primary" style="text-align: center; vertical-align: middle; padding: 12px; font-weight: bold;">
                                         <tr>
                                             <th scope="col">Tên phòng</th>
                                             <th scope="col">Loại</th>
                                             <th scope="col">Cân nặng tối thiểu (kg)</th>
                                             <th scope="col">Cân nặng tối đa (kg)</th>
                                             <th scope="col">Giá (VNĐ)</th>
+                                            <th scope="col">Mô tả</th>
                                             <th scope="col">Số lượng</th>
                                             <th scope="col">Trạng thái</th>
                                             <th scope="col">Hành động</th>
@@ -209,23 +214,29 @@
                                     </thead>
                                     <tbody>
                                         <% if (petRooms != null && !petRooms.isEmpty()) {
-                                                for (PetRooms room : petRooms) {%>
+                                                for (PetHotel room : petRooms) {%>
                                         <tr>
-                                            <td><%= room.getRoomName()%></td>
-                                            <td><%= room.getRoomType()%></td>
-                                            <td><%= room.getMinWeight()%></td>
-                                            <td><%= room.getMaxWeight()%></td>
-                                            <td><%= room.getPricePerNight()%></td>
-                                            <td><%= room.getQuantity()%></td>
-                                            <td>
+                                            <td style="width: 12%;"><%= room.getRoomName()%></td>
+                                            <td style="width: 9%;"><%= room.getRoomType()%></td>
+                                            <td style="text-align: center;"><%= room.getMinWeight()%></td>
+                                            <td style="text-align: center;"><%= room.getMaxWeight()%></td>
+                                            <td style="text-align: center;"><%= room.getPricePerNight()%></td>
+                                            <td><%= room.getDescription()%></td>
+                                            <td style="width: 8%; text-align: center;"><%= room.getQuantity()%></td>
+                                            <td style="width: 10%;">
                                                 <span style="font-weight: bold; color: white; padding: 5px; color: <%= room.getStatus().equals("Còn phòng") ? "green" : "red"%>;">
                                                     <%= room.getStatus()%>
                                                 </span>
                                             </td>
 
+                                            <td style="width: 12%;">
+                                                <button type="button" class="btn btn-primary" onclick="editRoom(<%= room.getRoomId()%>)">Sửa</button>
+                                                <script>
+                                                    function editRoom(roomId) {
+                                                        window.location.href = 'editroom?room_id=' + roomId;
+                                                    }
+                                                </script>
 
-                                            <td>
-                                                <button type="button" class="btn btn-primary">Sửa</button>
                                                 <!-- Nút Xóa -->
                                                 <button type="button" class="btn btn-danger btn-sm" 
                                                         onclick="confirmDelete('<%= room.getRoomId()%>')">

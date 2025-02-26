@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dao.PetRoomDAO;
+import dao.PetHotelDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.PetRooms;
+import model.PetHotel;
 
 /**
  *
@@ -58,7 +58,7 @@ public class AdminPetRoomsListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<PetRooms> petRooms = PetRoomDAO.getAllPetRooms(); // Lấy danh sách phòng từ DB
+        List<PetHotel> petRooms = PetHotelDAO.getAllPetRooms(); // Lấy danh sách phòng từ DB
         request.setAttribute("petRooms", petRooms); // Gửi dữ liệu sang JSP
         request.getRequestDispatcher("/dashboard/admin/petRoom.jsp").forward(request, response);
     }

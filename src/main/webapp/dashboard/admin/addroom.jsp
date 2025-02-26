@@ -4,7 +4,7 @@
     Author     : Nguyen Tien Thanh - CE181342
 --%>
 
-<%@page import="model.PetRooms"%>
+<%@page import="model.PetHotel"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -183,15 +183,18 @@
                         <i class="fa-solid fa-hotel fa-lg"></i>
                         <h4 class="mb-0">Thêm phòng mới</h4>
                     </div>
+                   
                     <div class="addroom" style="background-color: white;" method="post">
+                        <br>
                         <form id="addRoomForm" action="addroom" method="post" style="max-width: 400px; margin:  auto;" >
                             <label>Tên phòng:</label>
                             <input type="text" name="roomName" class="form-control" required style="margin-bottom: 10px;">
                             <label>Hình ảnh:</label>
                             <input type="text" name="roomImage" class="form-control" required style="margin-bottom: 10px;">
                             <label>Loại phòng:</label><br>
-                            <input type="radio" name="roomType" value="Dành cho chó" /> Dành cho chó <br>
-                            <input type="radio" name="roomType" value="Dành cho mèo" style="margin-bottom: 10px;"/> Dành cho mèo <br>
+                            <input type="radio" name="roomType" value="Tiêu chuẩn" /> Tiêu chuẩn <br>
+                            <input type="radio" name="roomType" value="VIP" /> Vip <br>
+                            <input type="radio" name="roomType" value="Luxury" style="margin-bottom: 10px;"/> Luxury <br>
                             <label>Cân nặng tối thiểu (kg):</label>
                             <input type="number" name="minWeight" step="0.1" class="form-control" required style="margin-bottom: 10px;">
 
@@ -203,11 +206,15 @@
 
                             <label>Giá mỗi đêm (VNĐ):</label>
                             <input type="number" name="pricePerNight" step="0.01" class="form-control" required style="margin-bottom: 10px;">
+                            <label>Mô tả:</label>
+                            <input type="text" name="description" class="form-control" required style="margin-bottom: 10px;">
 
 
                             <button type="submit" class="btn btn-success mt-3">Thêm phòng</button>
                             <button type="button" class="btn btn-secondary mt-3" onclick="location.href = 'petroom'">Quay lại</button>
                         </form>
+                        <br>
+                        <br>
                     </div>
                 </div>
             </div>
