@@ -9,6 +9,7 @@ package model;
  * @author Nguyen Tri Nghi - CE180897
  */
 public class Product {
+
     private int productId;
     private int categoryId;
     private String categoryName;
@@ -17,11 +18,10 @@ public class Product {
     private double productPrice;
     private String productImage;
     private int stock;
-    private String status;
     private String description;
     private boolean isActive;
 
-    public Product(int productId, int categoryId, String categoryName, String productName, String productPetType, double productPrice, String productImage, int stock, String status, String description, boolean isActive) {
+    public Product(int productId, int categoryId, String categoryName, String productName, String productPetType, double productPrice, String productImage, int stock, String description, boolean isActive) {
         this.productId = productId;
         this.categoryId = categoryId;
         this.categoryName = categoryName;
@@ -30,11 +30,10 @@ public class Product {
         this.productPrice = productPrice;
         this.productImage = productImage;
         this.stock = stock;
-        this.status = status;
         this.description = description;
         this.isActive = isActive;
     }
-    
+
     public int getProductId() {
         return productId;
     }
@@ -99,14 +98,6 @@ public class Product {
         this.stock = stock;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -122,5 +113,5 @@ public class Product {
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
     }
+
 }
-    
