@@ -57,7 +57,7 @@ public class LogoutServlet extends HttpServlet {
        Cookie customerId = new Cookie("customerId","");       
         customerId.setMaxAge(0);
        response.addCookie(customerId);
-       response.sendRedirect("/products");
+       response.sendRedirect("/pawfect");
     } 
 
     /** 
