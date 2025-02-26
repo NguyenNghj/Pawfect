@@ -48,7 +48,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
 }
 
 .navbar.bg-body-tertiary.active {
-    background-color: steelblue !important;
+    background-color: #8C6E63 !important;
 }
 
 .navbar.bg-body-tertiary:not(.active) a:hover {
@@ -219,3 +219,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     color: #212529 !important;
 }
 
+body, h1, h2, h3, h4, h5, h6, p, a, span, button, .breadcrumb-item, .navbar-brand, .accordion-button {
+    font-family: 'Baloo 2', sans-serif !important;
+}
