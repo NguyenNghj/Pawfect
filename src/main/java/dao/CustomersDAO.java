@@ -10,11 +10,12 @@ public class CustomersDAO {
     protected static Connection Con = null;
 
     // SQL Queries
-    protected static final String Get_All_Customers = "SELECT * FROM Customers WHERE is_active = 1";
+    protected static final String Get_All_Customers = "SELECT * FROM Customers";
     protected static final String Get_Customer_By_Id = "SELECT * FROM Customers WHERE customer_id = ?";
     protected static final String Insert_Customer = "INSERT INTO Customers (password, full_name, email, phone, address, gender, birth_date, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, 1)";
     protected static final String Update_Customer = "UPDATE Customers SET full_name = ?, phone = ?, address = ?, gender = ?, birth_date = ?, is_active = ? WHERE customer_id = ?";
-    protected static final String Delete_Customer = "UPDATE Customers SET is_active = 0 WHERE customer_id = ?";
+    protected static final String Ban_Customer = "UPDATE Customers SET is_active = 0 WHERE customer_id = ?";
+    protected static final String UnBan_Customer = "UPDATE Customers SET is_active = 1 WHERE customer_id = ?";
     protected static final String Search_Customer = "SELECT * FROM Customers WHERE LOWER(full_name) LIKE LOWER(N'%' + ? + '%')";
 
     public static List<Customers> getAllCustomers() {
@@ -106,7 +107,7 @@ public class CustomersDAO {
     public static boolean deleteCustomer(int customerId) {
         try {
             Con = new DBContext().getConnection();
-            PreparedStatement ps = Con.prepareStatement(Delete_Customer);
+            PreparedStatement ps = Con.prepareStatement(Ban_Customer);
             ps.setInt(1, customerId);
 
             int rowsUpdated = ps.executeUpdate();
@@ -119,6 +120,22 @@ public class CustomersDAO {
         }
         return false;
     }
+    public static boolean unbanCustomer(int customerId) {
+    try {
+        Con = new DBContext().getConnection();
+        PreparedStatement ps = Con.prepareStatement(UnBan_Customer);
+        ps.setInt(1, customerId);
+
+        int rowsUpdated = ps.executeUpdate();
+        ps.close();
+        return rowsUpdated > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    } finally {
+        closeConnection();
+    }
+    return false;
+}
 
     // Search customers by name or email
 public static List<Customers> searchCustomers(String keyword) {
@@ -168,5 +185,9 @@ public static List<Customers> searchCustomers(String keyword) {
                 rs.getDate("birth_date"),
                 rs.getBoolean("is_active")
         );
+    }
+
+    public static boolean banCustomer(int customerId) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

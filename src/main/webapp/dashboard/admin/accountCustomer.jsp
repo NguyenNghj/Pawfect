@@ -280,6 +280,36 @@
                                             height: 35px;
                                             white-space: nowrap;
                                         }
+                                        .ban-btn, .unban-btn {
+                                            display: inline-block;
+                                            width: 80px; /* Đảm bảo cả hai nút có cùng chiều rộng */
+                                            text-align: center;
+                                            color: white;
+                                            padding: 8px 0;
+                                            font-size: 14px;
+                                            font-weight: bold;
+                                            text-decoration: none;
+                                            border-radius: 5px;
+                                            border: none;
+                                            cursor: pointer;
+                                        }
+
+                                        .ban-btn {
+                                            background-color: red;
+                                        }
+
+                                        .unban-btn {
+                                            background-color: green;
+                                        }
+
+                                        .ban-btn:hover {
+                                            background-color: darkred;
+                                        }
+
+                                        .unban-btn:hover {
+                                            background-color: darkgreen;
+                                        }
+
                                     </style>
 
                                     <table class="table">
@@ -311,10 +341,22 @@
                                                 <td><%= customer.getGender()%></td>
                                                 <td><%= customer.getBirthDate()%></td>
                                                 <td>
-                                                    <a href="customersban?id=<%= customer.getCustomerId()%>" 
+                                                    <% if (customer.isActive()) {%>
+                                                    <a href="customersban?id=<%= customer.getCustomerId()%>&action=ban" 
                                                        class="ban-btn"
-                                                       onclick="return confirm('Bạn có chắc muốn xóa?');">Cấm</a>
+                                                       onclick="return confirm('Bạn có chắc muốn cấm khách hàng này?');">
+                                                        Cấm
+                                                    </a>
+                                                    <% } else {%>
+                                                    <a href="customersban?id=<%= customer.getCustomerId()%>&action=unban" 
+                                                       class="unban-btn"
+                                                       onclick="return confirm('Bạn có chắc muốn mở lại khách hàng này?');">
+                                                        Mở
+                                                    </a>
+                                                    <% } %>
                                                 </td>
+
+
                                             </tr>
                                             <%
                                                 }
