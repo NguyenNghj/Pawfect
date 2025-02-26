@@ -98,7 +98,7 @@
                                 </div>
                             </c:if>
                         </c:forEach>
-                    </div>
+                    </div>               
                     <c:if test="${totalPages > 1}">
                         <div class="pagination-wrapper">
                             <nav aria-label="Page navigation">
@@ -126,9 +126,8 @@
                         </div>
                     </c:if>
                 </div>
-            </div>
-
-        </div>
+            </div>           
+        </div>                     
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
