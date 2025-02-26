@@ -19,7 +19,7 @@
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb p-3" style="background-color: white; border-radius: 5px;">
-                    <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Tài khoản</li>
                 </ol>
             </nav>

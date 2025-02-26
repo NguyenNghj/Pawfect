@@ -19,7 +19,7 @@
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb p-3" style="background-color: white; border-radius: 5px;">
-                    <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Tài khoản</li>
                 </ol>
             </nav>
@@ -138,44 +138,51 @@
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
     </body>
     <script>
-                        function validatePasswordForm() {
-                            let isValid = true;
+                function validatePasswordForm() {
+    let isValid = true;
 
-                            // Lấy giá trị input
-                            let oldPassword = document.getElementById("oldPassword").value.trim();
-                            let newPassword = document.getElementById("newPassword").value.trim();
-                            let confirmPassword = document.getElementById("confirmPassword").value.trim();
+    // Lấy giá trị input
+    let oldPassword = document.getElementById("oldPassword").value.trim();
+    let newPassword = document.getElementById("newPassword").value.trim();
+    let confirmPassword = document.getElementById("confirmPassword").value.trim();
 
-                            // Xóa thông báo lỗi cũ
-                            document.getElementById("oldPasswordError").innerHTML = "";
-                            document.getElementById("newPasswordError").innerHTML = "";
-                            document.getElementById("confirmPasswordError").innerHTML = "";
+    // Xóa thông báo lỗi cũ
+    document.getElementById("oldPasswordError").innerHTML = "";
+    document.getElementById("newPasswordError").innerHTML = "";
+    document.getElementById("confirmPasswordError").innerHTML = "";
 
-                            // Kiểm tra Mật khẩu cũ
-                            if (oldPassword === "") {
-                                document.getElementById("oldPasswordError").innerHTML = "Vui lòng nhập mật khẩu cũ!";
-                                isValid = false;
-                            }
- if (oldPassword.length < 6) {
-                document.getElementById("oldPasswordError").innerHTML = "Mật khẩu phải có ít nhất 6 ký tự!";
-                isValid = false;
-            }
-                            // Kiểm tra Mật khẩu mới
-                            if (newPassword.length < 6) {
-                                document.getElementById("newPasswordError").innerHTML = "Mật khẩu mới phải có ít nhất 6 ký tự!";
-                                isValid = false;
-                            }
+    // Kiểm tra Mật khẩu cũ
+    if (oldPassword === "") {
+        document.getElementById("oldPasswordError").innerHTML = "Vui lòng nhập mật khẩu cũ!";
+        isValid = false;
+    }
+    if (oldPassword.length < 6) {
+        document.getElementById("oldPasswordError").innerHTML = "Mật khẩu phải có ít nhất 6 ký tự!";
+        isValid = false;
+    }
 
-                            // Kiểm tra Xác nhận mật khẩu
-                            if (confirmPassword === "") {
-                                document.getElementById("confirmPasswordError").innerHTML = "Vui lòng nhập lại mật khẩu!";
-                                isValid = false;
-                            } else if (confirmPassword !== newPassword) {
-                                document.getElementById("confirmPasswordError").innerHTML = "Mật khẩu xác nhận không khớp!";
-                                isValid = false;
-                            }
+    // Kiểm tra Mật khẩu mới
+    if (newPassword.length < 6) {
+        document.getElementById("newPasswordError").innerHTML = "Mật khẩu mới phải có ít nhất 6 ký tự!";
+        isValid = false;
+    }
 
-                            return isValid;
-                        }
+    // Kiểm tra Xác nhận mật khẩu
+    if (confirmPassword === "") {
+        document.getElementById("confirmPasswordError").innerHTML = "Vui lòng nhập lại mật khẩu!";
+        isValid = false;
+    } else if (confirmPassword !== newPassword) {
+        document.getElementById("confirmPasswordError").innerHTML = "Mật khẩu xác nhận không khớp!";
+        isValid = false;
+    }
+
+    // Nếu tất cả hợp lệ, hiển thị hộp thoại xác nhận
+    if (isValid) {
+        return confirm("Bạn có chắc chắn muốn đổi mật khẩu không?");
+    }
+
+    return false;
+}
+
     </script>
 </html>
