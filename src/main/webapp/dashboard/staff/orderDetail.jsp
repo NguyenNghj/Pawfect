@@ -141,13 +141,20 @@
                                         <div class="text-secondary mb-4">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <span>Đơn hàng: #${o.orderId + 2500000}</span>
-                                                <button id="btn-cancel" class="btn btn-danger btn-sm" onclick="confirmCancel()"
-                                                        data-product-id="${o.orderId + 2500000}" 
+                                                <button class="btn-cancel btn btn-danger btn-sm" onclick="confirmCancel()"
+                                                        data-order-id="${o.orderId}" 
                                                         style="padding: 8px 18px;"
                                                         >
                                                     <span style="font-size: 16px;">Huỷ đơn</span>
                                                 </button> 
-                                            </div>                              
+                                            </div>
+                                            <form id="cancelOrder${o.orderId}" action="ordermanagement" method="POST">
+                                                <input type="hidden" name="action" value="cancel">
+                                                <input type="hidden" name="actionBack" value="viewdetail">
+                                                <input type="hidden" name="orderId" value="${o.orderId}">
+                                                <input type="hidden" name="statusOrder" value="Đã huỷ">
+                                                <input type="hidden" name="status" value="${param.status}">
+                                            </form>
                                         </div>
 
                                         <!-- Package Tracking -->
@@ -201,7 +208,11 @@
                                                 <div class="mb-2">
                                                     <div class="fw-bold">Ghi chú giao hàng</div>
                                                     <textarea style="color: rgb(108 117 125);" class="form-control" id="exampleFormControlTextarea1" rows="3" readonly>${empty o.note ? 'Không có ghi chú.' : o.note}</textarea>
-                                                </div>             
+                                                </div>   
+
+                                                <div class="mb-1">
+                                                    <p><span style="color: chocolate;"><b>Nhân viên phụ trách: </b></span>${empty o.staffName ? 'Chờ xác nhận...' : o.staffName}</p>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -217,7 +228,7 @@
                                                             <!-- <div class="text-secondary small mb-2">PACKAGE 1 OF 2</div> -->
                                                             <div class="d-flex">
                                                                 <div class="position-relative">
-                                                                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/order-conf-OihWsyJ9gZFXHQz5DOkVEQLUjY8Evl.png" alt="Product" class="rounded me-3" width="80" height="80">
+                                                                    <img src="${oi.productImage}" alt="Product" class="rounded me-3" width="80" height="80">
                                                                     <span class="position-absolute top-0 translate-middle badge rounded-pill bg-danger" style="left: 75%;">
                                                                         ${oi.quantity}
                                                                         <span class="visually-hidden">unread messages</span>
@@ -283,32 +294,53 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
-                                                    function confirmCancel() {
-                                                        let productId = $('#btn-cancel').data('product-id');
+                                                    $(document).ready(function () { // Đảm bảo code chạy sau khi trang đã load xong
 
-                                                        Swal.fire({
-                                                            title: 'Bạn chắc chắn muốn huỷ đơn #' + productId + '?',
-                                                            text: 'Hành động này không thể hoàn tác!',
-                                                            icon: 'warning',
-                                                            showCancelButton: true,
-                                                            confirmButtonColor: '#3085d6',
-                                                            cancelButtonColor: '#d33',
-                                                            confirmButtonText: 'Có, huỷ đơn!',
-                                                            cancelButtonText: 'Không, quay lại'
-                                                        }).then((result) => {
-                                                            if (result.isConfirmed) {
-                                                                Swal.fire({// Hiển thị thông báo "Đã huỷ!"
-                                                                    title: 'Đã huỷ!',
-                                                                    text: 'Đơn hàng của bạn đã được huỷ.',
-                                                                    icon: 'success',
-                                                                    timer: 2000, // Đặt thời gian hiển thị thông báo (2 giây)
-                                                                    showConfirmButton: false // Ẩn nút "OK"
-                                                                }).then(() => { // Sau khi thông báo hiển thị xong
+                                                        $('.btn-cancel').click(function () { // Sử dụng class selector
+                                                            let orderId = $(this).data('order-id'); // $(this) là nút được click                  
 
-                                                                });
-                                                            }
+                                                            Swal.fire({
+                                                                title: 'Bạn chắc chắn muốn huỷ đơn #' + (2500000 + orderId) + '?',
+                                                                text: 'Hành động này không thể hoàn tác!',
+                                                                icon: 'warning',
+                                                                showCancelButton: true,
+                                                                confirmButtonColor: '#3085d6',
+                                                                cancelButtonColor: '#d33',
+                                                                confirmButtonText: 'Có, huỷ đơn!',
+                                                                cancelButtonText: 'Không, quay lại'
+                                                            }).then((result) => {
+                                                                if (result.isConfirmed) {
+                                                                    Swal.fire({
+                                                                        title: 'Đang huỷ...',
+                                                                        text: 'Vui lòng chờ trong giây lát.',
+                                                                        icon: 'info',
+                                                                        timer: 1300,
+                                                                        timerProgressBar: true,
+                                                                        showConfirmButton: false,
+                                                                        allowOutsideClick: false, // Không cho bấm ra ngoài
+                                                                        allowEscapeKey: false // Không cho nhấn ESC để thoát
+                                                                    }).then(() => {
+                                                                        Swal.fire({
+                                                                            title: 'Đã huỷ!',
+                                                                            text: 'Đơn hàng của bạn đã được huỷ.',
+                                                                            icon: 'success',
+                                                                            timer: 1600,
+                                                                            timerProgressBar: true,
+                                                                            showConfirmButton: false
+                                                                        }).then(() => {
+                                                                            let formId = "cancelOrder" + orderId; // Tạo ID duy nhất cho form
+                                                                            let form = document.getElementById(formId);
+                                                                            if (form) {
+                                                                                form.submit();
+                                                                            } else {
+                                                                                console.error("Không tìm thấy form với ID: " + formId);
+                                                                            }
+                                                                        });
+                                                                    });
+                                                                }
+                                                            });
                                                         });
-                                                    }
+                                                    });
         </script>
     </body>
 </html>

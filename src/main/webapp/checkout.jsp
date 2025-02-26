@@ -72,21 +72,21 @@
                                 </div>
                                 <div class="shipping-method">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="shipping-method" id="shipping-tietkem" value="40000" onclick="handleShippingChange('tietkiem')" checked>
+                                        <input class="form-check-input" type="radio" name="shipping-method" id="shipping-tietkem" value="30000" onclick="handleShippingChange('tietkiem')" checked>
                                         <div class="d-flex justify-content-between align-items-center gap-3">
                                             <label class="form-check-label" for="shipping-tietkem">
                                                 Giao hàng tiết kiệm
                                             </label>
-                                            <span>40.000đ</span>
+                                            <span>30.000đ</span>
                                         </div>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="shipping-method" id="shipping-hoatoc" value="50000" onclick="handleShippingChange('hoatoc')">
+                                        <input class="form-check-input" type="radio" name="shipping-method" id="shipping-hoatoc" value="45000" onclick="handleShippingChange('hoatoc')">
                                         <div class="d-flex justify-content-between align-items-center gap-3">
                                             <label class="form-check-label" for="shipping-hoatoc">
                                                 Giao hàng hoả tốc
                                             </label>
-                                            <span>50.000đ</span>
+                                            <span>45.000đ</span>
                                         </div>
                                     </div>
                                 </div>
@@ -144,7 +144,7 @@
                                 <!-- Each Item -->
                                 <div class="d-flex align-items-center">
                                     <div class="col-auto">
-                                        <img src="https://bizweb.dktcdn.net/100/091/443/products/hieuunganh-com-5e9066b48c276.png?v=1586522083473" alt="">
+                                        <img src="${c.productImage}" alt="">
                                     </div>
                                     <div class="col p-0">
                                         <div class="d-flex justify-content-between align-items-center">

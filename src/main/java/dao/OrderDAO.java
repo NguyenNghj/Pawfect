@@ -24,6 +24,10 @@ public class OrderDAO {
 
     protected static Connection Con = null;
 
+    protected static String Update_Order_Status = "UPDATE Orders\n"
+            + "SET status = ?\n"
+            + "WHERE order_id = ?";
+
     protected static String Create_Order = "INSERT INTO Orders (customer_id, paymentMethod_id, shippingMethod_id, recipient_name, recipient_phone, shipping_address, delivery_notes, total_amount, status) "
             + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -143,6 +147,21 @@ public class OrderDAO {
             + "    Orders AS o ON oi.order_id = o.order_id\n"
             + "WHERE\n"
             + "    oi.order_id = ?";
+    
+    
+    public static boolean cancelOrder(String status, int orderId) {
+        boolean update = false;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Update_Order_Status);
+            ps.setString(1, status);
+            ps.setInt(2, orderId);
+            update = ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return update;
+    }
 
     public static List<Order> getAllOrderByStatus(String status) {
         List<Order> list = new ArrayList<>();

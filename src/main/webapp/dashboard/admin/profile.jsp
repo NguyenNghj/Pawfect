@@ -77,9 +77,9 @@
                             </a>
                         </nav>
                         <nav class="navbar bg-body-tertiary">                                            
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="petRoom.jsp">
+                            <a class="navbar-brand d-flex align-items-center gap-3" href="petroom">
                                 <i class="fa-solid fa-hotel fa-lg"></i>  
-                                <span>Pet Rooms</span>
+                                <span>Pet Hotel</span>
                             </a>
                         </nav>
                         <!-- <nav class="navbar bg-body-tertiary">                        

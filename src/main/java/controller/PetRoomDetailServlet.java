@@ -61,7 +61,6 @@ public class PetRoomDetailServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idParam = request.getParameter("id");
-        System.out.println("Received ID: " + idParam); // Kiểm tra giá trị id
 
         if (idParam == null || idParam.isEmpty()) {
             response.sendRedirect("petrooms.jsp?error=missing_id");
@@ -71,9 +70,14 @@ public class PetRoomDetailServlet extends HttpServlet {
         try {
             int roomId = Integer.parseInt(idParam);
             PetRooms room = PetRoomDAO.getPetRoomById(roomId);
-            
+
             if (room != null) {
                 request.setAttribute("room", room);
+
+                // Lấy danh sách phòng tương tự
+                List<PetRooms> similarRooms = PetRoomDAO.getSimilarRooms(room.getRoomType(), roomId);
+                request.setAttribute("similarRooms", similarRooms);
+
                 RequestDispatcher dispatcher = request.getRequestDispatcher("petroomdetail.jsp");
                 dispatcher.forward(request, response);
             } else {
@@ -81,7 +85,6 @@ public class PetRoomDetailServlet extends HttpServlet {
             }
         } catch (NumberFormatException e) {
             response.sendRedirect("petrooms.jsp?error=invalid_id");
-            return;
         }
 
     }

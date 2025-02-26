@@ -4,27 +4,21 @@
  */
 package controller;
 
-import dao.OrderDAO;
-import jakarta.servlet.RequestDispatcher;
+import dao.PetRoomDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpServletResponseWrapper;
-import jakarta.servlet.http.HttpSession;
-import java.io.StringWriter;
 import java.util.List;
-import model.Order;
-import model.OrderItem;
-import util.Email;
+import model.PetRooms;
 
 /**
  *
- * @author VU QUANG DUC - CE181221
+ * @author Nguyen Tien Thanh
  */
-public class EmailServlet extends HttpServlet {
+public class AdminPetRoomsListServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,10 +37,10 @@ public class EmailServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet EmailServlet</title>");
+            out.println("<title>Servlet PetRoomsListServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet EmailServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet PetRoomsListServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -64,49 +58,9 @@ public class EmailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        HttpSession session = request.getSession();
-//        int orderId = (int) session.getAttribute("orderId");
-        int orderId = 10;
-
-        List<OrderItem> orderitems = OrderDAO.getOrderItemsByOrderId(orderId);
-        double basicPrice = 0;
-        for (OrderItem orderitem : orderitems) {
-            basicPrice += orderitem.getSubtotal();
-        }
-        List<Order> orders = OrderDAO.getOrderByOrderId(orderId);
-
-        request.setAttribute("basicPrice", basicPrice);
-        request.setAttribute("orderitems", orderitems);
-        request.setAttribute("orders", orders);
-
-        try {
-            // Chuyển JSP thành String
-            String emailContent = renderJSPToString(request, response, "sendemail.jsp");
-
-            Email.sendEmail("vuquangduc1404@gmail.com", "Xác nhận đơn hàng", emailContent);
-        } catch (ServletException | IOException e) {
-            e.printStackTrace(); 
-            // Có thể hiển thị thông báo lỗi cho người dùng
-            System.out.println("Co loi trong qua trinh gui email!!");
-        } finally {
-            response.sendRedirect("checkoutsuccess.jsp");
-        }
-    }
-
-    // Chuyển JSP thành chuỗi HTML
-    private String renderJSPToString(HttpServletRequest request, HttpServletResponse response, String jspPath)
-            throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher(jspPath);
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter writer = new PrintWriter(stringWriter);
-        HttpServletResponseWrapper responseWrapper = new HttpServletResponseWrapper(response) {
-            public PrintWriter getWriter() {
-                return writer;
-            }
-        };
-        dispatcher.include(request, responseWrapper);
-        return stringWriter.toString();
+        List<PetRooms> petRooms = PetRoomDAO.getAllPetRooms(); // Lấy danh sách phòng từ DB
+        request.setAttribute("petRooms", petRooms); // Gửi dữ liệu sang JSP
+        request.getRequestDispatcher("/dashboard/admin/petRoom.jsp").forward(request, response);
     }
 
     /**

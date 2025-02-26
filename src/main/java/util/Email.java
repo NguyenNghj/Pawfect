@@ -12,6 +12,14 @@ import jakarta.mail.Session;
 import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponseWrapper;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Date;
 import java.util.Properties;
 
@@ -50,7 +58,7 @@ public class Email {
         MimeMessage msg = new MimeMessage(session);
         try {
             // Kieu noi dung
-            msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
+            msg.addHeader("Content-type", "text/html; charset=UTF-8");
 
             // Nguoi gui
             msg.setFrom(from);
@@ -66,9 +74,8 @@ public class Email {
 
             // Quy nhan email nhan phan hoi
 //            msg.setReplyTo(InternetAddress.parse(from, false));
-
             // Noi dung
-            msg.setContent(content, "text/HTML; charset=UTF-8");
+            msg.setContent(content, "text/html; charset=UTF-8");
 
             // Gui email
             Transport.send(msg);
@@ -80,6 +87,62 @@ public class Email {
             return false;
         }
     }
+
+    // Chuyển JSP thành chuỗi HTML
+    public static String renderJSPToString(HttpServletRequest request, HttpServletResponse response, String jspPath)
+            throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher(jspPath);
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter writer = new PrintWriter(stringWriter);
+        HttpServletResponseWrapper responseWrapper = new HttpServletResponseWrapper(response) {
+            public PrintWriter getWriter() {
+                return writer;
+            }
+        };
+        dispatcher.include(request, responseWrapper);
+        return stringWriter.toString();
+    }
+
+    public static String emailCancel = "<!DOCTYPE html>\n"
+            + "<html lang=\"vi\">\n"
+            + "<head>\n"
+            + "    <meta charset=\"UTF-8\">\n"
+            + "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+            + "    <title>Thông báo huỷ đơn hàng</title>\n"
+            + "    <style>\n"
+            + "        body { font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }\n"
+            + "        .container { max-width: 600px; margin: 20px auto; background: #ffffff; padding: 20px;\n"
+            + "                     border-radius: 8px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); }\n"
+            + "        .header { background-color: #d9534f; color: #ffffff; padding: 15px; text-align: center;\n"
+            + "                  font-size: 20px; font-weight: bold; border-radius: 8px 8px 0 0; }\n"
+            + "        .content { padding: 20px; color: #333; line-height: 1.6; }\n"
+            + "        .order-details { background: #f9f9f9; padding: 15px; border-radius: 5px; margin: 15px 0; }\n"
+            + "        .button { display: block; width: 200px; text-align: center; background-color: #d0ebff;\n"
+            + "                   color: #ffffff; text-decoration: none; padding: 10px; border-radius: 5px;\n"
+            + "                   margin: 20px auto; font-weight: bold; }\n"
+            + "        .footer { text-align: center; padding: 10px; font-size: 14px; color: #777; }\n"
+            + "    </style>\n"
+            + "</head>\n"
+            + "<body>\n"
+            + "    <div class=\"container\">\n"
+            + "        <div class=\"header\">Thông báo huỷ đơn hàng</div>\n"
+            + "        <div class=\"content\">\n"
+            + "            <p>Xin chào <strong>%s</strong>,</p>\n"
+            + "            <p>Chúng tôi rất tiếc thông báo rằng đơn hàng của bạn đã bị huỷ theo yêu cầu.</p>\n"
+            + "            <div class=\"order-details\">\n"
+            + "                <p><strong>Mã đơn hàng:</strong> #%s</p>\n"
+            + "                <p><strong>Ngày đặt hàng:</strong> %s</p>\n"
+            + "                <p><strong>Trạng thái:</strong> <span style=\"color: #D2042D\">Đã huỷ</span></p>\n"
+            + "            </div>\n"
+            + "            <p>Nếu bạn có bất kỳ thắc mắc nào, vui lòng liên hệ bộ phận hỗ trợ khách hàng của chúng tôi.</p>\n"
+            + "            <a href=\"%s\" class=\"button\">Liên hệ hỗ trợ</a>\n"
+            + "        </div>\n"
+            + "        <div class=\"footer\">\n"
+            + "            <p>© 2025 PawFect. Mọi quyền được bảo lưu.</p>\n"
+            + "        </div>\n"
+            + "    </div>\n"
+            + "</body>\n"
+            + "</html>";
 
     public static void main(String[] args) {
 

@@ -103,7 +103,14 @@
                                                     <div class="row">
                                                         <div class="col">
                                                             <h6 class="mb-3">
-                                                                #${o.orderId + 2500000} - <span class="text-warning">${o.status}</span>
+                                                                #${o.orderId + 2500000} -
+                                                                <c:choose>
+                                                                    <c:when test="${o.status == 'Chờ xác nhận'}"><span class="text-warning fw-bold">${o.status}</span></c:when>
+                                                                    <c:when test="${o.status == 'Chờ lấy hàng'}"><span class="text-secondary fw-bold">${o.status}</span></c:when>
+                                                                    <c:when test="${o.status == 'Chờ giao hàng'}"><span class="text-primary fw-bold">${o.status}</span></c:when>
+                                                                    <c:when test="${o.status == 'Hoàn thành'}"><span class="text-success fw-bold">${o.status}</span></c:when>
+                                                                    <c:otherwise><span class="text-danger fw-bold">${o.status}</span></c:otherwise> 
+                                                                </c:choose>
                                                             </h6>
                                                             <p class="text-secondary mb-2">
                                                                 Địa chỉ: ${o.address}
@@ -115,14 +122,37 @@
                                                                 <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ                                               
                                                             </h5>
 
-                                                            <!-- Đơn hàng có trạng thái "Chờ xác nhận" thì mới được huỷ đơn -->
-                                                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#cancelModal"
-                                                                    data-orderid="#${o.orderId + 2500000}"
-                                                                    style="padding: 6px 15px;"
-                                                                    onclick="huyDon(event)"
-                                                                    >
-                                                                Huỷ đơn
-                                                            </button>                                          
+                                                            <%--<c:choose>--%>
+                                                                <c:if test="${o.status == 'Chờ xác nhận'}">
+                                                                    <!-- Đơn hàng có trạng thái "Chờ xác nhận" thì mới được huỷ đơn -->
+                                                                    <button class="btn-cancel btn btn-danger btn-sm"
+                                                                            data-order-id="${o.orderId}"
+                                                                            data-status="${o.status}"
+                                                                            style="padding: 6px 15px;"
+                                                                            onclick="huyDon(event)"
+                                                                            >
+                                                                        Huỷ đơn
+                                                                    </button> 
+                                                                </c:if>
+                                                                <!-- Đơn hàng có trạng thái "Chờ xác nhận" thì mới được huỷ đơn -->
+                                                                <%--<c:when test="${o.status == 'Chờ lấy hàng'}">
+                                                                    <button class="btn-cancel btn btn-danger btn-sm"
+                                                                            data-order-id="${o.orderId}"
+                                                                            data-status="${o.status}"
+                                                                            style="padding: 6px 15px;"
+                                                                            onclick="huyDon(event)"
+                                                                            >
+                                                                        Yêu cầu huỷ đơn
+                                                                    </button> 
+                                                                </c:when>--%>
+                                                            <%--</c:choose>--%>                      
+                                                            <form id="cancelOrder${o.orderId}" action="order" method="POST">
+                                                                <input type="hidden" name="action" value="cancel">
+                                                                <input type="hidden" name="actionBack" value="view">
+                                                                <input type="hidden" name="orderId" value="${o.orderId}">
+                                                                <input type="hidden" name="statusOrder" value="Đã huỷ">
+                                                                <input type="hidden" name="status" value="${param.status}">
+                                                            </form>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -131,25 +161,6 @@
                                     </c:forEach>
                                 </c:otherwise>
                             </c:choose>
-
-                            <!-- Modal huỷ đơn hàng -->
-                            <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="cancelModalLabel">Xác nhận huỷ đơn</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p style="text-align: left;">Bạn muốn chắc chắn huỷ đơn hàng <span id="orderId"></span></p>   
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                            <a href="#" class="btn btn-danger">Xác nhận</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -180,24 +191,97 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
-                                                                        function huyDon(event) {
-                                                                            event.preventDefault();
-                                                                        }
+                                                                                function huyDon(event) {
+                                                                                    event.preventDefault();
+                                                                                }
 
-                                                                        const cancelModal = document.getElementById('cancelModal')
-                                                                        if (cancelModal) {
-                                                                            cancelModal.addEventListener('show.bs.modal', event => {
-                                                                                // Button that triggered the modal
-                                                                                const button = event.relatedTarget
-                                                                                // Extract info from data-bs-* attributes
-                                                                                const orderId = button.getAttribute('data-orderid')
-                                                                                // Update the modal's content.
-                                                                                const orderIdSpan = cancelModal.querySelector('#orderId')
+                                                                                $(document).ready(function () { // Đảm bảo code chạy sau khi trang đã load xong
 
-                                                                                orderIdSpan.textContent = orderId
-                                                                            })
-                                                                        }
+                                                                                    $('.btn-cancel').click(function () { // Sử dụng class selector
+                                                                                        let orderId = $(this).data('order-id'); // $(this) là nút được click      
+                                                                                        let status = $(this).data('status');
+
+//                                                                                        if (status === "Chờ xác nhận") {
+
+                                                                                            Swal.fire({
+                                                                                                title: 'Bạn chắc chắn muốn huỷ đơn #' + (2500000 + orderId) + '?',
+                                                                                                text: 'Hành động này không thể hoàn tác!',
+                                                                                                icon: 'warning',
+                                                                                                showCancelButton: true,
+                                                                                                confirmButtonColor: '#3085d6',
+                                                                                                cancelButtonColor: '#d33',
+                                                                                                confirmButtonText: 'Có, huỷ đơn!',
+                                                                                                cancelButtonText: 'Không, quay lại'
+                                                                                            }).then((result) => {
+                                                                                                if (result.isConfirmed) {
+                                                                                                    Swal.fire({
+                                                                                                        title: 'Đang huỷ...',
+                                                                                                        text: 'Vui lòng chờ trong giây lát.',
+                                                                                                        icon: 'info',
+                                                                                                        timer: 1300,
+                                                                                                        timerProgressBar: true,
+                                                                                                        showConfirmButton: false,
+                                                                                                        allowOutsideClick: false, // Không cho bấm ra ngoài
+                                                                                                        allowEscapeKey: false // Không cho nhấn ESC để thoát
+                                                                                                    }).then(() => {
+                                                                                                        Swal.fire({
+                                                                                                            title: 'Đã huỷ!',
+                                                                                                            text: 'Đơn hàng của bạn đã được huỷ.',
+                                                                                                            icon: 'success',
+                                                                                                            timer: 1600,
+                                                                                                            timerProgressBar: true,
+                                                                                                            showConfirmButton: false
+                                                                                                        }).then(() => {
+                                                                                                            let formId = "cancelOrder" + orderId; // Tạo ID duy nhất cho form
+                                                                                                            let form = document.getElementById(formId);
+                                                                                                            if (form) {
+                                                                                                                form.submit();
+                                                                                                            } else {
+                                                                                                                console.error("Không tìm thấy form với ID: " + formId);
+                                                                                                            }
+                                                                                                        });
+                                                                                                    });
+                                                                                                }
+                                                                                            });
+
+//                                                                                        } else {
+//                                                                                            Swal.fire({
+//                                                                                                title: 'Bạn chắc chắn muốn gửi yêu cầu huỷ đơn hàng #' + (2500000 + orderId) + '?',
+//                                                                                                text: 'Hành động này không thể hoàn tác!',
+//                                                                                                icon: 'warning',
+//                                                                                                showCancelButton: true,
+//                                                                                                confirmButtonColor: '#3085d6',
+//                                                                                                cancelButtonColor: '#d33',
+//                                                                                                confirmButtonText: 'Có, gửi yêu cầu!',
+//                                                                                                cancelButtonText: 'Không, quay lại'
+//                                                                                            }).then((result) => {
+//                                                                                                if (result.isConfirmed) {
+//                                                                                                    Swal.fire({
+//                                                                                                        title: 'Đã gửi!',
+//                                                                                                        text: 'Yêu cầu huỷ đơn hàng của bạn đã gửi.',
+//                                                                                                        icon: 'success',
+//                                                                                                        timer: 1500,
+//                                                                                                        timerProgressBar: true,
+//                                                                                                        showConfirmButton: false
+//                                                                                                    }).then(() => {
+//                                                                                                        let formId = "cancelOrder" + orderId; // Tạo ID duy nhất cho form
+//                                                                                                        let form = document.getElementById(formId);
+//                                                                                                        if (form) {
+//                                                                                                            form.submit();
+//                                                                                                        } else {
+//                                                                                                            console.error("Không tìm thấy form với ID: " + formId);
+//                                                                                                        }
+//                                                                                                    });
+//                                                                                                }
+//                                                                                            });
+//                                                                                        }
+
+
+                                                                                    });
+                                                                                });
         </script>
     </body>
 </html>

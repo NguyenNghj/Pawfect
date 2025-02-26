@@ -5,7 +5,7 @@
         <servlet-class>controller.ShopControl</servlet-class>
     </servlet>
     <welcome-file-list>
-        <welcome-file>bookingdetail.jsp</welcome-file>
+        <welcome-file>pawfect</welcome-file>
     </welcome-file-list>
     <servlet>
         <servlet-name>ManagerControl</servlet-name>
@@ -14,14 +14,6 @@
     <servlet>
         <servlet-name>CartServlet</servlet-name>
         <servlet-class>controller.CartServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>PetRoomDetailServlet</servlet-name>
-        <servlet-class>controller.PetRoomDetailServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>PetRoomListServlet</servlet-name>
-        <servlet-class>controller.PetRoomListServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProductListServlet</servlet-name>
@@ -56,6 +48,22 @@
         <servlet-class>controller.ViewFinancialStatisticsServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>PetRoomDetailServlet</servlet-name>
+        <servlet-class>controller.PetRoomDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PetRoomListServlet</servlet-name>
+        <servlet-class>controller.PetRoomListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminPetRoomsListServlet</servlet-name>
+        <servlet-class>controller.AdminPetRoomsListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminDeleteRoomServlet</servlet-name>
+        <servlet-class>controller.AdminDeleteRoomServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>controller.RegisterServlet</servlet-class>
     </servlet>
@@ -79,6 +87,18 @@
         <servlet-name>LoginStaffServlet</servlet-name>
         <servlet-class>controller.LoginStaffServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>HomePageServlet</servlet-name>
+        <servlet-class>controller.HomePageServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomersListServlet</servlet-name>
+        <servlet-class>controller.CustomersListServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CustomersBanServlet</servlet-name>
+        <servlet-class>controller.CustomersBanServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/products</url-pattern>
@@ -94,14 +114,6 @@
     <servlet-mapping>
         <servlet-name>CartServlet</servlet-name>
         <url-pattern>/cart</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PetRoomDetailServlet</servlet-name>
-        <url-pattern>/petroomdetail</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PetRoomListServlet</servlet-name>
-        <url-pattern>/petroomslist</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CheckoutServlet</servlet-name>
@@ -132,6 +144,22 @@
         <url-pattern>/viewfinancialstatistics</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>PetRoomDetailServlet</servlet-name>
+        <url-pattern>/petroomdetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PetRoomListServlet</servlet-name>
+        <url-pattern>/petrooms</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminPetRoomsListServlet</servlet-name>
+        <url-pattern>/dashboard/admin/petroom</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminDeleteRoomServlet</servlet-name>
+        <url-pattern>/deleteroom</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/register</url-pattern>
     </servlet-mapping>
@@ -154,6 +182,18 @@
     <servlet-mapping>
         <servlet-name>LoginStaffServlet</servlet-name>
         <url-pattern>/loginstaff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomePageServlet</servlet-name>
+        <url-pattern>/pawfect</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomersListServlet</servlet-name>
+        <url-pattern>/dashboard/admin/customers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomersBanServlet</servlet-name>
+        <url-pattern>/dashboard/admin/customersban</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

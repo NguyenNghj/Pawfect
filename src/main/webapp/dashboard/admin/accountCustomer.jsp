@@ -4,6 +4,9 @@
     Author     : Vu Quang Duc - CE181221
 --%>
 
+<%@page import="model.Customers"%>
+<%@page import="model.Customers"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -237,74 +240,124 @@
                             </div>
                         </div>        
                     </div>
+<style>
+    /* Thiết lập chung cho bảng */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+    }
 
+   /* Căn trái toàn bộ nội dung trong bảng */
+.table th, 
+.table td {
+    text-align: left !important;
+    padding: 10px;
+    vertical-align: middle;
+}
+/* Định dạng tiêu đề bảng */
+.main-dashboard-table-header {
+    background-color: #007BFF;
+    color: white;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    text-align: left;
+    padding: 12px 15px;
+}
 
-                    <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
-                        <div class="main-dashboard-table">
-                            <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
-                                 style="background-color: #007BFF; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
-                                <i class="fa-solid fa-user-tie" style="font-size: 20px;"></i>
-                                <h4 class="mb-0">Customer Account List</h4>
-                            </div>
-                            <div style="padding: 15px 15px 25px 15px;">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">ID</th>
-                                            <th scope="col">Image</th>
-                                            <th scope="col">Account Name</th>
-                                            <th scope="col">Email</th>
-                                            <th scope="col">Phone</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Create At</th>
-                                            <th scope="col">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary">Edit</button>
-                                                <button type="button" class="btn btn-danger">Delete</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                            <td>@fat</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary">Edit</button>
-                                                <button type="button" class="btn btn-danger">Delete</button>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>Larry the Bird</td>
-                                            <td>@twitter</td>
-                                            <td>@fat</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary">Edit</button>
-                                                <button type="button" class="btn btn-danger">Delete</button>
-                                            </td>
-                                        </tr>                             
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>          
+    /* Màu nền và kiểu chữ cho tiêu đề */
+    .main-dashboard-table-header {
+        background-color: #007BFF;
+        color: white;
+        font-weight: bold;
+        padding: 12px;
+        text-align: center;
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+    }
+
+    /* Gạch ngang ngăn cách từng khách hàng */
+    .table tbody tr {
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* Định dạng hàng tiêu đề */
+    .table thead {
+        background-color: #007BFF;
+        color: white;
+    }
+
+    /* Tạo hover cho hàng */
+    .table tbody tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    /* CSS cho nút "Cấm" */
+    .ban-btn {
+        background-color: red;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    /* Hiệu ứng hover cho nút "Cấm" */
+    .ban-btn:hover {
+        background-color: darkred;
+    }
+</style>
+<div class="row" style="margin-top: 20px; margin-bottom: 50px;">
+    <div class="main-dashboard-table">
+        <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header">                                                 
+            <i class="fa-solid fa-user-tie" style="font-size: 20px;"></i>
+            <h4 class="mb-0">Customer Account List</h4>
+        </div>
+        <div style="padding: 15px;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Gender</th>
+                        <th>Birth Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%
+                        List<Customers> customerList = (List<Customers>) request.getAttribute("customerList");
+                        if (customerList != null) {
+                            for (Customers customer : customerList) {
+                    %>
+                    <tr>
+                        <td><%= customer.getCustomerId() %></td>
+                        <td><%= customer.getFullName() %></td>
+                        <td><%= customer.getEmail() %></td>
+                        <td><%= customer.getPhone() %></td>
+                        <td><%= customer.getAddress() %></td>
+                        <td><%= customer.getGender() %></td>
+                        <td><%= customer.getBirthDate() %></td>
+                        <td>
+                            <a href="customersban?id=<%= customer.getCustomerId() %>" 
+                               class="ban-btn"
+                               onclick="return confirm('Bạn có chắc muốn xóa?');">Cấm</a>
+                        </td>
+                    </tr>
+                    <%
+                            }
+                        }
+                    %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+         
 
                 </div>
 
@@ -316,24 +369,24 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
         <script>
-            const exampleModal = document.getElementById('exampleModal')
-            if (exampleModal) {
-                exampleModal.addEventListener('show.bs.modal', event => {
-                    // Button that triggered the modal
-                    const button = event.relatedTarget
-                    // Extract info from data-bs-* attributes
-                    const recipient = button.getAttribute('data-bs-whatever')
-                    // If necessary, you could initiate an Ajax request here
-                    // and then do the updating in a callback.
+                    const exampleModal = document.getElementById('exampleModal')
+                    if (exampleModal) {
+                        exampleModal.addEventListener('show.bs.modal', event => {
+                            // Button that triggered the modal
+                            const button = event.relatedTarget
+                            // Extract info from data-bs-* attributes
+                            const recipient = button.getAttribute('data-bs-whatever')
+                            // If necessary, you could initiate an Ajax request here
+                            // and then do the updating in a callback.
 
-                    // Update the modal's content.
-                    const modalTitle = exampleModal.querySelector('.modal-title')
-                    const modalBodyInput = exampleModal.querySelector('.modal-body input')
+                            // Update the modal's content.
+                            const modalTitle = exampleModal.querySelector('.modal-title')
+                            const modalBodyInput = exampleModal.querySelector('.modal-body input')
 
-                    modalTitle.textContent = `New message to ${recipient}`
-                    modalBodyInput.value = recipient
-                })
-            }
+                            modalTitle.textContent = `New message to ${recipient}`
+                            modalBodyInput.value = recipient
+                        })
+                    }
         </script>
     </body>
 </html>
