@@ -31,6 +31,19 @@ public class PetRooms {
         this.status = status;
         this.isActive = isActive;
     }
+    
+    // Constructor dùng để thêm phòng mới (Không có status và isActive)
+    public PetRooms(String roomName, String roomImage, String roomType, double minWeight, double maxWeight, int quantity, double pricePerNight) {
+        this.roomName = roomName;
+        this.roomImage = roomImage;
+        this.roomType = roomType;
+        this.minWeight = minWeight;
+        this.maxWeight = maxWeight;
+        this.quantity = quantity;
+        this.pricePerNight = pricePerNight;
+        this.status = "Còn phòng";  // Luôn mặc định khi thêm mới
+        this.isActive = true;  // Luôn mặc định khi thêm mới
+    }
 
     // Getters và Setters
     public int getRoomId() { return roomId; }

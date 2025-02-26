@@ -16,8 +16,8 @@ public class PetRoomDAO {
     // Câu lệnh SQL
     protected static String Get_All_PetRooms = "SELECT * FROM PetRooms WHERE is_active = 1";
     protected static String Get_PetRoom_By_Id = "SELECT * FROM PetRooms WHERE room_id = ?";
-    protected static String Insert_PetRoom = "INSERT INTO PetRooms (room_name, room_image, room_type, min_weight, max_weight, quantity, price_per_night, status, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    protected static String Update_PetRoom = "UPDATE PetRooms SET room_name = ?, room_image = ?, room_type = ?, min_weight = ?, max_weight = ?, quantity = ?, price_per_night = ?, status = ?, is_active = ? WHERE room_id = ?";
+    protected static String INSERT_PETROOM = "INSERT INTO PetRooms (room_name, room_image, room_type, min_weight, max_weight, quantity, price_per_night, status, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, N'Còn phòng', 1)";
+    protected static String Update_PetRoom = "UPDATE PetRooms SET room_name = ?, room_image = ?, room_type = ?, min_weight = ?, max_weight = ?, quantity = ?, price_per_night = ?, status = ? WHERE room_id = ?";
     protected static String Delete_PetRoom = "UPDATE PetRooms SET is_active = 0 WHERE room_id = ?";
 
     // Lấy danh sách tất cả phòng
@@ -162,12 +162,9 @@ public class PetRoomDAO {
         return null;
     }
 
-    // Thêm mới một phòng
-    public static boolean insertPetRoom(PetRooms room) {
-        boolean success = false;
-        try {
-            Con = new DBContext().getConnection();
-            PreparedStatement ps = Con.prepareStatement(Insert_PetRoom);
+    // Thêm mới một phòng (Mặc định status = "Còn phòng", is_active = 1)
+    public static boolean addRoom(PetRooms room) {
+        try ( Connection con = new DBContext().getConnection();  PreparedStatement ps = con.prepareStatement(INSERT_PETROOM)) {
             ps.setString(1, room.getRoomName());
             ps.setString(2, room.getRoomImage());
             ps.setString(3, room.getRoomType());
@@ -175,17 +172,11 @@ public class PetRoomDAO {
             ps.setDouble(5, room.getMaxWeight());
             ps.setInt(6, room.getQuantity());
             ps.setDouble(7, room.getPricePerNight());
-            ps.setString(8, room.getStatus());
-            ps.setBoolean(9, room.isActive());
-
-            success = ps.executeUpdate() > 0;
-            ps.close();
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            closeConnection();
         }
-        return success;
+        return false;
     }
 
     // Cập nhật phòng
@@ -194,6 +185,7 @@ public class PetRoomDAO {
         try {
             Con = new DBContext().getConnection();
             PreparedStatement ps = Con.prepareStatement(Update_PetRoom);
+            // Cập nhật các trường cần thiết
             ps.setString(1, room.getRoomName());
             ps.setString(2, room.getRoomImage());
             ps.setString(3, room.getRoomType());
@@ -202,8 +194,9 @@ public class PetRoomDAO {
             ps.setInt(6, room.getQuantity());
             ps.setDouble(7, room.getPricePerNight());
             ps.setString(8, room.getStatus());
-            ps.setBoolean(9, room.isActive());
-            ps.setInt(10, room.getRoomId());
+
+            // Chỉ cập nhật theo room_id
+            ps.setInt(9, room.getRoomId());
 
             success = ps.executeUpdate() > 0;
             ps.close();
