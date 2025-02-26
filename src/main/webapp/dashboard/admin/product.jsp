@@ -223,7 +223,7 @@
                                                 <td>${product.stock}</td>
                                                 <td>
                                                     <c:choose>
-                                                        <c:when test="${product.status == 'Còn hàng'}">
+                                                        <c:when test="${product.stock > 0}">
                                                             <span class="text-success">Còn hàng</span>
                                                         </c:when>
                                                         <c:otherwise>
