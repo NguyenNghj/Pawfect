@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Account;
+import model.AccountStaff;
 
 /**
  *
@@ -75,13 +76,15 @@ public class LoginStaffServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         UserDAO userDAO = new UserDAO();
-        Account account = new Account();
+        AccountStaff account = new AccountStaff();
         account = userDAO.loginStaff(email, password);
-        if (!Account.IsEmpty(account)) {
-            Cookie staffId = new Cookie("staffId", account.getCustomerId());
+        if (!AccountStaff.IsEmpty(account)) {
+            Cookie staffId = new Cookie("staffId", account.getStaffId());
             staffId.setMaxAge(60 * 60 * 24 * 1);
             response.addCookie(staffId);
-            response.sendRedirect("products");
+            if (account.getRole().equals("Admin")){
+            response.sendRedirect("dashboard/admin/dashboard.jsp");
+            }else{    response.sendRedirect("dashboard/staff/dashboard.jsp");}
         } else {
             response.sendRedirect("loginadmin.jsp?error=Invalid Credentials");
         }
