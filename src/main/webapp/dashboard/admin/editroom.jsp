@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="../../css/dashboard.css">
-        <title>JSP Page</title>
+        <title>Chỉnh sửa Pet Hotel</title>
     </head>
     <body>
         <div class="container-fluid">
@@ -218,7 +218,8 @@
 
                             <label>Mô tả:</label>
                             <input type="text" name="description" class="form-control" value="<%= room.getDescription()%>" required style="margin-bottom: 10px;">
-
+                            
+                            <label>Trạng thái:</label>
                             <select id="status" name="status" class="form-control">
                                 <option value="Còn phòng" <%= room.getStatus().equals("Còn phòng") ? "selected" : ""%>>Còn phòng</option>
                                 <option value="Hết phòng" <%= room.getStatus().equals("Hết phòng") ? "selected" : ""%>>Hết phòng</option>
