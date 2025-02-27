@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.CategoryDAO;
 import dao.ProductDAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -12,14 +13,17 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.File;
 import java.util.List;
+import model.Category;
 import model.Product;
 
 /**
  *
  * @author Nguyen Tri Nghi - CE180897
  */
-public class AdminProductSerlvet extends HttpServlet {
+public class ProductManagementServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -60,7 +64,10 @@ public class AdminProductSerlvet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         ProductDAO productDAO = new ProductDAO();
+        CategoryDAO categoryDAO = new CategoryDAO();
         List<Product> products = productDAO.getAllProducts();
+        List<Category> categoryList = categoryDAO.getAllCategories();
+        request.setAttribute("categories", categoryList);
         request.setAttribute("products", products);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard/admin/product.jsp");
         dispatcher.forward(request, response);
@@ -77,7 +84,6 @@ public class AdminProductSerlvet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     /**

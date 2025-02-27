@@ -23,7 +23,7 @@ public class ProductDAO {
     public List<Product> getAllProducts() {
         List<Product> productList = new ArrayList<>();
         String query = "SELECT p.product_id, p.category_id, c.category_name, p.product_name, p.product_petType, "
-                + "p.product_price, p.product_image, p.stock, p.description, p.is_active "
+                + "p.product_price, p.product_image, p.stock, p.description "
                 + "FROM Products p "
                 + "JOIN Category c ON p.category_id = c.category_id;";
         try {
@@ -40,8 +40,7 @@ public class ProductDAO {
                         rs.getDouble("product_price"),
                         rs.getString("product_image"),
                         rs.getInt("stock"),
-                        rs.getString("description"),
-                        rs.getBoolean("is_active")
+                        rs.getString("description")
                 ));
             }
         } catch (Exception e) {
@@ -54,7 +53,7 @@ public class ProductDAO {
     public List<Product> getAllProductsByCategoryName(String categoryName) {
         List<Product> productList = new ArrayList<>();
         String query = "SELECT p.product_id, p.category_id, c.category_name, p.product_name, p.product_petType, "
-                + "p.product_price, p.product_image, p.stock, p.description, p.is_active "
+                + "p.product_price, p.product_image, p.stock, p.description "
                 + "FROM Products p "
                 + "JOIN Category c ON p.category_id = c.category_id "
                 + "WHERE c.category_name = ?";
@@ -65,16 +64,15 @@ public class ProductDAO {
             rs = ps.executeQuery();
             while (rs.next()) {
                 productList.add(new Product(
-                        rs.getInt("product_id"),
-                        rs.getInt("category_id"),
-                        rs.getString("category_name"),
-                        rs.getString("product_name"),
-                        rs.getString("product_petType"),
-                        rs.getDouble("product_price"),
-                        rs.getString("product_image"),
-                        rs.getInt("stock"),
-                        rs.getString("description"),
-                        rs.getBoolean("is_active")
+                        rs.getInt(1),
+                        rs.getInt(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getDouble(6),
+                        rs.getString(7),
+                        rs.getInt(8),
+                        rs.getString(9)
                 ));
             }
         } catch (Exception e) {
@@ -86,10 +84,11 @@ public class ProductDAO {
     // Lấy sản phẩm theo ID
     public Product getProductById(int productId) {
         String query = "SELECT p.product_id, p.category_id, c.category_name, p.product_name, p.product_petType, "
-                + "p.product_price, p.product_image, p.stock, p.description, p.is_active "
+                + "p.product_price, p.product_image, p.stock, p.description "
                 + "FROM Products p "
                 + "JOIN Category c ON p.category_id = c.category_id "
                 + "WHERE p.product_id = ?";
+
         try {
             conn = new DBContext().getConnection();
             ps = conn.prepareStatement(query);
@@ -97,16 +96,15 @@ public class ProductDAO {
             rs = ps.executeQuery();
             if (rs.next()) {
                 return new Product(
-                        rs.getInt("product_id"),
-                        rs.getInt("category_id"),
-                        rs.getString("category_name"),
-                        rs.getString("product_name"),
-                        rs.getString("product_petType"),
-                        rs.getDouble("product_price"),
-                        rs.getString("product_image"),
-                        rs.getInt("stock"),
-                        rs.getString("description"),
-                        rs.getBoolean("is_active")
+                        rs.getInt(1),
+                        rs.getInt(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getDouble(6),
+                        rs.getString(7),
+                        rs.getInt(8),
+                        rs.getString(9)
                 );
             }
         } catch (Exception e) {
@@ -152,4 +150,38 @@ public class ProductDAO {
         }
         return products;
     }
+
+    public boolean updateProduct(Product product) {
+        String query = "UPDATE Products SET category_id = ?, product_name = ?, product_petType = ?, product_price = ?, product_image = ?, stock = ?, description = ? WHERE product_id = ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, product.getCategoryId());
+            ps.setString(2, product.getProductName());
+            ps.setString(3, product.getProductPetType());
+            ps.setDouble(4, product.getProductPrice());
+            ps.setString(5, product.getProductImage());
+            ps.setInt(6, product.getStock());
+            ps.setString(7, product.getDescription()); // Thêm description
+            ps.setInt(9, product.getProductId());
+
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
+    }
+
 }

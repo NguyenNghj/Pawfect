@@ -109,7 +109,7 @@
     </servlet>
     <servlet>
         <servlet-name>AdminProductSerlvet</servlet-name>
-        <servlet-class>controller.AdminProductSerlvet</servlet-class>
+        <servlet-class>controller.ProductManagementServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ViewPetServlet</servlet-name>
