@@ -14,6 +14,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="../../css/dashboard.css">
         <title>JSP Page</title>
     </head>
@@ -178,215 +179,348 @@
                         </nav>
                     </div>   
 
-                    <div class="row">
-                        <div class="col-3 p-0" style="margin-top: 60px;">
-                            <button type="button" class="btn btn-primary"
-                                    data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                    >
-                                <i class="fa-solid fa-plus"></i>
-                                New Customer
-                            </button>
 
-                            <!-- Modal of Add Customer -->
-                            <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <style>
+                        /* Thiết lập chung cho bảng */
+                        .table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            background-color: white;
+                        }
+
+                        /* Căn trái toàn bộ nội dung trong bảng */
+                        .table th,
+                        .table td {
+                            text-align: left !important;
+                            padding: 10px;
+                            vertical-align: middle;
+                        }
+                        /* Định dạng tiêu đề bảng */
+                        .main-dashboard-table-header {
+                            background-color: #007BFF;
+                            color: white;
+                            border-top-left-radius: 6px;
+                            border-top-right-radius: 6px;
+                            text-align: left;
+                            padding: 12px 15px;
+                        }
+
+                        /* Màu nền và kiểu chữ cho tiêu đề */
+                        .main-dashboard-table-header {
+                            background-color: #007BFF;
+                            color: white;
+                            font-weight: bold;
+                            padding: 12px;
+                            text-align: center;
+                            border-top-left-radius: 6px;
+                            border-top-right-radius: 6px;
+                        }
+
+                        /* Gạch ngang ngăn cách từng khách hàng */
+                        .table tbody tr {
+                            border-bottom: 1px solid #ddd;
+                        }
+
+                        /* Định dạng hàng tiêu đề */
+                        .table thead {
+                            background-color: #007BFF;
+                            color: white;
+                        }
+
+                        /* Tạo hover cho hàng */
+                        .table tbody tr:hover {
+                            background-color: #f5f5f5;
+                        }
+
+                        /* CSS cho nút "Cấm" */
+                        .ban-btn {
+                            background-color: red;
+                            color: white;
+                            padding: 6px 12px;
+                            border-radius: 4px;
+                            text-decoration: none;
+                            font-weight: bold;
+                            transition: 0.3s;
+                        }
+
+                        /* Hiệu ứng hover cho nút "Cấm" */
+                        .ban-btn:hover {
+                            background-color: darkred;
+                        }
+                    </style>
+                    <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
+                        <div class="main-dashboard-table">
+                            <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header">                                                 
+                                <i class="fa-solid fa-user-tie" style="font-size: 20px;"></i>
+                                <h4 class="mb-0">Danh Sách Khách Hàng</h4>
+                            </div>
+                            <div style="padding: 15px;">
+                                <!-- Search Form -->
+                                <div style="padding: 15px;">
+                                    <form action="customers" method="get" class="d-flex mb-3 search-form align-items-center">
+                                        <input type="text" name="keyword" class="form-control search-input" placeholder="Tìm Kiếm Theo Tên"
+                                               value="<%= request.getAttribute("searchKeyword") != null ? request.getAttribute("searchKeyword") : ""%>">
+                                        <button type="submit" class="btn btn-primary search-btn">Tìm Kiếm</button>
+                                    </form>
+
+                                    <style>
+                                        .search-form {
+                                            max-width: 300px; /* Giới hạn chiều rộng */
+                                            display: flex;
+                                            justify-content: start; /* Căn trái */
+                                        }
+                                        .search-input {
+                                            flex: 1;
+                                            padding: 6px;
+                                            font-size: 14px;
+                                            height: 35px;
+                                        }
+                                        .search-btn {
+                                            padding: 6px 10px;
+                                            font-size: 14px;
+                                            height: 35px;
+                                            white-space: nowrap;
+                                        }
+                                        .ban-btn, .unban-btn {
+                                            display: inline-block;
+                                            width: 80px; /* Đảm bảo cả hai nút có cùng chiều rộng */
+                                            text-align: center;
+                                            color: white;
+                                            padding: 8px 0;
+                                            font-size: 14px;
+                                            font-weight: bold;
+                                            text-decoration: none;
+                                            border-radius: 5px;
+                                            border: none;
+                                            cursor: pointer;
+                                        }
+
+                                        .ban-btn {
+                                            background-color: red;
+                                        }
+
+                                        .unban-btn {
+                                            background-color: green;
+                                        }
+
+                                        .ban-btn:hover {
+                                            background-color: darkred;
+                                        }
+
+                                        .unban-btn:hover {
+                                            background-color: darkgreen;
+                                        }
+
+                                    </style>
+
+                                    <table class="table">
+
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Họ và Tên</th>
+                                                <th>Email</th>
+                                                <th>Số điện thoại</th>
+                                                <th>Địa chỉ</th>
+                                                <th>Giới tính</th>
+                                                <th>Ngày sinh</th>
+                                                <th>Hành động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <%
+                                                List<Customers> customerList = (List<Customers>) request.getAttribute("customerList");
+                                                if (customerList != null) {
+                                                    for (Customers customer : customerList) {
+                                            %>
+                                            <tr>
+                                                <td><%= customer.getCustomerId()%></td>
+                                                <td><%= customer.getFullName()%></td>
+                                                <td><%= customer.getEmail()%></td>
+                                                <td><%= customer.getPhone()%></td>
+                                                <td><%= customer.getAddress()%></td>
+                                                <td><%= customer.getGender()%></td>
+                                                <td><%= customer.getBirthDate()%></td>
+                                                <td>
+                                                    <% if (customer.isActive()) {%>
+                                                    <a href="customersban?id=<%= customer.getCustomerId()%>&action=ban" 
+                                                       class="ban-btn"
+                                                       onclick="return confirm('Bạn có chắc muốn cấm khách hàng này?');">
+                                                        Cấm
+                                                    </a>
+                                                    <% } else {%>
+                                                    <a href="customersban?id=<%= customer.getCustomerId()%>&action=unban" 
+                                                       class="unban-btn"
+                                                       onclick="return confirm('Bạn có chắc muốn mở lại khách hàng này?');">
+                                                        Mở
+                                                    </a>
+                                                    <% } %>
+                                                </td>
+
+
+                                            </tr>
+                                            <%
+                                                }
+                                            } else {%>
+                                            <!-- Hiển thị thông báo nếu không tìm thấy khách hàng -->
+                                        <div class="alert alert-warning text-center" role="alert">
+                                            No customers found. Please try again with a different name.
                                         </div>
-                                        <div class="modal-body">
-                                            <form>
-                                                <div class="form-floating mb-3">
-                                                    <input type="email" class="form-control" id="recipient-name" placeholder="name@example.com">
-                                                    <label for="recipient-name">Email</label>                        
-                                                </div>
-                                                <div class="form-floating mb-3">
-                                                    <input type="password" class="form-control" id="recipient-name" placeholder="name@example.com">
-                                                    <label for="recipient-name">Password</label>                        
-                                                </div>
-                                                <div class="form-floating mb-3">
-                                                    <input type="password" class="form-control" id="recipient-name" placeholder="name@example.com">
-                                                    <label for="recipient-name">Full Name</label>                        
-                                                </div>
-                                                <div class="form-floating mb-3">
-                                                    <input type="password" class="form-control" id="recipient-name" placeholder="name@example.com">
-                                                    <label for="recipient-name">Phone</label>                        
-                                                </div>
-                                                <div class="form-floating mb-3">
-                                                    <input type="password" class="form-control" id="recipient-name" placeholder="name@example.com">
-                                                    <label for="recipient-name">Address</label>                        
-                                                </div>
-                                                <div class="form-floating mb-3">
-                                                    <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                                        <option selected value="1">Others</option>
-                                                        <option value="2">Male</option>
-                                                        <option value="3">Female</option>
-                                                    </select>
-                                                    <label for="floatingSelect">Gender</label>                      
-                                                </div>
-                                                <!-- <div class="input-group mb-3">
-                                                    <input type="file" class="form-control" id="inputGroupFile02">
-                                                    <label class="input-group-text" for="inputGroupFile02">Image</label>
-                                                </div> -->
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Add</button>
-                                        </div>
-                                    </div>
+                                        <%
+                                            }
+                                        %>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                        </div>        
+                        </div>
+
+
                     </div>
-<style>
-    /* Thiết lập chung cho bảng */
-    .table {
-        width: 100%;
-        border-collapse: collapse;
-        background-color: white;
-    }
 
-   /* Căn trái toàn bộ nội dung trong bảng */
-.table th, 
-.table td {
-    text-align: left !important;
-    padding: 10px;
-    vertical-align: middle;
-}
-/* Định dạng tiêu đề bảng */
-.main-dashboard-table-header {
-    background-color: #007BFF;
-    color: white;
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-    text-align: left;
-    padding: 12px 15px;
-}
-
-    /* Màu nền và kiểu chữ cho tiêu đề */
-    .main-dashboard-table-header {
-        background-color: #007BFF;
-        color: white;
-        font-weight: bold;
-        padding: 12px;
-        text-align: center;
-        border-top-left-radius: 6px;
-        border-top-right-radius: 6px;
-    }
-
-    /* Gạch ngang ngăn cách từng khách hàng */
-    .table tbody tr {
-        border-bottom: 1px solid #ddd;
-    }
-
-    /* Định dạng hàng tiêu đề */
-    .table thead {
-        background-color: #007BFF;
-        color: white;
-    }
-
-    /* Tạo hover cho hàng */
-    .table tbody tr:hover {
-        background-color: #f5f5f5;
-    }
-
-    /* CSS cho nút "Cấm" */
-    .ban-btn {
-        background-color: red;
-        color: white;
-        padding: 6px 12px;
-        border-radius: 4px;
-        text-decoration: none;
-        font-weight: bold;
-        transition: 0.3s;
-    }
-
-    /* Hiệu ứng hover cho nút "Cấm" */
-    .ban-btn:hover {
-        background-color: darkred;
-    }
-</style>
-<div class="row" style="margin-top: 20px; margin-bottom: 50px;">
-    <div class="main-dashboard-table">
-        <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header">                                                 
-            <i class="fa-solid fa-user-tie" style="font-size: 20px;"></i>
-            <h4 class="mb-0">Customer Account List</h4>
-        </div>
-        <div style="padding: 15px;">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Full Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Address</th>
-                        <th>Gender</th>
-                        <th>Birth Date</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <%
-                        List<Customers> customerList = (List<Customers>) request.getAttribute("customerList");
-                        if (customerList != null) {
-                            for (Customers customer : customerList) {
-                    %>
-                    <tr>
-                        <td><%= customer.getCustomerId() %></td>
-                        <td><%= customer.getFullName() %></td>
-                        <td><%= customer.getEmail() %></td>
-                        <td><%= customer.getPhone() %></td>
-                        <td><%= customer.getAddress() %></td>
-                        <td><%= customer.getGender() %></td>
-                        <td><%= customer.getBirthDate() %></td>
-                        <td>
-                            <a href="customersban?id=<%= customer.getCustomerId() %>" 
-                               class="ban-btn"
-                               onclick="return confirm('Bạn có chắc muốn xóa?');">Cấm</a>
-                        </td>
-                    </tr>
-                    <%
-                            }
+                    <style>
+                        /* Thiết lập chung cho bảng */
+                        .table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            background-color: white;
                         }
-                    %>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-         
+
+                        /* Căn trái toàn bộ nội dung trong bảng */
+                        .table th,
+                        .table td {
+                            text-align: left !important;
+                            padding: 10px;
+                            vertical-align: middle;
+                        }
+                        /* Định dạng tiêu đề bảng */
+                        .main-dashboard-table-header {
+                            background-color: #007BFF;
+                            color: white;
+                            border-top-left-radius: 6px;
+                            border-top-right-radius: 6px;
+                            text-align: left;
+                            padding: 12px 15px;
+                        }
+
+                        /* Màu nền và kiểu chữ cho tiêu đề */
+                        .main-dashboard-table-header {
+                            background-color: #007BFF;
+                            color: white;
+                            font-weight: bold;
+                            padding: 12px;
+                            text-align: center;
+                            border-top-left-radius: 6px;
+                            border-top-right-radius: 6px;
+                        }
+
+                        /* Gạch ngang ngăn cách từng khách hàng */
+                        .table tbody tr {
+                            border-bottom: 1px solid #ddd;
+                        }
+
+                        /* Định dạng hàng tiêu đề */
+                        .table thead {
+                            background-color: #007BFF;
+                            color: white;
+                        }
+
+                        /* Tạo hover cho hàng */
+                        .table tbody tr:hover {
+                            background-color: #f5f5f5;
+                        }
+
+                        /* CSS cho nút "Cấm" */
+                        .ban-btn {
+                            background-color: red;
+                            color: white;
+                            padding: 6px 12px;
+                            border-radius: 4px;
+                            text-decoration: none;
+                            font-weight: bold;
+                            transition: 0.3s;
+                        }
+
+                        /* Hiệu ứng hover cho nút "Cấm" */
+                        .ban-btn:hover {
+                            background-color: darkred;
+                        }
+                    </style>
+                    <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
+                        <div class="main-dashboard-table">
+                            <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header">                                                 
+                                <i class="fa-solid fa-user-tie" style="font-size: 20px;"></i>
+                                <h4 class="mb-0">Customer Account List</h4>
+                            </div>
+                            <div style="padding: 15px;">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Full Name</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Address</th>
+                                            <th>Gender</th>
+                                            <th>Birth Date</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%
+                                            List<Customers> customerList = (List<Customers>) request.getAttribute("customerList");
+                                            if (customerList != null) {
+                                                for (Customers customer : customerList) {
+                                        %>
+                                        <tr>
+                                            <td><%= customer.getCustomerId()%></td>
+                                            <td><%= customer.getFullName()%></td>
+                                            <td><%= customer.getEmail()%></td>
+                                            <td><%= customer.getPhone()%></td>
+                                            <td><%= customer.getAddress()%></td>
+                                            <td><%= customer.getGender()%></td>
+                                            <td><%= customer.getBirthDate()%></td>
+                                            <td>
+                                                <a href="customersban?id=<%= customer.getCustomerId()%>" 
+                                                   class="ban-btn"
+                                                   onclick="return confirm('Bạn có chắc muốn xóa?');">Cấm</a>
+                                            </td>
+                                        </tr>
+                                        <%
+                                                }
+                                            }
+                                        %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
-
             </div>
-        </div>
 
+            <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+            <script>
+                                                           const exampleModal = document.getElementById('exampleModal')
+                                                           if (exampleModal) {
+                                                               exampleModal.addEventListener('show.bs.modal', event => {
+                                                                   // Button that triggered the modal
+                                                                   const button = event.relatedTarget
+                                                                   // Extract info from data-bs-* attributes
+                                                                   const recipient = button.getAttribute('data-bs-whatever')
+                                                                   // If necessary, you could initiate an Ajax request here
+                                                                   // and then do the updating in a callback.
 
-        <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-        <script>
-                    const exampleModal = document.getElementById('exampleModal')
-                    if (exampleModal) {
-                        exampleModal.addEventListener('show.bs.modal', event => {
-                            // Button that triggered the modal
-                            const button = event.relatedTarget
-                            // Extract info from data-bs-* attributes
-                            const recipient = button.getAttribute('data-bs-whatever')
-                            // If necessary, you could initiate an Ajax request here
-                            // and then do the updating in a callback.
+                                                                   // Update the modal's content.
+                                                                   const modalTitle = exampleModal.querySelector('.modal-title')
+                                                                   const modalBodyInput = exampleModal.querySelector('.modal-body input')
 
-                            // Update the modal's content.
-                            const modalTitle = exampleModal.querySelector('.modal-title')
-                            const modalBodyInput = exampleModal.querySelector('.modal-body input')
-
-                            modalTitle.textContent = `New message to ${recipient}`
-                            modalBodyInput.value = recipient
-                        })
-                    }
-        </script>
+                                                                   modalTitle.textContent = `New message to ${recipient}`
+                                                                   modalBodyInput.value = recipient
+                                                               })
+                                                           }
+            </script>
     </body>
 </html>

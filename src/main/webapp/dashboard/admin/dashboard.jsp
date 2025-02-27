@@ -11,6 +11,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="../../css/dashboard.css">
         <title>JSP Page</title>
     </head>
@@ -55,7 +56,7 @@
                                         </nav>
                                         <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;">
                                             <div class="container-fluid">
-                                                <a class="navbar-brand" href="accountCustomer.jsp">Customer</a>
+                                                <a class="navbar-brand" href="customers">Customer</a>
                                             </div>
                                         </nav>
                                     </div>

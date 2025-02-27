@@ -240,12 +240,7 @@ body {
 
 .product-card {
     width: 318px;
-    min-width: 318px;
-    max-width: 318px;
-
-    height: 287px;
-    min-height: 287px;
-    max-height: 287px;
+    height: 405px;
     background-color: white;
     border-radius: 20px;
     position: relative;
@@ -278,14 +273,14 @@ body {
     gap: 15px;
 }
 
-.product-name {
+.product-name{
     text-align: center;
     margin: 0;
     font-size: 18px;
     color: #FFF2DF;
     text-transform: uppercase;
-    padding: 0 10px 0 10px;
-    transition: background 0.3s, transform 0.2s;
+    padding: 0 10px  0 10px;
+    text-decoration: none;
 }
 
 .product-name:hover {
@@ -315,16 +310,15 @@ body {
     background-color: transparent;
     transition: background 0.3s, transform 0.2s;
 }
-
-.product-row
-{
-    display: flex;
+.product-row{
     justify-content: center;
 }
 
 .add-to-cart:hover {
     transform: scale(1.05);
+    cursor: pointer;
 }
+
 
 .pagination {
     display: flex;

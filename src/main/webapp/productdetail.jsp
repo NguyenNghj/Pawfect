@@ -46,13 +46,17 @@
                                     <hr class="divider">
                                     <p class="description">${product.description}</p>
 
-                                    <form>
-                                        <fieldset class="data-quantity">
-                                            <button type="button" class="sub">−</button>
-                                            <input type="number" class="input-number" min="1" value="1">
-                                            <button type="button" class="add">+</button>
-                                        </fieldset>
-                                    </form>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <form>
+                                            <fieldset class="data-quantity" style="display: flex; align-items: center; border: none;">
+                                                <button type="button" class="sub">−</button>
+                                                <input type="number" class="input-number" min="1" value="1">
+                                                <button type="button" class="add">+</button>
+                                            </fieldset>
+                                        </form>
+                                        <p style="margin: 0;">${product.stock} có sẵn</p>
+                                    </div>
+
 
                                     <div class="buttons">
                                         <button class="add-to-cart add-to-cart-nut nutnhan" data-product-id="${product.productId}" data-product-name="${product.productName}">
@@ -98,7 +102,7 @@
                                 </div>
                             </c:if>
                         </c:forEach>
-                    </div>
+                    </div>               
                     <c:if test="${totalPages > 1}">
                         <div class="pagination-wrapper">
                             <nav aria-label="Page navigation">
@@ -126,9 +130,8 @@
                         </div>
                     </c:if>
                 </div>
-            </div>
-
-        </div>
+            </div>           
+        </div>                     
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
@@ -165,23 +168,45 @@
                 const subButton = document.querySelector(".sub");
                 const addButton = document.querySelector(".add");
                 const inputField = document.querySelector("input[type='number']");
+                const stock = ${product.stock}; // Lấy số lượng tồn kho từ JSP
+
+                function updateButtonState() {
+                    let currentValue = parseInt(inputField.value);
+                    subButton.disabled = currentValue <= 1; // Nếu số lượng <= 1, vô hiệu hóa nút "-"
+                    addButton.disabled = currentValue >= stock; // Nếu số lượng >= stock, vô hiệu hóa nút "+"
+                }
 
                 subButton.addEventListener("click", function () {
                     let currentValue = parseInt(inputField.value);
                     if (currentValue > 1) {
                         inputField.value = currentValue - 1;
                     }
-                    const value = $('.input-number').val();
-                    console.log(value); // In giá trị ra console
+                    updateButtonState();
                 });
 
                 addButton.addEventListener("click", function () {
                     let currentValue = parseInt(inputField.value);
-                    inputField.value = currentValue + 1;
-                    const value = $('.input-number').val();
-                    console.log(value); // In giá trị ra console
+                    if (currentValue < stock) {
+                        inputField.value = currentValue + 1;
+                    }
+                    updateButtonState();
                 });
+
+                // Kiểm tra khi nhập số lượng trực tiếp vào ô input
+                inputField.addEventListener("input", function () {
+                    let value = parseInt(inputField.value);
+                    if (isNaN(value) || value < 1) {
+                        inputField.value = 1; // Giá trị tối thiểu là 1
+                    } else if (value > stock) {
+                        inputField.value = stock; // Không cho nhập quá số lượng tồn kho
+                    }
+                    updateButtonState();
+                });
+
+                // Cập nhật trạng thái nút ngay khi tải trang
+                updateButtonState();
             });
+
         </script>
 
         <script>

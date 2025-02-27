@@ -13,8 +13,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     box-sizing: border-box;
 }
 
+/* Sử dụng font Baloo 2 cho tiêu đề */
+.cart-title,
+.total-price-item,
+.price-item,
+.total-info>div:first-of-type b span:last-of-type,
+.bread,
+.btn {
+    font-family: 'Baloo 2', sans-serif;
+}
+
+
 body {
-    background-color: #eee;
+    background-color: #F4F4F4;
 }
 
 .container-fluid {
@@ -22,15 +33,22 @@ body {
 }
 
 .bread {
-    background-color: white;
-    border-radius: 8px;
-    padding: 16px;
+    background-color: #ffffff;
+    list-style: none;
+    display: flex;
+    gap: 10px;
+    padding: 15px 0 15px 50px;
+    border-radius: 10px;
+    font-size: 20px;
 }
 
 .breadcrumb-item:not(.active) a {
     text-decoration: none;
 }
-
+.trangchu{
+ color: #D3A376;
+    text-decoration: none;
+}
 .cart-title {
     text-align: center;
     margin-top: 10px;
@@ -38,7 +56,7 @@ body {
 }
 
 .cart-content {
-    background-color: white;
+    background-color: #F4F4F4;
     border-radius: 8px;
     padding: 15px 0;
     margin-top: 30px;
