@@ -193,7 +193,7 @@
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <div class="main-dashboard-table">
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
-                                 style="background-color: #007BFF; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
+                                 style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
                                 <i class="fa-solid fa-hotel fa-lg"></i>
                                 <h4 class="mb-0">Danh sách phòng thú cưng</h4>
                             </div>

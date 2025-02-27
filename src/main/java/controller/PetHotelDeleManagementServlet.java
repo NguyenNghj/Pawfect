@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author Nguyen Tien Thanh
  */
-public class AdminDeleteRoomServlet extends HttpServlet {
+public class PetHotelDeleManagementServlet extends HttpServlet {
 
     private PetHotelDAO roomDAO = new PetHotelDAO();
 

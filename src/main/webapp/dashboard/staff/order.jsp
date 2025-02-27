@@ -45,7 +45,7 @@
                             </a>
                         </nav>
                         <nav class="navbar bg-body-tertiary">
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="booking.jsp">
+                            <a class="navbar-brand d-flex align-items-center gap-3" href="pethotelbooking">
                                 <i class="fa-solid fa-building-circle-check fa-lg"></i>
                                 <span>Pet Hotel Booking</span>
                             </a>

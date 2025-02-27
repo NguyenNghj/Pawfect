@@ -18,7 +18,7 @@ import model.PetHotel;
  *
  * @author Nguyen Tien Thanh
  */
-public class AdminAddRoomServlet extends HttpServlet {
+public class PetHotelAddManagementServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

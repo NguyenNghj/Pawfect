@@ -4,22 +4,25 @@
  */
 package controller;
 
-import dao.PetHotelDAO;
-import jakarta.servlet.RequestDispatcher;
+import dao.PetHotelBookingDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
-import model.PetHotel;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import model.PetHotelBooking;
 
 /**
  *
  * @author Nguyen Tien Thanh
  */
-public class AdminEditRoomServlet extends HttpServlet {
+public class PetHotelBookingManagementServlet extends HttpServlet {
+
+    private PetHotelBookingDAO bookingDAO = new PetHotelBookingDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +41,10 @@ public class AdminEditRoomServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AdminEditRoomServlet</title>");
+            out.println("<title>Servlet PetHotelBookingManagementServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AdminEditRoomServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet PetHotelBookingManagementServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,15 +62,9 @@ public class AdminEditRoomServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int roomId = Integer.parseInt(request.getParameter("room_id"));
-        PetHotel room = PetHotelDAO.getPetRoomById(roomId);
-        if (room != null) {
-            request.setAttribute("room", room);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("editroom.jsp");
-            dispatcher.forward(request, response);
-        } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Room not found");
-        }
+        List<PetHotelBooking> bookings = bookingDAO.getAllBookings();
+        request.setAttribute("bookings", bookings);
+        request.getRequestDispatcher("booking.jsp").forward(request, response);
     }
 
     /**
@@ -81,39 +78,23 @@ public class AdminEditRoomServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int roomId = Integer.parseInt(request.getParameter("room_id"));
-        String roomName = request.getParameter("room_name");
-        String roomImage = request.getParameter("room_image");
-        String roomType = request.getParameter("room_type");
-        double minWeight = Double.parseDouble(request.getParameter("min_weight"));
-        double maxWeight = Double.parseDouble(request.getParameter("max_weight"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
-        double pricePerNight = Double.parseDouble(request.getParameter("price_per_night"));
-        String description = request.getParameter("description");
-        String status = request.getParameter("status");
-        boolean isActive = Boolean.parseBoolean(request.getParameter("is_active"));
+        String action = request.getParameter("action");
+        String bookingId = request.getParameter("bookingId");
+        String filter = request.getParameter("filter"); // Lấy trạng thái lọc
 
-        PetHotel room = new PetHotel();
-        room.setRoomId(roomId);
-        room.setRoomName(roomName);
-        room.setRoomImage(roomImage);
-        room.setRoomType(roomType);
-        room.setMinWeight(minWeight);
-        room.setMaxWeight(maxWeight);
-        room.setQuantity(quantity);
-        room.setPricePerNight(pricePerNight);
-        room.setDescription(description);
-        room.setStatus(status);
-        
+        if (bookingId != null && action != null) {
+            PetHotelBookingDAO bookingDAO = new PetHotelBookingDAO();
 
-        PetHotelDAO dao = new PetHotelDAO();
-        boolean isUpdated = dao.updatePetRoom(room);
-
-        if (isUpdated) {
-            response.sendRedirect("petroom"); // Sau khi cập nhật, chuyển hướng về danh sách phòng
-        } else {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to update the room");
+            if ("approve".equals(action)) {
+                bookingDAO.approveBooking(Integer.parseInt(bookingId));
+            } else if ("cancel".equals(action)) {
+                bookingDAO.cancelBooking(Integer.parseInt(bookingId));
+            }
         }
+
+        // Mã hóa filter trước khi redirect
+        String encodedFilter = URLEncoder.encode(filter, StandardCharsets.UTF_8.toString());
+        response.sendRedirect("pethotelbooking?filter=" + encodedFilter);
     }
 
     /**
