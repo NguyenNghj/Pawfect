@@ -56,13 +56,22 @@ public class CustomersListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       // Lấy danh sách khách hàng từ DAO
-        List<Customers> customerList = CustomersDAO.getAllCustomers();
+      String keyword = request.getParameter("keyword");
+    List<Customers> customerList;
 
-        // Gửi danh sách khách hàng đến JSP để hiển thị
-        request.setAttribute("customerList", customerList);
-        request.getRequestDispatcher("accountCustomer.jsp").forward(request, response);
-    } 
+    if (keyword != null && !keyword.trim().isEmpty()) {
+        // Nếu có keyword, thực hiện tìm kiếm
+        customerList = CustomersDAO.searchCustomers(keyword);
+    } else {
+        // Nếu không có keyword, lấy toàn bộ danh sách
+        customerList = CustomersDAO.getAllCustomers();
+    }
+
+    // Gửi danh sách khách hàng đến JSP để hiển thị
+    request.setAttribute("customerList", customerList);
+    request.setAttribute("searchKeyword", keyword); // Giữ lại giá trị keyword để hiển thị trên giao diện
+    request.getRequestDispatcher("accountCustomer.jsp").forward(request, response);
+}
 
     /** 
      * Handles the HTTP <code>POST</code> method.
