@@ -236,11 +236,9 @@ h2 {
 }
 
 .nut-loc.active{
-    border: 1px solid #3E2522;
-    border-radius: 10px;
+    background: #d5f5e3;
 }
 
 .category-item.active {
-    border: 1px solid #3E2522;
-    border-radius: 10px;
+   background: #d5f5e3;
 }

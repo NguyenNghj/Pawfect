@@ -71,17 +71,41 @@
                             <input type="text" id="search-box" class="search-box" placeholder="Nhập từ khóa cần tìm...">
                         </div>
                         <!-- USER ICON -->
-                        <div class="dropdown">
-                            <a class="btn" href="#" role="button" data-bs-toggle="dropdown">
-                                <i class='bx bxs-user-circle' ></i>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item d-flex align-items-center gap-3" href="#"><i
-                                            class="bx bxs-key"></i>Đăng nhập</a></li> 
-                                <li><a class="dropdown-item d-flex align-items-center gap-3" href="#"><i
-                                            class="bx bx-lock-alt"></i>Đăng ký</a></li>
-                            </ul>
-                        </div>
+                       <%
+    String username = null;
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+        for (Cookie cookie : cookies) {
+            if ("customerId".equals(cookie.getName())) {
+                username = cookie.getValue();
+                break;
+            }
+        }
+    }
+%>
+
+<div class="dropdown">
+    <a class="btn" href="#" role="button" data-bs-toggle="dropdown">
+        <i class='bx bxs-user-circle'></i>
+    </a>
+    <ul class="dropdown-menu">
+        <% if (username != null) { %>
+            <li><a class="dropdown-item d-flex align-items-center gap-3" href="profile">
+                <i class="bx bxs-user-detail"></i> Thông tin
+            </a></li>
+            <li><a class="dropdown-item d-flex align-items-center gap-3" href="logout">
+                <i class="bx bx-log-out"></i> Đăng xuất
+            </a></li>
+        <% } else { %>
+            <li><a class="dropdown-item d-flex align-items-center gap-3" href="login">
+                <i class="bx bxs-key"></i> Đăng nhập
+            </a></li>
+            <li><a class="dropdown-item d-flex align-items-center gap-3" href="register">
+                <i class="bx bx-lock-alt"></i> Đăng ký
+            </a></li>
+        <% } %>
+    </ul>
+</div>
 
                         <!-- CART ICON -->
                         <a class="cart-btn" href="cart?action=view">

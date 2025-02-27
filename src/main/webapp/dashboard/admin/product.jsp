@@ -5,10 +5,15 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="../../css/dashboard.css">
@@ -82,29 +87,29 @@
                                 <span>Pet Hotel</span>
                             </a>
                         </nav>
-<!--                        <nav class="navbar bg-body-tertiary">                        
-                            <div class="accordion w-100" id="accordionExample2">                               
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed gap-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        <i class="fa-solid fa-comment fa-lg"></i>Feedback
-                                    </button>
-                                </h2>
-                                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample2">
-                                    <div class="accordion-body">
-                                        <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;">
-                                            <div class="container-fluid">
-                                                <a class="navbar-brand" href="#">Product</a>
-                                            </div>
-                                        </nav>
-                                        <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;">
-                                            <div class="container-fluid">
-                                                <a class="navbar-brand" href="#">Kennel</a>
-                                            </div>
-                                        </nav>
-                                    </div>
-                                </div>                                              
-                            </div>                    
-                        </nav>                  -->
+                        <!--                        <nav class="navbar bg-body-tertiary">                        
+                                                    <div class="accordion w-100" id="accordionExample2">                               
+                                                        <h2 class="accordion-header">
+                                                            <button class="accordion-button collapsed gap-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                                <i class="fa-solid fa-comment fa-lg"></i>Feedback
+                                                            </button>
+                                                        </h2>
+                                                        <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample2">
+                                                            <div class="accordion-body">
+                                                                <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;">
+                                                                    <div class="container-fluid">
+                                                                        <a class="navbar-brand" href="#">Product</a>
+                                                                    </div>
+                                                                </nav>
+                                                                <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;">
+                                                                    <div class="container-fluid">
+                                                                        <a class="navbar-brand" href="#">Kennel</a>
+                                                                    </div>
+                                                                </nav>
+                                                            </div>
+                                                        </div>                                              
+                                                    </div>                    
+                                                </nav>                  -->
                     </div>
 
                     <div class="row">
@@ -188,7 +193,7 @@
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <div class="main-dashboard-table">
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
-                                 style="background-color: #007BFF; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
+                                 style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
                                 <i class="fa-solid fa-boxes-stacked fa-lg"></i>
                                 <h4 class="mb-0">Product List</h4>
                             </div>
@@ -196,30 +201,39 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">First</th>
-                                            <th scope="col">Last</th>
-                                            <th scope="col">Handle</th>
+                                            <th scope="col">Id</th>
+                                            <th scope="col">Hình ảnh</th>
+                                            <th scope="col">Thể loại</th>
+                                            <th scope="col">Tên sản phẩm</th>
+                                            <th scope="col">Dành cho</th>
+                                            <th scope="col">Giá</th>
+                                            <th scope="col">Số lượng</th>
+                                            <th scope="col">Trạng thái</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                            <td>@fat</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td colspan="2">Larry the Bird</td>
-                                            <td>@twitter</td>
-                                        </tr>                             
+                                        <c:forEach var="product" items="${products}">
+                                            <tr>
+                                                <th scope="row">${product.productId}</th>
+                                                <td><img src="${product.productImage}" alt="Hình ảnh" width="50"></td>
+                                                <td>${product.categoryName}</td>
+                                                <td>${product.productName}</td>
+                                                <td>${product.productPetType}</td>
+                                                <td>${product.productPrice}</td>
+                                                <td>${product.stock}</td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${product.stock > 0}">
+                                                            <span class="text-success">Còn hàng</span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span class="text-danger">Hết hàng</span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                                <td><a href="/dashboard/admin/product?id=${product.productId}" class="btn btn-info">Chỉnh sửa</a></td>
+                                            </tr>
+                                        </c:forEach>
                                     </tbody>
                                 </table>
                             </div>

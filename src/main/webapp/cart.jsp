@@ -14,6 +14,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
+        
         <link rel="stylesheet" href="./css/cart.css">       
         <title>JSP Page</title>
     </head>
@@ -24,7 +26,7 @@
             <div class="row bread" style="background-color: white;">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="/pawfect" class ="trangchu">Trang chủ</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
                     </ol>
                 </nav>
@@ -120,7 +122,7 @@
                                         <a class="btn btn-primary" href="checkout?&action=view" role="button">THANH TOÁN</a>
                                         <p class="m-0">
                                             hoặc
-                                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#">
+                                            <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="/products">
                                                 <span>Tiếp tục mua sắm</span>
                                                 <i class="fa-solid fa-reply"></i>
                                             </a>
@@ -160,11 +162,11 @@
                             if (response.removed) {
                                 // Xoa san pham khoi gio hang neu quantity = 0
                                 $("#item-product-" + productId).remove();
-                                
+
                                 $("#totalQuantity").text(response.totalQuantity);
-                                
+
                                 $("#cart-count").text(response.totalQuantity);
-                                
+
                                 console.log("Đã xóa sản phẩm khỏi giỏ hàng!");
 
                                 // Kiểm tra xem giỏ hàng có còn sản phẩm nào không
@@ -183,9 +185,9 @@
 
                                 // Cap nhat tong tien san pham
                                 $("#subtotal-" + productId).text(formatNumber(response.subtotal));
-                                
+
                                 $("#totalQuantity").text(response.totalQuantity);
-                                
+
                                 $("#cart-count").text(response.totalQuantity);
                             }
 
@@ -207,7 +209,7 @@
                     style: 'currency',
                     currency: 'VND',
                 }).format(number);
-                
+
                 return formattedNumber
                         .replace(/\s/g, '') // Loại bỏ khoảng trắng
                         .replace('₫', 'đ') // Thay thế ký hiệu "₫" bằng "đ"
@@ -228,7 +230,7 @@
                         if (response.removed) {
                             // Xoa san pham khoi gio hang neu quantity = 0
                             $("#item-product-" + productId).remove();
-                            
+
                             $("#totalQuantity").text(response.totalQuantity);
 
                             console.log("Xoa san pham khoi gio hang thanh cong!");
