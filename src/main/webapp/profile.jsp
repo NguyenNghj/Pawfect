@@ -172,7 +172,7 @@
                             <span style="color: #1c49c2;"><b>Thông tin cá nhân</b></span>
                         </a>
                         <!-- Thú cưng của tôi -->
-                        <a href="PetController" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                        <a href="viewpet" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-solid fa-paw fa-lg" style="color: #8C6E63;"></i>
                             <span>Thú cưng của tôi</span>
                         </a>
