@@ -111,6 +111,14 @@
         <servlet-name>AdminProductSerlvet</servlet-name>
         <servlet-class>controller.AdminProductSerlvet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewPetServlet</servlet-name>
+        <servlet-class>controller.ViewPetServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PetViewDetailServlet</servlet-name>
+        <servlet-class>controller.PetViewDetailServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/products</url-pattern>
@@ -218,6 +226,14 @@
     <servlet-mapping>
         <servlet-name>AdminProductSerlvet</servlet-name>
         <url-pattern>/dashboard/admin/product</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewPetServlet</servlet-name>
+        <url-pattern>/viewpet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PetViewDetailServlet</servlet-name>
+        <url-pattern>/petviewdetail</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
