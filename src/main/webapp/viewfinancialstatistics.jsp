@@ -14,7 +14,7 @@
                 padding: 0;
             }
             .container {
-                width: 80%;
+                width: 40%;
                 margin: 50px auto;
                 padding: 20px;
                 background: #d7ccc8;
@@ -26,11 +26,12 @@
                 border-radius: 8px;
                 padding: 10px;
             }
+            
         </style>
     </head>
     <body>
         <div class="container">
-            <h2>Monthly Revenue Statistics</h2>
+            <h2>Lượng Đơn Hàng</h2>
             <canvas id="sale-revenue"></canvas>
         </div>
 
@@ -42,7 +43,7 @@
                 data: {
                     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                     datasets: [{
-                        label: "Revenue",
+                        label: "Sản phẩm",
                         data: [${requestScope.Month1}, ${requestScope.Month2}, ${requestScope.Month3}, ${requestScope.Month4}, ${requestScope.Month5},
                                ${requestScope.Month6}, ${requestScope.Month7}, ${requestScope.Month8}, ${requestScope.Month9}, ${requestScope.Month10},
                                ${requestScope.Month11}, ${requestScope.Month12}],
