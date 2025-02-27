@@ -12,15 +12,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
-import java.util.List;
 import model.PetHotel;
 
 /**
  *
  * @author Nguyen Tien Thanh
  */
-public class PetRoomDetailServlet extends HttpServlet {
+public class AdminAddRoomServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +37,10 @@ public class PetRoomDetailServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet PetRoomDetailServlet</title>");
+            out.println("<title>Servlet AdminAddRoomServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet PetRoomDetailServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AdminAddRoomServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,33 +58,8 @@ public class PetRoomDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String idParam = request.getParameter("id");
-
-        if (idParam == null || idParam.isEmpty()) {
-            response.sendRedirect("petrooms.jsp?error=missing_id");
-            return;
-        }
-
-        try {
-            int roomId = Integer.parseInt(idParam);
-            PetHotel room = PetHotelDAO.getPetRoomById(roomId);
-
-            if (room != null) {
-                request.setAttribute("room", room);
-
-                // Lấy danh sách phòng tương tự
-                List<PetHotel> similarRooms = PetHotelDAO.getSimilarRooms(room.getRoomType(), roomId);
-                request.setAttribute("similarRooms", similarRooms);
-
-                RequestDispatcher dispatcher = request.getRequestDispatcher("petroomdetail.jsp");
-                dispatcher.forward(request, response);
-            } else {
-                response.sendRedirect("petrooms.jsp?error=notfound");
-            }
-        } catch (NumberFormatException e) {
-            response.sendRedirect("petrooms.jsp?error=invalid_id");
-        }
-
+        RequestDispatcher dispatcher = request.getRequestDispatcher("addroom.jsp");
+        dispatcher.forward(request, response);
     }
 
     /**
@@ -100,7 +73,26 @@ public class PetRoomDetailServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.setCharacterEncoding("UTF-8");
+        String roomName = request.getParameter("roomName");
+        String roomImage = request.getParameter("roomImage");
+        String roomType = request.getParameter("roomType");
+        double minWeight = Double.parseDouble(request.getParameter("minWeight"));
+        double maxWeight = Double.parseDouble(request.getParameter("maxWeight"));
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        double pricePerNight = Double.parseDouble(request.getParameter("pricePerNight"));
+        String description = request.getParameter("description");
+
+        // Tạo object PetRoom mà KHÔNG yêu cầu status và isActive
+        PetHotel room = new PetHotel(roomName, roomImage, roomType, minWeight, maxWeight, quantity, pricePerNight, description);
+
+        PetHotelDAO roomDAO = new PetHotelDAO();
+        if (roomDAO.addRoom(room)) {
+            response.sendRedirect("petroom");
+        } else {
+            RequestDispatcher dispatcher = request.getRequestDispatcher("addroom.jsp");
+            dispatcher.forward(request, response);
+        }
     }
 
     /**

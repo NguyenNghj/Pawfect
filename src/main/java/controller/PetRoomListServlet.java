@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dao.PetRoomDAO;
+import dao.PetHotelDAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
-import model.PetRooms;
+import model.PetHotel;
 
 /**
  *
@@ -61,14 +61,14 @@ public class PetRoomListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String filter = request.getParameter("filter");
-        List<PetRooms> roomList;
+        List<PetHotel> roomList;
 
         if (filter == null || filter.isEmpty()) {
             // Nếu không có filter -> Lấy toàn bộ danh sách phòng
-            roomList = PetRoomDAO.getAllPetRooms();
+            roomList = PetHotelDAO.getAllPetRooms();
         } else {
             // Lọc danh sách phòng dựa trên filter
-            roomList = PetRoomDAO.filterPetRooms(filter);
+            roomList = PetHotelDAO.filterPetRooms(filter);
         }
 
         // Đưa danh sách vào request scope

@@ -4,7 +4,7 @@
  */
 package controller;
 
-import dao.PetRoomDAO;
+import dao.PetHotelDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class AdminDeleteRoomServlet extends HttpServlet {
 
-    private PetRoomDAO roomDAO = new PetRoomDAO();
+    private PetHotelDAO roomDAO = new PetHotelDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

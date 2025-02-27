@@ -6,9 +6,9 @@
 
 <%@page import="java.util.List"%>
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="model.PetRooms" %>
+<%@ page import="model.PetHotel" %>
 
-<jsp:useBean id="room" class="model.PetRooms" scope="request" />
+<jsp:useBean id="room" class="model.PetHotel" scope="request" />
 
 <html>
     <head>
@@ -32,6 +32,7 @@
             <div class="room-info-container">
                 <h1 class="room-title"><span>${room.roomName}</span></h1>
                 <p class="room-price">Giá: <span>${room.pricePerNight}đ/ngày</span></p>
+                <p class="room-description">Mô tả: <span>${room.description}</span></p>
                 <p class="room-type">${room.roomType}</p>
 
                 <div class="room-info">
@@ -71,14 +72,15 @@
         <h2 class="phongtuongtu">Phòng Tương Tự</h2>
         <div class="grid-container responsive-grid">
             <%
-                List<PetRooms> similarRooms = (List<PetRooms>) request.getAttribute("similarRooms");
+                List<PetHotel> similarRooms = (List<PetHotel>) request.getAttribute("similarRooms");
                 if (similarRooms != null && !similarRooms.isEmpty()) {
-                    for (PetRooms similarRoom : similarRooms) { // Đổi tên biến để tránh trùng lặp
+                    for (PetHotel similarRoom : similarRooms) { // Đổi tên biến để tránh trùng lặp
 %>
             <div class="card">
                 <h3><%= similarRoom.getRoomName()%></h3>
                 <p><%= similarRoom.getPricePerNight()%>đ/Ngày</p>
-                <p><%= similarRoom.getRoomType()%></p>     
+                <p><%= similarRoom.getRoomType()%></p>
+                <p><%= similarRoom.getDescription()%></p> 
                 <img src="<%= similarRoom.getRoomImage()%>" alt="<%= similarRoom.getRoomName()%>" class="room-image">
                 <a href="petroomdetail?id=<%= similarRoom.getRoomId()%>">Xem Chi Tiết</a>
             </div>

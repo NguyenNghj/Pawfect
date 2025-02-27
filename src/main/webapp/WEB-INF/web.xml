@@ -100,6 +100,14 @@
         <servlet-class>controller.CustomersBanServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>AdminAddRoomServlet</servlet-name>
+        <servlet-class>controller.AdminAddRoomServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminEditRoomServlet</servlet-name>
+        <servlet-class>controller.AdminEditRoomServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>AdminProductSerlvet</servlet-name>
         <servlet-class>controller.AdminProductSerlvet</servlet-class>
     </servlet>
@@ -198,6 +206,14 @@
     <servlet-mapping>
         <servlet-name>CustomersBanServlet</servlet-name>
         <url-pattern>/dashboard/admin/customersban</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminAddRoomServlet</servlet-name>
+        <url-pattern>/dashboard/admin/addroom</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminEditRoomServlet</servlet-name>
+        <url-pattern>/dashboard/admin/editroom</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminProductSerlvet</servlet-name>

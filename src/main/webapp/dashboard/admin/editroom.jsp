@@ -4,6 +4,7 @@
     Author     : Nguyen Tien Thanh - CE181342
 --%>
 
+<%@page import="dao.PetHotelDAO"%>
 <%@page import="model.PetHotel"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.List"%>
@@ -15,7 +16,6 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="../../css/dashboard.css">
         <title>JSP Page</title>
     </head>
@@ -62,7 +62,7 @@
                                         </nav>
                                         <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;">
                                             <div class="container-fluid">
-                                                <a class="navbar-brand" href="customers">Customer</a>
+                                                <a class="navbar-brand" href="accountCustomer.jsp">Customer</a>
                                             </div>
                                         </nav>
                                     </div>
@@ -179,119 +179,56 @@
                             </ol>
                         </nav>
                     </div>   
-
-                    <button class="btn btn-primary" onclick="window.location.href = 'addroom'">
-                        <i class="fa fa-plus"></i> Thêm Phòng Mới
-                    </button>
-
-
-
+                    <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
+                         style="background-color: #007BFF; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
+                        <i class="fa-solid fa-hotel fa-lg"></i>
+                        <h4 class="mb-0">Chỉnh sửa thông tin</h4>
+                    </div>
                     <%
-                        List<PetHotel> petRooms = (List<PetHotel>) request.getAttribute("petRooms");
+                        int roomId = Integer.parseInt(request.getParameter("room_id"));
+                        PetHotel room = PetHotelDAO.getPetRoomById(roomId);
                     %>
+                    <div class="editroom" style="background-color: white;" method="post">
+                        <br>
+                        <form id="editRoomForm" action="editroom" method="post" style="max-width: 400px; margin:  auto;" >
+                            <input type="hidden" name="room_id" value="<%= room.getRoomId()%>">
 
-                    <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
-                        <div class="main-dashboard-table">
-                            <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
-                                 style="background-color: #007BFF; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
-                                <i class="fa-solid fa-hotel fa-lg"></i>
-                                <h4 class="mb-0">Danh sách phòng thú cưng</h4>
-                            </div>
+                            <label>Tên phòng:</label>
+                            <input type="text" name="room_name" class="form-control" value="<%= room.getRoomName()%>" required style="margin-bottom: 10px;">
 
-                            <div style="padding: 15px 15px 25px 15px;">
-                                <table class="table table-hover">
-                                    <thead class="table-primary" style="text-align: center; vertical-align: middle; padding: 12px; font-weight: bold;">
-                                        <tr>
-                                            <th scope="col">Tên phòng</th>
-                                            <th scope="col">Loại</th>
-                                            <th scope="col">Cân nặng tối thiểu (kg)</th>
-                                            <th scope="col">Cân nặng tối đa (kg)</th>
-                                            <th scope="col">Giá (VNĐ)</th>
-                                            <th scope="col">Mô tả</th>
-                                            <th scope="col">Số lượng</th>
-                                            <th scope="col">Trạng thái</th>
-                                            <th scope="col">Hành động</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% if (petRooms != null && !petRooms.isEmpty()) {
-                                                for (PetHotel room : petRooms) {%>
-                                        <tr>
-                                            <td style="width: 12%;"><%= room.getRoomName()%></td>
-                                            <td style="width: 9%;"><%= room.getRoomType()%></td>
-                                            <td style="text-align: center;"><%= room.getMinWeight()%></td>
-                                            <td style="text-align: center;"><%= room.getMaxWeight()%></td>
-                                            <td style="text-align: center;"><%= room.getPricePerNight()%></td>
-                                            <td><%= room.getDescription()%></td>
-                                            <td style="width: 8%; text-align: center;"><%= room.getQuantity()%></td>
-                                            <td style="width: 10%;">
-                                                <span style="font-weight: bold; color: white; padding: 5px; color: <%= room.getStatus().equals("Còn phòng") ? "green" : "red"%>;">
-                                                    <%= room.getStatus()%>
-                                                </span>
-                                            </td>
+                            <label>Hình ảnh:</label>
+                            <input type="text" name="room_image" class="form-control" value="<%= room.getRoomImage()%>" required style="margin-bottom: 10px;">
 
-                                            <td style="width: 12%;">
-                                                <button type="button" class="btn btn-primary" onclick="editRoom(<%= room.getRoomId()%>)">Sửa</button>
-                                                <script>
-                                                    function editRoom(roomId) {
-                                                        window.location.href = 'editroom?room_id=' + roomId;
-                                                    }
-                                                </script>
+                            <label>Loại phòng:</label><br>
+                            <input type="radio" name="room_type" value="Tiêu chuẩn" <%= room.getRoomType().equals("Tiêu chuẩn") ? "checked" : ""%> /> Tiêu chuẩn <br>
+                            <input type="radio" name="room_type" value="VIP" <%= room.getRoomType().equals("VIP") ? "checked" : ""%> /> VIP <br>
+                            <input type="radio" name="room_type" value="Luxury" <%= room.getRoomType().equals("Luxury") ? "checked" : ""%> /> Luxury <br>
 
-                                                <!-- Nút Xóa -->
-                                                <button type="button" class="btn btn-danger btn-sm" 
-                                                        onclick="confirmDelete('<%= room.getRoomId()%>')">
-                                                    <i class="fa fa-trash"></i> Xóa
-                                                </button>
+                            <label>Cân nặng tối thiểu (kg):</label>
+                            <input type="number" name="min_weight" step="0.1" class="form-control" value="<%= room.getMinWeight()%>" required style="margin-bottom: 10px;">
 
-                                                <script>
-                                                    function confirmDelete(roomId) {
-                                                        Swal.fire({
-                                                            title: `Bạn có chắc chắn muốn xóa phòng có ID ${roomId} không?`,
-                                                            text: "Hành động này không thể hoàn tác!",
-                                                            icon: "warning",
-                                                            showCancelButton: true,
-                                                            confirmButtonColor: "#007BFF",
-                                                            cancelButtonColor: "#DC3545",
-                                                            confirmButtonText: "Có, xóa phòng",
-                                                            cancelButtonText: "Hủy, quay lại"
-                                                        }).then((result) => {
-                                                            if (result.isConfirmed) {
-                                                                let form = document.createElement("form");
-                                                                form.method = "POST";
-                                                                form.action = "/deleteroom";
-                                                                let input = document.createElement("input");
-                                                                input.type = "hidden";
-                                                                input.name = "roomId";
-                                                                input.value = roomId;
-                                                                form.appendChild(input);
-                                                                document.body.appendChild(form);
-                                                                form.submit();
-                                                            }
-                                                        });
-                                                    }
+                            <label>Cân nặng tối đa (kg):</label>
+                            <input type="number" name="max_weight" step="0.1" class="form-control" value="<%= room.getMaxWeight()%>" required style="margin-bottom: 10px;">
 
-                                                </script>
+                            <label>Số lượng:</label>
+                            <input type="number" name="quantity" class="form-control" value="<%= room.getQuantity()%>" required style="margin-bottom: 10px;">
 
-                                            </td>
-                                        </tr>
-                                        <% }
-                                        } else { %>
-                                        <tr>
-                                            <td colspan="5" class="text-center">
-                                                <div class="alert alert-warning" role="alert">
-                                                    Không có phòng nào được tìm thấy.
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <% }%>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>        
+                            <label>Giá mỗi đêm (VNĐ):</label>
+                            <input type="number" name="price_per_night" step="0.01" class="form-control" value="<%= room.getPricePerNight()%>" required style="margin-bottom: 10px;">
+
+                            <label>Mô tả:</label>
+                            <input type="text" name="description" class="form-control" value="<%= room.getDescription()%>" required style="margin-bottom: 10px;">
+
+                            <select id="status" name="status" class="form-control">
+                                <option value="Còn phòng" <%= room.getStatus().equals("Còn phòng") ? "selected" : ""%>>Còn phòng</option>
+                                <option value="Hết phòng" <%= room.getStatus().equals("Hết phòng") ? "selected" : ""%>>Hết phòng</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary mt-3">Lưu thay đổi</button>
+                            <button type="button" class="btn btn-secondary mt-3"  onclick="location.href = 'petroom'">Quay lại</button>
+                        </form>
+                        <br><br>
+                    </div>
                 </div>
-
             </div>
         </div>
 
