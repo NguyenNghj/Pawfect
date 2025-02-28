@@ -6,6 +6,7 @@ package dao;
 
 import db.DBContext;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -77,5 +78,38 @@ public class PetDAO {
             e.printStackTrace();
         }
         return pet;
+    }
+    
+     public  void updatePet(String petId, String name, String type, String breed, String sex, String weight, Date dob) {
+        String sql = "UPDATE Pets SET pet_name=?, pet_type=?, pet_breed=?, pet_sex=?, pet_weigth=?, pet_dob=?  WHERE pet_id=?";
+        
+        try {
+              conn = new DBContext().getConnection();
+            pt = conn.prepareStatement(sql);
+            pt.setString(1, name);
+            pt.setString(2, type);
+            pt.setString(3, breed);
+            pt.setString(4, sex);
+            pt.setString(5, weight);
+            pt.setDate(6, dob);         
+                pt.setString(7, petId);
+            
+            pt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+     public  void deletePet(String petId) {
+        String sql = "DELETE FROM Pets WHERE pet_id = ?";
+        
+        try {
+              conn = new DBContext().getConnection();
+            pt = conn.prepareStatement(sql);                 
+                pt.setString(1, petId);
+            
+            pt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
