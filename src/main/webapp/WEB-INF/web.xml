@@ -131,6 +131,10 @@
         <servlet-name>PetHotelDetailServlet</servlet-name>
         <servlet-class>controller.PetHotelDetailServlet</servlet-class>
     </servlet>
+    <servlet
+        <servlet-name>DashboardServlet</servlet-name>
+        <servlet-class>controller.DashboardServlet</servlet-class>
+    </servlet>
     <servlet>
         <servlet-name>EditProductServlet</servlet-name>
         <servlet-class>controller.EditProductServlet</servlet-class>
@@ -262,6 +266,10 @@
     <servlet-mapping>
         <servlet-name>DeletePetServlet</servlet-name>
         <url-pattern>/deletepet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DashboardServlet</servlet-name>
+        <url-pattern>/dashboard/admin/dashboard</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EditProductServlet</servlet-name>
