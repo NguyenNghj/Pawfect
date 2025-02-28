@@ -45,7 +45,7 @@ public class ProfileDAO {
 
     }
 
-    public void editProfil(User user, String customerId) {
+    public void editProfile(User user, String customerId) {
         String query = "UPDATE Customers \n"
                 + "SET email = ?,\n"
                 + "    full_name = ?,\n"
