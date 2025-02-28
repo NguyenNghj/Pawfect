@@ -8,6 +8,7 @@ import dao.OrderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -75,6 +76,9 @@ public class OrderManagementServlet extends HttpServlet {
                 case "cancel":
                     cancelOrder(request, response);
                     break;
+                case "approval":
+                    approvalOrder(request, response);
+                    break;
                 default:
                     // listNhanVien(request, response);
                     break;
@@ -84,40 +88,95 @@ public class OrderManagementServlet extends HttpServlet {
         }
     }
 
+    private void approvalOrder(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+
+        String staffId = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("staffId".equals(cookie.getName())) {
+                    staffId = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        System.out.println("StaffId: " + staffId);
+
+        try {
+            int intStaffId = Integer.parseInt(staffId);
+            System.out.println("intStaffId: " + intStaffId);
+            int orderId = Integer.parseInt(request.getParameter("orderId"));
+            System.out.println("orderId: " + orderId);
+            String updateStatus = request.getParameter("updateStatus");
+            String statusType = request.getParameter("statusType");
+            String actionBack = request.getParameter("actionBack");
+            String reasonCancel = request.getParameter("reasonCancel");
+            System.out.println("reasonCancel: " + reasonCancel);
+            
+            System.out.println("updateStatus: " + updateStatus);
+
+            boolean update = false;
+            if(reasonCancel != null){
+                update = OrderDAO.approvalOrder(updateStatus, intStaffId, reasonCancel, orderId);
+            } else {
+                update = OrderDAO.approvalOrder(updateStatus, intStaffId, null, orderId);
+            }
+                  
+            if (update) {
+                System.out.println("Cap nhat trang thai don hang thanh cong.");
+
+                if (actionBack.equals("viewdetail")) {
+                    response.sendRedirect("ordermanagement?action=" + actionBack + "&orderId=" + orderId);
+                } else {
+                    response.sendRedirect("ordermanagement?action=" + actionBack + "&status=" + statusType);
+                }
+            } else {
+                System.out.println("Cap nhat trang thai don hang that bai!");
+            }
+
+        } catch (NumberFormatException e) {
+            System.out.println(e);
+        }
+
+    }
+
     private void cancelOrder(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
 
         try {
             int orderId = Integer.parseInt(request.getParameter("orderId"));
-            String statusOrder = request.getParameter("statusOrder");
-            String statusShow = request.getParameter("status");
+            String confirmCancel = request.getParameter("confirmCancel");
+            String statusType = request.getParameter("statusType");
             String actionBack = request.getParameter("actionBack");
+            String reasonCancel = request.getParameter("reasonCancel");
 
-            boolean cancel = OrderDAO.cancelOrder(statusOrder, orderId);
+            boolean cancel = OrderDAO.cancelOrder(confirmCancel, reasonCancel, orderId);
             if (cancel) {
-                System.out.println("Hủy đơn thành công.");
+                System.out.println("Huy don hang thanh cong.");
 
                 List<Order> orders = OrderDAO.getOrderByOrderId(orderId);
                 String customerName = orders.get(0).getCustomerName();
                 String orderDate = orders.get(0).getOrderDate();
                 String supportLink = "https://example.com/support";
 
-                String contentEmail = Email.emailCancel;
-                String finalContentEmail = String.format(contentEmail, customerName, (orderId + 2500000), orderDate, supportLink);
+                String contentEmail = Email.emailCancelByStaff;
+                String finalContentEmail = String.format(contentEmail, customerName, reasonCancel, (orderId + 2500000), orderDate, supportLink);
 
                 ExecutorService executor = Executors.newFixedThreadPool(10); // Tạo một ExecutorService với 10 luồng
 
                 executor.submit(() -> {
                     try {
-                        Email.sendEmail("vuquangduc1404@gmail.com", "Xác nhận đơn hàng", finalContentEmail);
+                        Email.sendEmail("vuquangduc1404@gmail.com", "Thông báo huỷ đơn hàng", finalContentEmail);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
-                if (actionBack.equals("viewdetail")){
+                if (actionBack.equals("viewdetail")) {
                     response.sendRedirect("ordermanagement?action=" + actionBack + "&orderId=" + orderId);
                 } else {
-                    response.sendRedirect("ordermanagement?action=" + actionBack + "&status=" + statusShow);
+                    response.sendRedirect("ordermanagement?action=" + actionBack + "&status=" + statusType);
                 }
 
             } else {
@@ -166,6 +225,9 @@ public class OrderManagementServlet extends HttpServlet {
                     break;
                 case "ht":
                     orders = OrderDAO.getAllOrderByStatus("Hoàn thành");
+                    break;
+                case "ych":
+                    orders = OrderDAO.getAllOrderByStatus("Yêu cầu huỷ...");
                     break;
                 case "dh":
                     orders = OrderDAO.getAllOrderByStatus("Đã huỷ");

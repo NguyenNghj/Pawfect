@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
 import model.CartItem;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**

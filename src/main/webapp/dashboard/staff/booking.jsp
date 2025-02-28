@@ -37,21 +37,21 @@
                             </a>
                         </nav>
                         <nav class="navbar bg-body-tertiary">
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="order.jsp">
+                            <a class="navbar-brand d-flex align-items-center gap-3" href="ordermanagement?&action=view&status=tc">
                                 <i class="fa-solid fa-truck-ramp-box fa-lg"></i>
-                                <span>Orders</span>
+                                <span>Đơn hàng</span>
                             </a>
                         </nav>
                         <nav class="navbar bg-body-tertiary active">
                             <a class="navbar-brand d-flex align-items-center gap-3" style="color: white; pointer-events: none;" href="#">
                                 <i class="fa-solid fa-building-circle-check fa-lg"></i>
-                                <span>Pet Hotel Booking</span>
+                                <span>Khách sạn thú cưng</span>
                             </a>
                         </nav>
                         <nav class="navbar bg-body-tertiary">
                             <a class="navbar-brand d-flex align-items-center gap-3" href="feedback.jsp">
                                 <i class="fa-solid fa-comment fa-lg"></i>
-                                <span>Product Feedbacks</span>
+                                <span>Phản hồi sản phẩm</span>
                             </a>
                         </nav>                 
                     </div>
@@ -64,13 +64,13 @@
                         <nav class="navbar bg-body-tertiary">                                   
                             <a class="navbar-brand d-flex align-items-center gap-3" href="profile.jsp">
                                 <i class="fa-solid fa-address-book fa-lg"></i>   
-                                <span>Profile</span>
+                                <span>Hồ sơ</span>
                             </a>                          
                         </nav>
                         <nav class="navbar bg-body-tertiary">                                              
                             <a class="navbar-brand d-flex align-items-center gap-3" href="#">
                                 <i class="fa-solid fa-right-from-bracket fa-lg"></i>
-                                <span>Logout</span>
+                                <span>Đăng xuất</span>
                             </a>
                         </nav>
                     </div>
@@ -82,7 +82,7 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Pet Hotel Booking Management</h1>
+                                <h1>Quản lý đặt lịch khách sạn thú cưng</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
                                 <span>Username2025 (Employee)</span>
@@ -93,16 +93,16 @@
                                     <div class="d-grid gap-2">
                                         <li class="profile-img-switch-store d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-store"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="#">Go to store</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="#">Tới cửa hàng</a>
                                         </li>
                                         <hr style="margin: 0;">
                                         <li class="profile-img-info1 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-user-pen"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="profile.jsp">Profile</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="profile.jsp">Hồ sơ</a>
                                         </li>
                                         <li class="profile-img-info2 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-right-from-bracket" style="font-size: 20px;"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="#">Logout</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="#">Đăng xuất</a>
                                         </li>
                                     </div>
                                 </ul>
@@ -114,8 +114,8 @@
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item" style="color: #6c757d;">Dashboard</li>
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Pet Hotel Booking</li>
+                                <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Khách sạn thú cưng</li>
                             </ol>
                         </nav>
                     </div>   
@@ -125,7 +125,7 @@
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
                                  style="background-color: #007BFF; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
                                 <i class="fa-solid fa-hotel fa-lg"></i>
-                                <h4 class="mb-0">Pet Hotel Booking List</h4>
+                                <h4 class="mb-0">Danh sách đặt lịch</h4>
                             </div>
                             <div style="padding: 15px 15px 25px 15px;">
                                 <table class="table">

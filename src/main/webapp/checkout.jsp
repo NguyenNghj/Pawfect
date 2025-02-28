@@ -143,8 +143,12 @@
                             <c:forEach items="${cartItems}" var="c">
                                 <!-- Each Item -->
                                 <div class="d-flex align-items-center">
-                                    <div class="col-auto">
+                                    <div class="col-auto me-3 position-relative">
                                         <img src="${c.productImage}" alt="">
+                                        <span class="position-absolute top-0 translate-middle badge rounded-pill bg-danger" style="left: 90%;">
+                                            ${c.quantity}
+                                            <span class="visually-hidden">unread messages</span>
+                                        </span>
                                     </div>
                                     <div class="col p-0">
                                         <div class="d-flex justify-content-between align-items-center">
@@ -278,7 +282,7 @@
                                                 // **Lấy giá trị của radio button được chọn
                                                 const shippingMethod = $('input[name="shipping-method"]:checked').attr('id');
                                                 const paymentMethod = $('input[name="payment-method"]:checked').attr('id');
-                                                
+
                                                 console.log("Gui du lieu email: " + email);
                                                 console.log("Gui du lieu name: " + name);
                                                 console.log("Gui du lieu phone: " + phone);
@@ -303,7 +307,7 @@
                                                     });
                                                     isValid = false;
                                                     return;
-                                                } else if(!isValidEmail(email)){
+                                                } else if (!isValidEmail(email)) {
                                                     Swal.fire({
                                                         position: "top",
                                                         icon: "warning",
@@ -331,7 +335,7 @@
                                                 }
 
                                                 // Kiểm tra số điện thoại
-                                                if(phone === ""){
+                                                if (phone === "") {
                                                     Swal.fire({
                                                         position: "top",
                                                         icon: "warning",
@@ -393,7 +397,7 @@
                                                         } else {
                                                             console.log("Lỗi đặt đơn hàng!");
                                                         }
-                                                        
+
                                                     },
                                                     error: function (xhr, status, error) {
                                                         // Xử lý lỗi

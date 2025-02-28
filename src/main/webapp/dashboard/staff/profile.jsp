@@ -37,15 +37,15 @@
                             </a>
                         </nav>
                         <nav class="navbar bg-body-tertiary">
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="order.jsp">
+                            <a class="navbar-brand d-flex align-items-center gap-3" href="ordermanagement?&action=view&status=tc">
                                 <i class="fa-solid fa-truck-ramp-box fa-lg"></i>
-                                <span>Orders</span>
+                                <span>Đơn hàng</span>
                             </a>
                         </nav>  
                         <nav class="navbar bg-body-tertiary">
                             <a class="navbar-brand d-flex align-items-center gap-3" href="booking.jsp">
                                 <i class="fa-solid fa-building-circle-check fa-lg"></i>
-                                <span>Pet Hotel Booking</span>
+                                <span>Khách sạn thú cưng</span>
                             </a>
                         </nav>                  
                         <nav class="navbar bg-body-tertiary">
@@ -64,13 +64,13 @@
                         <nav class="navbar bg-body-tertiary active">                                   
                             <a class="navbar-brand d-flex align-items-center gap-3" href="#" style="color: white; pointer-events: none;">
                                 <i class="fa-solid fa-address-book fa-lg"></i>   
-                                <span>Profile</span>
+                                <span>Hồ sơ</span>
                             </a>                          
                         </nav>
                         <nav class="navbar bg-body-tertiary">                                              
                             <a class="navbar-brand d-flex align-items-center gap-3" href="#">
                                 <i class="fa-solid fa-right-from-bracket fa-lg"></i>
-                                <span>Logout</span>
+                                <span>Đăng xuất</span>
                             </a>
                         </nav>
                     </div>
@@ -83,7 +83,7 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Profile Settings</h1>
+                                <h1>Hồ sơ người dùng</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
                                 <span>Username2025 (Admin)</span>
@@ -94,20 +94,20 @@
                                     <div class="d-grid gap-2">
                                         <li class="profile-img-switch-employee d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-repeat"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="#">Switch to employee</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="#">Đổi sang nhân viên</a>
                                         </li>
                                         <li class="profile-img-switch-store d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-store"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="#">Go to store</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="#">Tới cửa hàng</a>
                                         </li>
                                         <hr style="margin: 0;">
                                         <li class="profile-img-info1 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-user-pen"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="#">Profile</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="#">Hồ sơ</a>
                                         </li>
                                         <li class="profile-img-info2 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-right-from-bracket" style="font-size: 20px;"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="#">Logout</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="#">Đăng xuất</a>
                                         </li>
                                     </div>
                                 </ul>
@@ -119,8 +119,8 @@
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item" style="color: #6c757d;">Dashboard</li>
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                                <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Hồ sơ</li>
                             </ol>
                         </nav>
                     </div>                    
@@ -172,20 +172,20 @@
 
                         <div class="col d-grid gap-3">
                             <div class="d-grid gap-3 profile-info">
-                                <h3 style="margin: 0;">User Information</h3>
-                                <span><b>Full name:</b> Nguyen Van A</span>
+                                <h3 style="margin: 0;">Thông tin người dùng</h3>
+                                <span><b>Họ tên:</b> Nguyen Van A</span>
                                 <span><b>Email:</b> nguyenvana@gmail.com</span>
-                                <span><b>Phone:</b> 0123456789</span>
-                                <span><b>Address:</b> Nguyen Van Cu, Can Tho</span>
-                                <span><b>Gender:</b> Male</span>
-                                <span><b>Birthday:</b> 01/01/2025</span>
+                                <span><b>Điện thoại:</b> 0123456789</span>
+                                <span><b>Địa chỉ:</b> Nguyen Van Cu, Can Tho</span>
+                                <span><b>Giới tính:</b> Male</span>
+                                <span><b>Sinh nhật:</b> 01/01/2025</span>
                             </div>
                             <div>
                                 <button type="button" class="btn btn-success d-flex align-items-center gap-2"
                                         data-bs-toggle="modal" data-bs-target="#exampleModal"
                                         >
                                     <i class="fa-solid fa-pen"></i>
-                                    <span>Update</span>
+                                    <span>Sửa đổi</span>
                                 </button>
 
                                 <!-- Modal of Update User Info -->
