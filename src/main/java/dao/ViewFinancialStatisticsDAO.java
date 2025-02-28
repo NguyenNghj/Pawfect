@@ -15,9 +15,10 @@ import java.sql.ResultSet;
 public class ViewFinancialStatisticsDAO extends DBContext {
 
     public double getTotaMoneyByMonth(int month) {
-        String sql = "SELECT SUM(total_amount) AS totalprice  \n"
-                + "FROM [pawfect].[dbo].[Orders]  \n"
-                + "WHERE MONTH(order_date) = ? AND status = N'Hoàn thành';";
+           String sql = "SELECT SUM(oi.quantity) AS totalProducts " +
+             "FROM [pawfect].[dbo].[OrderItems] oi " +
+             "JOIN [pawfect].[dbo].[Orders] o ON oi.order_id = o.order_id " +
+             "WHERE MONTH(o.order_date) = ? AND o.status = N'Hoàn thành';";
         try {
             PreparedStatement st = conn.prepareStatement(sql);
             st.setInt(1, month);
