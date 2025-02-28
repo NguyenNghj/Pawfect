@@ -6,6 +6,7 @@
 <%@ page import="java.net.URLDecoder, java.nio.charset.StandardCharsets" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="dao.PetHotelBookingDAO, model.PetHotelBooking, java.util.List" %>
+<%@ page import="java.text.NumberFormat, java.util.Locale" %>
 
 <!DOCTYPE html>
 <html>
@@ -151,15 +152,16 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Tên khách hàng</th>
-                                        <th scope="col">Tên thú cưng</th>
-                                        <th scope="col">Tên phòng</th>
-                                        <th scope="col">Check in</th>
-                                        <th scope="col">Check out</th>
-                                        <th scope="col">Tổng tiền</th>
-                                        <th scope="col">Trạng thái</th>
-                                        <th scope="col">Hành động</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Tên khách hàng</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Tên thú cưng</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Tên phòng</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Check in</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Check out</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Tổng tiền (VND)</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Trạng thái</th>
+                                        <th scope="col" style="text-align: center; vertical-align: middle;">Hành động</th>
                                     </tr>
+
                                 </thead>
                                 <tbody id="bookingTable">
                                     <%
@@ -168,19 +170,21 @@
                                         for (PetHotelBooking booking : bookings) {
                                     %>
                                     <tr class="booking-row" data-status="<%= booking.getStatus()%>">
-                                        <td><%= booking.getCustomerName()%></td>
-                                        <td><%= booking.getPetName()%></td>
-                                        <td><%= booking.getRoomName()%></td>
-                                        <td><%= booking.getCheckIn()%></td>
-                                        <td><%= booking.getCheckOut()%></td>
-                                        <td><%= booking.getTotalPrice()%> VNĐ</td>
-                                        <td>
-                                            <span style="font-weight: bold; color: white; padding: 5px; color: <%= booking.getStatus().equals("Đã duyệt") ? "green" : "Orange"%>;">
+                                        <td style="width: 140px; text-align: center; vertical-align: middle;"><%= booking.getCustomerName()%></td>
+                                        <td style="width: 140px; text-align: center; vertical-align: middle;"><%= booking.getPetName()%></td>
+                                        <td style="width: 140px; text-align: center; vertical-align: middle;"><%= booking.getRoomName()%></td>
+                                        <td style="text-align: center; vertical-align: middle;"><%= booking.getCheckIn()%></td>
+                                        <td style="text-align: center; vertical-align: middle;"><%= booking.getCheckOut()%></td>
+                                        <%
+                                            NumberFormat formatter = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
+                                        %>
+                                        <td style="width: 140px; text-align: center; vertical-align: middle;"><%= formatter.format(booking.getTotalPrice())%></td>
+                                        <td style="width: 135px; text-align: center; vertical-align: middle;">
+                                            <span style="font-weight: bold; padding: 5px; color: <%= booking.getStatus().equals("Đã duyệt") ? "green" : "Orange"%>;">
                                                 <%= booking.getStatus()%>
                                             </span>
-                                        </td> 
-
-                                        <td>
+                                        </td>
+                                        <td style="width: 120px; text-align: center; vertical-align: middle;">
                                             <% if ("Chờ xác nhận".equals(booking.getStatus())) {%>
                                             <form action="pethotelbooking" method="post" style="display:inline;">
                                                 <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
@@ -201,6 +205,7 @@
                                             </form>
                                             <% } %>
                                         </td>
+
                                     </tr>
                                     <% }%>
                                 </tbody>

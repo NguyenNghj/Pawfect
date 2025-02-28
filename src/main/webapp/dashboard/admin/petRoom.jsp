@@ -7,6 +7,7 @@
 <%@page import="model.PetHotel"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.List"%>
+<%@ page import="java.text.NumberFormat, java.util.Locale" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -221,7 +222,10 @@
                                             <td style="width: 9%;"><%= room.getRoomType()%></td>
                                             <td style="text-align: center;"><%= room.getMinWeight()%></td>
                                             <td style="text-align: center;"><%= room.getMaxWeight()%></td>
-                                            <td style="text-align: center;"><%= room.getPricePerNight()%></td>
+                                            <%
+                                                NumberFormat formatter = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
+                                            %>
+                                            <td style="text-align: center;"><%= formatter.format(room.getPricePerNight())%></td>
                                             <td><%= room.getDescription()%></td>
                                             <td style="width: 8%; text-align: center;"><%= room.getQuantity()%></td>
                                             <td style="width: 10%;">

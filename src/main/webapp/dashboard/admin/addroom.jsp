@@ -183,7 +183,7 @@
                         <i class="fa-solid fa-hotel fa-lg"></i>
                         <h4 class="mb-0">Thêm phòng mới</h4>
                     </div>
-                   
+
                     <div class="addroom" style="background-color: white;" method="post">
                         <br>
                         <form id="addRoomForm" action="addroom" method="post" style="max-width: 400px; margin:  auto;" >
@@ -192,9 +192,8 @@
                             <label>Hình ảnh:</label>
                             <input type="text" name="roomImage" class="form-control" required style="margin-bottom: 10px;">
                             <label>Loại phòng:</label><br>
-                            <input type="radio" name="roomType" value="Tiêu chuẩn" /> Tiêu chuẩn <br>
-                            <input type="radio" name="roomType" value="VIP" /> Vip <br>
-                            <input type="radio" name="roomType" value="Luxury" style="margin-bottom: 10px;"/> Luxury <br>
+                            <input type="radio" name="roomType" value="Chó" /> Chó <br>
+                            <input type="radio" name="roomType" value="Mèo" /> Mèo <br>
                             <label>Cân nặng tối thiểu (kg):</label>
                             <input type="number" name="minWeight" step="0.1" class="form-control" required style="margin-bottom: 10px;">
 
@@ -214,7 +213,7 @@
                             <button type="button" class="btn btn-secondary mt-3" onclick="location.href = 'petroom'">Quay lại</button>
                         </form>
                         <br>
-                        
+
                     </div>
                 </div>
             </div>

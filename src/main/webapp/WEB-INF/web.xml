@@ -48,14 +48,6 @@
         <servlet-class>controller.ViewFinancialStatisticsServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>PetRoomDetailServlet</servlet-name>
-        <servlet-class>controller.PetRoomDetailServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>PetRoomListServlet</servlet-name>
-        <servlet-class>controller.PetRoomListServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>AdminPetRoomsListServlet</servlet-name>
         <servlet-class>controller.PetHotelManagementServlet</servlet-class>
     </servlet>
@@ -115,6 +107,22 @@
         <servlet-name>PetHotelBookingManagementServlet</servlet-name>
         <servlet-class>controller.PetHotelBookingManagementServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PetHotelServlet</servlet-name>
+        <servlet-class>controller.PetHotelServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PetHotelDetailServlet</servlet-name>
+        <servlet-class>controller.PetHotelDetailServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PetHotelServlet</servlet-name>
+        <url-pattern>/pethotel</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PetHotelDetailServlet</servlet-name>
+        <url-pattern>/pethoteldetail</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/products</url-pattern>
@@ -158,14 +166,6 @@
     <servlet-mapping>
         <servlet-name>ViewFinancialStatisticsServlet</servlet-name>
         <url-pattern>/viewfinancialstatistics</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PetRoomDetailServlet</servlet-name>
-        <url-pattern>/petroomdetail</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PetRoomListServlet</servlet-name>
-        <url-pattern>/petrooms</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminPetRoomsListServlet</servlet-name>

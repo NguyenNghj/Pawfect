@@ -200,10 +200,8 @@
                             <input type="text" name="room_image" class="form-control" value="<%= room.getRoomImage()%>" required style="margin-bottom: 10px;">
 
                             <label>Loại phòng:</label><br>
-                            <input type="radio" name="room_type" value="Tiêu chuẩn" <%= room.getRoomType().equals("Tiêu chuẩn") ? "checked" : ""%> /> Tiêu chuẩn <br>
-                            <input type="radio" name="room_type" value="VIP" <%= room.getRoomType().equals("VIP") ? "checked" : ""%> /> VIP <br>
-                            <input type="radio" name="room_type" value="Luxury" <%= room.getRoomType().equals("Luxury") ? "checked" : ""%> /> Luxury <br>
-
+                            <input type="radio" name="room_type" value="Chó" <%= room.getRoomType().equals("Chó") ? "checked" : ""%> /> Chó <br>
+                            <input type="radio" name="room_type" value="Mèo" <%= room.getRoomType().equals("Mèo") ? "checked" : ""%> /> Mèo <br>
                             <label>Cân nặng tối thiểu (kg):</label>
                             <input type="number" name="min_weight" step="0.1" class="form-control" value="<%= room.getMinWeight()%>" required style="margin-bottom: 10px;">
 
@@ -218,7 +216,7 @@
 
                             <label>Mô tả:</label>
                             <input type="text" name="description" class="form-control" value="<%= room.getDescription()%>" required style="margin-bottom: 10px;">
-                            
+
                             <label>Trạng thái:</label>
                             <select id="status" name="status" class="form-control">
                                 <option value="Còn phòng" <%= room.getStatus().equals("Còn phòng") ? "selected" : ""%>>Còn phòng</option>

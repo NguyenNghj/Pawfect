@@ -20,7 +20,7 @@ import model.PetHotel;
  *
  * @author Nguyen Tien Thanh
  */
-public class PetRoomListServlet extends HttpServlet {
+public class PetHotelServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -60,23 +60,26 @@ public class PetRoomListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String filter = request.getParameter("filter");
-        List<PetHotel> roomList;
+        // Lấy giá trị từ request
+        String sizeFilter = request.getParameter("sizeFilter");
+        String roomTypeFilter = request.getParameter("roomTypeFilter");
 
-        if (filter == null || filter.isEmpty()) {
-            // Nếu không có filter -> Lấy toàn bộ danh sách phòng
-            roomList = PetHotelDAO.getAllPetRooms();
-        } else {
-            // Lọc danh sách phòng dựa trên filter
-            roomList = PetHotelDAO.filterPetRooms(filter);
+        // Mặc định hiển thị tất cả
+        if (sizeFilter == null || sizeFilter.isEmpty()) {
+            sizeFilter = "all";
+        }
+        if (roomTypeFilter == null || roomTypeFilter.isEmpty()) {
+            roomTypeFilter = "all";
         }
 
-        // Đưa danh sách vào request scope
-        request.setAttribute("roomList", roomList);
+        // Gọi DAO để lấy danh sách phòng phù hợp với bộ lọc
+        List<PetHotel> roomList = PetHotelDAO.filterPetRooms(sizeFilter, roomTypeFilter);
 
-        // Chuyển hướng đến JSP
-        RequestDispatcher dispatcher = request.getRequestDispatcher("petrooms.jsp");
+        // Gửi danh sách phòng về JSP
+        request.setAttribute("roomList", roomList);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("pethotel.jsp");
         dispatcher.forward(request, response);
+
     }
 
     /**

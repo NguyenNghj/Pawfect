@@ -4,26 +4,22 @@
  */
 package controller;
 
-import dao.CartDAO;
-import dao.ProductDAO;
-import dao.ProductDAO;
+import dao.PetHotelDAO;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
-import model.CartItem;
-import model.Product;
+import model.PetHotel;
 
 /**
  *
- * @author Nguyen Tri Nghi - CE180897
+ * @author Nguyen Tien Thanh
  */
-@WebServlet(name = "ProductDetailServlet", urlPatterns = {"/product"})
-public class ProductDetailServlet extends HttpServlet {
+public class PetHotelDetailServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,10 +38,10 @@ public class ProductDetailServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ProductDetailServlet</title>");
+            out.println("<title>Servlet PetHotelDetailServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ProductDetailServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet PetHotelDetailServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -63,37 +59,32 @@ public class ProductDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String productIdParam = request.getParameter("id");
-//        if (productIdParam == null || productIdParam.isEmpty()) {
-//            response.sendRedirect("productlist.jsp"); // Chuyển hướng nếu không có ID
-//            return;
-//        }
+        String idParam = request.getParameter("id");
 
-        int productId = Integer.parseInt(productIdParam);
-        ProductDAO productDAO = new ProductDAO();
-        Product product = productDAO.getProductById(productId);
-//
-//        if (product == null) {
-//            response.sendRedirect("sanpham"); // Chuyển hướng nếu sản phẩm không tồn tại
-//            return;
-//        }
-
-        int customerId = 1;
-        int totalQuantity = 0;
-        List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
-        if (!cartItems.isEmpty()) {
-            for (CartItem cartItem : cartItems) {
-                totalQuantity += cartItem.getQuantity();
-            }
+        if (idParam == null || idParam.isEmpty()) {
+            response.sendRedirect("pethotel?error=missing_id");
+            return;
         }
-        // Set tong so luong san pham trong gio hang
-        request.setAttribute("totalQuantity", totalQuantity);
 
-        // Gửi dữ liệu sản phẩm sang trang JSP
-        List<Product> productList = productDAO.getAllProductsByCategoryName(product.getCategoryName());
-        request.setAttribute("product", product);
-        request.setAttribute("productList", productList);
-        request.getRequestDispatcher("productdetail.jsp").forward(request, response);
+        try {
+            int roomId = Integer.parseInt(idParam);
+            PetHotel room = PetHotelDAO.getPetRoomById(roomId);
+
+            if (room != null) {
+                request.setAttribute("room", room);
+
+                // Lấy danh sách phòng tương tự
+                List<PetHotel> similarRooms = PetHotelDAO.getSimilarRooms(room.getRoomType(), roomId);
+                request.setAttribute("similarRooms", similarRooms);
+
+                RequestDispatcher dispatcher = request.getRequestDispatcher("pethoteldetail.jsp");
+                dispatcher.forward(request, response);
+            } else {
+                response.sendRedirect("pethotel?error=notfound");
+            }
+        } catch (NumberFormatException e) {
+            response.sendRedirect("pethotel?error=invalid_id");
+        }
     }
 
     /**
