@@ -11,9 +11,83 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="../../css/dashboard.css">
         <title>JSP Page</title>
+        <style>
+
+           body {
+    background-color: #F3E5D8; /* Màu nền tổng thể */
+}
+
+#main {
+    background-color: #F3E5D8; /* Màu nền cho phần Dashboard */
+    padding: 0 40px;
+}
+
+.dropdown-menu {
+    background-color: #d7ccc8; /* Màu nền cho menu dropdown */
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-item {
+    color: #5d4037; /* Màu chữ */
+}
+
+.dropdown-item:hover {
+    background-color: #efebe9; /* Hiệu ứng hover */
+}
+
+h1 {
+    color: #5d4037; /* Màu chữ cho tiêu đề */
+}
+
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #5d4037;
+}
+
+            .chart-container {
+
+                display: flex;
+                justify-content: right; /* Căn giữa nội dung */
+                gap: 30px; /* Khoảng cách giữa hai biểu đồ */
+                align-items: flex-start; /* Căn đỉnh theo chiều dọc */
+            }
+
+            .container {
+
+                width: 95%; /* Điều chỉnh chiều rộng để cả hai vừa trên một dòng */
+                padding: 20px;
+                background: #d7ccc8;
+                border-radius: 10px;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            }
+
+            canvas {
+                background: #efebe9;
+                border-radius: 8px;
+                padding: 10px;
+                width: 100%; /* Đảm bảo chart co giãn hợp lý */
+                height: 300px;
+            }
+
+            /* Đảm bảo hiển thị tốt trên màn hình nhỏ */
+            @media (max-width: 768px) {
+                .chart-container {
+                    flex-direction: column;
+                    align-items: center;
+                }
+
+                .container {
+                    width: 80%;
+                }
+            }
+
+        </style>
+
     </head>
     <body>
         <div class="container-fluid">
@@ -76,9 +150,9 @@
                             </a>
                         </nav>
                         <nav class="navbar bg-body-tertiary">                                            
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="petroom">
+                            <a class="navbar-brand d-flex align-items-center gap-3" href="petRoom.jsp">
                                 <i class="fa-solid fa-hotel fa-lg"></i>  
-                                <span>Pet Hotel</span>
+                                <span>Pet Rooms</span>
                             </a>
                         </nav>
                         <!-- <nav class="navbar bg-body-tertiary">                        
@@ -173,7 +247,7 @@
                         </nav>
                     </div>
 
-                    <div class="row mt-3">
+                    <!-- comment    <div class="row mt-3">
                         <div class="d-flex gap-3" style="padding: 0;">
                             <div class="box-info d-flex align-items-center gap-4">
                                 <i class="bi bi-calendar-check" style="font-size: 36px;"></i>
@@ -204,9 +278,9 @@
                                 </span>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
 
-                    <div class="row justify-content-between" style="margin-top: 60px; margin-bottom: 50px;">
+                    <!-- comment  <div class="row justify-content-between" style="margin-top: 60px; margin-bottom: 50px;">
                         <div class="col-7 main-dashboard-table">
                             <div class="d-flex justify-content-around align-items-center main-dashboard-table-header">
                                 <h4 class="mb-0">Orders</h4>
@@ -243,9 +317,9 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                        </div>--> 
 
-                        <div class="col-4 pe-0 main-dashboard-table">
+                    <!-- <div class="col-4 pe-0 main-dashboard-table">
                             <div class="d-flex justify-content-around align-items-center main-dashboard-table-header">
                                 <h4 class="mb-0">New customers</h4>
                                 <button type="button" class="btn btn-primary">View all</button>
@@ -281,8 +355,89 @@
                                     </tbody>
                                 </table>
                             </div>
+                        </div>-->
+                    <div class="container">
+                        <div class="chart-container">
+                            <div class="container">
+                                <h2>Doanh Thu</h2>
+                                <canvas id="revenue-chart"></canvas>
+                            </div>
+
+                            <div class="container">
+                                <h2>Lượng Đơn Hàng</h2>
+                                <canvas id="sale-revenue"></canvas>
+                            </div>
                         </div>
-                    </div>          
+
+
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+                        <script type="text/javascript">
+                            var ctx1 = document.getElementById("sale-revenue").getContext("2d");
+                            var myChart1 = new Chart(ctx1, {
+                                type: "line",
+                                data: {
+                                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                                    datasets: [{
+                                            label: "Sản phẩm",
+                                            data: [${requestScope.Month1}, ${requestScope.Month2}, ${requestScope.Month3}, ${requestScope.Month4}, ${requestScope.Month5},
+                            ${requestScope.Month6}, ${requestScope.Month7}, ${requestScope.Month8}, ${requestScope.Month9}, ${requestScope.Month10},
+                            ${requestScope.Month11}, ${requestScope.Month12}],
+                                            backgroundColor: "rgba(121, 85, 72, 0.5)",
+                                            borderColor: "#5d4037",
+                                            borderWidth: 2,
+                                            pointBackgroundColor: "#3e2723",
+                                            pointBorderColor: "#ffccbc"
+                                        }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    scales: {
+                                        yAxes: [{
+                                                ticks: {
+                                                    beginAtZero: true
+                                                }
+                                            }]
+                                    }
+                                }
+                            });
+
+                            var ctx2 = document.getElementById("revenue-chart").getContext("2d");
+                            var myChart2 = new Chart(ctx2, {
+                                type: "line",
+                                data: {
+                                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                                    datasets: [{
+                                            label: "Doanh thu",
+                                            data: [${requestScope.Monthh1}, ${requestScope.Monthh2}, ${requestScope.Monthh3}, ${requestScope.Monthh4}, ${requestScope.Monthh5},
+                            ${requestScope.Monthh6}, ${requestScope.Monthh7}, ${requestScope.Monthh8}, ${requestScope.Monthh9}, ${requestScope.Monthh10},
+                            ${requestScope.Monthh11}, ${requestScope.Monthh12}],
+                                            backgroundColor: "rgba(255, 223, 128, 0.5)", // Màu vàng nhạt
+                                            borderColor: "#FFD700", // Màu vàng gold
+                                            borderWidth: 2,
+                                            pointBackgroundColor: "#FFD700",
+                                            pointBorderColor: "#FFCC00"
+                                        }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    scales: {
+                                        yAxes: [{
+                                                ticks: {
+                                                    beginAtZero: true
+                                                }
+                                            }]
+                                    }
+                                }
+                            });
+                        </script>
+
+                    </div>    
+
+
+
+
 
                 </div>
 
@@ -293,5 +448,6 @@
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
     </body>
 </html>
