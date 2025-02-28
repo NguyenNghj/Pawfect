@@ -6,7 +6,6 @@ package controller;
 
 import dao.CategoryDAO;
 import dao.ProductDAO;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,6 +13,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.List;
 import model.Category;
 import model.Product;
@@ -22,7 +24,7 @@ import model.Product;
  *
  * @author Nguyen Tri Nghi - CE180897
  */
-public class ProductManagementServlet extends HttpServlet {
+public class EditProductServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +43,10 @@ public class ProductManagementServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AdminProductSerlvet</title>");
+            out.println("<title>Servlet EditProductServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AdminProductSerlvet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet EditProductServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,14 +64,14 @@ public class ProductManagementServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int productId = Integer.parseInt(request.getParameter("productId"));
         ProductDAO productDAO = new ProductDAO();
         CategoryDAO categoryDAO = new CategoryDAO();
-        List<Product> products = productDAO.getAllProducts();
-        List<Category> categoryList = categoryDAO.getAllCategories();
-        request.setAttribute("categories", categoryList);
-        request.setAttribute("products", products);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard/admin/product.jsp");
-        dispatcher.forward(request, response);
+        List<Category> categories = categoryDAO.getAllCategories();
+        Product product = productDAO.getProductById(productId);
+        request.setAttribute("categories", categories);
+        request.setAttribute("product", product);
+        request.getRequestDispatcher("/dashboard/admin/editproduct.jsp").forward(request, response);
     }
 
     /**
@@ -83,7 +85,42 @@ public class ProductManagementServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
+        // Handle missing or empty values safely
+
+        int productId = Integer.parseInt(request.getParameter("productId"));
+        int categoryId = Integer.parseInt(request.getParameter("categoryId"));
+        int stock = Integer.parseInt(request.getParameter("stock"));
+        double productPrice = Double.parseDouble(request.getParameter("productPrice"));
+        String productName = request.getParameter("productName");
+        String productPetType = request.getParameter("productPetType");
+        boolean productActive = Boolean.parseBoolean(request.getParameter("productActive"));
+        String description = request.getParameter("description");
+
+        Part filePart = request.getPart("productImage");
+        String existingImage = request.getParameter("existingImage");
+        String uploadPath = getServletContext().getRealPath("/img/products");
+        String fileName = (existingImage != null && !existingImage.trim().isEmpty()) ? existingImage : "";
+
+        // Handle file upload if a new file is provided
+        if (filePart != null && filePart.getSize() > 0) {
+            fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+            File uploadDir = new File(uploadPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdir();
+            }
+            filePart.write(uploadPath + File.separator + fileName);
+        }
+
+        // Update the product in the database
+        ProductDAO productDAO = new ProductDAO();
+        Product product = new Product(productId, categoryId, productName, productPetType, productPrice, "/img/products/" + fileName, stock, description, productActive);
+
+        boolean updateSuccess = productDAO.updateProduct(product);
+        if (updateSuccess) {
+            response.sendRedirect("/dashboard/admin/product");
+        } else {
+            response.sendRedirect("/dashboard/admin/editproduct?error=update_failed&productId=" + productId);
+        }
     }
 
     /**

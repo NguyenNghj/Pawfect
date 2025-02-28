@@ -19,9 +19,9 @@ public class Product {
     private String productImage;
     private int stock;
     private String description;
-    private boolean isActive;
+    private boolean active;
 
-    public Product(int productId, int categoryId, String categoryName, String productName, String productPetType, double productPrice, String productImage, int stock, String description, boolean isActive) {
+    public Product(int productId, int categoryId, String categoryName, String productName, String productPetType, double productPrice, String productImage, int stock, String description, boolean active) {
         this.productId = productId;
         this.categoryId = categoryId;
         this.categoryName = categoryName;
@@ -31,7 +31,19 @@ public class Product {
         this.productImage = productImage;
         this.stock = stock;
         this.description = description;
-        this.isActive = isActive;
+        this.active = active;
+    }
+
+    public Product(int productId, int categoryId, String productName, String productPetType, double productPrice, String productImage, int stock, String description, boolean active) {
+        this.productId = productId;
+        this.categoryId = categoryId;
+        this.productName = productName;
+        this.productPetType = productPetType;
+        this.productPrice = productPrice;
+        this.productImage = productImage;
+        this.stock = stock;
+        this.description = description;
+        this.active = active;
     }
 
     public int getProductId() {
@@ -106,12 +118,12 @@ public class Product {
         this.description = description;
     }
 
-    public boolean isIsActive() {
-        return isActive;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setIsActive(boolean isActive) {
-        this.isActive = isActive;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
 }
