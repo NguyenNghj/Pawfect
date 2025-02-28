@@ -4,9 +4,12 @@ import db.DBContext;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Product;
 
 /**
@@ -31,16 +34,16 @@ public class ProductDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 productList.add(new Product(
-                        rs.getInt("product_id"),
-                        rs.getInt("category_id"),
-                        rs.getString("category_name"),
-                        rs.getString("product_name"),
-                        rs.getString("product_petType"),
-                        rs.getDouble("product_price"),
-                        rs.getString("product_image"),
-                        rs.getInt("stock"),
-                        rs.getString("description"),
-                        rs.getBoolean("is_active")
+                        rs.getInt(1),
+                        rs.getInt(2),
+                        rs.getString(3),
+                        rs.getString(4),
+                        rs.getString(5),
+                        rs.getDouble(6),
+                        rs.getString(7),
+                        rs.getInt(8),
+                        rs.getString(9),
+                        rs.getBoolean(10)
                 ));
             }
         } catch (Exception e) {
@@ -56,7 +59,9 @@ public class ProductDAO {
                 + "FROM Products p "
                 + "JOIN Category c ON p.category_id = c.category_id "
                 + "WHERE c.category_name = ?";
-        try ( Connection conn = new DBContext().getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
+        try {
+            Connection conn = new DBContext().getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, categoryName);
             try ( ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -96,6 +101,29 @@ public class ProductDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public boolean updateProduct(Product product) {
+        String query = "UPDATE Products SET category_id = ?, product_name = ?, product_petType = ?, "
+                + "product_price = ?, product_image = ?, stock = ?, description = ?, is_active = ? "
+                + "WHERE product_id = ?";
+        try {
+            Connection conn = new DBContext().getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, product.getCategoryId());
+            ps.setString(2, product.getProductName());
+            ps.setString(3, product.getProductPetType());
+            ps.setDouble(4, product.getProductPrice());
+            ps.setString(5, product.getProductImage());
+            ps.setInt(6, product.getStock());
+            ps.setString(7, product.getDescription());
+            ps.setBoolean(8, product.isActive());
+            ps.setInt(9, product.getProductId());
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0; // Returns true if at least one row was updated
+        } catch (Exception e) {
+        }
+        return false;
     }
 
     public List<Product> filterByPrice(List<Product> products, String giaFilter) {
