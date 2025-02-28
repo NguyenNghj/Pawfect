@@ -12,13 +12,15 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.SQLException;
+import java.util.List;
 import model.PetHotel;
 
 /**
  *
  * @author Nguyen Tien Thanh
  */
-public class AdminAddRoomServlet extends HttpServlet {
+public class PetHotelServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +39,10 @@ public class AdminAddRoomServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AdminAddRoomServlet</title>");
+            out.println("<title>Servlet PetRoomListServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AdminAddRoomServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet PetRoomListServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,8 +60,26 @@ public class AdminAddRoomServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("addroom.jsp");
+        // Lấy giá trị từ request
+        String sizeFilter = request.getParameter("sizeFilter");
+        String roomTypeFilter = request.getParameter("roomTypeFilter");
+
+        // Mặc định hiển thị tất cả
+        if (sizeFilter == null || sizeFilter.isEmpty()) {
+            sizeFilter = "all";
+        }
+        if (roomTypeFilter == null || roomTypeFilter.isEmpty()) {
+            roomTypeFilter = "all";
+        }
+
+        // Gọi DAO để lấy danh sách phòng phù hợp với bộ lọc
+        List<PetHotel> roomList = PetHotelDAO.filterPetRooms(sizeFilter, roomTypeFilter);
+
+        // Gửi danh sách phòng về JSP
+        request.setAttribute("roomList", roomList);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("pethotel.jsp");
         dispatcher.forward(request, response);
+
     }
 
     /**
@@ -73,26 +93,7 @@ public class AdminAddRoomServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        String roomName = request.getParameter("roomName");
-        String roomImage = request.getParameter("roomImage");
-        String roomType = request.getParameter("roomType");
-        double minWeight = Double.parseDouble(request.getParameter("minWeight"));
-        double maxWeight = Double.parseDouble(request.getParameter("maxWeight"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
-        double pricePerNight = Double.parseDouble(request.getParameter("pricePerNight"));
-        String description = request.getParameter("description");
-
-        // Tạo object PetRoom mà KHÔNG yêu cầu status và isActive
-        PetHotel room = new PetHotel(roomName, roomImage, roomType, minWeight, maxWeight, quantity, pricePerNight, description);
-
-        PetHotelDAO roomDAO = new PetHotelDAO();
-        if (roomDAO.addRoom(room)) {
-            response.sendRedirect("petroom");
-        } else {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("addroom.jsp");
-            dispatcher.forward(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**

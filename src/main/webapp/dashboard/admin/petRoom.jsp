@@ -7,6 +7,7 @@
 <%@page import="model.PetHotel"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.List"%>
+<%@ page import="java.text.NumberFormat, java.util.Locale" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -17,7 +18,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="../../css/dashboard.css">
-        <title>JSP Page</title>
+        <title>Quản lí Pet Hotel</title>
     </head>
     <body>
         <div class="container-fluid">
@@ -193,7 +194,7 @@
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <div class="main-dashboard-table">
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
-                                 style="background-color: #007BFF; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
+                                 style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
                                 <i class="fa-solid fa-hotel fa-lg"></i>
                                 <h4 class="mb-0">Danh sách phòng thú cưng</h4>
                             </div>
@@ -221,7 +222,10 @@
                                             <td style="width: 9%;"><%= room.getRoomType()%></td>
                                             <td style="text-align: center;"><%= room.getMinWeight()%></td>
                                             <td style="text-align: center;"><%= room.getMaxWeight()%></td>
-                                            <td style="text-align: center;"><%= room.getPricePerNight()%></td>
+                                            <%
+                                                NumberFormat formatter = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
+                                            %>
+                                            <td style="text-align: center;"><%= formatter.format(room.getPricePerNight())%></td>
                                             <td><%= room.getDescription()%></td>
                                             <td style="width: 8%; text-align: center;"><%= room.getQuantity()%></td>
                                             <td style="width: 10%;">

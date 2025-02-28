@@ -48,20 +48,12 @@
         <servlet-class>controller.ViewFinancialStatisticsServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>PetRoomDetailServlet</servlet-name>
-        <servlet-class>controller.PetRoomDetailServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>PetRoomListServlet</servlet-name>
-        <servlet-class>controller.PetRoomListServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>AdminPetRoomsListServlet</servlet-name>
-        <servlet-class>controller.AdminPetRoomsListServlet</servlet-class>
+        <servlet-class>controller.PetHotelManagementServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AdminDeleteRoomServlet</servlet-name>
-        <servlet-class>controller.AdminDeleteRoomServlet</servlet-class>
+        <servlet-class>controller.PetHotelDeleManagementServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
@@ -101,11 +93,11 @@
     </servlet>
     <servlet>
         <servlet-name>AdminAddRoomServlet</servlet-name>
-        <servlet-class>controller.AdminAddRoomServlet</servlet-class>
+        <servlet-class>controller.PetHotelAddManagementServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AdminEditRoomServlet</servlet-name>
-        <servlet-class>controller.AdminEditRoomServlet</servlet-class>
+        <servlet-class>controller.PetHotelEditManagementServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AdminProductSerlvet</servlet-name>
@@ -127,6 +119,26 @@
         <servlet-name>DeletePetServlet</servlet-name>
         <servlet-class>controller.DeletePetServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PetHotelBookingManagementServlet</servlet-name>
+        <servlet-class>controller.PetHotelBookingManagementServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PetHotelServlet</servlet-name>
+        <servlet-class>controller.PetHotelServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PetHotelDetailServlet</servlet-name>
+        <servlet-class>controller.PetHotelDetailServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PetHotelServlet</servlet-name>
+        <url-pattern>/pethotel</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PetHotelDetailServlet</servlet-name>
+        <url-pattern>/pethoteldetail</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ProductListServlet</servlet-name>
         <url-pattern>/products</url-pattern>
@@ -170,14 +182,6 @@
     <servlet-mapping>
         <servlet-name>ViewFinancialStatisticsServlet</servlet-name>
         <url-pattern>/viewfinancialstatistics</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PetRoomDetailServlet</servlet-name>
-        <url-pattern>/petroomdetail</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>PetRoomListServlet</servlet-name>
-        <url-pattern>/petrooms</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminPetRoomsListServlet</servlet-name>
@@ -234,6 +238,10 @@
     <servlet-mapping>
         <servlet-name>AdminProductSerlvet</servlet-name>
         <url-pattern>/dashboard/admin/product</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PetHotelBookingManagementServlet</servlet-name>
+        <url-pattern>/dashboard/staff/pethotelbooking</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ViewPetServlet</servlet-name>

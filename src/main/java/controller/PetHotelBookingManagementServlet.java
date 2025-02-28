@@ -4,23 +4,25 @@
  */
 package controller;
 
-import dao.PetHotelDAO;
-import jakarta.servlet.RequestDispatcher;
+import dao.PetHotelBookingDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
-import model.PetHotel;
+import model.PetHotelBooking;
 
 /**
  *
  * @author Nguyen Tien Thanh
  */
-public class PetRoomListServlet extends HttpServlet {
+public class PetHotelBookingManagementServlet extends HttpServlet {
+
+    private PetHotelBookingDAO bookingDAO = new PetHotelBookingDAO();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +41,10 @@ public class PetRoomListServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet PetRoomListServlet</title>");
+            out.println("<title>Servlet PetHotelBookingManagementServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet PetRoomListServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet PetHotelBookingManagementServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,23 +62,9 @@ public class PetRoomListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String filter = request.getParameter("filter");
-        List<PetHotel> roomList;
-
-        if (filter == null || filter.isEmpty()) {
-            // Nếu không có filter -> Lấy toàn bộ danh sách phòng
-            roomList = PetHotelDAO.getAllPetRooms();
-        } else {
-            // Lọc danh sách phòng dựa trên filter
-            roomList = PetHotelDAO.filterPetRooms(filter);
-        }
-
-        // Đưa danh sách vào request scope
-        request.setAttribute("roomList", roomList);
-
-        // Chuyển hướng đến JSP
-        RequestDispatcher dispatcher = request.getRequestDispatcher("petrooms.jsp");
-        dispatcher.forward(request, response);
+        List<PetHotelBooking> bookings = bookingDAO.getAllBookings();
+        request.setAttribute("bookings", bookings);
+        request.getRequestDispatcher("booking.jsp").forward(request, response);
     }
 
     /**
@@ -90,7 +78,23 @@ public class PetRoomListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String action = request.getParameter("action");
+        String bookingId = request.getParameter("bookingId");
+        String filter = request.getParameter("filter"); // Lấy trạng thái lọc
+
+        if (bookingId != null && action != null) {
+            PetHotelBookingDAO bookingDAO = new PetHotelBookingDAO();
+
+            if ("approve".equals(action)) {
+                bookingDAO.approveBooking(Integer.parseInt(bookingId));
+            } else if ("cancel".equals(action)) {
+                bookingDAO.cancelBooking(Integer.parseInt(bookingId));
+            }
+        }
+
+        // Mã hóa filter trước khi redirect
+        String encodedFilter = URLEncoder.encode(filter, StandardCharsets.UTF_8.toString());
+        response.sendRedirect("pethotelbooking?filter=" + encodedFilter);
     }
 
     /**

@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="../../css/dashboard.css">
-        <title>JSP Page</title>
+        <title>Chỉnh sửa Pet Hotel</title>
     </head>
     <body>
         <div class="container-fluid">
@@ -180,7 +180,7 @@
                         </nav>
                     </div>   
                     <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
-                         style="background-color: #007BFF; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
+                         style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
                         <i class="fa-solid fa-hotel fa-lg"></i>
                         <h4 class="mb-0">Chỉnh sửa thông tin</h4>
                     </div>
@@ -200,10 +200,8 @@
                             <input type="text" name="room_image" class="form-control" value="<%= room.getRoomImage()%>" required style="margin-bottom: 10px;">
 
                             <label>Loại phòng:</label><br>
-                            <input type="radio" name="room_type" value="Tiêu chuẩn" <%= room.getRoomType().equals("Tiêu chuẩn") ? "checked" : ""%> /> Tiêu chuẩn <br>
-                            <input type="radio" name="room_type" value="VIP" <%= room.getRoomType().equals("VIP") ? "checked" : ""%> /> VIP <br>
-                            <input type="radio" name="room_type" value="Luxury" <%= room.getRoomType().equals("Luxury") ? "checked" : ""%> /> Luxury <br>
-
+                            <input type="radio" name="room_type" value="Chó" <%= room.getRoomType().equals("Chó") ? "checked" : ""%> /> Chó <br>
+                            <input type="radio" name="room_type" value="Mèo" <%= room.getRoomType().equals("Mèo") ? "checked" : ""%> /> Mèo <br>
                             <label>Cân nặng tối thiểu (kg):</label>
                             <input type="number" name="min_weight" step="0.1" class="form-control" value="<%= room.getMinWeight()%>" required style="margin-bottom: 10px;">
 
@@ -219,6 +217,7 @@
                             <label>Mô tả:</label>
                             <input type="text" name="description" class="form-control" value="<%= room.getDescription()%>" required style="margin-bottom: 10px;">
 
+                            <label>Trạng thái:</label>
                             <select id="status" name="status" class="form-control">
                                 <option value="Còn phòng" <%= room.getStatus().equals("Còn phòng") ? "selected" : ""%>>Còn phòng</option>
                                 <option value="Hết phòng" <%= room.getStatus().equals("Hết phòng") ? "selected" : ""%>>Hết phòng</option>
