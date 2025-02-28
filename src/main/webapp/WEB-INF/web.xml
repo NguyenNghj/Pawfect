@@ -153,7 +153,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>OrderManagementServlet</servlet-name>
-        <url-pattern>/ordermanagement</url-pattern>
+        <url-pattern>/dashboard/staff/ordermanagement</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EmailServlet</servlet-name>

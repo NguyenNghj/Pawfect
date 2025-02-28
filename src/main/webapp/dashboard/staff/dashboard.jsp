@@ -35,21 +35,21 @@
                             <a class="navbar-brand" style="color: white; pointer-events: none;" href="#">Dashboard</a>
                         </nav>
                         <nav class="navbar bg-body-tertiary">
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="order.jsp">
+                            <a class="navbar-brand d-flex align-items-center gap-3" href="ordermanagement?&action=view&status=tc">
                                 <i class="fa-solid fa-truck-ramp-box fa-lg"></i>
-                                <span>Orders</span>
+                                <span>Đơn hàng</span>
                             </a>
                         </nav>
                         <nav class="navbar bg-body-tertiary">
                             <a class="navbar-brand d-flex align-items-center gap-3" href="booking.jsp">
                                 <i class="fa-solid fa-building-circle-check fa-lg"></i>
-                                <span>Pet Hotel Booking</span>
+                                <span>Khách sạn thú cưng</span>
                             </a>
                         </nav>
                         <nav class="navbar bg-body-tertiary">
                             <a class="navbar-brand d-flex align-items-center gap-3" href="feedback.jsp">
                                 <i class="fa-solid fa-comment fa-lg"></i>
-                                <span>Product Feedbacks</span>
+                                <span>Phản hồi sản phẩm</span>
                             </a>
                         </nav>
 
@@ -63,13 +63,13 @@
                         <nav class="navbar bg-body-tertiary">                                   
                             <a class="navbar-brand d-flex align-items-center gap-3" href="profile.jsp">
                                 <i class="fa-solid fa-address-book fa-lg"></i>   
-                                <span>Profile</span>
+                                <span>Hồ sơ</span>
                             </a>                          
                         </nav>
                         <nav class="navbar bg-body-tertiary">                                              
                             <a class="navbar-brand d-flex align-items-center gap-3" href="#">
                                 <i class="fa-solid fa-right-from-bracket fa-lg"></i>
-                                <span>Logout</span>
+                                <span>Đăng xuất</span>
                             </a>
                         </nav>
                     </div>
@@ -113,7 +113,7 @@
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item" style="color: #6c757d;">Dashboard</li>
-                                <li class="breadcrumb-item active" aria-current="page">Home</li>
+                                <li class="breadcrumb-item active" aria-current="page">Trang chủ</li>
                             </ol>
                         </nav>
                     </div>

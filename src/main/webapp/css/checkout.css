@@ -88,7 +88,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
 .item-info {
     padding: 15px 5px 15px 0;
     border-top: 1px solid #cecdcd;
-    max-height: 210px;
+    max-height: 199px;
     overflow-y: auto;
     overflow-x: hidden;
 }
