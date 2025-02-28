@@ -195,7 +195,7 @@
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
                                  style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
                                 <i class="fa-solid fa-boxes-stacked fa-lg"></i>
-                                <h4 class="mb-0">Product List</h4>
+                                <h4 class="mb-0">Danh sách sản phẩm</h4>
                             </div>
                             <div style="padding: 15px 15px 25px 15px;">
                                 <table class="table">
@@ -207,7 +207,7 @@
                                             <th scope="col">Tên sản phẩm</th>
                                             <th scope="col">Dành cho</th>
                                             <th scope="col">Giá</th>
-                                            <th scope="col">Số lượng</th>
+                                            <th scope="col">Tồn kho</th>
                                             <th scope="col">Trạng thái</th>
                                         </tr>
                                     </thead>
@@ -231,7 +231,12 @@
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
-                                                <td><a href="/dashboard/admin/product?id=${product.productId}" class="btn btn-info">Chỉnh sửa</a></td>
+                                                <td>
+                                                    <button class="btn btn-primary" 
+                                                            onclick="openEditModal('${product.productId}', '${product.categoryId}', '${product.productName}', '${product.productPrice}', '${product.stock}', '${product.productPetType}', '${product.productImage}')">
+                                                        Chỉnh sửa
+                                                    </button>
+                                                </td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>
@@ -239,15 +244,115 @@
                             </div>
                         </div>
                     </div>          
-
                 </div>
-
             </div>
         </div>
 
+        <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Chỉnh sửa sản phẩm</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editProductForm" action="updateProduct" method="post" enctype="multipart/form-data">
+                            <input type="hidden" id="editProductId" name="productId">
+
+                            <div class="mb-3">
+                                <label for="editProductImage" class="form-label">Hình ảnh</label>
+                                <div style="display: flex; gap: 10px;">
+                                    <img id="previewImage" class="img-thumbnail" style="display:none; max-width: 100px;">
+                                    <input type="file" id="editProductImage" name="productImage" accept="image/*" style="display: none;" onchange="previewFile()">
+                                    <div class="image-box" onclick="document.getElementById('editProductImage').click()" style="cursor: pointer; border: 1px dashed #ccc; padding: 20px; text-align: center;">
+                                        <span id="uploadText">Thêm ảnh</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editProductCategory">Thể loại</label>
+                                <select class="form-select" id="editProductCategory" name="categoryId">
+                                    <c:forEach var="category" items="${categories}">
+                                        <option value="${category.categoryId}">${category.categoryName}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editProductName" class="form-label">Tên sản phẩm</label>
+                                <input type="text" class="form-control" id="editProductName" name="productName" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editProductPetType">Dành cho</label>
+                                <select class="form-select" id="editProductPetType" name="productPetType">
+                                    <option value="Chó">Chó</option>
+                                    <option value="Mèo">Mèo</option>
+                                    <option value="Chó và Mèo">Chó và Mèo</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editProductPrice" class="form-label">Giá</label>
+                                <input type="number" class="form-control" id="editProductPrice" name="productPrice" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="editProductStock" class="form-label">Tồn kho</label>
+                                <input type="number" class="form-control" id="editProductStock" name="stock" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary" action ="Post">Lưu thay đổi</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function previewFile() {
+                const file = document.getElementById("editProductImage").files[0];
+                const previewImage = document.getElementById("previewImage");
+                const uploadText = document.getElementById("uploadText");
+
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        previewImage.src = e.target.result;
+                        previewImage.style.display = 'block';
+                        uploadText.style.display = 'none'; // Ẩn chữ "Thêm ảnh"
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+
+
+            function openEditModal(productId, categoryId, productName, productPrice, stock, productPetType, productImage) {
+                document.getElementById('editProductId').value = productId;
+                document.getElementById('editProductCategory').value = categoryId;
+                document.getElementById('editProductName').value = productName;
+                document.getElementById('editProductPrice').value = productPrice;
+                document.getElementById('editProductStock').value = stock;
+                document.getElementById('editProductPetType').value = productPetType;
+
+                const previewImage = document.getElementById('previewImage');
+                if (productImage) {
+                    previewImage.src = productImage;
+                    previewImage.style.display = 'block';
+                } else {
+                    previewImage.style.display = 'none';
+                }
+
+                const modal = new bootstrap.Modal(document.getElementById('editProductModal'));
+                modal.show();
+            }
+        </script>
 
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
     </body>
 </html>
+

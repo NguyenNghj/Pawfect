@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import model.Account;
+import model.AccountStaff;
 import model.GoogleAccount;
 
 /**
@@ -47,10 +48,10 @@ public class UserDAO {
         return account;
     }
      
-       public Account loginStaff(String username, String password) {
+       public AccountStaff loginStaff(String username, String password) {
        
         String query = "SELECT * FROM Staffs WHERE email = ? AND password = ? and is_active= 1";
- Account account = new Account();
+ AccountStaff account = new AccountStaff();
         try {
              conn = new DBContext().getConnection();
           pt = conn.prepareStatement(query);
@@ -62,7 +63,8 @@ public class UserDAO {
            
             account.setUsername(rs.getString("email"));
             account.setPassword(rs.getString("password"));
-            account.setCustomerId(rs.getString("staff_id"));
+            account.setStaffId(rs.getString("staff_id"));
+            account.setRole(rs.getString("role_name"));
             
             }
 

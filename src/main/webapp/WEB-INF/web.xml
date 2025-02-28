@@ -101,7 +101,23 @@
     </servlet>
     <servlet>
         <servlet-name>AdminProductSerlvet</servlet-name>
-        <servlet-class>controller.AdminProductSerlvet</servlet-class>
+        <servlet-class>controller.ProductManagementServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewPetServlet</servlet-name>
+        <servlet-class>controller.ViewPetServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PetViewDetailServlet</servlet-name>
+        <servlet-class>controller.PetViewDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditPetServlet</servlet-name>
+        <servlet-class>controller.EditPetServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeletePetServlet</servlet-name>
+        <servlet-class>controller.DeletePetServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>PetHotelBookingManagementServlet</servlet-name>
@@ -149,7 +165,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>OrderManagementServlet</servlet-name>
-        <url-pattern>/ordermanagement</url-pattern>
+        <url-pattern>/dashboard/staff/ordermanagement</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EmailServlet</servlet-name>
@@ -226,6 +242,22 @@
     <servlet-mapping>
         <servlet-name>PetHotelBookingManagementServlet</servlet-name>
         <url-pattern>/dashboard/staff/pethotelbooking</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewPetServlet</servlet-name>
+        <url-pattern>/viewpet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PetViewDetailServlet</servlet-name>
+        <url-pattern>/petviewdetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditPetServlet</servlet-name>
+        <url-pattern>/editpet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeletePetServlet</servlet-name>
+        <url-pattern>/deletepet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

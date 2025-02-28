@@ -5,6 +5,7 @@
 
 package controller;
 
+import dao.PetDAO;
 import dao.ProfileDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,14 +14,15 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.Date;
+import java.util.List;
+import model.Pet;
 import model.User;
 
 /**
  *
  * @author LENOVO
  */
-public class ProfileServlet extends HttpServlet {
+public class ViewPetServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,10 +39,10 @@ public class ProfileServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ProfileServlet</title>");  
+            out.println("<title>Servlet ViewPetServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ProfileServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ViewPetServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -67,10 +69,14 @@ public class ProfileServlet extends HttpServlet {
                 }
             }
         }
-        ProfileDAO profileDAO = new ProfileDAO();
+        
+         PetDAO petDAO = new PetDAO();
+        List<Pet> pets = petDAO.getAllPets(customerId);
+        request.setAttribute("pets", pets);
+         ProfileDAO profileDAO = new ProfileDAO();
 User user = profileDAO.getUser(customerId);
 request.setAttribute("customer", user);
- request.getRequestDispatcher("profile.jsp").forward(request, response);
+        request.getRequestDispatcher("mypet.jsp").forward(request, response);
     } 
 
     /** 
@@ -83,27 +89,7 @@ request.setAttribute("customer", user);
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-         String customerId = null;   
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {            
-                if ("customerId".equals(cookie.getName())) {
-                         customerId  = cookie.getValue();
-                    break;
-                }
-            }
-        }
-       String email = request.getParameter("email");
-        String fullName = request.getParameter("fullName");
-   String birthDateStr = request.getParameter("birthDate");
-     Date birthDate = Date.valueOf(birthDateStr); 
-        String gender = request.getParameter("gender");
-        String address = request.getParameter("address");
-        String phoneNumber = request.getParameter("phoneNumber");
-          String password = request.getParameter("password");
-            ProfileDAO profileDAO = new ProfileDAO();
-         profileDAO.editProfile( new User(email,password,fullName,phoneNumber,address,gender,birthDate),customerId);
-         response.sendRedirect(request.getContextPath()+"/profile");
+         
     }
 
     /** 

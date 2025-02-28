@@ -24,8 +24,21 @@ public class OrderDAO {
 
     protected static Connection Con = null;
 
+    protected static String Approval_Order = "UPDATE Orders\n"
+            + "SET status = ?, \n"
+            + "    staff_id = ?,\n"
+            + "    reason_cancel = ?\n"
+            + "WHERE order_id = ?";
+
+    protected static String Request_Cancel_Order = "UPDATE Orders\n"
+            + "SET status = ?, \n"
+            + "    reason_cancel = ?,\n"
+            + "	request_cancel = ?\n"
+            + "WHERE order_id = ?";
+
     protected static String Update_Order_Status = "UPDATE Orders\n"
-            + "SET status = ?\n"
+            + "SET status = ?, \n"
+            + "    reason_cancel = ?\n"
             + "WHERE order_id = ?";
 
     protected static String Create_Order = "INSERT INTO Orders (customer_id, paymentMethod_id, shippingMethod_id, recipient_name, recipient_phone, shipping_address, delivery_notes, total_amount, status) "
@@ -149,13 +162,46 @@ public class OrderDAO {
             + "    oi.order_id = ?";
     
     
-    public static boolean cancelOrder(String status, int orderId) {
+    public static boolean approvalOrder(String status, int staffId, String reasonCancel, int orderId) {
+        boolean update = false;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Approval_Order);
+            ps.setString(1, status);
+            ps.setInt(2, staffId);
+            ps.setString(3, reasonCancel);
+            ps.setInt(4, orderId);
+            update = ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return update;
+    }
+
+    public static boolean requestCancelOrder(String status, String reasonCancel, boolean requestCancel, int orderId) {
+        boolean update = false;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Request_Cancel_Order);
+            ps.setString(1, status);
+            ps.setString(2, reasonCancel);
+            ps.setBoolean(3, requestCancel);
+            ps.setInt(4, orderId);
+            update = ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return update;
+    }
+
+    public static boolean cancelOrder(String status, String reasonCancel, int orderId) {
         boolean update = false;
         try {
             Con = new DBContext().getConnection();
             PreparedStatement ps = Con.prepareStatement(Update_Order_Status);
             ps.setString(1, status);
-            ps.setInt(2, orderId);
+            ps.setString(2, reasonCancel);
+            ps.setInt(3, orderId);
             update = ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -183,6 +229,8 @@ public class OrderDAO {
                         rs.getString("shipping_address"),
                         rs.getString("delivery_notes"),
                         rs.getDouble("total_amount"),
+                        rs.getString("reason_cancel"),
+                        rs.getBoolean("request_cancel"),
                         rs.getString("status"),
                         rs.getTimestamp("order_date"),
                         rs.getString("staff_name"),
@@ -231,6 +279,8 @@ public class OrderDAO {
                         rs.getString("shipping_address"),
                         rs.getString("delivery_notes"),
                         rs.getDouble("total_amount"),
+                        rs.getString("reason_cancel"),
+                        rs.getBoolean("request_cancel"),
                         rs.getString("status"),
                         rs.getTimestamp("order_date"),
                         rs.getString("staff_name"),
@@ -315,6 +365,8 @@ public class OrderDAO {
                         rs.getString("shipping_address"),
                         rs.getString("delivery_notes"),
                         rs.getDouble("total_amount"),
+                        rs.getString("reason_cancel"),
+                        rs.getBoolean("request_cancel"),
                         rs.getString("status"),
                         rs.getTimestamp("order_date"),
                         rs.getString("staff_name"),
@@ -361,6 +413,8 @@ public class OrderDAO {
                         rs.getString("shipping_address"),
                         rs.getString("delivery_notes"),
                         rs.getDouble("total_amount"),
+                        rs.getString("reason_cancel"),
+                        rs.getBoolean("request_cancel"),
                         rs.getString("status"),
                         rs.getTimestamp("order_date"),
                         rs.getString("staff_name"),
@@ -408,6 +462,8 @@ public class OrderDAO {
                         rs.getString("shipping_address"),
                         rs.getString("delivery_notes"),
                         rs.getDouble("total_amount"),
+                        rs.getString("reason_cancel"),
+                        rs.getBoolean("request_cancel"),
                         rs.getString("status"),
                         rs.getTimestamp("order_date"),
                         rs.getString("staff_name"),

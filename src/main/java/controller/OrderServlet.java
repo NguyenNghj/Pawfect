@@ -90,40 +90,80 @@ public class OrderServlet extends HttpServlet {
 
         try {
             int orderId = Integer.parseInt(request.getParameter("orderId"));
-            String statusOrder = request.getParameter("statusOrder");
-            String statusShow = request.getParameter("status");
+            String confirmCancel = request.getParameter("confirmCancel");
+            String statusType = request.getParameter("statusType");
             String actionBack = request.getParameter("actionBack");
+            String reasonCancel = request.getParameter("reasonCancel");
+            
+            System.out.println("Confirm: " + confirmCancel);
+            
+            List<Order> orders = OrderDAO.getOrderByOrderId(orderId);
 
-            boolean cancel = OrderDAO.cancelOrder(statusOrder, orderId);
-            if (cancel) {
-                System.out.println("Hủy đơn thành công.");
+            if (confirmCancel.equals("Yêu cầu huỷ")) {
+                confirmCancel += "...";
+                boolean requestCancel = OrderDAO.requestCancelOrder(confirmCancel, reasonCancel, true, orderId);
+                if (requestCancel) {
+                    System.out.println("Yeu cau huy don hang thanh cong.");
 
-                List<Order> orders = OrderDAO.getOrderByOrderId(orderId);
-                String customerName = orders.get(0).getCustomerName();
-                String orderDate = orders.get(0).getOrderDate();
-                String supportLink = "https://example.com/support";
+                    String customerName = orders.get(0).getCustomerName();
+                    String orderDate = orders.get(0).getOrderDate();
+                    String supportLink = "https://example.com/support";
 
-                String contentEmail = Email.emailCancel;
-                String finalContentEmail = String.format(contentEmail, customerName, (orderId + 2500000), orderDate, supportLink);
+                    String contentEmail = Email.emailRequsetCancel;
+                    String finalContentEmail = String.format(contentEmail, customerName, (orderId + 2500000), orderDate, supportLink);
 
-                ExecutorService executor = Executors.newFixedThreadPool(10); // Tạo một ExecutorService với 10 luồng
+                    ExecutorService executor = Executors.newFixedThreadPool(10); // Tạo một ExecutorService với 10 luồng
 
-                executor.submit(() -> {
-                    try {
-                        Email.sendEmail("vuquangduc1404@gmail.com", "Xác nhận đơn hàng", finalContentEmail);
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    executor.submit(() -> {
+                        try {
+//                        Email.sendEmail("vuquangduc1404@gmail.com", "Xác nhận đơn hàng", finalContentEmail);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    if (actionBack.equals("viewdetail")) {
+                        response.sendRedirect("order?action=" + actionBack + "&orderId=" + orderId);
+                    } else {
+                        response.sendRedirect("order?action=" + actionBack + "&status=" + statusType);
                     }
-                });
-                if (actionBack.equals("viewdetail")){
-                    response.sendRedirect("order?action=" + actionBack + "&orderId=" + orderId);
+
                 } else {
-                    response.sendRedirect("order?action=" + actionBack + "&status=" + statusShow);
+                    System.out.println("Yeu cau huy don hang that bai!!");
                 }
                 
             } else {
-                System.out.println("Cancel that bai!!");
+                
+                boolean cancel = OrderDAO.cancelOrder(confirmCancel, reasonCancel, orderId);
+                if (cancel) {
+                    System.out.println("Huy don hang thanh cong.");
+
+                    String customerName = orders.get(0).getCustomerName();
+                    String orderDate = orders.get(0).getOrderDate();
+                    String supportLink = "https://example.com/support";
+
+                    String contentEmail = Email.emailRequsetCancel;
+                    String finalContentEmail = String.format(contentEmail, customerName, (orderId + 2500000), orderDate, supportLink);
+
+                    ExecutorService executor = Executors.newFixedThreadPool(10); // Tạo một ExecutorService với 10 luồng
+
+                    executor.submit(() -> {
+                        try {
+//                        Email.sendEmail("vuquangduc1404@gmail.com", "Xác nhận đơn hàng", finalContentEmail);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    if (actionBack.equals("viewdetail")) {
+                        response.sendRedirect("order?action=" + actionBack + "&orderId=" + orderId);
+                    } else {
+                        response.sendRedirect("order?action=" + actionBack + "&status=" + statusType);
+                    }
+
+                } else {
+                    System.out.println("Cancel that bai!!");
+                }
             }
+
         } catch (NumberFormatException e) {
             System.out.println(e);
         }
@@ -166,6 +206,9 @@ public class OrderServlet extends HttpServlet {
                     break;
                 case "ht":
                     orders = OrderDAO.getOrderByCustomerIdVsStatus(customerId, "Hoàn thành");
+                    break;
+                case "ych":
+                    orders = OrderDAO.getOrderByCustomerIdVsStatus(customerId, "Yêu cầu huỷ...");
                     break;
                 case "dh":
                     orders = OrderDAO.getOrderByCustomerIdVsStatus(customerId, "Đã huỷ");

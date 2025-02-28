@@ -27,7 +27,7 @@
                     <p class="text-muted" style="font-size: 17px;">Mã đơn hàng của bạn là #${orderId + 2500000}</p>                
     
                     <div class="mt-4 d-flex justify-content-center gap-4">
-                        <a href="products" class="btn btn-secondary" style="padding: 8px 24px;">Trở về trang chủ</a>
+                        <a href="pawfect" class="btn btn-secondary" style="padding: 8px 24px;">Trở về trang chủ</a>
                         <a href="order?&action=viewdetail&orderId=${orderId}" class="btn btn-outline-primary" style="padding: 8px 40px;">Chi tiết đơn hàng</a>                       
                     </div>                   
                 </div>

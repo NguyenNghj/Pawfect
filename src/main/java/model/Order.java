@@ -22,6 +22,8 @@ public class Order {
     private String address;
     private String note;
     private double totalAmount;
+    private String reasonCancel;
+    private boolean requestCancel;
     private String status;
     private Timestamp orderDate;
     private String staffName;
@@ -33,7 +35,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(int orderId, int customerId, Integer staffId, int paymentMethodId, int shippingMethodId, String name, String phone, String address, String note, double totalAmount, String status, Timestamp orderDate, String staffName, String paymentMethodName, String shippingMethodName, double shippingMethodFee, String customerName) {
+    public Order(int orderId, int customerId, Integer staffId, int paymentMethodId, int shippingMethodId, String name, String phone, String address, String note, double totalAmount, String reasonCancel, boolean requestCancel, String status, Timestamp orderDate, String staffName, String paymentMethodName, String shippingMethodName, double shippingMethodFee, String customerName) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.staffId = staffId;
@@ -44,6 +46,8 @@ public class Order {
         this.address = address;
         this.note = note;
         this.totalAmount = totalAmount;
+        this.reasonCancel = reasonCancel;
+        this.requestCancel = requestCancel;
         this.status = status;
         this.orderDate = orderDate;
         this.staffName = staffName;
@@ -133,6 +137,22 @@ public class Order {
         this.totalAmount = totalAmount;
     }
 
+    public String getReasonCancel() {
+        return reasonCancel;
+    }
+
+    public void setReasonCancel(String reasonCancel) {
+        this.reasonCancel = reasonCancel;
+    }
+
+    public boolean isRequestCancel() {
+        return requestCancel;
+    }
+
+    public void setRequestCancel(boolean requestCancel) {
+        this.requestCancel = requestCancel;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -190,10 +210,7 @@ public class Order {
         this.customerName = customerName;
     }
 
-    @Override
-    public String toString() {
-        return "Order{" + "orderId=" + orderId + ", customerId=" + customerId + ", staffId=" + staffId + ", paymentMethodId=" + paymentMethodId + ", shippingMethodId=" + shippingMethodId + ", name=" + name + ", phone=" + phone + ", address=" + address + ", note=" + note + ", totalAmount=" + totalAmount + ", status=" + status + ", orderDate=" + orderDate + ", staffName=" + staffName + ", paymentMethodName=" + paymentMethodName + ", shippingMethodName=" + shippingMethodName + ", shippingMethodFee=" + shippingMethodFee + ", customerName=" + customerName + '}';
-    }
-  
+    
+   
       
 }
