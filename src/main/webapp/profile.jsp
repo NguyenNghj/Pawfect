@@ -3,7 +3,8 @@
     Created on : Feb 17, 2025, 2:54:05 PM
     Author     : Vu Quang Duc - CE181221
 --%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -81,7 +82,9 @@
                             <div class="d-grid gap-2 account-info">
                                 <span><span class="account-info-title">Họ tên:</span> ${customer.fullName} / <span class="account-info-title">Giới tính:</span> ${customer.gender}</span>
                                 <span><span class="account-info-title">Ngày sinh:</span> ${customer.birthDate}</span>
-                                <span><span  class="account-info-title">Email:</span> ${customer.email}</span>
+                              <c:if test="${fn:contains(customer.email, '@')}">
+    <span><span class="account-info-title">Email:</span> ${customer.email}</span>
+</c:if>
                                 <span><span class="account-info-title">Điện thoại:</span> ${customer.phoneNumber}</span>
                                 <span><span class="account-info-title">Địa chỉ:</span> ${customer.address}</span>
                             </div>
@@ -125,16 +128,19 @@
                                                         <small id="birthDateError" class="text-danger"></small>
                                                     </div>
                                                     <!-- Email -->
+                                                     <c:if test="${customer.email != null and fn:contains(customer.email, '@')}">
                                                     <div class="mb-2">
                                                         <label class="form-label">Email</label>
-                                                        <input type="password" value="${customer.email}" name="email" class="form-control" readonly>
+                                                        <input type="text" value="${customer.email}" name="email" class="form-control" readonly>
                                                         
                                                     </div>
-
+</c:if>
+                                                     <c:if test="${customer.email != null and fn:contains(customer.email, '@')}">
                                                     <div class="mb-2">
                                                         <label for="formGroupExampleInput4" class="form-label">Mật khẩu</label>
                                                         <input type="password" value="${customer.password}" name="password" class="form-control" id="formGroupExampleInput4"  readonly>
                                                     </div>
+                                                    </c:if>
                                                     <!-- Điện thoại -->
                                                     <div class="mb-2">
                                                         <label class="form-label">Điện thoại</label>
@@ -177,10 +183,12 @@
                             <span>Thú cưng của tôi</span>
                         </a>
                         <!-- Đổi mật khẩu -->
-                        <a href="changepassword" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
-                            <i class="fa-solid fa-key fa-lg" style="color: #eabd1a;"></i>
-                            <span>Đổi mật khẩu</span>
-                        </a>
+                       <c:if test="${customer.email != null and fn:contains(customer.email, '@')}">
+    <a href="changepassword" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+        <i class="fa-solid fa-key fa-lg" style="color: #eabd1a;"></i>
+        <span>Đổi mật khẩu</span>
+    </a>
+</c:if>
                         <!-- Đăng xuất -->
                         <a href="logout" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-solid fa-arrow-right-from-bracket fa-lg" style="color: #d01616;"></i>

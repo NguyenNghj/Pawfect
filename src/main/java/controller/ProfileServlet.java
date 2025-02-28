@@ -102,7 +102,7 @@ request.setAttribute("customer", user);
         String phoneNumber = request.getParameter("phoneNumber");
           String password = request.getParameter("password");
             ProfileDAO profileDAO = new ProfileDAO();
-         profileDAO.editProfil( new User(email,password,fullName,phoneNumber,address,gender,birthDate),customerId);
+         profileDAO.editProfile( new User(email,password,fullName,phoneNumber,address,gender,birthDate),customerId);
          response.sendRedirect(request.getContextPath()+"/profile");
     }
 

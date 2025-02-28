@@ -4,7 +4,7 @@
     Author     : Vu Quang Duc - CE181221
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -244,10 +244,12 @@
                             <i class="fa-solid fa-paw fa-lg" style="color: #8C6E63;"></i>
                             <span>Thú cưng của tôi</span>
                         </a>
-                        <a href="changepassword" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
-                            <i class="fa-solid fa-key fa-lg" style="color: #eabd1a;"></i>
-                            <span>Đổi mật khẩu</span>
-                        </a>
+                       <c:if test="${customer.email != null and fn:contains(customer.email, '@')}">
+    <a href="changepassword" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+        <i class="fa-solid fa-key fa-lg" style="color: #eabd1a;"></i>
+        <span>Đổi mật khẩu</span>
+    </a>
+</c:if>
                         <a href="logout" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-solid fa-arrow-right-from-bracket fa-lg" style="color: #d01616;"></i>
                             <span>Đăng xuất</span>
