@@ -14,15 +14,14 @@
 
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="./css/homepage.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">     
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-                integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">   
+        <link rel="stylesheet" href="./css/homepage.css">
+        <<script src="./js/homepageProductFeedback.js"></script>
         <title>Document</title>
     </head>
 
@@ -200,21 +199,84 @@
 
 
         <div class="phanhoi">
-            <div class="row phanhoi-tren">
-                <span class="col-8 phanhoi-text">Phản hồi của mọi người</span>
-                <div class=" col-4 phanhoi-muiten">
-                    <i class='bx bxs-chevrons-left muitentrai'></i>
-                    <i class='bx bxs-chevrons-right muitenphai'></i>
+            <section class="reviews-section">
+                <div class="container">
+                    <div class="section-title">
+                        <h2>Đánh giá từ khách hàng</h2>
+                        <p>Phản hồi từ những khách hàng đã sử dụng dịch vụ</p>
+                    </div>
+
+                    <div class="carousel-container">
+                        <div class="carousel-track" id="reviewsTrack">
+
+                            <c:forEach items="${feedbacks}" var="f" begin="0" end="9">
+                                <!-- Review Card 1 -->
+                                <div class="review-card collapsed">
+                                    <div class="customer-info">
+                                        <!--<img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Customer" class="customer-avatar">-->
+                                        <div>
+                                            <h4 class="customer-name">${f.customerName}</h4>
+                                            <div class="customer-date">${f.feedbackDate}</div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h5>${f.productName}</h5>   
+                                    </div>
+                                    <div class="rating">
+                                        <c:forEach var="i" begin="1" end="5">
+                                            <c:choose>
+                                                <c:when test="${i <= f.rating}">
+                                                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <i class="fa-regular fa-star" style="color: #FFD43B;"></i>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                        <span>(${f.rating})</span>
+                                    </div>
+                                    <div class="review-content">
+                                        <p class="review-text">
+                                            "${f.comment}"
+                                        </p>
+
+                                        <c:if test="${not empty f.reply}">
+                                            <!-- Phan hoi cua nhan vien --> 
+                                            <div class="staff-response">
+                                                <div class="staff-header">
+                                                    <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="Staff" class="staff-avatar">
+                                                    <div>
+                                                        <h5 class="staff-name">NV ${f.staffName}</h5>
+                                                        <div class="staff-position">Nhân viên cửa hàng</div>
+                                                    </div>
+                                                </div>
+                                                <p class="staff-text">
+                                                    "${f.reply}"
+                                                </p>
+                                            </div>
+                                        </c:if>
+
+                                        <button class="read-more-btn">
+                                            <span class="btn-text">Đọc thêm</span>
+                                            <i class="fas fa-chevron-down"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </c:forEach>                                                     
+
+                        </div>
+                    </div>
+
+                    <div class="navigation-buttons">
+                        <button class="nav-button" id="prevBtn">
+                            <i class="fas fa-arrow-left"></i>
+                        </button>
+                        <button class="nav-button" id="nextBtn">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="phanhoi-duoi">
-                <div class="phanhoi-card">
-                    <span class="phanhoi-ten">Tên khách hàng</span>
-                    <hr class="divider">
-                    <span class="rating">Rating: </span>
-                    <span class="phanhoi-phanhoi">Đánh giá về sản phẩm của khách hàng</span>
-                </div>
-            </div>
+            </section>
         </div>
 
         <div class="tieuchi">
@@ -261,7 +323,9 @@
         </div>
 
 
-
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script> 
     </body>
 
 </html>

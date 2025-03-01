@@ -4,25 +4,26 @@
  */
 package controller;
 
-import dao.FeedbackDAO;
+import dao.CartDAO;
 import dao.ProductDAO;
-import jakarta.servlet.RequestDispatcher;
+import dao.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Collections;
 import java.util.List;
-import model.Feedback;
+import model.CartItem;
 import model.Product;
 
 /**
  *
  * @author Nguyen Tri Nghi - CE180897
  */
-public class HomePageServlet extends HttpServlet {
+@WebServlet(name = "ProductDetailServlet", urlPatterns = {"/product"})
+public class ProductDetailServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +42,10 @@ public class HomePageServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomePageServlet</title>");
+            out.println("<title>Servlet ProductDetailServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomePageServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ProductDetailServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,23 +63,37 @@ public class HomePageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String productIdParam = request.getParameter("id");
+//        if (productIdParam == null || productIdParam.isEmpty()) {
+//            response.sendRedirect("productlist.jsp"); // Chuyển hướng nếu không có ID
+//            return;
+//        }
+
+        int productId = Integer.parseInt(productIdParam);
         ProductDAO productDAO = new ProductDAO();
-        String categoryName = request.getParameter("category");
-        List<Product> products;
-        
-        if (categoryName != null && !categoryName.isEmpty()) {
-            products = productDAO.getAllProductsByCategoryName(categoryName);
-        } else {
-            products = productDAO.getAllProducts();
+        Product product = productDAO.getProductById(productId);
+//
+//        if (product == null) {
+//            response.sendRedirect("sanpham"); // Chuyển hướng nếu sản phẩm không tồn tại
+//            return;
+//        }
+
+        int customerId = 1;
+        int totalQuantity = 0;
+        List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+        if (!cartItems.isEmpty()) {
+            for (CartItem cartItem : cartItems) {
+                totalQuantity += cartItem.getQuantity();
+            }
         }
-        
-        List<Feedback> feedbacks = FeedbackDAO.getAllProductFeedback();
-        Collections.shuffle(feedbacks);
-        request.setAttribute("feedbacks", feedbacks);
-        
-        request.setAttribute("products", products);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("homepage.jsp");
-        dispatcher.forward(request, response);
+        // Set tong so luong san pham trong gio hang
+        request.setAttribute("totalQuantity", totalQuantity);
+
+        // Gửi dữ liệu sản phẩm sang trang JSP
+        List<Product> productList = productDAO.getAllProductsByCategoryName(product.getCategoryName());
+        request.setAttribute("product", product);
+        request.setAttribute("productList", productList);
+        request.getRequestDispatcher("productdetail.jsp").forward(request, response);
     }
 
     /**
