@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Danh sách phòng cho thú cưng</title>
-        <link rel="stylesheet" href="./css/pethotel_v1.css">
+        <link rel="stylesheet" href="./css/pethotel_v2.css">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
     </head>
     <body>
@@ -43,15 +43,16 @@
                     }
                     if (!list.isEmpty()) {
                         for (PetHotel room : list) {%>
-                <div class="pethotel-card" onclick="window.location.href = 'pethoteldetail?id=<%= room.getRoomId()%>'">
-                    <img src="<%= room.getRoomImage()%>" alt="<%= room.getRoomName()%>">
+                <div class="pethotel-card">
+                    <img src="<%= room.getRoomImage()%>" alt="<%= room.getRoomName()%>" 
+                         onclick="window.location.href = 'pethoteldetail?id=<%= room.getRoomId()%>'">
                     <div class="pethotel-name"><%= room.getRoomName()%></div>
                     <div class="pethotel-type"><%= room.getRoomType()%></div>
                     <div class="pethotel-price"><%= NumberFormat.getInstance(new Locale("vi", "VN")).format(room.getPricePerNight())%> đ/đêm</div>
                     <div class="pethotel-weight">
                         Cân nặng: <%= room.getMinWeight()%> - <%= room.getMaxWeight()%> kg
                     </div>
-                    <a href="petroomdetail?id=<%= room.getRoomId()%>" class="booking">Đặt phòng ngay</a>
+                    <a href="customerbooking.jsp?id=<%= room.getRoomId()%>" class="booking" data-status="<%= room.getStatus()%>">Đặt phòng ngay</a>
                 </div>
                 <% }
                 } else { %>
@@ -110,6 +111,31 @@
                 });
             });
 
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const bookRoomBtns = document.querySelectorAll(".booking");
+
+                bookRoomBtns.forEach(button => {
+                    button.addEventListener("click", function (event) {
+                        event.preventDefault();
+                        const roomStatus = button.getAttribute("data-status").trim().toLowerCase();
+
+                        if (roomStatus === "hết phòng") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Phòng đã hết!',
+                                text: 'Vui lòng chọn phòng khác. Xin cảm ơn!',
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#8B4513' // Màu nâu (SaddleBrown)
+                            });
+                        } else {
+                            window.location.href = button.getAttribute("href");
+                        }
+                    });
+                });
+            });
         </script>
     </body>
 </html>
