@@ -90,13 +90,11 @@ public class EditProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
 
         try {
             // Nhận dữ liệu từ form
-            Part filePart = request.getPart("productImage");
             int productId = Integer.parseInt(request.getParameter("productId"));
             String productName = request.getParameter("productName");
             int categoryId = Integer.parseInt(request.getParameter("categoryId"));
@@ -107,26 +105,37 @@ public class EditProductServlet extends HttpServlet {
             String description = request.getParameter("description");
             boolean productActive = Boolean.parseBoolean(request.getParameter("productActive"));
 
-            String fileName = existingImage; // Mặc định giữ nguyên ảnh cũ
+            String[] context = request.getServletContext().getRealPath("").split("target");
+            String realPath = context[0] + "src" + File.separator + "main" + File.separator + "webapp" + File.separator + "img" + File.separator + "products";
 
-            if (filePart != null && filePart.getSize() > 0) {
-                fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-                String uploadDir = getServletContext().getRealPath("/img/products");
-                File uploadFolder = new File(uploadDir);
-
-                if (!uploadFolder.exists()) {
-                    uploadFolder.mkdirs();
-                }
-
-                // Lưu file vào thư mục
-                filePart.write(uploadDir + File.separator + fileName);
+            File uploadDir = new File(realPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
             }
 
-            // Tạo đối tượng Product chỉ lưu fileName thay vì full path
+            String fileName = existingImage; // Giữ ảnh cũ mặc định
+            Part filePart = request.getPart("productImage");
+
+            if (filePart != null && filePart.getSize() > 0) {
+                // Lấy tên file
+                fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+
+                // Xóa ảnh cũ nếu có và không trùng với ảnh mới
+                if (existingImage != null && !existingImage.isEmpty() && !existingImage.equals(fileName)) {
+                    File oldFile = new File(realPath, existingImage);
+                    if (oldFile.exists()) {
+                        oldFile.delete();
+                    }
+                }
+
+                // Lưu ảnh mới
+                filePart.write(realPath + File.separator + fileName);
+            }
+
+            // Cập nhật thông tin sản phẩm
             Product product = new Product(productId, categoryId, productName, productPetType,
                     productPrice, fileName, stock, description, productActive);
 
-            // Cập nhật vào database
             ProductDAO productDAO = new ProductDAO();
             boolean updateSuccess = productDAO.updateProduct(product);
 
@@ -135,7 +144,6 @@ public class EditProductServlet extends HttpServlet {
             } else {
                 response.sendRedirect("/dashboard/admin/editproduct?error=2");
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("/dashboard/admin/editproduct?error=1");
