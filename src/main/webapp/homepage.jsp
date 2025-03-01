@@ -21,7 +21,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">   
         <link rel="stylesheet" href="./css/homepage.css">
-        <<script src="./js/homepageProductFeedback.js"></script>
+        <script src="./js/homepageProductFeedback.js"></script>
         <title>Document</title>
     </head>
 
@@ -29,8 +29,8 @@
 
         <div class="container info">
             <div class="row">
-                <div class="col-sm-8 right-info">
-                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000"
+                <div class="col-sm-8 left-info">
+                    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" data-bs-interval="10000"
                          data-bs-pause="hover">
                         <div class="carousel-indicators">
                             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
@@ -64,7 +64,7 @@
                     </div>
                 </div>
 
-                <div class="col-sm-4 left-info">
+                <div class="col-sm-4 right-info">
                     <div>
                         <h2 style="font-weight: bold;">Theo dõi chúng tôi</h2>
                         <div class="all-inflogo">

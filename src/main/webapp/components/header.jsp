@@ -37,26 +37,27 @@
                                 <a class="btn" href="#">Về PawPect</a>
                             </div>
                             <div class="col-auto dropdown">
-                                <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="btn dropdown-toggle" href="/products?pettype=1&page=1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Sản phẩm cho Chó
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Đồ ăn</a></li>
-                                    <li><a class="dropdown-item" href="#">Phụ kiện</a></li>
-                                    <li><a class="dropdown-item" href="#">Đồ chơi</a></li>
+                                    <li><a class="dropdown-item" href="/products?pettype=1&page=1&category=food">Đồ ăn</a></li>
+                                    <li><a class="dropdown-item" href="/products?pettype=1&page=1&category=accessory">Phụ kiện</a></li>
+                                    <li><a class="dropdown-item" href="/products?pettype=1&page=1&category=toy">Đồ chơi</a></li>
                                 </ul>
                             </div>
 
                             <div class="col-auto dropdown">
-                                <a class="btn dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="btn dropdown-toggle" href="/products?pettype=2&page=1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Sản phẩm cho Mèo
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Đồ ăn</a></li>
-                                    <li><a class="dropdown-item" href="#">Phụ kiện</a></li>
-                                    <li><a class="dropdown-item" href="#">Đồ chơi</a></li>
+                                    <li><a class="dropdown-item" href="/products?pettype=2&page=1&category=food">Đồ ăn</a></li>
+                                    <li><a class="dropdown-item" href="/products?pettype=2&page=1&category=accessory">Phụ kiện</a></li>
+                                    <li><a class="dropdown-item" href="/products?pettype=2&page=1&category=toy">Đồ chơi</a></li>
                                 </ul>
                             </div>
+
 
                             <div class="col-auto">
                                 <a class="btn" href="pethotel">Khách sạn thú cưng</a>
@@ -71,41 +72,41 @@
                             <input type="text" id="search-box" class="search-box" placeholder="Nhập từ khóa cần tìm...">
                         </div>
                         <!-- USER ICON -->
-                       <%
-    String username = null;
-    Cookie[] cookies = request.getCookies();
-    if (cookies != null) {
-        for (Cookie cookie : cookies) {
-            if ("customerId".equals(cookie.getName())) {
-                username = cookie.getValue();
-                break;
-            }
-        }
-    }
-%>
+                        <%
+                            String username = null;
+                            Cookie[] cookies = request.getCookies();
+                            if (cookies != null) {
+                                for (Cookie cookie : cookies) {
+                                    if ("customerId".equals(cookie.getName())) {
+                                        username = cookie.getValue();
+                                        break;
+                                    }
+                                }
+                            }
+                        %>
 
-<div class="dropdown">
-    <a class="btn" href="#" role="button" data-bs-toggle="dropdown">
-        <i class='bx bxs-user-circle'></i>
-    </a>
-    <ul class="dropdown-menu">
-        <% if (username != null) { %>
-            <li><a class="dropdown-item d-flex align-items-center gap-3" href="profile">
-                <i class="bx bxs-user-detail"></i> Thông tin
-            </a></li>
-            <li><a class="dropdown-item d-flex align-items-center gap-3" href="logout">
-                <i class="bx bx-log-out"></i> Đăng xuất
-            </a></li>
-        <% } else { %>
-            <li><a class="dropdown-item d-flex align-items-center gap-3" href="login">
-                <i class="bx bxs-key"></i> Đăng nhập
-            </a></li>
-            <li><a class="dropdown-item d-flex align-items-center gap-3" href="register">
-                <i class="bx bx-lock-alt"></i> Đăng ký
-            </a></li>
-        <% } %>
-    </ul>
-</div>
+                        <div class="dropdown">
+                            <a class="btn" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class='bx bxs-user-circle'></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <% if (username != null) { %>
+                                <li><a class="dropdown-item d-flex align-items-center gap-3" href="profile">
+                                        <i class="bx bxs-user-detail"></i> Thông tin
+                                    </a></li>
+                                <li><a class="dropdown-item d-flex align-items-center gap-3" href="logout">
+                                        <i class="bx bx-log-out"></i> Đăng xuất
+                                    </a></li>
+                                    <% } else { %>
+                                <li><a class="dropdown-item d-flex align-items-center gap-3" href="login">
+                                        <i class="bx bxs-key"></i> Đăng nhập
+                                    </a></li>
+                                <li><a class="dropdown-item d-flex align-items-center gap-3" href="register">
+                                        <i class="bx bx-lock-alt"></i> Đăng ký
+                                    </a></li>
+                                    <% }%>
+                            </ul>
+                        </div>
 
                         <!-- CART ICON -->
                         <a class="cart-btn" href="cart?action=view">
@@ -119,7 +120,7 @@
                                         ${totalQuantity} 
                                     </c:otherwise>
                                 </c:choose>
-                                
+
                             </span>
                             &nbsp;<span class="cart-text">Items</span>
                         </a>

@@ -111,7 +111,7 @@
                                     <c:forEach var="category" items="${categories}">
                                         <option value="${category.categoryId}" 
                                                 <c:if test="${category.categoryId == product.categoryId}">selected="selected"</c:if> 
-                                                data-is-active="${category.isActive}">
+                                                data-is-active="${category.active}">
                                             ${category.categoryName}
                                         </option>
                                     </c:forEach>
