@@ -26,9 +26,9 @@ public class CategoryDAO {
         List<Category> categories = new ArrayList<>();
         String query = "SELECT category_id, category_name, is_active FROM Category";
         try {
-            conn = new DBContext().getConnection(); 
+            conn = new DBContext().getConnection();
             ps = conn.prepareStatement(query);
-            rs = ps.executeQuery(); 
+            rs = ps.executeQuery();
             while (rs.next()) {
                 categories.add(new Category(
                         rs.getInt(1),
@@ -40,6 +40,43 @@ public class CategoryDAO {
             e.printStackTrace();
         }
         return categories;
+    }
+
+    public Category getCategoryById(int categoryId) {
+        String query = "SELECT category_id, category_name, is_active FROM Category WHERE category_id = ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, categoryId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Category(
+                        rs.getInt("category_id"),
+                        rs.getString("category_name"),
+                        rs.getBoolean("is_active")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean updateCategory(int categoryId, String categoryName, boolean isActive) {
+        String query = "UPDATE Category SET category_name = ?, is_active = ? WHERE category_id = ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setString(1, categoryName);
+            ps.setBoolean(2, isActive);
+            ps.setInt(3, categoryId);
+
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0; // Trả về true nếu có ít nhất một dòng được cập nhật
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false; // Trả về false nếu cập nhật thất bại
     }
 
 }
