@@ -132,13 +132,15 @@
                     </div>
                 </div>
 
+                <!-- SIDEBAR -->
+                <jsp:include page="sidebar.jsp"/>
 
                 <!-- MAIN -->
                 <div class="col" id="main" style="padding: 0 40px;">
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Product Management</h1>
+                                <h1>Quản lí sản phẩm</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
                                 <span>Username2025 (Admin)</span>
@@ -182,10 +184,10 @@
 
                     <div class="row">
                         <div class="col-3 p-0" style="margin-top: 60px;">
-                            <button type="button" class="btn btn-primary">
+                            <a href="/dashboard/admin/createproduct" type="button" class="btn btn-success">
                                 <i class="fa-solid fa-plus"></i>
-                                New Product
-                            </button>
+                                Thêm sản phẩm
+                            </a>
                         </div>        
                     </div>
 
