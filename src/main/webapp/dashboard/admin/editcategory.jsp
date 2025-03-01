@@ -4,10 +4,7 @@
     Author     : Nguyen Tri Nghi - CE180897
 --%>
 
-<%@page import="dao.CategoryDAO"%>
-<%@page import="model.Category"%>
-<%@page import="model.Product"%>
-<%@page import="dao.ProductDAO"%>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -102,8 +99,8 @@
                             <div class="mb-3">
                                 <label for="editCategoryStatus">Trạng thái</label>
                                 <select class="form-select" name="isActive">
-                                    <option value="true" ${category.isActive ? 'selected' : ''}>Hoạt động</option>
-                                    <option value="false" ${!category.isActive ? 'selected' : ''}>Không hoạt động</option>
+                                    <option value="true" ${category.active ? 'selected' : ''}>Hoạt động</option>
+                                    <option value="false" ${!category.active ? 'selected' : ''}>Không hoạt động</option>
                                 </select>
                             </div>
 
