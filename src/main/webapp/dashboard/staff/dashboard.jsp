@@ -81,15 +81,45 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
+
                                 <h1>Dashboard</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
-                                <span>Username2025 (Employee)</span>
+                                <%
+                                    Cookie[] cookies = request.getCookies();
+                                    String staffRole = "";
+                                    String staffName = "";
+
+                                    if (cookies != null) {
+                                        for (Cookie cookie : cookies) {
+                                            String name = cookie.getName();
+                                            String value = cookie.getValue();
+
+                                            if ("staffRole".equals(name)) {
+                                                staffRole = value;
+                                            } else if ("staffName".equals(name)) {
+                                                staffName = value;
+                                            }
+
+                                            // Nếu đã lấy được cả hai giá trị thì thoát vòng lặp
+                                            if (!staffRole.isEmpty() && !staffName.isEmpty()) {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                %>            
+                                <span><%= staffName%></span>
                                 <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img class="profile-img" src="https://img.freepik.com/foto-gratis/hombre-tiro-medio-peinado-afro_23-2150677136.jpg" alt="">
                                 </button>
                                 <ul class="dropdown-menu ps-2 pe-2 pt-2 pb-2">
-                                    <div class="d-grid gap-2">
+                                    <div class="d-grid gap-2"                                       
+                                         <% if ("Admin".equals(staffRole)) { %>
+                                         <li class="profile-img-switch-employee d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
+                                        <i class="fa-solid fa-repeat"></i>
+                                        <a class="dropdown-item" style="padding: 0;" href="admin/dashboard.jsp">Switch to admin</a>
+                                        </li>
+                                        <% }%>
                                         <li class="profile-img-switch-store d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-store"></i>
                                             <a class="dropdown-item" style="padding: 0;" href="#">Go to store</a>
@@ -101,7 +131,7 @@
                                         </li>
                                         <li class="profile-img-info2 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-right-from-bracket" style="font-size: 20px;"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="#">Logout</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="logoutstaff">Logout</a>
                                         </li>
                                     </div>
                                 </ul>

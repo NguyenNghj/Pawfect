@@ -5,8 +5,6 @@
 
 package controller;
 
-import dao.UserDAO;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -14,14 +12,12 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Account;
-import model.AccountStaff;
 
 /**
  *
  * @author LENOVO
  */
-public class LoginStaffServlet extends HttpServlet {
+public class LogoutStaffServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,10 +34,10 @@ public class LoginStaffServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginStaffServlet</title>");  
+            out.println("<title>Servlet LogoutStaffServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginStaffServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet LogoutStaffServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,8 +54,19 @@ public class LoginStaffServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("loginadmin.jsp");
-        dispatcher.forward(request, response);
+         Cookie staffId = new Cookie("staffId","");       
+        staffId.setMaxAge(0);
+        staffId.setPath("/"); 
+       response.addCookie(staffId);
+        Cookie staffRole= new Cookie("staffRole","");       
+        staffRole.setMaxAge(0);
+        staffRole.setPath("/"); 
+       response.addCookie(staffRole);
+         Cookie staffName= new Cookie("staffName","");       
+        staffName.setMaxAge(0);
+        staffName.setPath("/"); 
+       response.addCookie(staffName);
+       response.sendRedirect("/loginstaff");
     } 
 
     /** 
@@ -72,28 +79,7 @@ public class LoginStaffServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       String email = request.getParameter("email");
-        String password = request.getParameter("password");
-
-        UserDAO userDAO = new UserDAO();
-        AccountStaff account = new AccountStaff();
-        account = userDAO.loginStaff(email, password);
-        if (!AccountStaff.IsEmpty(account)) {
-            Cookie staffId = new Cookie("staffId", account.getStaffId());
-            staffId.setMaxAge(60 * 60 * 24 * 1);
-            response.addCookie(staffId);
-            Cookie staffRole = new Cookie("staffRole", account.getRole());
-            staffRole.setMaxAge(60 * 60 * 24 * 1);
-            response.addCookie(staffRole);
-             Cookie staffName = new Cookie("staffName", account.getUsername());
-            staffName.setMaxAge(60 * 60 * 24 * 1);
-            response.addCookie(staffName);
-            if (account.getRole().equals("Admin")){
-            response.sendRedirect("dashboard/admin/dashboard.jsp");
-            }else{    response.sendRedirect("dashboard/staff/dashboard.jsp");}
-        } else {
-            response.sendRedirect("loginadmin.jsp?error=Invalid Credentials");
-        }
+        processRequest(request, response);
     }
 
     /** 

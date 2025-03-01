@@ -13,7 +13,7 @@
         <title>JSP Page</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <link rel="stylesheet" href="CSS/account.css">
+        <link rel="stylesheet" href="./css/account.css">
     </head>
     <body>
         <div class="container py-4"> 
@@ -86,7 +86,7 @@
                             </div>
 
                             <!-- Modal sửa thông tin thú cưng -->
-                            <form action="editpet" method="post" >
+                            <form action="editpet" method="post" enctype="multipart/form-data" onsubmit="return validateEditPetForm()">
                                 <div class="modal fade" id="editPetModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editPetModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -96,16 +96,20 @@
                                             </div>
                                             <div class="modal-body edit-pet-detail">
                                                 <input type="hidden" name="petId" value="${pet.petId}">
+                                                <input type="hidden" name="existingImage" value="${pet.petImg}">
 
-                                                <!-- Ảnh đại diện -->
-                                                <div class="mb-3 text-center">
-                                                    <img id="petImagePreview" src="${pet.petImg}"  name="petImage" alt="Ảnh thú cưng" class="img-fluid rounded" style="max-width: 200px;">
-                                                </div>
+
 
                                                 <!-- Input chọn ảnh -->
                                                 <div class="mb-3">
-                                                    <label for="petImageUpload" class="form-label">Chọn ảnh mới</label>
-                                                    <input type="file" class="form-control" id="petImageUpload" name="petImage" accept="image/*">
+                                                    <label for="editProductImage" class="form-label">Hình ảnh</label>
+                                                    <div style="display: flex; gap: 10px;">
+                                                        <img id="previewImage" class="img-thumbnail" style="width: 220px; height: 220px; display: ${not empty pet.petImg ? 'block' : 'none'};" src="/img/pet/${pet.petImg}" alt="Ảnh sản phẩm">
+                                                        <input type="file" id="editPetImage" name="petImage" accept="image/*" style="display: none;" onchange="previewFile()">
+                                                        <div class="image-box" onclick="document.getElementById('editPetImage').click()" style="cursor: pointer; border: 1px dashed #ccc; padding: 20px; text-align: center; width: 220px; height: 220px; display: flex; align-items: center; justify-content: center;">
+                                                            <span id="uploadText">Thêm ảnh</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
 
                                                 <div class="row mb-3">
@@ -113,6 +117,7 @@
                                                     <div class="col-md-9">
                                                         <label class="form-label">Tên thú cưng</label>
                                                         <input type="text" name="petName" value="${pet.petname}" class="form-control">
+                                                        <span id="petNameError" class="text-danger"></span>
                                                     </div>
 
                                                     <!-- Loài -->
@@ -129,6 +134,7 @@
                                                 <div class="mb-3">
                                                     <label class="form-label">Giống thú cưng</label>
                                                     <input type="text" name="petBreed" value="${pet.petBreed}" class="form-control">
+                                                    <span id="petBreedError" class="text-danger"></span>
                                                 </div>
 
                                                 <!-- Giới tính -->
@@ -144,12 +150,14 @@
                                                 <div class="mb-3">
                                                     <label class="form-label">Cân nặng (kg)</label>
                                                     <input type="number" name="petWeight" value="${pet.petWeight}" class="form-control" step="0.01">
+                                                    <span id="petWeightError" class="text-danger"></span>
                                                 </div>
 
                                                 <!-- Sinh nhật -->
                                                 <div class="mb-3">
                                                     <label class="form-label">Sinh nhật</label>
                                                     <input type="date" name="petDob" value="${pet.petDob}" class="form-control">
+                                                    <span id="petDobError" class="text-danger"></span>
                                                 </div>
                                             </div>
 
@@ -189,7 +197,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-md-3 d-flex justify-content-center align-items-center">
-                                            <img class="rounded pet-detail-img" src="${pet.petImg}" alt="" 
+                                            <img class="rounded pet-detail-img" src="/img/pet/${pet.petImg}" alt="" 
                                                  width="140" height="140" 
                                                  style="object-fit: contain; cursor: pointer;"
                                                  data-bs-toggle="modal" data-bs-target="#imageModal"
@@ -200,7 +208,7 @@
                                                 <div class="modal-dialog modal-dialog-centered">
                                                     <div class="modal-content">
                                                         <div class="modal-body text-center">
-                                                            <img src="${pet.petImg}" class="img-fluid rounded">
+                                                            <img src="/img/pet/${pet.petImg}" class="img-fluid rounded">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -269,7 +277,91 @@
                     reader.readAsDataURL(file);
                 }
             });
+
+
         </script>
+        <script>
+            function previewFile() {
+                const fileInput = document.getElementById('editPetImage');
+                const previewImage = document.getElementById('previewImage');
+                const uploadText = document.getElementById('uploadText');
+
+                const file = fileInput.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        previewImage.src = e.target.result;
+                        previewImage.style.display = "block";
+                        uploadText.innerText = "Đổi ảnh";
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        </script>
+        <script>
+            function validateEditPetForm() {
+                let isValid = true;
+
+// Lấy giá trị từ form
+                let petName = document.getElementsByName("petName")[0].value.trim();
+                let petBreed = document.getElementsByName("petBreed")[0].value.trim();
+                let petWeight = document.getElementsByName("petWeight")[0].value.trim();
+                let petDob = document.getElementsByName("petDob")[0].value;
+
+// Xóa thông báo lỗi trước đó
+                document.getElementById("petNameError").innerText = "";
+                document.getElementById("petBreedError").innerText = "";
+                document.getElementById("petWeightError").innerText = "";
+                document.getElementById("petDobError").innerText = "";
+
+// Kiểm tra tên thú cưng
+                if (petName === "") {
+                    document.getElementById("petNameError").innerText = "Tên thú cưng không được để trống!";
+                    isValid = false;
+                } else if (petName.length > 50) {
+                    document.getElementById("petNameError").innerText = "Tên thú cưng tối đa 50 ký tự!";
+                    isValid = false;
+                }
+
+// Kiểm tra giống thú cưng
+                if (petBreed === "") {
+                    document.getElementById("petBreedError").innerText = "Giống thú cưng không được để trống!";
+                    isValid = false;
+                } else if (petBreed.length > 50) {
+                    document.getElementById("petBreedError").innerText = "Giống thú cưng tối đa 50 ký tự!";
+                    isValid = false;
+                }
+
+// Kiểm tra cân nặng
+                if (petWeight === "") {
+                    document.getElementById("petWeightError").innerText = "Cân nặng không được để trống!";
+                    isValid = false;
+                } else if (isNaN(petWeight) || petWeight <= 0 || petWeight > 50) {
+                    document.getElementById("petWeightError").innerText = "Cân nặng phải từ 0.1 đến 50 kg!";
+                    isValid = false;
+                }
+
+// Kiểm tra ngày sinh
+                let today = new Date().toISOString().split("T")[0]; // Ngày hôm nay
+                if (petDob === "") {
+                    document.getElementById("petDobError").innerText = "Ngày sinh không được để trống!";
+                    isValid = false;
+                } else if (petDob > today) {
+                    document.getElementById("petDobError").innerText = "Ngày sinh không hợp lệ!";
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
+// Gán sự kiện submit cho form
+            document.querySelector("form[action='editpet']").addEventListener("submit", function (event) {
+                if (!validateEditPetForm()) {
+                    event.preventDefault(); // Chặn form nếu có lỗi
+                }
+            });
+        </script>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
     </body>

@@ -60,7 +60,14 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title mb-4">Thú cưng của bạn</h5>
-
+  <div>
+                                        <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#editPetModal" 
+                                                style="padding: 8px 18px;"
+                                                >
+                                            <span style="font-size: 16px;">Thêm thú cưng</span>
+                                        </button>
+                                       
+                                    </div>   
                             <!-- Order Tabs -->
                             <ul class="nav nav-tabs mb-4">
     <li class="nav-item">
@@ -99,7 +106,7 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <div class="d-flex align-items-center gap-4">
-                            <img class="rounded" src="${pro.petImg != null ? pro.petImg : 'default.jpg'}" 
+                            <img class="rounded" src="/img/pet/${pro.petImg != null ? pro.petImg : 'default.jpg'}" 
                                  alt="" width="90" height="90">
                             <div class="d-grid gap-1">
                                 <h6 style="font-size: 18px;">${pro.petStatus}</h6>
@@ -115,8 +122,92 @@
 </c:forEach>
 
     </c:otherwise>
-</c:choose>                    
+</c:choose>      
+                           
+  <!-- Modal sửa thông tin thú cưng -->
+                            <form action="addpet" method="post" enctype="multipart/form-data" onsubmit="return validateEditPetForm()">
+                                <div class="modal fade" id="editPetModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editPetModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="editPetModalLabel">Thêm thông tin thú cưng</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body edit-pet-detail">
+                                                <input type="hidden" name="petId" >
+                                                <input type="hidden" name="existingImage" >
 
+
+
+                                                <!-- Input chọn ảnh -->
+                                                <div class="mb-3">
+                                                    <label for="editProductImage" class="form-label">Hình ảnh</label>
+                                                    <div style="display: flex; gap: 10px;">
+                                                        <img id="previewImage" class="img-thumbnail" style="width: 220px; height: 220px; display: ${not empty pet.petImg ? 'block' : 'none'};" src="/img/pet/${pet.petImg}" alt="Ảnh sản phẩm">
+                                                        <input type="file" id="editPetImage" name="petImage" accept="image/*" style="display: none;" onchange="previewFile()">
+                                                        <div class="image-box" onclick="document.getElementById('editPetImage').click()" style="cursor: pointer; border: 1px dashed #ccc; padding: 20px; text-align: center; width: 220px; height: 220px; display: flex; align-items: center; justify-content: center;">
+                                                            <span id="uploadText">Thêm ảnh</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row mb-3">
+                                                    <!-- Tên thú cưng -->
+                                                    <div class="col-md-9">
+                                                        <label class="form-label">Tên thú cưng</label>
+                                                        <input type="text" name="petName" class="form-control">
+                                                        <span id="petNameError" class="text-danger"></span>
+                                                    </div>
+
+                                                    <!-- Loài -->
+                                                    <div class="col-md">
+                                                        <label class="form-label">Loài</label>
+                                                        <select class="form-select" name="petType">
+                                                            <option value="Chó" >Chó</option>
+                                                            <option value="Mèo" >Mèo</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Giống thú cưng -->
+                                                <div class="mb-3">
+                                                    <label class="form-label">Giống thú cưng</label>
+                                                    <input type="text" name="petBreed" class="form-control">
+                                                    <span id="petBreedError" class="text-danger"></span>
+                                                </div>
+
+                                                <!-- Giới tính -->
+                                                <div class="mb-3">
+                                                    <label class="form-label">Giới tính</label>
+                                                    <select class="form-select" name="petSex">
+                                                        <option value="Đực" >Đực</option>
+                                                        <option value="Cái" >Cái</option>
+                                                    </select>
+                                                </div>
+
+                                                <!-- Cân nặng -->
+                                                <div class="mb-3">
+                                                    <label class="form-label">Cân nặng (kg)</label>
+                                                    <input type="number" name="petWeight" value="" class="form-control" step="0.01">
+                                                    <span id="petWeightError" class="text-danger"></span>
+                                                </div>
+
+                                                <!-- Sinh nhật -->
+                                                <div class="mb-3">
+                                                    <label class="form-label">Sinh nhật</label>
+                                                    <input type="date" name="petDob"  class="form-control">
+                                                    <span id="petDobError" class="text-danger"></span>
+                                                </div>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                <button type="submit" class="btn btn-success">Thêm</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                             <!-- Modal xoá thú cưng -->
                             <div class="modal fade" id="removePetModal" tabindex="-1" aria-labelledby="removePetModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -188,6 +279,96 @@
         });
     });
 </script>
+ <script>
+            document.getElementById('petImageUpload').addEventListener('change', function (event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById('petImagePreview').src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+function validateEditPetForm() {
+    let isValid = true;
+
+    // Lấy dữ liệu từ form
+    let petName = document.querySelector("[name='petName']").value.trim();
+    let petBreed = document.querySelector("[name='petBreed']").value.trim();
+    let petWeight = document.querySelector("[name='petWeight']").value.trim();
+    let petDob = document.querySelector("[name='petDob']").value;
+    let petImage = document.querySelector("[name='petImage']").files.length;
+
+    // Lấy phần hiển thị lỗi
+    let petNameError = document.getElementById("petNameError");
+    let petBreedError = document.getElementById("petBreedError");
+    let petWeightError = document.getElementById("petWeightError");
+    let petDobError = document.getElementById("petDobError");
+
+    // Reset lỗi
+    petNameError.innerText = "";
+    petBreedError.innerText = "";
+    petWeightError.innerText = "";
+    petDobError.innerText = "";
+
+    // Kiểm tra tên thú cưng
+    if (petName === "") {
+        petNameError.innerText = "Tên thú cưng không được để trống.";
+        isValid = false;
+    }
+
+    // Kiểm tra giống thú cưng
+    if (petBreed === "") {
+        petBreedError.innerText = "Giống thú cưng không được để trống.";
+        isValid = false;
+    }
+
+    // Kiểm tra cân nặng (phải là số dương)
+    if (petWeight === "" || isNaN(petWeight) || parseFloat(petWeight) <= 0) {
+        petWeightError.innerText = "Cân nặng phải là số dương.";
+        isValid = false;
+    }
+
+    // Kiểm tra ngày sinh (không được lớn hơn ngày hiện tại)
+    let today = new Date().toISOString().split("T")[0]; // Lấy ngày hiện tại
+    if (petDob === "") {
+        petDobError.innerText = "Vui lòng chọn ngày sinh.";
+        isValid = false;
+    } else if (petDob > today) {
+        petDobError.innerText = "Ngày sinh không được lớn hơn ngày hiện tại.";
+        isValid = false;
+    }
+
+    // Kiểm tra nếu có chọn ảnh (khi thêm mới)
+    if (petImage === 0) {
+        alert("Vui lòng chọn một ảnh cho thú cưng.");
+        isValid = false;
+    }
+
+    return isValid;
+}
+
+        </script>
+        <script>
+            function previewFile() {
+                const fileInput = document.getElementById('editPetImage');
+                const previewImage = document.getElementById('previewImage');
+                const uploadText = document.getElementById('uploadText');
+
+                const file = fileInput.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        previewImage.src = e.target.result;
+                        previewImage.style.display = "block";
+                        uploadText.innerText = "Đổi ảnh";
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        </script>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
