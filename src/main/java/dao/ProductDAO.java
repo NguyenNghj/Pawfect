@@ -126,6 +126,29 @@ public class ProductDAO {
         return false;
     }
 
+    public boolean createProduct(Product product) {
+        String query = "INSERT INTO Products (category_id, product_name, product_petType, product_price, product_image, stock, description, is_active) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            Connection conn = new DBContext().getConnection();
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setInt(1, product.getCategoryId());
+            ps.setString(2, product.getProductName());
+            ps.setString(3, product.getProductPetType());
+            ps.setDouble(4, product.getProductPrice());
+            ps.setString(5, product.getProductImage());
+            ps.setInt(6, product.getStock());
+            ps.setString(7, product.getDescription());
+            ps.setBoolean(8, product.isActive());
+
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
+        } catch (Exception e) {
+            e.printStackTrace(); 
+        }
+        return false;
+    }
+
     public List<Product> filterByPrice(List<Product> products, String giaFilter) {
         List<Product> filteredList = new ArrayList<>();
         for (Product product : products) {

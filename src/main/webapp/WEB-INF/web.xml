@@ -140,6 +140,10 @@
         <servlet-name>ProductManagementServlet</servlet-name>
         <servlet-class>controller.ProductManagementServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateProductServlet</servlet-name>
+        <servlet-class>controller.CreateProductServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>PetHotelServlet</servlet-name>
         <url-pattern>/pethotel</url-pattern>
@@ -279,6 +283,10 @@
     <servlet-mapping>
         <servlet-name>ProductManagementServlet</servlet-name>
         <url-pattern>/dashboard/admin/product</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateProductServlet</servlet-name>
+        <url-pattern>/dashboard/admin/createproduct</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
