@@ -31,7 +31,7 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Quản lí sản phẩm</h1>
+                                <h1>Quản lí thể loại</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
                                 <span>Username2025 (Admin)</span>
@@ -75,7 +75,7 @@
 
                     <div class="row">
                         <div class="col-3 p-0" style="margin-top: 60px;">
-                            <a href="/dashboard/admin/createproduct" type="button" class="btn btn-success">
+                            <a href="/dashboard/admin/createcategory" type="button" class="btn btn-success">
                                 <i class="fa-solid fa-plus"></i>
                                 Thêm sản phẩm
                             </a>
@@ -86,46 +86,37 @@
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <div class="main-dashboard-table">
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
-                                 style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
+                                 style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">
                                 <i class="fa-solid fa-boxes-stacked fa-lg"></i>
-                                <h4 class="mb-0">Danh sách sản phẩm</h4>
+                                <h4 class="mb-0">Danh sách danh mục</h4>
                             </div>
                             <div style="padding: 15px 15px 25px 15px;">
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Id</th>
-                                            <th scope="col">Hình ảnh</th>
-                                            <th scope="col">Thể loại</th>
-                                            <th scope="col">Tên sản phẩm</th>
-                                            <th scope="col">Dành cho</th>
-                                            <th scope="col">Giá</th>
-                                            <th scope="col">Tồn kho</th>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Tên danh mục</th>
                                             <th scope="col">Trạng thái</th>
+                                            <th scope="col">Hành động</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach var="product" items="${products}">
+                                        <c:forEach var="category" items="${categories}">
                                             <tr>
-                                                <th scope="row">${product.productId}</th>
-                                                <td><img src="/img/products/${product.productImage}" alt="Hình ảnh" width="50"></td>
-                                                <td>${product.categoryName}</td>
-                                                <td>${product.productName}</td>
-                                                <td>${product.productPetType}</td>
-                                                <td>${product.productPrice}</td>
-                                                <td>${product.stock}</td>
+                                                <th scope="row">${category.categoryId}</th>
+                                                <td>${category.categoryName}</td>
                                                 <td>
                                                     <c:choose>
-                                                        <c:when test="${product.active}">
+                                                        <c:when test="${category.active}">
                                                             <span class="text-success">Hoạt động</span>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <span class="text-danger">Ngừng bán</span>
+                                                            <span class="text-danger">Không hoạt động</span>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>
                                                 <td>
-                                                    <a href="/dashboard/admin/editproduct?productId=${product.productId}" class="btn btn-primary">Chỉnh sửa</a>
+                                                    <a href="/dashboard/admin/editcategory?categoryId=${category.categoryId}" class="btn btn-primary">Chỉnh sửa</a>
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -133,7 +124,8 @@
                                 </table>
                             </div>
                         </div>
-                    </div>          
+                    </div>
+
                 </div>
             </div>
         </div>  

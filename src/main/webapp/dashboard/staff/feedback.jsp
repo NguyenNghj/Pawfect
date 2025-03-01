@@ -5,12 +5,15 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
         <link rel="stylesheet" href="../../css/dashboard.css">
         <title>JSP Page</title>
     </head>
@@ -49,7 +52,7 @@
                             </a>
                         </nav>                  
                         <nav class="navbar bg-body-tertiary active">
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="#" style="color: white; pointer-events: none;">
+                            <a class="navbar-brand d-flex align-items-center gap-3" href="feedbackmanagement?&action=view&status=0" style="color: white; pointer-events: none;">
                                 <i class="fa-solid fa-comment fa-lg"></i>
                                 <span>Phản hồi sản phẩm</span>
                             </a>
@@ -129,35 +132,100 @@
                                 <h4 class="mb-0">Danh sách phản hồi</h4>
                             </div>
                             <div style="padding: 15px 15px 25px 15px;">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">First</th>
-                                            <th scope="col">Last</th>
-                                            <th scope="col">Handle</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                            <td>@fat</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td colspan="2">Larry the Bird</td>
-                                            <td>@twitter</td>
-                                        </tr>                             
+                                <!-- Order Tabs -->
+                                <ul class="nav nav-tabs mb-4">
+                                    <li class="nav-item">
+                                        <a class="nav-link <c:if test="${feedbackStatus == '0'}">active</c:if>" href="feedbackmanagement?&action=view&status=0"">Tất cả</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link <c:if test="${feedbackStatus == '5'}">active</c:if>" href="feedbackmanagement?&action=view&status=5">5 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link <c:if test="${feedbackStatus == '4'}">active</c:if>" href="feedbackmanagement?&action=view&status=4">4 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link <c:if test="${feedbackStatus == '3'}">active</c:if>" href="feedbackmanagement?&action=view&status=3">3 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link <c:if test="${feedbackStatus == '2'}">active</c:if>" href="feedbackmanagement?&action=view&status=2">2 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link <c:if test="${feedbackStatus == '1'}">active</c:if>" href="feedbackmanagement?&action=view&status=1">1 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></a>
+                                        </li>
+                                    </ul>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" style="width: 5%;">Id</th>
+                                                <th scope="col" style="width: 17%;">Sản phẩm</th>
+                                                <th scope="col" style="width: 15%;">Khách hàng</th>
+                                                <th scope="col" style="width: 11%;">Đánh giá</th>
+                                                <th scope="col">Nhận xét</th>        
+                                                <th scope="col" style="width: 9%;">Trạng thái</th>
+                                                <th scope="col" style="width: 13%;">Hành động</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        <c:forEach items="${feedbacks}" var="f">
+                                            <tr>
+                                                <th scope="row">#${f.feedbackId}</th>
+                                                <td>${f.productName}</td>
+                                                <td>${f.customerName}</td>
+                                                <td>
+                                                    <c:forEach var="i" begin="1" end="5">
+                                                        <c:choose>
+                                                            <c:when test="${i <= f.rating}">
+                                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <i class="fa-regular fa-star" style="color: #FFD43B;"></i>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </c:forEach>    
+                                                </td>
+                                                <td>${f.comment}</td>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${f.isVisible == true}">
+                                                            <span class="text-success fw-bold">Hiện</span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span class="text-warning fw-bold">Ẩn</span>
+                                                        </c:otherwise>
+                                                    </c:choose>                                                   
+                                                </td>
+                                                <td>
+                                                    <button type="button" class="btn btn-primary">
+                                                        Chi tiết
+                                                    </button>
+                                                    <c:choose>
+                                                        <c:when test="${f.isVisible == true}">
+                                                            <button type="button" class="btn btn-danger" id="hideButton${f.feedbackId}">
+                                                                Ẩn
+                                                            </button>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <button type="button" class="btn btn-success" id="hideButton${f.feedbackId}">
+                                                                Hiện
+                                                            </button>
+                                                        </c:otherwise>
+                                                    </c:choose>                                                   
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+
                                     </tbody>
                                 </table>
+                                        
+                                <!-- Nếu 'không' có đánh giá nào! -->
+                                <c:if test="${empty feedbacks}">                     
+                                    <div>
+                                        <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
+                                            Không có đánh giá nào!
+                                        </h5>
+                                    </div>
+                                </c:if>
                             </div>
                         </div>
                     </div>          
@@ -171,5 +239,7 @@
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
     </body>
 </html>

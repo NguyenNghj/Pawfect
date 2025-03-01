@@ -12,12 +12,17 @@ public class Category {
 
     private int categoryId;
     private String categoryName;
-    private boolean isActive;
+    private boolean active;
 
-    public Category(int categoryId, String categoryName, boolean isActive) {
+    public Category(int categoryId, String categoryName, boolean active) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
-        this.isActive = isActive;
+        this.active = active;
+    }
+
+    public Category(String categoryName, boolean active) {
+        this.categoryName = categoryName;
+        this.active = active;
     }
 
     public int getCategoryId() {
@@ -36,17 +41,12 @@ public class Category {
         this.categoryName = categoryName;
     }
 
-    public boolean isIsActive() {
-        return isActive;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setIsActive(boolean isActive) {
-        this.isActive = isActive;
-    }
-
-    @Override
-    public String toString() {
-        return "Category{" + "categoryId=" + categoryId + ", categoryName=" + categoryName + ", isActive=" + isActive + '}';
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
 }

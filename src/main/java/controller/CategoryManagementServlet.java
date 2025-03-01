@@ -4,23 +4,21 @@
  */
 package controller;
 
-import dao.PetHotelDAO;
-import jakarta.servlet.RequestDispatcher;
+import dao.CategoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
 import java.util.List;
-import model.PetHotel;
+import model.Category;
 
 /**
  *
- * @author Nguyen Tien Thanh
+ * @author Nguyen Tri Nghi - CE180897
  */
-public class PetRoomDetailServlet extends HttpServlet {
+public class CategoryManagementServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,10 +37,10 @@ public class PetRoomDetailServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet PetRoomDetailServlet</title>");
+            out.println("<title>Servlet CategoryManagementServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet PetRoomDetailServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CategoryManagementServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,33 +58,10 @@ public class PetRoomDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String idParam = request.getParameter("id");
-
-        if (idParam == null || idParam.isEmpty()) {
-            response.sendRedirect("petrooms.jsp?error=missing_id");
-            return;
-        }
-
-        try {
-            int roomId = Integer.parseInt(idParam);
-            PetHotel room = PetHotelDAO.getPetRoomById(roomId);
-
-            if (room != null) {
-                request.setAttribute("room", room);
-
-                // Lấy danh sách phòng tương tự
-                List<PetHotel> similarRooms = PetHotelDAO.getSimilarRooms(room.getRoomType(), roomId);
-                request.setAttribute("similarRooms", similarRooms);
-
-                RequestDispatcher dispatcher = request.getRequestDispatcher("petroomdetail.jsp");
-                dispatcher.forward(request, response);
-            } else {
-                response.sendRedirect("petrooms.jsp?error=notfound");
-            }
-        } catch (NumberFormatException e) {
-            response.sendRedirect("petrooms.jsp?error=invalid_id");
-        }
-
+        CategoryDAO categoryDAO = new CategoryDAO();
+        List<Category> categories = categoryDAO.getAllCategories();
+        request.setAttribute("categories", categories);
+        request.getRequestDispatcher("/dashboard/admin/category.jsp").forward(request, response);
     }
 
     /**

@@ -1,7 +1,7 @@
 <%-- 
-    Document   : product
-    Created on : Feb 11, 2025, 3:54:05 PM
-    Author     : Vu Quang Duc - CE181221
+    Document   : createproduct
+    Created on : Mar 1, 2025, 4:28:13 PM
+    Author     : Nguyen Tri Nghi - CE180897
 --%>
 
 <%@page import="dao.CategoryDAO"%>
@@ -37,7 +37,7 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Chỉnh sửa thông tin sản phẩm</h1>
+                                <h1>Tạo sản phẩm mới</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
                                 <span>Username2025 (Admin)</span>
@@ -90,28 +90,24 @@
 
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
-                        <form id="editProductForm" action="/dashboard/admin/editproduct" method="post" enctype="multipart/form-data">
-                            <input type="hidden" name="productId" value="${product.productId}">
-                            <input type="hidden" name="existingImage" value="${product.productImage}">
+                        <form id="createProductForm" action="/dashboard/admin/createproduct" method="post" enctype="multipart/form-data">
 
                             <div class="mb-3">
-                                <label for="editProductImage" class="form-label">Hình ảnh</label>
+                                <label for="createProductImage" class="form-label">Hình ảnh</label>
                                 <div style="display: flex; gap: 10px;">
-                                    <img id="previewImage" class="img-thumbnail" style="width: 220px; height: 220px; display: ${not empty product.productImage ? 'block' : 'none'};" src="/img/products/${product.productImage}" alt="Ảnh sản phẩm">
-                                    <input type="file" id="editProductImage" name="productImage" accept="image/*" style="display: none;" onchange="previewFile()">
-                                    <div class="image-box" onclick="document.getElementById('editProductImage').click()" style="cursor: pointer; border: 1px dashed #ccc; padding: 20px; text-align: center; width: 220px; height: 220px; display: flex; align-items: center; justify-content: center;">
+                                    <img id="previewImage" class="img-thumbnail" style="width: 220px; height: 220px; display: none;" src="#" alt="Ảnh sản phẩm">
+                                    <input type="file" id="createProductImage" name="productImage" accept="image/*" style="display: none;" onchange="previewFile()">
+                                    <div class="image-box" onclick="document.getElementById('createProductImage').click()" style="cursor: pointer; border: 1px dashed #ccc; padding: 20px; text-align: center; width: 220px; height: 220px; display: flex; align-items: center; justify-content: center;">
                                         <span id="uploadText">Thêm ảnh</span>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="editProductCategory">Thể loại</label>
+                                <label for="createProductCategory">Thể loại</label>
                                 <select class="form-select" name="categoryId" id="categoryId" onchange="updateProductStatusOptions()">
                                     <c:forEach var="category" items="${categories}">
-                                        <option value="${category.categoryId}" 
-                                                <c:if test="${category.categoryId == product.categoryId}">selected="selected"</c:if> 
-                                                data-is-active="${category.isActive}">
+                                        <option value="${category.categoryId}" data-is-active="${category.isActive}">
                                             ${category.categoryName}
                                         </option>
                                     </c:forEach>
@@ -119,59 +115,60 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="editProductName" class="form-label">Tên sản phẩm</label>
-                                <input type="text" class="form-control" name="productName" value="${product.productName}" required>
+                                <label for="createProductName" class="form-label">Tên sản phẩm</label>
+                                <input type="text" class="form-control" name="productName" required>
                             </div>
 
                             <div class="mb-3">
-                                <label for="editProductPetType">Dành cho</label>
+                                <label for="createProductPetType">Dành cho</label>
                                 <select class="form-select" name="productPetType">
-                                    <option value="Chó" ${product.productPetType == 'Chó' ? 'selected' : ''}>Chó</option>
-                                    <option value="Mèo" ${product.productPetType == 'Mèo' ? 'selected' : ''}>Mèo</option>
-                                    <option value="Chó và Mèo" ${product.productPetType == 'Chó và Mèo' ? 'selected' : ''}>Chó và Mèo</option>
+                                    <option value="Chó">Chó</option>
+                                    <option value="Mèo">Mèo</option>
+                                    <option value="Chó và Mèo">Chó và Mèo</option>
                                 </select>
                             </div>
 
                             <div class="mb-3">
-                                <label for="editProductPrice" class="form-label">Giá</label>
-                                <input type="number" class="form-control" name="productPrice" value="${product.productPrice}" required>
+                                <label for="createProductPrice" class="form-label">Giá</label>
+                                <input type="number" class="form-control" name="productPrice" required>
                             </div>
 
                             <div class="mb-3">
-                                <label for="editProductStock" class="form-label">Tồn kho</label>
-                                <input type="number" class="form-control" name="stock" value="${product.stock}" required>
+                                <label for="createProductStock" class="form-label">Tồn kho</label>
+                                <input type="number" class="form-control" name="stock" required>
                             </div>
 
                             <div class="mb-3">
-                                <label for="editProductStatus">Trạng thái</label>
+                                <label for="createProductStatus">Trạng thái</label>
                                 <select class="form-select" name="productActive" id="productActive">
-                                    <option value="true" ${product.active ? 'selected' : ''}>Đang bán</option>
-                                    <option value="false" ${!product.active ? 'selected' : ''}>Ngừng bán</option>
+                                    <option value="true">Đang bán</option>
+                                    <option value="false">Ngừng bán</option>
                                 </select>
                             </div>
 
                             <div class="mb-3">
-                                <label for="editProductDescription" class="form-label">Mô tả sản phẩm</label>
-                                <textarea class="form-control" name="description" rows="5" required>${product.description}</textarea>
+                                <label for="createProductDescription" class="form-label">Mô tả sản phẩm</label>
+                                <textarea class="form-control" name="description" rows="5" required></textarea>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                            <button type="submit" class="btn btn-primary">Tạo sản phẩm</button>
                             <a href="<c:url value='/dashboard/admin/product'/>" class="btn btn-secondary" id="back">Trở về</a>
+
                         </form>
 
                         <script>
                             function previewFile() {
-                                const fileInput = document.getElementById('editProductImage');
+                                const fileInput = document.getElementById('createProductImage');
                                 const previewImage = document.getElementById('previewImage');
                                 const uploadText = document.getElementById('uploadText');
 
                                 const file = fileInput.files[0];
 
                                 if (file) {
-                                    // Kiểm tra nếu file lớn hơn 10MB
-                                    const maxSize = 10 * 1024 * 1024; // 10MB
+                                    // Kiểm tra nếu file lớn hơn 5MB
+                                    const maxSize = 5 * 1024 * 1024; // 5MB
                                     if (file.size > maxSize) {
-                                        alert("File ảnh quá lớn! Vui lòng chọn ảnh nhỏ hơn 10MB.");
+                                        alert("File ảnh quá lớn! Vui lòng chọn ảnh nhỏ hơn 5MB.");
                                         fileInput.value = ""; // Xóa file đã chọn
                                         return;
                                     }
@@ -183,10 +180,13 @@
                                         uploadText.innerText = "Đổi ảnh";
                                     };
                                     reader.readAsDataURL(file);
+                                } else {
+                                    previewImage.src = "#";
+                                    previewImage.style.display = "none";
+                                    uploadText.innerText = "Thêm ảnh";
                                 }
                             }
-                        </script>
-                        <script>
+
                             // Function to update the product status options based on selected category
                             function updateProductStatusOptions() {
                                 const categorySelect = document.getElementById('categoryId');

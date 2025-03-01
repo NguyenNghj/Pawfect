@@ -4,25 +4,23 @@
  */
 package controller;
 
-import dao.FeedbackDAO;
+import dao.CategoryDAO;
 import dao.ProductDAO;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Collections;
 import java.util.List;
-import model.Feedback;
+import model.Category;
 import model.Product;
 
 /**
  *
  * @author Nguyen Tri Nghi - CE180897
  */
-public class HomePageServlet extends HttpServlet {
+public class EditCategoryServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +39,10 @@ public class HomePageServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomePageServlet</title>");
+            out.println("<title>Servlet EditCategoryServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomePageServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet EditCategoryServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,18 +60,11 @@ public class HomePageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDAO productDAO = new ProductDAO();
-        String categoryName = request.getParameter("category");
-        List<Product> products;
-        products = productDAO.getAllActiveProducts();
-
-        List<Feedback> feedbacks = FeedbackDAO.getAllProductFeedback();
-        Collections.shuffle(feedbacks);
-        request.setAttribute("feedbacks", feedbacks);
-
-        request.setAttribute("products", products);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("homepage.jsp");
-        dispatcher.forward(request, response);
+        int categoryId = Integer.parseInt(request.getParameter("categoryId"));
+        CategoryDAO categoryDAO = new CategoryDAO();
+        Category category = categoryDAO.getCategoryById(categoryId);
+        request.setAttribute("category", category);
+        request.getRequestDispatcher("/dashboard/admin/editcategory.jsp").forward(request, response);
     }
 
     /**
@@ -87,7 +78,39 @@ public class HomePageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        CategoryDAO categoryDAO = new CategoryDAO();
+        ProductDAO productDAO = new ProductDAO();
+
+        try {
+            String categoryIdStr = request.getParameter("categoryId");
+            String categoryName = request.getParameter("categoryName");
+            String activeStr = request.getParameter("isActive");
+
+            if (categoryIdStr == null || categoryName == null || activeStr == null) {
+                request.setAttribute("error", "Dữ liệu đầu vào không hợp lệ.");
+                request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
+                return;
+            }
+
+            int categoryId = Integer.parseInt(categoryIdStr);
+            boolean active = Boolean.parseBoolean(activeStr);
+
+            // Cập nhật thể loại
+            boolean updateSuccess = categoryDAO.updateCategory(categoryId, categoryName, active);
+
+            if (updateSuccess && !active) {
+                // Nếu danh mục bị vô hiệu hóa, cập nhật trạng thái sản phẩm
+                productDAO.updateProductInactiveByCategory(categoryId);
+            }
+
+            response.sendRedirect("/dashboard/admin/category");
+        } catch (NumberFormatException e) {
+            request.setAttribute("error", "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại.");
+            request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("error.jsp");
+        }
     }
 
     /**

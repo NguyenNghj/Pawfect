@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -77,6 +78,7 @@ public class Staff {
     public void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
     }
+  
 public Staff(){}
 
     public Staff(String name, String password, String email, String phone, String address, String image, String gender, Date birthdate) {
@@ -90,6 +92,4 @@ public Staff(){}
         this.birthdate = birthdate;
     }
 
-   
-  
 }

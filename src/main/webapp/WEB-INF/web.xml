@@ -4,9 +4,6 @@
         <servlet-name>ShopControl</servlet-name>
         <servlet-class>controller.ShopControl</servlet-class>
     </servlet>
-    <welcome-file-list>
-        <welcome-file>pawfect</welcome-file>
-    </welcome-file-list>
     <servlet>
         <servlet-name>ManagerControl</servlet-name>
         <servlet-class>controller.ManagerControl</servlet-class>
@@ -136,8 +133,20 @@
         <servlet-class>controller.EditProductServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ProductDetailServlet</servlet-name>
+        <servlet-class>controller.ProductDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ProductManagementServlet</servlet-name>
         <servlet-class>controller.ProductManagementServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FeedbackManagementServlet</servlet-name>
+        <servlet-class>controller.FeedbackManagementServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateProductServlet</servlet-name>
+        <servlet-class>controller.CreateProductServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddPetServlet</servlet-name>
@@ -166,6 +175,26 @@
     <servlet>
         <servlet-name>ChangeAdminPasswordServlet</servlet-name>
         <servlet-class>controller.ChangeAdminPasswordServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StaffServlet</servlet-name>
+        <servlet-class>controller.StaffServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StaffDeleteServlet</servlet-name>
+        <servlet-class>controller.StaffDeleteServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CategoryManagementServlet</servlet-name>
+        <servlet-class>controller.CategoryManagementServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditCategoryServlet</servlet-name>
+        <servlet-class>controller.EditCategoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateCategoryServlet</servlet-name>
+        <servlet-class>controller.CreateCategoryServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>PetHotelServlet</servlet-name>
@@ -300,8 +329,20 @@
         <url-pattern>/dashboard/admin/editproduct</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>ProductDetailServlet</servlet-name>
+        <url-pattern>/product</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ProductManagementServlet</servlet-name>
         <url-pattern>/dashboard/admin/product</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FeedbackManagementServlet</servlet-name>
+        <url-pattern>/dashboard/staff/feedbackmanagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateProductServlet</servlet-name>
+        <url-pattern>/dashboard/admin/createproduct</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddPetServlet</servlet-name>
@@ -331,9 +372,30 @@
         <servlet-name>ChangeAdminPasswordServlet</servlet-name>
         <url-pattern>/dashboard/admin/changeadminpassword</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffServlet</servlet-name>
+        <url-pattern>/dashboard/admin/staff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffDeleteServlet</servlet-name>
+        <url-pattern>/dashboard/admin/staffdelete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CategoryManagementServlet</servlet-name>
+        <url-pattern>/dashboard/admin/category</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditCategoryServlet</servlet-name>
+        <url-pattern>/dashboard/admin/editcategory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateCategoryServlet</servlet-name>
+        <url-pattern>/dashboard/admin/createcategory</url-pattern>
+    </servlet-mapping>
     <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
+        <session-timeout>30</session-timeout>
     </session-config>
+    <welcome-file-list>
+        <welcome-file>pawfect</welcome-file>
+    </welcome-file-list>
 </web-app>

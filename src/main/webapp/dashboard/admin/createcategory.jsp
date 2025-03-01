@@ -1,13 +1,15 @@
 <%-- 
-    Document   : product
-    Created on : Feb 11, 2025, 3:54:05 PM
-    Author     : Vu Quang Duc - CE181221
+    Document   : createcategory
+    Created on : Mar 1, 2025, 6:00:11 PM
+    Author     : Nguyen Tri Nghi - CE180897
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.util.List" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -31,7 +33,7 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Quản lí sản phẩm</h1>
+                                <h1>Chỉnh sửa thông tin sản phẩm</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
                                 <span>Username2025 (Admin)</span>
@@ -73,70 +75,40 @@
                         </nav>
                     </div>   
 
-                    <div class="row">
-                        <div class="col-3 p-0" style="margin-top: 60px;">
-                            <a href="/dashboard/admin/createproduct" type="button" class="btn btn-success">
-                                <i class="fa-solid fa-plus"></i>
-                                Thêm sản phẩm
-                            </a>
-                        </div>        
-                    </div>
+                    <!--                    <div class="row">
+                                            <div class="col-3 p-0" style="margin-top: 60px;">
+                                                <button type="button" class="btn btn-primary">
+                                                    <i class="fa-solid fa-plus"></i>
+                                                    New Product
+                                                </button>
+                                            </div>        
+                                        </div>-->
 
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
-                        <div class="main-dashboard-table">
-                            <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
-                                 style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
-                                <i class="fa-solid fa-boxes-stacked fa-lg"></i>
-                                <h4 class="mb-0">Danh sách sản phẩm</h4>
+                        <form id="createCategoryForm" action="/dashboard/admin/createcategory" method="post">
+
+                            <div class="mb-3">
+                                <label for="categoryName" class="form-label">Tên thể loại</label>
+                                <input type="text" class="form-control" name="categoryName" required>
                             </div>
-                            <div style="padding: 15px 15px 25px 15px;">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Id</th>
-                                            <th scope="col">Hình ảnh</th>
-                                            <th scope="col">Thể loại</th>
-                                            <th scope="col">Tên sản phẩm</th>
-                                            <th scope="col">Dành cho</th>
-                                            <th scope="col">Giá</th>
-                                            <th scope="col">Tồn kho</th>
-                                            <th scope="col">Trạng thái</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach var="product" items="${products}">
-                                            <tr>
-                                                <th scope="row">${product.productId}</th>
-                                                <td><img src="/img/products/${product.productImage}" alt="Hình ảnh" width="50"></td>
-                                                <td>${product.categoryName}</td>
-                                                <td>${product.productName}</td>
-                                                <td>${product.productPetType}</td>
-                                                <td>${product.productPrice}</td>
-                                                <td>${product.stock}</td>
-                                                <td>
-                                                    <c:choose>
-                                                        <c:when test="${product.active}">
-                                                            <span class="text-success">Hoạt động</span>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <span class="text-danger">Ngừng bán</span>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </td>
-                                                <td>
-                                                    <a href="/dashboard/admin/editproduct?productId=${product.productId}" class="btn btn-primary">Chỉnh sửa</a>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
+
+                            <div class="mb-3">
+                                <label for="categoryStatus">Trạng thái</label>
+                                <select class="form-select" name="isActive">
+                                    <option value="true">Hoạt động</option>
+                                    <option value="false">Không hoạt động</option>
+                                </select>
                             </div>
-                        </div>
-                    </div>          
+
+                            <button type="submit" class="btn btn-primary">Tạo thể loại</button>
+                            <a href="<c:url value='/dashboard/admin/category'/>" class="btn btn-secondary">Trở về</a>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>  
+        </div>
+
 
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

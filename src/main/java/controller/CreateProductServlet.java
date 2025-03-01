@@ -6,17 +6,17 @@ package controller;
 
 import dao.CategoryDAO;
 import dao.ProductDAO;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.List;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import java.io.PrintWriter;
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.List;
 import model.Category;
 import model.Product;
 
@@ -25,7 +25,7 @@ import model.Product;
  * @author Nguyen Tri Nghi - CE180897
  */
 @MultipartConfig
-public class EditProductServlet extends HttpServlet {
+public class CreateProductServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,10 +44,10 @@ public class EditProductServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet EditProductServlet</title>");
+            out.println("<title>Servlet CreateProductServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet EditProductServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CreateProductServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -65,16 +65,10 @@ public class EditProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int productId = Integer.parseInt(request.getParameter("productId"));
-        ProductDAO productDAO = new ProductDAO();
         CategoryDAO categoryDAO = new CategoryDAO();
         List<Category> categories = categoryDAO.getAllCategories();
-        Product product = productDAO.getProductById(productId);
-        Category selectedCategory = categoryDAO.getCategoryById(product.getCategoryId());
-        request.setAttribute("selectedCategory", selectedCategory);
         request.setAttribute("categories", categories);
-        request.setAttribute("product", product);
-        request.getRequestDispatcher("/dashboard/admin/editproduct.jsp").forward(request, response);
+        request.getRequestDispatcher("/dashboard/admin/createproduct.jsp").forward(request, response);
     }
 
     /**
@@ -93,16 +87,15 @@ public class EditProductServlet extends HttpServlet {
 
         try {
             // Nhận dữ liệu từ form
-            int productId = Integer.parseInt(request.getParameter("productId"));
             String productName = request.getParameter("productName");
             int categoryId = Integer.parseInt(request.getParameter("categoryId"));
             String productPetType = request.getParameter("productPetType");
             double productPrice = Double.parseDouble(request.getParameter("productPrice"));
-            String existingImage = request.getParameter("existingImage");
             int stock = Integer.parseInt(request.getParameter("stock"));
             String description = request.getParameter("description");
             boolean productActive = Boolean.parseBoolean(request.getParameter("productActive"));
 
+            // Xử lý ảnh tải lên
             String[] context = request.getServletContext().getRealPath("").split("target");
             String realPath = context[0] + "src" + File.separator + "main" + File.separator + "webapp" + File.separator + "img" + File.separator + "products";
 
@@ -111,39 +104,29 @@ public class EditProductServlet extends HttpServlet {
                 uploadDir.mkdirs();
             }
 
-            String fileName = existingImage; // Giữ ảnh cũ mặc định
+            String fileName = "default.jpg"; // Ảnh mặc định nếu không có ảnh được tải lên
             Part filePart = request.getPart("productImage");
-            String newFileName = null;
 
             if (filePart != null && filePart.getSize() > 0) {
-                // Lấy tên file mới
-                newFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+                fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+                filePart.write(realPath + File.separator + fileName);
             }
 
-            // Cập nhật thông tin sản phẩm trước
-            Product product = new Product(productId, categoryId, productName, productPetType,
-                    productPrice, newFileName != null ? newFileName : existingImage, stock, description, productActive);
+            // Tạo sản phẩm mới
+            Product product = new Product(categoryId, productName, productPetType,
+                    productPrice, fileName, stock, description, productActive);
 
             ProductDAO productDAO = new ProductDAO();
-            boolean updateSuccess = productDAO.updateProduct(product);
+            boolean createSuccess = productDAO.createProduct(product);
 
-            if (updateSuccess) {
-                // Nếu cập nhật thành công, lưu ảnh mới và xóa ảnh cũ (nếu có)
-                if (newFileName != null) {
-                    filePart.write(realPath + File.separator + newFileName);
-                    // Xóa ảnh cũ
-                    if (!existingImage.isEmpty()) {
-                        File oldImageFile = new File(realPath + File.separator + existingImage);
-                        oldImageFile.delete();
-                    }
-                }
+            if (createSuccess) {
                 response.sendRedirect("/dashboard/admin/product?success=1");
             } else {
-                response.sendRedirect("/dashboard/admin/editproduct?error=2");
+                response.sendRedirect("/dashboard/admin/createproduct?error=1");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("/dashboard/admin/editproduct?error=1");
+            response.sendRedirect("/dashboard/admin/createproduct?error=2");
         }
     }
 

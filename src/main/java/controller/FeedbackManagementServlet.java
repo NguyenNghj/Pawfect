@@ -5,24 +5,21 @@
 package controller;
 
 import dao.FeedbackDAO;
-import dao.ProductDAO;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Collections;
+import java.sql.SQLException;
 import java.util.List;
 import model.Feedback;
-import model.Product;
 
 /**
  *
- * @author Nguyen Tri Nghi - CE180897
+ * @author VU QUANG DUC - CE181221
  */
-public class HomePageServlet extends HttpServlet {
+public class FeedbackManagementServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +38,10 @@ public class HomePageServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomePageServlet</title>");
+            out.println("<title>Servlet FeedbackManagementServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomePageServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet FeedbackManagementServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,18 +59,61 @@ public class HomePageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDAO productDAO = new ProductDAO();
-        String categoryName = request.getParameter("category");
-        List<Product> products;
-        products = productDAO.getAllActiveProducts();
+        String action = request.getParameter("action");
+        try {
+            switch (action) {
+                case "view":
+                    viewFeedbackList(request, response);
+                    break;
+                default:
+                    // listNhanVien(request, response);
+                    break;
+            }
+        } catch (ServletException | IOException | SQLException e) {
+            throw new ServletException(e);
+        }
+    }
+    
+    private void viewFeedbackList(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        List<Feedback> feedbacks = null;
+        try {
+//            int customerId = 1;
+            int status = Integer.parseInt(request.getParameter("status"));
+            
+            if(status != 0){
+                feedbacks = FeedbackDAO.getProductFeedbackByRating(status);
+            } else {
+                feedbacks = FeedbackDAO.getAllProductFeedback();
+            }
 
-        List<Feedback> feedbacks = FeedbackDAO.getAllProductFeedback();
-        Collections.shuffle(feedbacks);
-        request.setAttribute("feedbacks", feedbacks);
+//            switch (status) {
+//                case "5s":
+//                    feedbacks = FeedbackDAO.getAllOrderByStatus("Chờ xác nhận");
+//                    break;
+//                case "4s":
+//                    feedbacks = FeedbackDAO.getAllOrderByStatus("Chờ lấy hàng");
+//                    break;
+//                case "3s":
+//                    feedbacks = FeedbackDAO.getAllOrderByStatus("Chờ giao hàng");
+//                    break;
+//                case "2s":
+//                    feedbacks = FeedbackDAO.getAllOrderByStatus("Hoàn thành");
+//                    break;
+//                case "1s":
+//                    feedbacks = FeedbackDAO.getAllOrderByStatus("Yêu cầu huỷ...");
+//                    break;
+//                default:
+//                    feedbacks = FeedbackDAO.getAllProductFeedback();
+//            }
 
-        request.setAttribute("products", products);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("homepage.jsp");
-        dispatcher.forward(request, response);
+            request.setAttribute("feedbackStatus", status);
+            request.setAttribute("feedbacks", feedbacks);
+            request.getRequestDispatcher("/dashboard/staff/feedback.jsp").forward(request, response);
+        } catch (ServletException | IOException e) {
+            System.out.println(e);
+        }
+
     }
 
     /**
@@ -87,7 +127,7 @@ public class HomePageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        doGet(request, response);
     }
 
     /**

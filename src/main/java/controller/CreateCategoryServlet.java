@@ -4,25 +4,20 @@
  */
 package controller;
 
-import dao.FeedbackDAO;
-import dao.ProductDAO;
-import jakarta.servlet.RequestDispatcher;
+import dao.CategoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Collections;
-import java.util.List;
-import model.Feedback;
-import model.Product;
+import model.Category;
 
 /**
  *
  * @author Nguyen Tri Nghi - CE180897
  */
-public class HomePageServlet extends HttpServlet {
+public class CreateCategoryServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,10 +36,10 @@ public class HomePageServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet HomePageServlet</title>");
+            out.println("<title>Servlet CreateCategoryServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet HomePageServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CreateCategoryServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,18 +57,7 @@ public class HomePageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDAO productDAO = new ProductDAO();
-        String categoryName = request.getParameter("category");
-        List<Product> products;
-        products = productDAO.getAllActiveProducts();
-
-        List<Feedback> feedbacks = FeedbackDAO.getAllProductFeedback();
-        Collections.shuffle(feedbacks);
-        request.setAttribute("feedbacks", feedbacks);
-
-        request.setAttribute("products", products);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("homepage.jsp");
-        dispatcher.forward(request, response);
+        request.getRequestDispatcher("/dashboard/admin/createcategory.jsp").forward(request, response);
     }
 
     /**
@@ -87,7 +71,20 @@ public class HomePageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        CategoryDAO categoryDAO = new CategoryDAO();
+        String categoryName = request.getParameter("categoryName");
+        boolean isActive = Boolean.parseBoolean(request.getParameter("isActive"));
+        Category category = new Category(categoryName, isActive);
+
+        boolean isCreated = categoryDAO.createCategory(category);
+
+        if (isCreated) {
+            // Redirect to the category list page or success page
+            response.sendRedirect("/dashboard/admin/category");
+        } else {
+            // Show an error message or redirect back to the form
+            response.getWriter().write("Error creating category");
+        }
     }
 
     /**
