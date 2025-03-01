@@ -5,23 +5,30 @@
 
 package controller;
 
-import dao.UserDAO;
-import jakarta.servlet.RequestDispatcher;
+import dao.PetDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.Account;
-import model.AccountStaff;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.nio.file.Paths;
+import java.sql.Date;
 
 /**
  *
  * @author LENOVO
  */
-public class LoginStaffServlet extends HttpServlet {
+        @MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+)
+public class AddPetServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,10 +45,10 @@ public class LoginStaffServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginStaffServlet</title>");  
+            out.println("<title>Servlet AddPetServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginStaffServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet AddPetServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,8 +65,7 @@ public class LoginStaffServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("loginadmin.jsp");
-        dispatcher.forward(request, response);
+        processRequest(request, response);
     } 
 
     /** 
@@ -72,29 +78,47 @@ public class LoginStaffServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       String email = request.getParameter("email");
-        String password = request.getParameter("password");
-
-        UserDAO userDAO = new UserDAO();
-        AccountStaff account = new AccountStaff();
-        account = userDAO.loginStaff(email, password);
-        if (!AccountStaff.IsEmpty(account)) {
-            Cookie staffId = new Cookie("staffId", account.getStaffId());
-            staffId.setMaxAge(60 * 60 * 24 * 1);
-            response.addCookie(staffId);
-            Cookie staffRole = new Cookie("staffRole", account.getRole());
-            staffRole.setMaxAge(60 * 60 * 24 * 1);
-            response.addCookie(staffRole);
-             Cookie staffName = new Cookie("staffName", account.getUsername());
-            staffName.setMaxAge(60 * 60 * 24 * 1);
-            response.addCookie(staffName);
-            if (account.getRole().equals("Admin")){
-            response.sendRedirect("dashboard/admin/dashboard.jsp");
-            }else{    response.sendRedirect("dashboard/staff/dashboard.jsp");}
-        } else {
-            response.sendRedirect("loginadmin.jsp?error=Invalid Credentials");
+        String customerId = null;   
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {            
+                if ("customerId".equals(cookie.getName())) {
+                         customerId  = cookie.getValue();
+                    break;
+                }
+            }
         }
+           String petName = request.getParameter("petName");
+        String petType = request.getParameter("petType");
+        String petBreed = request.getParameter("petBreed");
+        String petSex = request.getParameter("petSex");
+        String petWeight = request.getParameter("petWeight");
+        String birthDateStr = request.getParameter("petDob");
+        Date petDob = Date.valueOf(birthDateStr);
+        
+        // Xác định đường dẫn thư mục lưu ảnh
+        String[] context = request.getServletContext().getRealPath("").split("target");
+        String realPath = context[0] + "src" + File.separator + "main" + File.separator + "webapp" + File.separator + "img" + File.separator + "pet";
+        File uploadDir = new File(realPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+        
+        // Xử lý upload ảnh
+        String fileName = "default.jpg"; // Ảnh mặc định nếu không chọn ảnh
+        Part filePart = request.getPart("petImage");
+        if (filePart != null && filePart.getSize() > 0) {
+            fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+            filePart.write(realPath + File.separator + fileName);
+        }
+        
+     
+        PetDAO petDAO = new PetDAO();
+        petDAO.addPet(customerId, petName, petType, petBreed, petSex, petWeight, petDob, fileName);
+        
+        response.sendRedirect("viewpet");
     }
+    
 
     /** 
      * Returns a short description of the servlet.
@@ -103,6 +127,6 @@ public class LoginStaffServlet extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

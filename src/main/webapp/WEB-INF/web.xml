@@ -139,6 +139,18 @@
         <servlet-name>ProductManagementServlet</servlet-name>
         <servlet-class>controller.ProductManagementServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddPetServlet</servlet-name>
+        <servlet-class>controller.AddPetServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogoutStaffServlet</servlet-name>
+        <servlet-class>controller.LogoutStaffServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogoutAdminServlet</servlet-name>
+        <servlet-class>controller.LogoutAdminServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>PetHotelServlet</servlet-name>
         <url-pattern>/pethotel</url-pattern>
@@ -274,6 +286,18 @@
     <servlet-mapping>
         <servlet-name>ProductManagementServlet</servlet-name>
         <url-pattern>/dashboard/admin/product</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddPetServlet</servlet-name>
+        <url-pattern>/addpet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutStaffServlet</servlet-name>
+        <url-pattern>/dashboard/staff/logoutstaff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutAdminServlet</servlet-name>
+        <url-pattern>/dashboard/admin/logoutadmin</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
