@@ -4,28 +4,20 @@
  */
 package controller;
 
-import dao.CartDAO;
-import dao.FeedbackDAO;
-import dao.ProductDAO;
-import dao.ProductDAO;
+import dao.CategoryDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.CartItem;
-import model.Feedback;
-import model.Product;
+import model.Category;
 
 /**
  *
  * @author Nguyen Tri Nghi - CE180897
  */
-@WebServlet(name = "ProductDetailServlet", urlPatterns = {"/product"})
-public class ProductDetailServlet extends HttpServlet {
+public class CreateCategoryServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,10 +36,10 @@ public class ProductDetailServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ProductDetailServlet</title>");
+            out.println("<title>Servlet CreateCategoryServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ProductDetailServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet CreateCategoryServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -65,53 +57,7 @@ public class ProductDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String productIdParam = request.getParameter("id");
-//        if (productIdParam == null || productIdParam.isEmpty()) {
-//            response.sendRedirect("productlist.jsp"); // Chuyển hướng nếu không có ID
-//            return;
-//        }
-
-        int productId = Integer.parseInt(productIdParam);
-        ProductDAO productDAO = new ProductDAO();
-        Product product = productDAO.getProductById(productId);
-//
-//        if (product == null) {
-//            response.sendRedirect("sanpham"); // Chuyển hướng nếu sản phẩm không tồn tại
-//            return;
-//        }
-
-        int customerId = 1;
-        int totalQuantity = 0;
-        List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
-        if (!cartItems.isEmpty()) {
-            for (CartItem cartItem : cartItems) {
-                totalQuantity += cartItem.getQuantity();
-            }
-        }
-        // Set tong so luong san pham trong gio hang
-        request.setAttribute("totalQuantity", totalQuantity);
-        
-        List<Feedback> feedbacks = FeedbackDAO.getProductFeedbackByProductId(productId);
-        int totalFeedback = 0;
-        double totalStar = 0;
-        double averageStar = 0;
-        for (Feedback feedback : feedbacks) {
-            totalFeedback += 1;
-            totalStar += feedback.getRating();
-        }
-        System.out.println("totalFeedback: " + totalFeedback);
-        System.out.println("averageStar: " + averageStar);
-        
-        averageStar = totalStar / (double) totalFeedback;
-        request.setAttribute("feedbacks", feedbacks);
-        request.setAttribute("totalFeedback", totalFeedback);
-        request.setAttribute("averageStar", averageStar);
-
-        // Gửi dữ liệu sản phẩm sang trang JSP
-        List<Product> productList = productDAO.getAllActiveProductsByCategoryName(product.getCategoryName());
-        request.setAttribute("product", product);
-        request.setAttribute("productList", productList);
-        request.getRequestDispatcher("productdetail.jsp").forward(request, response);
+        request.getRequestDispatcher("/dashboard/admin/createcategory.jsp").forward(request, response);
     }
 
     /**
@@ -125,7 +71,20 @@ public class ProductDetailServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        CategoryDAO categoryDAO = new CategoryDAO();
+        String categoryName = request.getParameter("categoryName");
+        boolean isActive = Boolean.parseBoolean(request.getParameter("isActive"));
+        Category category = new Category(categoryName, isActive);
+
+        boolean isCreated = categoryDAO.createCategory(category);
+
+        if (isCreated) {
+            // Redirect to the category list page or success page
+            response.sendRedirect("/dashboard/admin/category");
+        } else {
+            // Show an error message or redirect back to the form
+            response.getWriter().write("Error creating category");
+        }
     }
 
     /**

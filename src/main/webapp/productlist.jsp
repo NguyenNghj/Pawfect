@@ -75,19 +75,21 @@
 
             </script>
 
-
-
             <div class="row">
                 <div class="col-12 col-md-3 mb-4 category-container">
                     <div class="category-header">DANH MỤC SẢN PHẨM</div>
                     <ul class="category-list">
                         <c:forEach var="category" items="${categories}">
-                            <li class="category-item" onclick="applyCategory('${category.categoryName}')">
-                                ${category.categoryName}
-                            </li>
+                            <!-- Check if category is active before rendering it -->
+                            <c:if test="${category.active}">
+                                <li class="category-item" onclick="applyCategory('${category.categoryName}')">
+                                    ${category.categoryName}
+                                </li>
+                            </c:if>
                         </c:forEach>
                     </ul>
                 </div>
+
 
                 <script>
                     function applyCategory(category) {

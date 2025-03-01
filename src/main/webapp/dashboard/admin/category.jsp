@@ -75,7 +75,7 @@
 
                     <div class="row">
                         <div class="col-3 p-0" style="margin-top: 60px;">
-                            <a href="/dashboard/admin/createproduct" type="button" class="btn btn-success">
+                            <a href="/dashboard/admin/createcategory" type="button" class="btn btn-success">
                                 <i class="fa-solid fa-plus"></i>
                                 Thêm sản phẩm
                             </a>
@@ -107,7 +107,7 @@
                                                 <td>${category.categoryName}</td>
                                                 <td>
                                                     <c:choose>
-                                                        <c:when test="${category.isActive}">
+                                                        <c:when test="${category.active}">
                                                             <span class="text-success">Hoạt động</span>
                                                         </c:when>
                                                         <c:otherwise>
