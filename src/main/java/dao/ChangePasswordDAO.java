@@ -37,6 +37,35 @@ public class ChangePasswordDAO {
         }
         return isValid;
     }
+public boolean checkStaffadminPassword(String password, String staffId) {
+        boolean isValid = false;
+        String query = "SELECT * FROM Staffs WHERE password = ? and staff_id=? ";
+        try {
+            conn = new DBContext().getConnection();
+            pt = conn.prepareStatement(query);
+            pt.setString(1, password);
+            pt.setString(2, staffId);
+            rs = pt.executeQuery();
+
+            if (rs.next()) {
+                isValid = true;
+            }
+        } catch (SQLException e) {
+        }
+        return isValid;
+    }
+  public void changeStaffAdminPassword(String password, String staffId) {
+        String query = "UPDATE Staffs \n"
+                + "SET password = ? WHERE staff_id = ?";
+        try {
+            conn = new DBContext().getConnection();
+            pt = conn.prepareStatement(query);
+            pt.setString(1, password);
+            pt.setString(2, staffId);
+            pt.executeUpdate();
+        } catch (SQLException e) {
+        }
+    }
 
     public void changePassword(String password, String customerId) {
         String query = "UPDATE Customers \n"
