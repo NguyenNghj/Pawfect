@@ -19,14 +19,14 @@
         <nav class="navbar bg-body-tertiary">                                    
             <a class="navbar-brand d-flex align-items-center gap-3" href="dashboard">
                 <i class="fa-solid fa-chart-line fa-lg"></i> 
-                Dashboard
+                Thống kê
             </a>
         </nav>
         <nav class="navbar bg-body-tertiary">                        
             <div class="accordion w-100" id="accordionExample1">                               
                 <h2 class="accordion-header">
                     <button class="accordion-button collapsed gap-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                        <i class="fa-solid fa-users fa-lg"></i>Account
+                        <i class="fa-solid fa-users fa-lg"></i>Tài khoản
                     </button>
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample1">
@@ -53,13 +53,13 @@
         <nav class="navbar bg-body-tertiary active">                                           
             <a class="navbar-brand d-flex align-items-center gap-3" style="color: white; pointer-events: none;" href="#">
                 <i class="fa-solid fa-box fa-lg"></i>
-                <span>Product</span>
+                <span>Sản phẩm</span>
             </a>                          
         </nav>
         <nav class="navbar bg-body-tertiary">                   
             <a class="navbar-brand d-flex align-items-center gap-3" href="category">
                 <i class="fa-solid fa-boxes-stacked fa-lg"></i>
-                <span>Product Category</span>
+                <span>Thể loại sản phẩm</span>
             </a>
         </nav>
         <nav class="navbar bg-body-tertiary">                                            
@@ -78,7 +78,7 @@
         <nav class="navbar bg-body-tertiary">                                   
             <a class="navbar-brand d-flex align-items-center gap-3" href="profile">
                 <i class="fa-solid fa-address-book fa-lg"></i>   
-                <span>Profile</span>
+                <span>Thông tin cá nhân</span>
             </a>                          
         </nav>
         <nav class="navbar bg-body-tertiary">                                              
