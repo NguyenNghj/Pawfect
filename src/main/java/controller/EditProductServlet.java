@@ -70,6 +70,8 @@ public class EditProductServlet extends HttpServlet {
         CategoryDAO categoryDAO = new CategoryDAO();
         List<Category> categories = categoryDAO.getAllCategories();
         Product product = productDAO.getProductById(productId);
+        Category selectedCategory = categoryDAO.getCategoryById(product.getCategoryId());
+        request.setAttribute("selectedCategory", selectedCategory);
         request.setAttribute("categories", categories);
         request.setAttribute("product", product);
         request.getRequestDispatcher("/dashboard/admin/editproduct.jsp").forward(request, response);
@@ -111,27 +113,30 @@ public class EditProductServlet extends HttpServlet {
 
             String fileName = existingImage; // Giữ ảnh cũ mặc định
             Part filePart = request.getPart("productImage");
+            String newFileName = null;
 
             if (filePart != null && filePart.getSize() > 0) {
                 // Lấy tên file mới
-                String newFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-                // Xác định đường dẫn file ảnh cũ
-                File oldImageFile = new File(realPath + File.separator + existingImage);
-                // Lưu ảnh mới
-                filePart.write(realPath + File.separator + newFileName);
-                // Xóa ảnh cũ 
-                oldImageFile.delete();
-                fileName = newFileName; // Cập nhật tên ảnh mới vào CSDL
+                newFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
             }
 
-            // Cập nhật thông tin sản phẩm
+            // Cập nhật thông tin sản phẩm trước
             Product product = new Product(productId, categoryId, productName, productPetType,
-                    productPrice, fileName, stock, description, productActive);
+                    productPrice, newFileName != null ? newFileName : existingImage, stock, description, productActive);
 
             ProductDAO productDAO = new ProductDAO();
             boolean updateSuccess = productDAO.updateProduct(product);
 
             if (updateSuccess) {
+                // Nếu cập nhật thành công, lưu ảnh mới và xóa ảnh cũ (nếu có)
+                if (newFileName != null) {
+                    filePart.write(realPath + File.separator + newFileName);
+                    // Xóa ảnh cũ
+                    if (!existingImage.isEmpty()) {
+                        File oldImageFile = new File(realPath + File.separator + existingImage);
+                        oldImageFile.delete();
+                    }
+                }
                 response.sendRedirect("/dashboard/admin/product?success=1");
             } else {
                 response.sendRedirect("/dashboard/admin/editproduct?error=2");

@@ -51,15 +51,32 @@ public class CategoryDAO {
             rs = ps.executeQuery();
             if (rs.next()) {
                 return new Category(
-                        rs.getInt("category_id"),
-                        rs.getString("category_name"),
-                        rs.getBoolean("is_active")
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getBoolean(3)
                 );
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public boolean getCategoryActive(int categoryId) {
+        boolean isActive = false;
+        String query = "SELECT is_active FROM Category WHERE category_id = ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, categoryId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                isActive = rs.getBoolean(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return isActive;
     }
 
     public boolean updateCategory(int categoryId, String categoryName, boolean isActive) {
