@@ -15,7 +15,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Chi tiết phòng khách sạn thú cưng</title>
-        <link rel="stylesheet" href="./css/pethoteldetail_v1.css">
+        <link rel="stylesheet" href="./css/pethoteldetail_v2.css">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
     </head>
     <body>
@@ -45,11 +45,12 @@
                     <p class="room-type">Dành cho <%= room.getRoomType()%></p>
                     <p class="room-price">Giá: <%= NumberFormat.getInstance(new Locale("vi", "VN")).format(room.getPricePerNight())%> đ/đêm</p>
                     <p class="room-weight">Cân nặng phù hợp: <%= room.getMinWeight()%> - <%= room.getMaxWeight()%> kg</p>
+                    <p class="room-status">Trạng thái: <%= room.getStatus()%></p>
                     <hr class="divider"> 
                     <p class="room-description"><%= room.getDescription()%></p>
                 </div>
                 <div class="button-container">
-                    <a href="booking?id=<%= room.getRoomId()%>" class="booking-btn">Đặt phòng ngay</a>
+                    <a href="customerbooking.jsp?id=<%= room.getRoomId()%>" class="booking-btn" data-status="<%= room.getStatus()%>">Đặt phòng ngay</a>
                     <a href="pethotel" class="back-btn">Quay lại</a>
                 </div>
             </div>
@@ -64,16 +65,18 @@
                     if (similarRooms != null && !similarRooms.isEmpty()) {
                         for (PetHotel similarRoom : similarRooms) {
                 %>
-                <div class="pethotel-card" onclick="window.location.href = 'pethoteldetail?id=<%= room.getRoomId()%>'">
-                    <img src="<%= room.getRoomImage()%>" alt="<%= room.getRoomName()%>">
-                    <div class="pethotel-name"><%= room.getRoomName()%></div>
-                    <div class="pethotel-type"><%= room.getRoomType()%></div>
-                    <div class="pethotel-price"><%= NumberFormat.getInstance(new Locale("vi", "VN")).format(room.getPricePerNight())%> đ/đêm</div>
+                <div class="pethotel-card">
+                    <img src="<%= similarRoom.getRoomImage()%>" alt="<%= similarRoom.getRoomName()%>" 
+                         onclick="window.location.href = 'pethoteldetail?id=<%= similarRoom.getRoomId()%>'">
+                    <div class="pethotel-name"><%= similarRoom.getRoomName()%></div>
+                    <div class="pethotel-type"><%= similarRoom.getRoomType()%></div>
+                    <div class="pethotel-price"><%= NumberFormat.getInstance(new Locale("vi", "VN")).format(similarRoom.getPricePerNight())%> đ/đêm</div>
                     <div class="pethotel-weight">
-                        Cân nặng: <%= room.getMinWeight()%> - <%= room.getMaxWeight()%> kg
+                        Cân nặng: <%= similarRoom.getMinWeight()%> - <%= similarRoom.getMaxWeight()%> kg
                     </div>
-                    <a href="petroomdetail?id=<%= room.getRoomId()%>" class="booking">Đặt phòng ngay</a>
+                    <a href="customerbooking.jsp?id=<%= similarRoom.getRoomId()%>" class="booking-btn" data-status="<%= similarRoom.getStatus()%>">Đặt phòng ngay</a>
                 </div>
+
                 <%
                     }
                 } else {
@@ -111,5 +114,31 @@
                 checkScrollButtons();
             });
         </script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const bookRoomBtns = document.querySelectorAll(".booking-btn");
+
+                bookRoomBtns.forEach(button => {
+                    button.addEventListener("click", function (event) {
+                        event.preventDefault();
+                        const roomStatus = button.getAttribute("data-status").trim().toLowerCase();
+
+                        if (roomStatus === "hết phòng") {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Phòng đã hết!',
+                                text: 'Vui lòng chọn phòng khác. Xin cảm ơn!',
+                                confirmButtonText: 'OK',
+                                confirmButtonColor: '#8B4513' // Màu nâu (SaddleBrown)
+                            });
+                        } else {
+                            window.location.href = button.getAttribute("href");
+                        }
+                    });
+                });
+            });
+        </script>
+
     </body>
 </html>
