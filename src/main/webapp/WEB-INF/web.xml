@@ -141,6 +141,10 @@
         <servlet-class>controller.ProductManagementServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>FeedbackManagementServlet</servlet-name>
+        <servlet-class>controller.FeedbackManagementServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>CreateProductServlet</servlet-name>
         <servlet-class>controller.CreateProductServlet</servlet-class>
     </servlet>
@@ -295,6 +299,10 @@
     <servlet-mapping>
         <servlet-name>ProductManagementServlet</servlet-name>
         <url-pattern>/dashboard/admin/product</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FeedbackManagementServlet</servlet-name>
+        <url-pattern>/dashboard/staff/feedbackmanagement</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CreateProductServlet</servlet-name>
