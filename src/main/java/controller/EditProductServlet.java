@@ -117,19 +117,15 @@ public class EditProductServlet extends HttpServlet {
             Part filePart = request.getPart("productImage");
 
             if (filePart != null && filePart.getSize() > 0) {
-                // Lấy tên file
-                fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-
-                // Xóa ảnh cũ nếu có và không trùng với ảnh mới
-                if (existingImage != null && !existingImage.isEmpty() && !existingImage.equals(fileName)) {
-                    File oldFile = new File(realPath, existingImage);
-                    if (oldFile.exists()) {
-                        oldFile.delete();
-                    }
-                }
-
+                // Lấy tên file mới
+                String newFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+                // Xác định đường dẫn file ảnh cũ
+                File oldImageFile = new File(realPath + File.separator + existingImage);
                 // Lưu ảnh mới
-                filePart.write(realPath + File.separator + fileName);
+                filePart.write(realPath + File.separator + newFileName);
+                // Xóa ảnh cũ 
+                oldImageFile.delete();
+                fileName = newFileName; // Cập nhật tên ảnh mới vào CSDL
             }
 
             // Cập nhật thông tin sản phẩm
