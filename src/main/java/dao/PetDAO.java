@@ -80,8 +80,8 @@ public class PetDAO {
         return pet;
     }
     
-     public  void updatePet(String petId, String name, String type, String breed, String sex, String weight, Date dob) {
-        String sql = "UPDATE Pets SET pet_name=?, pet_type=?, pet_breed=?, pet_sex=?, pet_weigth=?, pet_dob=?  WHERE pet_id=?";
+     public  void updatePet(String petId, String name, String type, String breed, String sex, String weight, Date dob,String petImage) {
+        String sql = "UPDATE Pets SET pet_name=?, pet_type=?, pet_breed=?, pet_sex=?, pet_weigth=?, pet_dob=?,pet_image=?  WHERE pet_id=?";
         
         try {
               conn = new DBContext().getConnection();
@@ -91,8 +91,9 @@ public class PetDAO {
             pt.setString(3, breed);
             pt.setString(4, sex);
             pt.setString(5, weight);
-            pt.setDate(6, dob);         
-                pt.setString(7, petId);
+            pt.setDate(6, dob);  
+            pt.setString(7,petImage);
+                pt.setString(8, petId);
             
             pt.executeUpdate();
         } catch (Exception e) {
@@ -109,6 +110,27 @@ public class PetDAO {
             
             pt.executeUpdate();
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+     
+      public void addPet(String customerId,String petName, String petType, String petBreed, String petSex, String petWeight, Date petDob, String petImage) {
+        String sql = "INSERT INTO Pets (customer_id,pet_name, pet_type, pet_breed, pet_sex, pet_weigth, pet_dob, pet_image, pet_status) VALUES (?,?, ?, ?, ?, ?, ?, ?, 'Health')";
+        
+        try  {
+             conn = new DBContext().getConnection();
+            pt = conn.prepareStatement(sql); 
+            pt.setString(1, customerId);
+            pt.setString(2, petName);
+            pt.setString(3, petType);
+            pt.setString(4, petBreed);
+            pt.setString(5, petSex);
+            pt.setString(6, petWeight);
+            pt.setDate(7, petDob);
+            pt.setString(8, petImage);
+            
+            pt.executeUpdate();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
