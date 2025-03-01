@@ -100,10 +100,6 @@
         <servlet-class>controller.PetHotelEditManagementServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AdminProductSerlvet</servlet-name>
-        <servlet-class>controller.ProductManagementServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ViewPetServlet</servlet-name>
         <servlet-class>controller.ViewPetServlet</servlet-class>
     </servlet>
@@ -134,6 +130,10 @@
     <servlet>
         <servlet-name>EditProductServlet</servlet-name>
         <servlet-class>controller.EditProductServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductManagementServlet</servlet-name>
+        <servlet-class>controller.ProductManagementServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>PetHotelServlet</servlet-name>
@@ -240,10 +240,6 @@
         <url-pattern>/dashboard/admin/editroom</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AdminProductSerlvet</servlet-name>
-        <url-pattern>/dashboard/admin/product</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>PetHotelBookingManagementServlet</servlet-name>
         <url-pattern>/dashboard/staff/pethotelbooking</url-pattern>
     </servlet-mapping>
@@ -266,6 +262,10 @@
     <servlet-mapping>
         <servlet-name>EditProductServlet</servlet-name>
         <url-pattern>/dashboard/admin/editproduct</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductManagementServlet</servlet-name>
+        <url-pattern>/dashboard/admin/product</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
