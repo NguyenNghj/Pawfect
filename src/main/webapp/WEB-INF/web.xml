@@ -141,6 +141,10 @@
         <servlet-class>controller.ProductManagementServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>FeedbackManagementServlet</servlet-name>
+        <servlet-class>controller.FeedbackManagementServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>CreateProductServlet</servlet-name>
         <servlet-class>controller.CreateProductServlet</servlet-class>
     </servlet>
@@ -156,7 +160,15 @@
         <servlet-name>LogoutAdminServlet</servlet-name>
         <servlet-class>controller.LogoutAdminServlet</servlet-class>   
     </servlet>
-    <servlet-mapping>      
+    <servlet>
+        <servlet-name>StaffServlet</servlet-name>
+        <servlet-class>controller.StaffServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StaffDeleteServlet</servlet-name>
+        <servlet-class>controller.StaffDeleteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
         <servlet-name>PetHotelServlet</servlet-name>
         <url-pattern>/pethotel</url-pattern>
     </servlet-mapping>
@@ -297,6 +309,10 @@
         <url-pattern>/dashboard/admin/product</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>FeedbackManagementServlet</servlet-name>
+        <url-pattern>/dashboard/staff/feedbackmanagement</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>CreateProductServlet</servlet-name>
         <url-pattern>/dashboard/admin/createproduct</url-pattern>
     </servlet-mapping>
@@ -311,6 +327,14 @@
     <servlet-mapping>
         <servlet-name>LogoutAdminServlet</servlet-name>
         <url-pattern>/dashboard/admin/logoutadmin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffServlet</servlet-name>
+        <url-pattern>/dashboard/admin/staff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffDeleteServlet</servlet-name>
+        <url-pattern>/dashboard/admin/staffdelete</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

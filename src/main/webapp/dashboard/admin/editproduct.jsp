@@ -32,7 +32,6 @@
                 <!-- SIDEBAR -->
                 <jsp:include page="sidebar.jsp"/>
 
-
                 <!-- MAIN -->
                 <div class="col" id="main" style="padding: 0 40px;">
                     <div class="row pt-4">

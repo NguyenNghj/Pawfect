@@ -4,6 +4,9 @@
     Author     : Vu Quang Duc - CE181221
 --%>
 
+<%@page import="dao.StaffDAO"%>
+<%@page import="model.Staff"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -11,9 +14,33 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="../../css/dashboard.css">
         <title>JSP Page</title>
+        <style>
+            /* Thiết kế cơ bản cho nút */
+.delete-btn {
+    color: white;
+    background-color: red; /* Màu đỏ để cảnh báo */
+    padding: 8px 12px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Hiệu ứng khi di chuột vào */
+.delete-btn:hover {
+    background-color: darkred; /* Đỏ đậm hơn khi hover */
+}
+
+/* Tạo khoảng cách giữa các nút nếu cần */
+.delete-btn + .delete-btn {
+    margin-left: 10px;
+}
+
+        </style>
     </head>
     <body>
         <div class="container-fluid">
@@ -32,7 +59,7 @@
 
                     <div class="row">                  
                         <nav class="navbar bg-body-tertiary">                                    
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="dashboard.jsp">
+                            <a class="navbar-brand d-flex align-items-center gap-3" href="dashboard">
                                 <i class="fa-solid fa-chart-line fa-lg"></i> 
                                 Dashboard
                             </a>
@@ -78,9 +105,9 @@
                             </a>
                         </nav>
                         <nav class="navbar bg-body-tertiary">                                            
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="petroom">
+                            <a class="navbar-brand d-flex align-items-center gap-3" href="petRoom.jsp">
                                 <i class="fa-solid fa-hotel fa-lg"></i>  
-                                <span>Pet Hotel</span>
+                                <span>Pet Rooms</span>
                             </a>
                         </nav>
                         <!-- <nav class="navbar bg-body-tertiary">                        
@@ -190,117 +217,123 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm Nhân Viên</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form>
+                                            <form action="staffadd" method="post">
                                                 <div class="form-floating mb-3">
-                                                    <input type="email" class="form-control" id="recipient-name" placeholder="name@example.com">
-                                                    <label for="recipient-name">Email</label>                        
+                                                    <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+                                                    <label for="email">Email</label>                        
                                                 </div>
                                                 <div class="form-floating mb-3">
-                                                    <input type="password" class="form-control" id="recipient-name" placeholder="name@example.com">
-                                                    <label for="recipient-name">Password</label>                        
+                                                    <input type="password" class="form-control" id="password" name="password" placeholder="Mật khẩu" required>
+                                                    <label for="password">Password</label>                        
                                                 </div>
                                                 <div class="form-floating mb-3">
-                                                    <input type="password" class="form-control" id="recipient-name" placeholder="name@example.com">
-                                                    <label for="recipient-name">Full Name</label>                        
+                                                    <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Họ và tên" required>
+                                                    <label for="full_name">Full Name</label>                        
                                                 </div>
                                                 <div class="form-floating mb-3">
-                                                    <input type="password" class="form-control" id="recipient-name" placeholder="name@example.com">
-                                                    <label for="recipient-name">Phone</label>                        
+                                                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Số điện thoại">
+                                                    <label for="phone">Phone</label>                        
                                                 </div>
                                                 <div class="form-floating mb-3">
-                                                    <input type="password" class="form-control" id="recipient-name" placeholder="name@example.com">
-                                                    <label for="recipient-name">Address</label>                        
+                                                    <input type="text" class="form-control" id="address" name="address" placeholder="Địa chỉ">
+                                                    <label for="address">Address</label>                        
                                                 </div>
                                                 <div class="form-floating mb-3">
-                                                    <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                                        <option selected value="1">Others</option>
-                                                        <option value="2">Male</option>
-                                                        <option value="3">Female</option>
+                                                    <select class="form-select" id="gender" name="gender">
+                                                        <option selected value="Khác">Others</option>
+                                                        <option value="Nam">Male</option>
+                                                        <option value="Nữ">Female</option>
                                                     </select>
-                                                    <label for="floatingSelect">Gender</label>                      
+                                                    <label for="gender">Gender</label>                      
                                                 </div>
-                                                <!-- <div class="input-group mb-3">
-                                                    <input type="file" class="form-control" id="inputGroupFile02">
-                                                    <label class="input-group-text" for="inputGroupFile02">Image</label>
-                                                </div> -->
+                                                <div class="form-floating mb-3">
+                                                    <input type="date" class="form-control" id="birth_date" name="birth_date" required>
+                                                    <label for="birth_date">Birth Date</label>
+                                                </div>
+                                                <div class="form-check mb-3">
+                                                    <input class="form-check-input" type="checkbox" id="is_active" name="is_active" checked>
+                                                    <label class="form-check-label" for="is_active">
+                                                        Active
+                                                    </label>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Add</button> <!-- Đổi sang submit -->
+                                                </div>
                                             </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Add</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>        
                     </div>
-
+                    <!-- Hiển THị List -->
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <div class="main-dashboard-table">
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
                                  style="background-color: #007BFF; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
                                 <i class="fa-solid fa-address-card" style="font-size: 22px;"></i>
-                                <h4 class="mb-0">Employee Account List</h4>
+                                <h4 class="mb-0">Danh Sách Nhân Viên</h4>
                             </div>
                             <div style="padding: 15px 15px 25px 15px;">
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th scope="col">ID</th>
-                                            <th scope="col">Image</th>
-                                            <th scope="col">Account Name</th>
-                                            <th scope="col">Email</th>
-                                            <th scope="col">Phone</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Create At</th>
-                                            <th scope="col">Action</th>
+                                            <th>ID</th>
+                                            <th>Vai trò</th>
+                                            <th>Mật khẩu</th>
+                                            <th>Họ và Tên</th>
+                                            <th>Email</th>
+                                            <th>SDT</th>
+                                            <th>Địa chỉ</th>
+                                            <th>Giới tính</th>
+                                            <th>Ngày sinh</th>
+                                            <th>Trạng thái</th>
+                                            <th>Hành động</th> <!-- Thêm cột này -->
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <%
+                                            List<Staff> staffList = (List<Staff>) request.getAttribute("staffList");
+                                            if (staffList != null && !staffList.isEmpty()) {
+                                                for (Staff staff : staffList) {
+                                        %>
                                         <tr>
-                                            <th scope="row">1</th>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
+                                            <td><%= staff.getStaffId()%></td>
+                                            <td><%= staff.getRoleName()%></td>
+                                            <td><%= staff.getPassword()%></td>
+                                            <td><%= staff.getFullName()%></td>
+                                            <td><%= staff.getEmail()%></td>
+                                            <td><%= staff.getPhone()%></td>
+                                            <td><%= staff.getAddress()%></td>
+                                            <td><%= staff.getGender()%></td>
+                                            <td><%= staff.getBirthDate()%></td>
+                                            <td><%= staff.isActive() ? "Hoạt động" : "Đã nghỉ"%></td>
                                             <td>
-                                                <button type="button" class="btn btn-primary">Edit</button>
-                                                <button type="button" class="btn btn-danger">Delete</button>
+                                                <a href="staffdelete?id=<%= staff.getStaffId()%>&action=delete" 
+                                                    class="delete-btn"
+                                                   onclick="return confirm('Bạn có chắc muốn cấm khách hàng này?');">
+                                                    xóa
+                                                </a>
+
                                             </td>
                                         </tr>
+                                        <%
+                                            }
+                                        } else {
+                                        %>
                                         <tr>
-                                            <th scope="row">2</th>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                            <td>@fat</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary">Edit</button>
-                                                <button type="button" class="btn btn-danger">Delete</button>
-                                            </td>
+                                            <td colspan="11">Không có nhân viên nào.</td>
                                         </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>Larry the Bird</td>
-                                            <td>@twitter</td>
-                                            <td>@fat</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                            <td>
-                                                <button type="button" class="btn btn-primary">Edit</button>
-                                                <button type="button" class="btn btn-danger">Delete</button>
-                                            </td>
-                                        </tr>                             
+                                        <%
+                                            }
+                                        %>
                                     </tbody>
                                 </table>
                             </div>
@@ -317,24 +350,24 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
         <script>
-            const exampleModal = document.getElementById('exampleModal')
-            if (exampleModal) {
-                exampleModal.addEventListener('show.bs.modal', event => {
-                    // Button that triggered the modal
-                    const button = event.relatedTarget
-                    // Extract info from data-bs-* attributes
-                    const recipient = button.getAttribute('data-bs-whatever')
-                    // If necessary, you could initiate an Ajax request here
-                    // and then do the updating in a callback.
+                                                       const exampleModal = document.getElementById('exampleModal')
+                                                       if (exampleModal) {
+                                                           exampleModal.addEventListener('show.bs.modal', event => {
+                                                               // Button that triggered the modal
+                                                               const button = event.relatedTarget
+                                                               // Extract info from data-bs-* attributes
+                                                               const recipient = button.getAttribute('data-bs-whatever')
+                                                               // If necessary, you could initiate an Ajax request here
+                                                               // and then do the updating in a callback.
 
-                    // Update the modal's content.
-                    const modalTitle = exampleModal.querySelector('.modal-title')
-                    const modalBodyInput = exampleModal.querySelector('.modal-body input')
+                                                               // Update the modal's content.
+                                                               const modalTitle = exampleModal.querySelector('.modal-title')
+                                                               const modalBodyInput = exampleModal.querySelector('.modal-body input')
 
-                    modalTitle.textContent = `New message to ${recipient}`
-                    modalBodyInput.value = recipient
-                })
-            }
+                                                               modalTitle.textContent = `New message to ${recipient}`
+                                                               modalBodyInput.value = recipient
+                                                           })
+                                                       }
         </script>
     </body>
 </html>
