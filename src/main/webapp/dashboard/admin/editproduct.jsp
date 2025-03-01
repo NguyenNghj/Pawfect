@@ -204,7 +204,7 @@
                             <div class="mb-3">
                                 <label for="editProductImage" class="form-label">Hình ảnh</label>
                                 <div style="display: flex; gap: 10px;">
-                                    <img id="previewImage" class="img-thumbnail" style="width: 220px; height: 220px; display: ${not empty product.productImage ? 'block' : 'none'};" src="${product.productImage}" alt="Ảnh sản phẩm">
+                                    <img id="previewImage" class="img-thumbnail" style="width: 220px; height: 220px; display: ${not empty product.productImage ? 'block' : 'none'};" src="/img/products/${product.productImage}" alt="Ảnh sản phẩm">
                                     <input type="file" id="editProductImage" name="productImage" accept="image/*" style="display: none;" onchange="previewFile()">
                                     <div class="image-box" onclick="document.getElementById('editProductImage').click()" style="cursor: pointer; border: 1px dashed #ccc; padding: 20px; text-align: center; width: 220px; height: 220px; display: flex; align-items: center; justify-content: center;">
                                         <span id="uploadText">Thêm ảnh</span>

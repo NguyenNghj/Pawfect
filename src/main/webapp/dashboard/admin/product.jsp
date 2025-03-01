@@ -215,7 +215,7 @@
                                         <c:forEach var="product" items="${products}">
                                             <tr>
                                                 <th scope="row">${product.productId}</th>
-                                                <td><img src="${product.productImage}" alt="Hình ảnh" width="50"></td>
+                                                <td><img src="/img/products/${product.productImage}" alt="Hình ảnh" width="50"></td>
                                                 <td>${product.categoryName}</td>
                                                 <td>${product.productName}</td>
                                                 <td>${product.productPetType}</td>
