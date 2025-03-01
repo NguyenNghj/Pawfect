@@ -8,12 +8,20 @@ import dao.PetDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.nio.file.Paths;
 
 import java.sql.Date;
-
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+)
 /**
  *
  * @author LENOVO
@@ -81,10 +89,33 @@ public class EditPetServlet extends HttpServlet {
         String petWeight = request.getParameter("petWeight");
         String birthDateStr = request.getParameter("petDob");
         Date petDob = Date.valueOf(birthDateStr);
+ String existingImage = request.getParameter("existingImage");
+  String[] context = request.getServletContext().getRealPath("").split("target");
+            String realPath = context[0] + "src" + File.separator + "main" + File.separator + "webapp" + File.separator + "img" + File.separator + "pet";
+
+            File uploadDir = new File(realPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            String fileName = existingImage; // Giữ ảnh cũ mặc định
+            Part filePart = request.getPart("petImage");
+
+            if (filePart != null && filePart.getSize() > 0) {
+                // Lấy tên file mới
+                String newFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+                // Xác định đường dẫn file ảnh cũ
+                File oldImageFile = new File(realPath + File.separator + existingImage);
+                // Lưu ảnh mới
+                filePart.write(realPath + File.separator + newFileName);
+                // Xóa ảnh cũ 
+                oldImageFile.delete();
+                fileName = newFileName; // Cập nhật tên ảnh mới vào CSDL
+            }
 
         PetDAO petDAO = new PetDAO();
         // Cập nhật database
-        petDAO.updatePet(petId, petName, petType, petBreed, petSex, petWeight, petDob);
+        petDAO.updatePet(petId, petName, petType, petBreed, petSex, petWeight, petDob,fileName);
         response.sendRedirect("petviewdetail?petId=" + petId);
 
     }
