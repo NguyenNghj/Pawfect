@@ -79,24 +79,33 @@ public class EditCategoryServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         CategoryDAO categoryDAO = new CategoryDAO();
+        ProductDAO productDAO = new ProductDAO();
 
         try {
-            int categoryId = Integer.parseInt(request.getParameter("categoryId"));
+            String categoryIdStr = request.getParameter("categoryId");
             String categoryName = request.getParameter("categoryName");
-            boolean active = Boolean.parseBoolean(request.getParameter("isActive"));
+            String activeStr = request.getParameter("isActive");
+
+            if (categoryIdStr == null || categoryName == null || activeStr == null) {
+                request.setAttribute("error", "Dữ liệu đầu vào không hợp lệ.");
+                request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
+                return;
+            }
+
+            int categoryId = Integer.parseInt(categoryIdStr);
+            boolean active = Boolean.parseBoolean(activeStr);
 
             // Cập nhật thể loại
             boolean updateSuccess = categoryDAO.updateCategory(categoryId, categoryName, active);
 
-            if (updateSuccess) {
-                // Nếu cập nhật thành công, điều hướng về danh sách thể loại
-                response.sendRedirect("/dashboard/admin/category?update=success");
-            } else {
-                // Nếu cập nhật thất bại, gửi thông báo lỗi
-                request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
+            if (updateSuccess && !active) {
+                // Nếu danh mục bị vô hiệu hóa, cập nhật trạng thái sản phẩm
+                productDAO.updateProductInactiveByCategory(categoryId);
             }
+
+            response.sendRedirect("/dashboard/admin/category");
         } catch (NumberFormatException e) {
-            e.printStackTrace();
+            request.setAttribute("error", "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại.");
             request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();

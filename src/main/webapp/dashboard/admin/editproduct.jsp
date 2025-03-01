@@ -90,8 +90,7 @@
 
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
-                        <form id="editProductForm" action = "/dashboard/admin/editproduct" method="post" enctype ="multipart/form-data">
-
+                        <form id="editProductForm" action="/dashboard/admin/editproduct" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="productId" value="${product.productId}">
                             <input type="hidden" name="existingImage" value="${product.productImage}">
 
@@ -108,10 +107,11 @@
 
                             <div class="mb-3">
                                 <label for="editProductCategory">Thể loại</label>
-                                <select class="form-select" name="categoryId">
+                                <select class="form-select" name="categoryId" id="categoryId" onchange="updateProductStatusOptions()">
                                     <c:forEach var="category" items="${categories}">
                                         <option value="${category.categoryId}" 
-                                                <c:if test="${category.categoryId == product.categoryId}">selected="selected"</c:if>>
+                                                <c:if test="${category.categoryId == product.categoryId}">selected="selected"</c:if> 
+                                                data-is-active="${category.isActive}">
                                             ${category.categoryName}
                                         </option>
                                     </c:forEach>
@@ -144,17 +144,17 @@
 
                             <div class="mb-3">
                                 <label for="editProductStatus">Trạng thái</label>
-                                <select class="form-select" name="productActive">
+                                <select class="form-select" name="productActive" id="productActive">
                                     <option value="true" ${product.active ? 'selected' : ''}>Đang bán</option>
                                     <option value="false" ${!product.active ? 'selected' : ''}>Ngừng bán</option>
                                 </select>
                             </div>
 
-
                             <div class="mb-3">
                                 <label for="editProductDescription" class="form-label">Mô tả sản phẩm</label>
                                 <textarea class="form-control" name="description" rows="5" required>${product.description}</textarea>
                             </div>
+
                             <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
                             <a href="<c:url value='/dashboard/admin/product'/>" class="btn btn-secondary" id="back">Trở về</a>
                         </form>
@@ -169,7 +169,7 @@
 
                                 if (file) {
                                     // Kiểm tra nếu file lớn hơn 10MB
-                                    const maxSize = 5 * 1024 * 1024; // 10MB
+                                    const maxSize = 10 * 1024 * 1024; // 10MB
                                     if (file.size > maxSize) {
                                         alert("File ảnh quá lớn! Vui lòng chọn ảnh nhỏ hơn 10MB.");
                                         fileInput.value = ""; // Xóa file đã chọn
@@ -186,8 +186,35 @@
                                 }
                             }
                         </script>
+                        <script>
+                            // Function to update the product status options based on selected category
+                            function updateProductStatusOptions() {
+                                const categorySelect = document.getElementById('categoryId');
+                                const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+                                const isActive = selectedOption.getAttribute('data-is-active') === 'true';
+                                const productActiveSelect = document.getElementById('productActive');
+                                const activeOption = productActiveSelect.querySelector('option[value="true"]');
+
+                                // If the category is inactive, disable "Đang bán"
+                                if (!isActive) {
+                                    activeOption.disabled = true;
+                                    if (activeOption.selected) {
+                                        // If "Đang bán" is selected, select "Ngừng bán" instead
+                                        productActiveSelect.value = 'false';
+                                    }
+                                } else {
+                                    activeOption.disabled = false;
+                                }
+                            }
+
+                            // Call the function on page load to set the correct state based on the initial category
+                            window.onload = function () {
+                                updateProductStatusOptions();
+                            };
+                        </script>
 
                     </div>
+
                 </div>
             </div>
         </div>
