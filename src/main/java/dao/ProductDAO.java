@@ -87,11 +87,11 @@ public class ProductDAO {
                 + "p.product_price, p.product_image, p.stock, p.description, p.is_active "
                 + "FROM Products p "
                 + "JOIN Category c ON p.category_id = c.category_id "
-                + "WHERE c.category_name = ? AND p.is_active = 1"; 
+                + "WHERE c.category_name = ? AND p.is_active = 1";
         try {
             conn = new DBContext().getConnection();
             ps = conn.prepareStatement(query);
-            ps.setString(1, categoryName); 
+            ps.setString(1, categoryName);
             rs = ps.executeQuery();
             while (rs.next()) {
                 productList.add(new Product(
@@ -207,6 +207,25 @@ public class ProductDAO {
                         filteredList.add(product);
                     }
                     break;
+            }
+        }
+        return filteredList;
+    }
+
+    public List<Product> filterByPetType(List<Product> products, String petTypeFilter) {
+        switch (petTypeFilter) {
+            case "1":
+                petTypeFilter = "Chó";
+                break;
+            case "2":
+                petTypeFilter = "Mèo";
+                break;
+        }
+        List<Product> filteredList = new ArrayList<>();
+        for (Product product : products) {
+            String petType = product.getProductPetType();
+            if (petType != null && petType.equalsIgnoreCase(petTypeFilter)) {
+                filteredList.add(product);
             }
         }
         return filteredList;

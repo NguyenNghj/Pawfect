@@ -61,13 +61,20 @@ public class ProductListServlet extends HttpServlet {
         String categoryName = request.getParameter("category");
         String priceFilter = request.getParameter("price");
         String sortFilter = request.getParameter("sort");
+        String petTypeFilter = request.getParameter("pettype");
 
         List<Product> products;
 
+        // Lọc theo danh mục sản phẩm
         if (categoryName != null && !categoryName.isEmpty()) {
             products = productDAO.getAllActiveProductsByCategoryName(categoryName);
         } else {
             products = productDAO.getAllActiveProducts();
+        }
+
+        // Lọc theo loại thú cưng nếu có pettype
+        if (petTypeFilter != null && !petTypeFilter.isEmpty()) {
+            products = productDAO.filterByPetType(products, petTypeFilter);
         }
 
         int customerId = 1;
