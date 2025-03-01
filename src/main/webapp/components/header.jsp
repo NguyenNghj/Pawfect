@@ -59,7 +59,7 @@
                             </div>
 
                             <div class="col-auto">
-                                <a class="btn" href="#">Khách sạn thú cưng</a>
+                                <a class="btn" href="pethotel">Khách sạn thú cưng</a>
                             </div>
                         </nav>
                     </div>
