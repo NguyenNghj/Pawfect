@@ -196,21 +196,17 @@ body {
     cursor: not-allowed;
 }
 
-
 .info {
     display: flex;
+    margin-top: 50px;
     margin-bottom: 50px;
 }
 
-.right-info {
-    padding: 2rem 0 2rem 15rem;
-}
 
-.left-info {
+.right-info {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 50px;
 }
 
 .infologo {
@@ -227,9 +223,7 @@ body {
     cursor: pointer;
 }
 
-
 .out-infologo {
-    width: auto;
     border-radius: 100%;
     padding: 5px;
     border: 2px dashed #8C6E63;
@@ -246,7 +240,6 @@ body {
     align-items: center;
     gap: 10px;
 }
-
 .slide-hinhanh {
     aspect-ratio: 16 / 9;
     max-width: 100rem;

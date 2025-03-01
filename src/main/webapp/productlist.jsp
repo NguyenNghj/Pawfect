@@ -42,23 +42,15 @@
                     <label class="nut-loc" onclick="applyFilter('sort', 2)">Giảm dần</label>
                     <label class="nut-loc" onclick="applyFilter('sort', 3)">Chữ cái</label>
                 </div>
+
+                <div class="pettype-box-filter filterbox">
+                    <label class="nut-loc" onclick="applyFilter('pettype', 1)">Chó</label>
+                    <label class="nut-loc" onclick="applyFilter('pettype', 2)">Mèo</label>
+                </div>
             </div>
 
+
             <script>
-                function applyFilter(filterName, filterValue) {
-                    let urlParams = new URLSearchParams(window.location.search);
-
-                    // Nếu đã chọn filter đó thì bỏ filter đi
-                    if (urlParams.get(filterName) === filterValue) {
-                        urlParams.delete(filterName);
-                    } else {
-                        urlParams.set(filterName, filterValue);
-                    }
-
-                    urlParams.set('page', 1); // Khi lọc, reset về trang 1
-                    window.location.search = urlParams.toString();
-                }
-
                 function applyFilter(filterName, filterValue) {
                     let urlParams = new URLSearchParams(window.location.search);
 
@@ -114,6 +106,7 @@
                         let selectedPrice = urlParams.get("price");
                         let selectedSort = urlParams.get("sort");
                         let selectedCategory = urlParams.get("category");
+                        let selectedPetType = urlParams.get("pettype");
 
                         // Thêm class 'active' vào nút lọc giá
                         document.querySelectorAll(".gia-box-filter .nut-loc").forEach(label => {
@@ -138,7 +131,17 @@
                                 item.classList.add("active");
                             }
                         });
-                    });</script>
+
+                        // Thêm class 'active' vào lọc kiểu thú cưng (Chó, Mèo)
+                        document.querySelectorAll(".pettype-box-filter .nut-loc").forEach(label => {
+                            let filterValue = label.getAttribute("onclick").match(/\d+/)[0]; // Lấy số từ onclick
+                            if (selectedPetType === filterValue) {
+                                label.classList.add("active");
+                            }
+                        });
+                    });
+                </script>
+
 
 
                 <div class="col-12 col-md-9">
