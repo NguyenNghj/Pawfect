@@ -158,7 +158,7 @@
     </servlet>
     <servlet>
         <servlet-name>LogoutAdminServlet</servlet-name>
-        <servlet-class>controller.LogoutAdminServlet</servlet-class>   
+        <servlet-class>controller.LogoutAdminServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>StaffServlet</servlet-name>
@@ -167,6 +167,14 @@
     <servlet>
         <servlet-name>StaffDeleteServlet</servlet-name>
         <servlet-class>controller.StaffDeleteServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CategoryManagementServlet</servlet-name>
+        <servlet-class>controller.CategoryManagementServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditCategoryServlet</servlet-name>
+        <servlet-class>controller.EditCategoryServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>PetHotelServlet</servlet-name>
@@ -335,6 +343,14 @@
     <servlet-mapping>
         <servlet-name>StaffDeleteServlet</servlet-name>
         <url-pattern>/dashboard/admin/staffdelete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CategoryManagementServlet</servlet-name>
+        <url-pattern>/dashboard/admin/category</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditCategoryServlet</servlet-name>
+        <url-pattern>/dashboard/admin/editcategory</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
