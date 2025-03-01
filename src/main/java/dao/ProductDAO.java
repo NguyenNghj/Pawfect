@@ -1,21 +1,19 @@
 package dao;
 
 import db.DBContext;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Product;
 
 /**
  *
  * @author Nguyen Tri Nghi - CE180897
  */
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProductDAO {
 
     Connection conn = null;
@@ -29,9 +27,9 @@ public class ProductDAO {
                 + "FROM Products p "
                 + "JOIN Category c ON p.category_id = c.category_id";
         try {
-            Connection conn = new DBContext().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            rs = ps.executeQuery();
             while (rs.next()) {
                 productList.add(new Product(
                         rs.getInt(1),
@@ -60,17 +58,16 @@ public class ProductDAO {
                 + "JOIN Category c ON p.category_id = c.category_id "
                 + "WHERE c.category_name = ?";
         try {
-            Connection conn = new DBContext().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
             ps.setString(1, categoryName);
-            try ( ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    productList.add(new Product(
-                            rs.getInt(1), rs.getInt(2), rs.getString(3),
-                            rs.getString(4), rs.getString(5), rs.getDouble(6),
-                            rs.getString(7), rs.getInt(8), rs.getString(9), rs.getBoolean(10)
-                    ));
-                }
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                productList.add(new Product(
+                        rs.getInt(1), rs.getInt(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getDouble(6),
+                        rs.getString(7), rs.getInt(8), rs.getString(9), rs.getBoolean(10)
+                ));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -85,17 +82,16 @@ public class ProductDAO {
                 + "JOIN Category c ON p.category_id = c.category_id "
                 + "WHERE p.product_id = ?";
         try {
-            Connection conn = new DBContext().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
             ps.setInt(1, productId);
-            try ( ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return new Product(
-                            rs.getInt(1), rs.getInt(2), rs.getString(3),
-                            rs.getString(4), rs.getString(5), rs.getDouble(6),
-                            rs.getString(7), rs.getInt(8), rs.getString(9), rs.getBoolean(10)
-                    );
-                }
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Product(
+                        rs.getInt(1), rs.getInt(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getDouble(6),
+                        rs.getString(7), rs.getInt(8), rs.getString(9), rs.getBoolean(10)
+                );
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,8 +104,8 @@ public class ProductDAO {
                 + "product_price = ?, product_image = ?, stock = ?, description = ?, is_active = ? "
                 + "WHERE product_id = ?";
         try {
-            Connection conn = new DBContext().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
             ps.setInt(1, product.getCategoryId());
             ps.setString(2, product.getProductName());
             ps.setString(3, product.getProductPetType());
@@ -119,9 +115,22 @@ public class ProductDAO {
             ps.setString(7, product.getDescription());
             ps.setBoolean(8, product.isActive());
             ps.setInt(9, product.getProductId());
-            int affectedRows = ps.executeUpdate();
-            return affectedRows > 0; // Returns true if at least one row was updated
+            return ps.executeUpdate() > 0;
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean updateProductInactiveByCategory(int categoryId) {
+        String query = "UPDATE Products SET is_active = 0 WHERE category_id = ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, categoryId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return false;
     }
@@ -130,8 +139,8 @@ public class ProductDAO {
         String query = "INSERT INTO Products (category_id, product_name, product_petType, product_price, product_image, stock, description, is_active) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try {
-            Connection conn = new DBContext().getConnection();
-            PreparedStatement ps = conn.prepareStatement(query);
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
             ps.setInt(1, product.getCategoryId());
             ps.setString(2, product.getProductName());
             ps.setString(3, product.getProductPetType());
@@ -140,11 +149,9 @@ public class ProductDAO {
             ps.setInt(6, product.getStock());
             ps.setString(7, product.getDescription());
             ps.setBoolean(8, product.isActive());
-
-            int affectedRows = ps.executeUpdate();
-            return affectedRows > 0;
+            return ps.executeUpdate() > 0;
         } catch (Exception e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
         return false;
     }

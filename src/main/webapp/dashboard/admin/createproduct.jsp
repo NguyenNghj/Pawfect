@@ -105,9 +105,11 @@
 
                             <div class="mb-3">
                                 <label for="createProductCategory">Thể loại</label>
-                                <select class="form-select" name="categoryId">
+                                <select class="form-select" name="categoryId" id="categoryId" onchange="updateProductStatusOptions()">
                                     <c:forEach var="category" items="${categories}">
-                                        <option value="${category.categoryId}">${category.categoryName}</option>
+                                        <option value="${category.categoryId}" data-is-active="${category.isActive}">
+                                            ${category.categoryName}
+                                        </option>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -138,7 +140,7 @@
 
                             <div class="mb-3">
                                 <label for="createProductStatus">Trạng thái</label>
-                                <select class="form-select" name="productActive">
+                                <select class="form-select" name="productActive" id="productActive">
                                     <option value="true">Đang bán</option>
                                     <option value="false">Ngừng bán</option>
                                 </select>
@@ -153,7 +155,6 @@
                             <a href="<c:url value='/dashboard/admin/product'/>" class="btn btn-secondary" id="back">Trở về</a>
 
                         </form>
-
 
                         <script>
                             function previewFile() {
@@ -185,9 +186,35 @@
                                     uploadText.innerText = "Thêm ảnh";
                                 }
                             }
+
+                            // Function to update the product status options based on selected category
+                            function updateProductStatusOptions() {
+                                const categorySelect = document.getElementById('categoryId');
+                                const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+                                const isActive = selectedOption.getAttribute('data-is-active') === 'true';
+                                const productActiveSelect = document.getElementById('productActive');
+                                const activeOption = productActiveSelect.querySelector('option[value="true"]');
+
+                                // If the category is inactive, disable "Đang bán"
+                                if (!isActive) {
+                                    activeOption.disabled = true;
+                                    if (activeOption.selected) {
+                                        // If "Đang bán" is selected, select "Ngừng bán" instead
+                                        productActiveSelect.value = 'false';
+                                    }
+                                } else {
+                                    activeOption.disabled = false;
+                                }
+                            }
+
+                            // Call the function on page load to set the correct state based on the initial category
+                            window.onload = function () {
+                                updateProductStatusOptions();
+                            };
                         </script>
 
                     </div>
+
                 </div>
             </div>
         </div>
