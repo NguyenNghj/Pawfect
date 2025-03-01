@@ -62,13 +62,13 @@
 
                     <div class="row">
                         <nav class="navbar bg-body-tertiary active">                                   
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="#" style="color: white; pointer-events: none;">
+                            <a class="navbar-brand d-flex align-items-center gap-3" href="staffprofile" style="color: white; pointer-events: none;">
                                 <i class="fa-solid fa-address-book fa-lg"></i>   
                                 <span>Hồ sơ</span>
                             </a>                          
                         </nav>
                         <nav class="navbar bg-body-tertiary">                                              
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="#">
+                            <a class="navbar-brand d-flex align-items-center gap-3" href="logoutstaff">
                                 <i class="fa-solid fa-right-from-bracket fa-lg"></i>
                                 <span>Đăng xuất</span>
                             </a>
@@ -76,7 +76,29 @@
                     </div>
 
                 </div>
+                <%
+                    Cookie[] cookies = request.getCookies();
+                    String staffRole = "";
+                    String staffName = "";
 
+                    if (cookies != null) {
+                        for (Cookie cookie : cookies) {
+                            String name = cookie.getName();
+                            String value = cookie.getValue();
+
+                            if ("staffRole".equals(name)) {
+                                staffRole = value;
+                            } else if ("staffName".equals(name)) {
+                                staffName = value;
+                            }
+
+                            // Nếu đã lấy được cả hai giá trị thì thoát vòng lặp
+                            if (!staffRole.isEmpty() && !staffName.isEmpty()) {
+                                break;
+                            }
+                        }
+                    }
+                %>      
 
                 <!-- MAIN -->
                 <div class="col" id="main" style="padding: 0 40px;">
@@ -86,16 +108,18 @@
                                 <h1>Hồ sơ người dùng</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
-                                <span>Username2025 (Admin)</span>
+
                                 <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img class="profile-img" src="https://img.freepik.com/foto-gratis/hombre-tiro-medio-peinado-afro_23-2150677136.jpg" alt="">
+                                    <img class="profile-img" src="${staff.image}" alt="">
                                 </button>
                                 <ul class="dropdown-menu ps-2 pe-2 pt-2 pb-2">
                                     <div class="d-grid gap-2">
+                                        <% if ("Admin".equals(staffRole)) { %>
                                         <li class="profile-img-switch-employee d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-repeat"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="#">Đổi sang nhân viên</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="admin/dashboard.jsp">Switch to admin</a>
                                         </li>
+                                        <% }%>
                                         <li class="profile-img-switch-store d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-store"></i>
                                             <a class="dropdown-item" style="padding: 0;" href="#">Tới cửa hàng</a>
@@ -103,11 +127,11 @@
                                         <hr style="margin: 0;">
                                         <li class="profile-img-info1 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-user-pen"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="#">Hồ sơ</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="staffprofile">Hồ sơ</a>
                                         </li>
                                         <li class="profile-img-info2 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-right-from-bracket" style="font-size: 20px;"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="#">Đăng xuất</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="logoutstaff">Đăng xuất</a>
                                         </li>
                                     </div>
                                 </ul>
@@ -128,57 +152,73 @@
                     <div class="row mt-3 align-items-center" style="background-color: white; padding: 20px; border-radius: 7px;">
                         <div class="col-4">
                             <div class="d-grid justify-content-center gap-3">
-                                <img src="https://img.freepik.com/foto-gratis/hombre-tiro-medio-peinado-afro_23-2150677136.jpg" alt=""
+                                <img src="${staff.image}" alt=""
                                      style="width: 220px; height: 220px; border-radius: 50%; object-fit: cover;">
                                 <div class="d-grid gap-1" style="text-align: center;">
-                                    <h4 style="margin: 0;">Họ và tên</h4>                                                            
-                                    <span>Loyal Customer</span>
+                                    <%
+                                        String message = (String) session.getAttribute("message");
+                                        String messageType = (String) session.getAttribute("messageType");
+                                        if (message != null) {
+                                    %>
+                                    <div class="alert <%= "success".equals(messageType) ? "alert-success" : "alert-danger"%>">
+                                        <%= message%>
+                                    </div>
+                                    <%
+                                            session.removeAttribute("message");
+                                            session.removeAttribute("messageType");
+                                        }
+                                    %>
                                     <button type="button" class="btn btn-link text-decoration-none" data-bs-toggle="modal" data-bs-target="#changePassModal">
                                         Đổi mật khẩu
                                     </button>                                   
                                 </div>
                             </div>
                         </div>
-
+                        <input type="hidden" name="password" value="${staff.password}">
                         <!-- Modal Change Password -->
                         <div class="modal fade" id="changePassModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="changePassModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="changePassModalLabel">Đổi mật khẩu</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="mb-2">
-                                            <label for="formGroupExampleInput" class="form-label" style="text-align: left;">Mật khẩu cũ <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="formGroupExampleInput" required>
+                            <form action="changestaffpassword" method="POST" onsubmit="return validatePassword()">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="changePassModalLabel">Đổi mật khẩu</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <div class="mb-2">
-                                            <label for="formGroupExampleInput2" class="form-label">Mật khẩu mới <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="formGroupExampleInput2" required>
+                                        <div class="modal-body">
+                                            <div class="mb-2">
+                                                <label for="oldPassword" class="form-label">Mật khẩu cũ <span class="text-danger">*</span></label>
+                                                <input type="password" name="password" class="form-control" id="oldPassword" required>
+                                                <div class="text-danger" id="oldPasswordError"></div>
+                                            </div>
+                                            <div class="mb-2">
+                                                <label for="newPassword" class="form-label">Mật khẩu mới <span class="text-danger">*</span></label>
+                                                <input type="password" name="newPassword" class="form-control" id="newPassword" required>
+                                                <div class="text-danger" id="newPasswordError"></div>
+                                            </div>
+                                            <div class="mb-2">
+                                                <label for="confirmPassword" class="form-label">Xác nhận lại mật khẩu <span class="text-danger">*</span></label>
+                                                <input type="password" name="newPassword2" class="form-control" id="confirmPassword" required>
+                                                <div class="text-danger" id="confirmPasswordError"></div>
+                                            </div>
                                         </div>
-                                        <div class="mb-2">
-                                            <label for="formGroupExampleInput3" class="form-label">Xác nhận lại mật khẩu <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="formGroupExampleInput3" required>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                            <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
                                         </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>                   
-                                        <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
 
                         <div class="col d-grid gap-3">
                             <div class="d-grid gap-3 profile-info">
                                 <h3 style="margin: 0;">Thông tin người dùng</h3>
-                                <span><b>Họ tên:</b> Nguyen Van A</span>
-                                <span><b>Email:</b> nguyenvana@gmail.com</span>
-                                <span><b>Điện thoại:</b> 0123456789</span>
-                                <span><b>Địa chỉ:</b> Nguyen Van Cu, Can Tho</span>
-                                <span><b>Giới tính:</b> Male</span>
-                                <span><b>Sinh nhật:</b> 01/01/2025</span>
+                                <span><b>Họ tên:</b> ${staff.name}</span>
+                                <span><b>Email:</b> ${staff.email}</span>
+                                <span><b>Điện thoại:</b> ${staff.phone}</span>
+                                <span><b>Địa chỉ:</b> ${staff.address}</span>
+                                <span><b>Giới tính:</b> ${staff.gender}</span>
+                                <span><b>Sinh nhật:</b> ${staff.birthdate}</span>
                             </div>
                             <div>
                                 <button type="button" class="btn btn-success d-flex align-items-center gap-2"
@@ -189,51 +229,50 @@
                                 </button>
 
                                 <!-- Modal of Update User Info -->
+
                                 <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form>
-                                                    <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="recipient-name" placeholder="name@example.com">
-                                                        <label for="recipient-name">Full name</label>                        
-                                                    </div>
-                                                    <div class="form-floating mb-3">
-                                                        <input type="email" class="form-control" id="recipient-name" placeholder="name@example.com">
-                                                        <label for="recipient-name">Email</label>                        
-                                                    </div>
-                                                    <div class="form-floating mb-3">
-                                                        <input type="tel" class="form-control" id="recipient-name" placeholder="name@example.com">
-                                                        <label for="recipient-name">Phone</label>                        
-                                                    </div>
-                                                    <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="recipient-name" placeholder="name@example.com">
-                                                        <label for="recipient-name">Address</label>                        
-                                                    </div>
-                                                    <div class="form-floating mb-3">
-                                                        <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                                            <option selected value="1">Others</option>
-                                                            <option value="2">Male</option>
-                                                            <option value="3">Female</option>
-                                                        </select>
-                                                        <label for="floatingSelect">Gender</label>                      
-                                                    </div>
-                                                    <div class="form-floating mb-3">
-                                                        <input type="date" class="form-control" id="recipient-name" placeholder="name@example.com">
-                                                        <label for="recipient-name">Birthday</label>                        
-                                                    </div>
-                                                </form>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-primary">Save</button>
+                                    <form action="staffprofile" method="POST">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Chỉnh sửa thông tin</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                 
+                                                        <div class="form-floating mb-3">
+                                                            <input type="text" class="form-control" id="recipient-name" value="${staff.name}"name="name"placeholder="name@example.com">
+                                                            <label for="recipient-name">Full name</label>                        
+                                                        </div>  
+                                                        <div class="form-floating mb-3">
+                                                            <input type="tel" class="form-control" id="recipient-name" value="${staff.phone}" name="phone" placeholder="name@example.com">
+                                                            <label for="recipient-name">Phone</label>                        
+                                                        </div>
+                                                        <div class="form-floating mb-3">
+                                                            <input type="text" class="form-control" id="recipient-name"  value="${staff.address}" name="address" placeholder="name@example.com">
+                                                            <label for="recipient-name">Address</label>                        
+                                                        </div>
+                                                        <div class="form-floating mb-3">
+                                                            <select class="form-select" id="floatingSelect" name="gender" aria-label="Floating label select example">
+                                                                <option value="Nam" ${staff.gender == 'Nam' ? "selected" : ""}>Nam</option>
+                                                                <option value="Nữ" ${staff.gender == 'Nữ' ? "selected" : ""}>Nữ</option>
+                                                            </select>
+                                                            <label for="floatingSelect">Gender</label>                      
+                                                        </div>
+                                                        <div class="form-floating mb-3">
+                                                            <input type="date" class="form-control" id="recipient-name" value="${staff.birthdate}" name="birthdate" placeholder="name@example.com">
+                                                            <label for="recipient-name">Birthday</label>                        
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                    <input type="submit" value="Lưu"class="btn btn-primary">
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+
+                                    </form>
                                 </div>
 
                             </div>
@@ -243,7 +282,39 @@
 
             </div>
         </div>
+        <script>
+            function validatePassword() {
+                let isValid = true;
+                let oldPassword = document.getElementById("oldPassword").value.trim();
+                let newPassword = document.getElementById("newPassword").value.trim();
+                let confirmPassword = document.getElementById("confirmPassword").value.trim();
 
+
+                document.getElementById("oldPasswordError").innerHTML = "";
+                document.getElementById("newPasswordError").innerHTML = "";
+                document.getElementById("confirmPasswordError").innerHTML = "";
+
+
+                if (oldPassword === "") {
+                    document.getElementById("oldPasswordError").innerHTML = "Vui lòng nhập mật khẩu cũ!";
+                    isValid = false;
+                }
+
+
+                if (newPassword.length < 6) {
+                    document.getElementById("newPasswordError").innerHTML = "Mật khẩu mới phải có ít nhất 6 ký tự!";
+                    isValid = false;
+                }
+
+
+                if (newPassword !== confirmPassword) {
+                    document.getElementById("confirmPasswordError").innerHTML = "Mật khẩu xác nhận không khớp!";
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+        </script>
 
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

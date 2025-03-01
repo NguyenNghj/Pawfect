@@ -186,13 +186,13 @@
 
                     <div class="row">
                         <nav class="navbar bg-body-tertiary">                                   
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="profile.jsp">
+                            <a class="navbar-brand d-flex align-items-center gap-3" href="adminprofile">
                                 <i class="fa-solid fa-address-book fa-lg"></i>   
                                 <span>Profile</span>
                             </a>                          
                         </nav>
                         <nav class="navbar bg-body-tertiary">                                              
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="#">
+                            <a class="navbar-brand d-flex align-items-center gap-3" href="logoutadmin">
                                 <i class="fa-solid fa-right-from-bracket fa-lg"></i>
                                 <span>Logout</span>
                             </a>
@@ -252,7 +252,7 @@
                                         <hr style="margin: 0;">
                                         <li class="profile-img-info1 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-user-pen"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="profile.jsp">Profile</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="adminprofile">Profile</a>
                                         </li>
                                         <li class="profile-img-info2 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-right-from-bracket" style="font-size: 20px;"></i>

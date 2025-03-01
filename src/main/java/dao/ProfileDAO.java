@@ -6,9 +6,11 @@ package dao;
 
 import db.DBContext;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import model.Staff;
 import model.User;
 
 /**
@@ -44,7 +46,54 @@ public class ProfileDAO {
         return user;
 
     }
+     public Staff getStaff(String staffId) {
+        Staff staff = new Staff();
+        String query = "SELECT * FROM Staffs WHERE staff_id=?";
 
+        try {
+            conn = new DBContext().getConnection();
+            pt = conn.prepareStatement(query);
+            pt.setString(1, staffId);
+             rs = pt.executeQuery();
+            if (rs.next()) {
+                staff.setEmail(rs.getString("email"));
+                staff.setPassword(rs.getString("password"));
+                staff.setName(rs.getString("full_name"));
+                staff.setPhone(rs.getString("phone"));
+                staff.setAddress(rs.getString("address"));
+                staff.setGender(rs.getString("gender"));
+                staff.setBirthdate(rs.getDate("birth_date"));
+                staff.setImage(rs.getString("image"));
+            }
+        } catch (SQLException e) {
+
+        }
+        return staff;
+
+    }
+ public void editStaffProfile(String staffId,String name,String phone ,String address, String gender,Date birthdate ) {
+        String query = "UPDATE Staffs \n"
+                + "SET \n"
+                + "    full_name = ?,\n"
+                + "    phone = ?,\n"
+                + "    address = ?,\n"
+                + "    gender = ?,\n"
+                + "    birth_date = ? WHERE staff_id = ?;";
+
+        try {
+          conn = new DBContext().getConnection();
+            pt = conn.prepareStatement(query);
+            pt.setString(1, name);
+            pt.setString(2, phone);
+            pt.setString(3, address);
+            pt.setString(4, gender);
+            pt.setDate(5, birthdate);
+            pt.setString(6, staffId);
+            pt.executeUpdate();
+        } catch (SQLException e) {
+
+        }
+    }
     public void editProfile(User user, String customerId) {
         String query = "UPDATE Customers \n"
                 + "SET email = ?,\n"
