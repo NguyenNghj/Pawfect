@@ -42,8 +42,10 @@
                                 </div>
 
                                 <div class="phanduoi-thongtin">
-                                    <h4 class="thong-tin-san-pham">Thông tin sản phẩm</h4>
-                                    <hr class="divider">
+                                    <div>
+                                        <h4 class="thong-tin-san-pham">Thông tin sản phẩm</h4>
+                                        <hr class="divider">
+                                    </div>
                                     <p class="description">${product.description}</p>
 
                                     <div style="display: flex; align-items: center; gap: 10px;">
@@ -227,7 +229,7 @@
                                         <img src="${product.productImage}" alt="${product.productName}">
                                     </div>
                                     <div class="product-info">
-                                        <h3 class="product-name">${product.productName}</h3>
+                                        <a class="product-name" href="product?id=${product.productId}">${product.productName}</a>
                                         <p class="product-price">
                                             <fmt:formatNumber value="${product.productPrice}" pattern="#,##0" />đ
                                         </p>
