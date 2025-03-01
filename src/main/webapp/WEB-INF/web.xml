@@ -4,9 +4,6 @@
         <servlet-name>ShopControl</servlet-name>
         <servlet-class>controller.ShopControl</servlet-class>
     </servlet>
-    <welcome-file-list>
-        <welcome-file>pawfect</welcome-file>
-    </welcome-file-list>
     <servlet>
         <servlet-name>ManagerControl</servlet-name>
         <servlet-class>controller.ManagerControl</servlet-class>
@@ -134,6 +131,10 @@
     <servlet>
         <servlet-name>EditProductServlet</servlet-name>
         <servlet-class>controller.EditProductServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductDetailServlet</servlet-name>
+        <servlet-class>controller.ProductDetailServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProductManagementServlet</servlet-name>
@@ -272,12 +273,17 @@
         <url-pattern>/dashboard/admin/editproduct</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>ProductDetailServlet</servlet-name>
+        <url-pattern>/product</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>ProductManagementServlet</servlet-name>
         <url-pattern>/dashboard/admin/product</url-pattern>
     </servlet-mapping>
     <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
+        <session-timeout>30</session-timeout>
     </session-config>
+    <welcome-file-list>
+        <welcome-file>pawfect</welcome-file>
+    </welcome-file-list>
 </web-app>
