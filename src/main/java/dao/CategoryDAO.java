@@ -79,6 +79,20 @@ public class CategoryDAO {
         return isActive;
     }
 
+    public boolean createCategory(Category category) {
+        String query = "INSERT INTO Category (category_name, is_active) VALUES (?, ?)";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setString(1, category.getCategoryName());
+            ps.setBoolean(2, category.isActive());
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean updateCategory(int categoryId, String categoryName, boolean isActive) {
         String query = "UPDATE Category SET category_name = ?, is_active = ? WHERE category_id = ?";
         try {

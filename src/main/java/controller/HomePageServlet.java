@@ -65,17 +65,12 @@ public class HomePageServlet extends HttpServlet {
         ProductDAO productDAO = new ProductDAO();
         String categoryName = request.getParameter("category");
         List<Product> products;
-        
-        if (categoryName != null && !categoryName.isEmpty()) {
-            products = productDAO.getAllProductsByCategoryName(categoryName);
-        } else {
-            products = productDAO.getAllProducts();
-        }
-        
+        products = productDAO.getAllActiveProducts();
+
         List<Feedback> feedbacks = FeedbackDAO.getAllProductFeedback();
         Collections.shuffle(feedbacks);
         request.setAttribute("feedbacks", feedbacks);
-        
+
         request.setAttribute("products", products);
         RequestDispatcher dispatcher = request.getRequestDispatcher("homepage.jsp");
         dispatcher.forward(request, response);

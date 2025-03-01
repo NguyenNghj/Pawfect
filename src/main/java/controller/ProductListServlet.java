@@ -65,9 +65,9 @@ public class ProductListServlet extends HttpServlet {
         List<Product> products;
 
         if (categoryName != null && !categoryName.isEmpty()) {
-            products = productDAO.getAllProductsByCategoryName(categoryName);
+            products = productDAO.getAllActiveProductsByCategoryName(categoryName);
         } else {
-            products = productDAO.getAllProducts();
+            products = productDAO.getAllActiveProducts();
         }
 
         int customerId = 1;
