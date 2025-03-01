@@ -197,9 +197,8 @@
 
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
-                        <form id="editProductForm" action = "editproduct" method="post" enctype="multipart/form-data">
+                        <form id="editProductForm" action = "/dashboard/admin/editproduct" method="post" enctype ="multipart/form-data">
                             <input type="hidden" name="productId" value="${product.productId}">
-
                             <input type="hidden" name="existingImage" value="${product.productImage}">
 
                             <div class="mb-3">

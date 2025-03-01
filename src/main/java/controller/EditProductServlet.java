@@ -6,17 +6,17 @@ package controller;
 
 import dao.CategoryDAO;
 import dao.ProductDAO;
+import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.nio.file.Paths;
+import java.util.List;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import java.io.File;
-import java.nio.file.Paths;
-import java.util.HashSet;
-import java.util.List;
+import java.io.PrintWriter;
 import model.Category;
 import model.Product;
 
@@ -24,6 +24,11 @@ import model.Product;
  *
  * @author Nguyen Tri Nghi - CE180897
  */
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB
+        maxRequestSize = 1024 * 1024 * 50 // 50MB
+)
 public class EditProductServlet extends HttpServlet {
 
     /**
@@ -85,41 +90,55 @@ public class EditProductServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Handle missing or empty values safely
 
-        int productId = Integer.parseInt(request.getParameter("productId"));
-        int categoryId = Integer.parseInt(request.getParameter("categoryId"));
-        int stock = Integer.parseInt(request.getParameter("stock"));
-        double productPrice = Double.parseDouble(request.getParameter("productPrice"));
-        String productName = request.getParameter("productName");
-        String productPetType = request.getParameter("productPetType");
-        boolean productActive = Boolean.parseBoolean(request.getParameter("productActive"));
-        String description = request.getParameter("description");
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
 
-        Part filePart = request.getPart("productImage");
-        String existingImage = request.getParameter("existingImage");
-        String uploadPath = getServletContext().getRealPath("/img/products");
-        String fileName = (existingImage != null && !existingImage.trim().isEmpty()) ? existingImage : "";
+        try {
+            // Nhận dữ liệu từ form
+            Part filePart = request.getPart("productImage");
+            int productId = Integer.parseInt(request.getParameter("productId"));
+            String productName = request.getParameter("productName");
+            int categoryId = Integer.parseInt(request.getParameter("categoryId"));
+            String productPetType = request.getParameter("productPetType");
+            double productPrice = Double.parseDouble(request.getParameter("productPrice"));
+            String existingImage = request.getParameter("existingImage");
+            int stock = Integer.parseInt(request.getParameter("stock"));
+            String description = request.getParameter("description");
+            boolean productActive = Boolean.parseBoolean(request.getParameter("productActive"));
 
-        // Handle file upload if a new file is provided
-        if (filePart != null && filePart.getSize() > 0) {
-            fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdir();
+            String fileName = existingImage; // Mặc định giữ nguyên ảnh cũ
+
+            if (filePart != null && filePart.getSize() > 0) {
+                fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+                String uploadDir = getServletContext().getRealPath("/img/products");
+                File uploadFolder = new File(uploadDir);
+
+                if (!uploadFolder.exists()) {
+                    uploadFolder.mkdirs();
+                }
+
+                // Lưu file vào thư mục
+                filePart.write(uploadDir + File.separator + fileName);
             }
-            filePart.write(uploadPath + File.separator + fileName);
-        }
 
-        // Update the product in the database
-        ProductDAO productDAO = new ProductDAO();
-        Product product = new Product(productId, categoryId, productName, productPetType, productPrice, "/img/products/" + fileName, stock, description, productActive);
+            // Tạo đối tượng Product chỉ lưu fileName thay vì full path
+            Product product = new Product(productId, categoryId, productName, productPetType,
+                    productPrice, fileName, stock, description, productActive);
 
-        boolean updateSuccess = productDAO.updateProduct(product);
-        if (updateSuccess) {
-            response.sendRedirect("/dashboard/admin/product");
-        } else {
-            response.sendRedirect("/dashboard/admin/editproduct?error=update_failed&productId=" + productId);
+            // Cập nhật vào database
+            ProductDAO productDAO = new ProductDAO();
+            boolean updateSuccess = productDAO.updateProduct(product);
+
+            if (updateSuccess) {
+                response.sendRedirect("/dashboard/admin/product?success=1");
+            } else {
+                response.sendRedirect("/dashboard/admin/editproduct?error=2");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("/dashboard/admin/editproduct?error=1");
         }
     }
 
