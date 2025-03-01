@@ -131,7 +131,7 @@
         <servlet-name>PetHotelDetailServlet</servlet-name>
         <servlet-class>controller.PetHotelDetailServlet</servlet-class>
     </servlet>
-    <servlet
+    <servlet>
         <servlet-name>DashboardServlet</servlet-name>
         <servlet-class>controller.DashboardServlet</servlet-class>
     </servlet>
