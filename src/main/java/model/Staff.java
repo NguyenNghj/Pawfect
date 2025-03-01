@@ -1,67 +1,26 @@
+
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package model;
 
 import java.sql.Date;
 
+/**
+ *
+ * @author LENOVO
+ */
 public class Staff {
-    private int staffId;
-    private String roleName;
-    private String password;
-    private String fullName;
-    private String email;
-    private String phone;
-    private String address;
-    private String gender;
-    private Date birthDate;
-    private String image;
-    private boolean isActive;
+  private String name,password,email,phone,address,image,gender;
+  private Date birthdate;
 
-    // Constructor đầy đủ
-    public Staff(int staffId, String roleName, String password, String fullName, String email, String phone, String address,
-                 String gender, Date birthDate, String image, boolean isActive) {
-        this.staffId = staffId;
-        this.roleName = roleName;
-        this.password = password;
-        this.fullName = fullName;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-        this.gender = gender;
-        this.birthDate = birthDate;
-        this.image = image;
-        this.isActive = isActive;
+    public String getName() {
+        return name;
     }
 
-    // Constructor không có staffId (dùng khi thêm mới)
-    public Staff(String roleName, String password, String fullName, String email, String phone, String address,
-                 String gender, Date birthDate, String image, boolean isActive) {
-        this.roleName = roleName;
-        this.password = password;
-        this.fullName = fullName;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-        this.gender = gender;
-        this.birthDate = birthDate;
-        this.image = image;
-        this.isActive = isActive;
-    }
-
-
-    // Getters và Setters
-    public int getStaffId() {
-        return staffId;
-    }
-
-    public void setStaffId(int staffId) {
-        this.staffId = staffId;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {
@@ -70,14 +29,6 @@ public class Staff {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public String getEmail() {
@@ -104,22 +55,6 @@ public class Staff {
         this.address = address;
     }
 
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
-    }
-
     public String getImage() {
         return image;
     }
@@ -128,11 +63,33 @@ public class Staff {
         this.image = image;
     }
 
-    public boolean isActive() {
-        return isActive;
+    public String getGender() {
+        return gender;
     }
 
-    public void setActive(boolean active) {
-        isActive = active;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
+
+    public Date getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
+    }
+  
+public Staff(){}
+
+    public Staff(String name, String password, String email, String phone, String address, String image, String gender, Date birthdate) {
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.image = image;
+        this.gender = gender;
+        this.birthdate = birthdate;
+    }
+
 }
