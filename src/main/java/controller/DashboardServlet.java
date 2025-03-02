@@ -5,6 +5,7 @@
 
 package controller;
 
+import dao.ProductDAO;
 import dao.ViewFinancialStatisticsDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,6 +13,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.Product;
 
 /**
  *
@@ -54,7 +57,7 @@ public class DashboardServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-            ViewFinancialStatisticsDAO dao = new ViewFinancialStatisticsDAO();
+       ViewFinancialStatisticsDAO dao = new ViewFinancialStatisticsDAO();
         // Hiển thị tổng sản phẩm
         double Month1 = dao.getTotaMoneyByMonth(01);
         double Month2 = dao.getTotaMoneyByMonth(02);
@@ -107,11 +110,13 @@ request.setAttribute("Monthh9", Monthh9);
 request.setAttribute("Monthh10", Monthh10);
 request.setAttribute("Monthh11", Monthh11);
 request.setAttribute("Monthh12", Monthh12);
-
-
+ ProductDAO productDAO = new ProductDAO();
+List<Product> topProducts = new ViewFinancialStatisticsDAO().getTopSellingProducts();
+        // Gửi danh sách đến JSP để hiển thị
+        request.setAttribute("topProducts", topProducts);
+       
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);
     }
-
     /** 
      * Handles the HTTP <code>POST</code> method.
      * @param request servlet request
