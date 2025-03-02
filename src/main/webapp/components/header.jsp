@@ -56,7 +56,7 @@
                                         for (Category category : categories) {
                                     %>
                                     <li>
-                                        <a class="dropdown-item" href="products?pettype=1&page=1&category=<%= category.getCategoryId()%>">
+                                        <a class="dropdown-item" href="products?pettype=1&page=1&category=<%= category.getCategoryName()%>">
                                             <%= category.getCategoryName()%>
                                         </a>
                                     </li>
@@ -76,7 +76,7 @@
                                         for (Category category : categories) {
                                     %>
                                     <li>
-                                        <a class="dropdown-item" href="products?pettype=2&page=1&category=<%= category.getCategoryId()%>">
+                                        <a class="dropdown-item" href="products?pettype=2&page=1&category=<%= category.getCategoryName()%>">
                                             <%= category.getCategoryName()%>
                                         </a>
                                     </li>
