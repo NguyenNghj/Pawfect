@@ -110,6 +110,15 @@ public class ProductListServlet extends HttpServlet {
         if (sortFilter != null && !sortFilter.isEmpty()) {
             products = productDAO.sortProducts(products, sortFilter);
         }
+        
+        int customerId = 1;
+        int totalQuantity = 0;
+        List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+        if (!cartItems.isEmpty()) {
+            for (CartItem cartItem : cartItems) {
+                totalQuantity += cartItem.getQuantity();
+            }
+        }
 
         // Set danh sách sản phẩm cho request
         request.setAttribute("products", products);
