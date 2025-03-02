@@ -59,7 +59,7 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Tạo sản phẩm mới</h1>
+                                <h1>Thêm sản phẩm mới</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
                                 <span><%= staffName%></span>
@@ -173,7 +173,7 @@
                                 <textarea class="form-control" name="description" rows="5" required></textarea>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Tạo sản phẩm</button>
+                            <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>
                             <a href="<c:url value='/dashboard/admin/product'/>" class="btn btn-secondary" id="back">Trở về</a>
 
                         </form>

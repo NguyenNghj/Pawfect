@@ -25,7 +25,7 @@
 
                 <!-- SIDEBAR -->
                 <jsp:include page="sidebar.jsp"/>
- <%
+                <%
                     Cookie[] cookies = request.getCookies();
                     String staffRole = "";
                     String staffName = "";
@@ -130,10 +130,10 @@
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${category.active}">
-                                                            <span class="text-success">Hoạt động</span>
+                                                            <span class="text-success">Đang bán</span>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <span class="text-danger">Không hoạt động</span>
+                                                            <span class="text-danger">Ngừng bán</span>
                                                         </c:otherwise>
                                                     </c:choose>
                                                 </td>

@@ -153,7 +153,7 @@ public class ProductDAO {
         return false;
     }
 
-    public boolean updateProductInactiveByCategory(int categoryId) {
+        public boolean updateProductInactiveByCategory(int categoryId) {
         String query = "UPDATE Products SET is_active = 0 WHERE category_id = ?";
         try {
             conn = new DBContext().getConnection();

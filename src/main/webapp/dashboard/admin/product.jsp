@@ -139,7 +139,7 @@
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${product.active}">
-                                                            <span class="text-success">Hoạt động</span>
+                                                            <span class="text-success">Đang bán</span>
                                                         </c:when>
                                                         <c:otherwise>
                                                             <span class="text-danger">Ngừng bán</span>
