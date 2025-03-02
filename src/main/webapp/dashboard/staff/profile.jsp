@@ -213,7 +213,7 @@
                         <div class="col d-grid gap-3">
                             <div class="d-grid gap-3 profile-info">
                                 <h3 style="margin: 0;">Thông tin người dùng</h3>
-                                <span><b>Họ tên:</b> ${staff.name}</span>
+                                <span><b>Họ tên:</b> ${staff.fullName}</span>
                                 <span><b>Email:</b> ${staff.email}</span>
                                 <span><b>Điện thoại:</b> ${staff.phone}</span>
                                 <span><b>Địa chỉ:</b> ${staff.address}</span>
@@ -231,7 +231,7 @@
                                 <!-- Modal of Update User Info -->
 
                                 <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <form action="staffprofile" method="POST">
+                                    <form action="staffprofile" method="POST" onsubmit="return validateStaffForm()">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -239,39 +239,44 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                 
-                                                        <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control" id="recipient-name" value="${staff.name}"name="name"placeholder="name@example.com">
-                                                            <label for="recipient-name">Full name</label>                        
-                                                        </div>  
-                                                        <div class="form-floating mb-3">
-                                                            <input type="tel" class="form-control" id="recipient-name" value="${staff.phone}" name="phone" placeholder="name@example.com">
-                                                            <label for="recipient-name">Phone</label>                        
-                                                        </div>
-                                                        <div class="form-floating mb-3">
-                                                            <input type="text" class="form-control" id="recipient-name"  value="${staff.address}" name="address" placeholder="name@example.com">
-                                                            <label for="recipient-name">Address</label>                        
-                                                        </div>
-                                                        <div class="form-floating mb-3">
-                                                            <select class="form-select" id="floatingSelect" name="gender" aria-label="Floating label select example">
-                                                                <option value="Nam" ${staff.gender == 'Nam' ? "selected" : ""}>Nam</option>
-                                                                <option value="Nữ" ${staff.gender == 'Nữ' ? "selected" : ""}>Nữ</option>
-                                                            </select>
-                                                            <label for="floatingSelect">Gender</label>                      
-                                                        </div>
-                                                        <div class="form-floating mb-3">
-                                                            <input type="date" class="form-control" id="recipient-name" value="${staff.birthdate}" name="birthdate" placeholder="name@example.com">
-                                                            <label for="recipient-name">Birthday</label>                        
-                                                        </div>
-                                                    </form>
+                                                    <div class="form-floating mb-3">
+                                                        <input type="text" class="form-control" name="name" value="${staff.fullName}" placeholder="Họ và tên">
+                                                        <label>Full name</label>
+                                                        <span id="nameError" class="text-danger"></span>
+                                                    </div>
+
+                                                    <div class="form-floating mb-3">
+                                                        <input type="tel" class="form-control" name="phone" value="${staff.phone}" placeholder="Số điện thoại">
+                                                        <label>Phone</label>
+                                                        <span id="phoneError" class="text-danger"></span>
+                                                    </div>
+
+                                                    <div class="form-floating mb-3">
+                                                        <input type="text" class="form-control" name="address" value="${staff.address}" placeholder="Địa chỉ">
+                                                        <label>Address</label>
+                                                        <span id="addressError" class="text-danger"></span>
+                                                    </div>
+
+                                                    <div class="form-floating mb-3">
+                                                        <select class="form-select" name="gender">
+                                                            <option value="Nam" ${staff.gender == 'Nam' ? "selected" : ""}>Nam</option>
+                                                            <option value="Nữ" ${staff.gender == 'Nữ' ? "selected" : ""}>Nữ</option>
+                                                        </select>
+                                                        <label>Gender</label>
+                                                    </div>
+
+                                                    <div class="form-floating mb-3">
+                                                        <input type="date" class="form-control" name="birthdate" value="${staff.birthdate}">
+                                                        <label>Birthday</label>
+                                                        <span id="birthdateError" class="text-danger"></span>
+                                                    </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                                    <input type="submit" value="Lưu"class="btn btn-primary">
+                                                    <input type="submit" value="Lưu" class="btn btn-primary">
                                                 </div>
                                             </div>
                                         </div>
-
                                     </form>
                                 </div>
 
@@ -283,6 +288,47 @@
             </div>
         </div>
         <script>
+            function validateStaffForm() {
+                let isValid = true;
+
+                let name = document.getElementsByName("name")[0].value.trim();
+                let phone = document.getElementsByName("phone")[0].value.trim();
+                let address = document.getElementsByName("address")[0].value.trim();
+                let birthdate = document.getElementsByName("birthdate")[0].value.trim();
+
+                document.getElementById("nameError").innerHTML = "";
+                document.getElementById("phoneError").innerHTML = "";
+                document.getElementById("addressError").innerHTML = "";
+                document.getElementById("birthdateError").innerHTML = "";
+
+                // Kiểm tra Họ và Tên
+                if (name === "") {
+                    document.getElementById("nameError").innerHTML = "Vui lòng nhập họ và tên!";
+                    isValid = false;
+                }
+
+                // Kiểm tra Số điện thoại (chỉ chấp nhận số, ít nhất 10 số)
+                let phonePattern = /^[0-9]{10,11}$/;
+                if (!phonePattern.test(phone)) {
+                    document.getElementById("phoneError").innerHTML = "Số điện thoại không hợp lệ!";
+                    isValid = false;
+                }
+
+                // Kiểm tra Địa chỉ
+                if (address === "") {
+                    document.getElementById("addressError").innerHTML = "Vui lòng nhập địa chỉ!";
+                    isValid = false;
+                }
+
+                // Kiểm tra Ngày sinh
+                if (birthdate === "") {
+                    document.getElementById("birthdateError").innerHTML = "Vui lòng chọn ngày sinh!";
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+
             function validatePassword() {
                 let isValid = true;
                 let oldPassword = document.getElementById("oldPassword").value.trim();

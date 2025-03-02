@@ -78,8 +78,7 @@ public class StaffProfileServlet extends HttpServlet {
         }
 
         try {
-            int staffId = Integer.parseInt(staffIdStr);
-            ProfileDAO profileDAO = new ProfileDAO();
+            int staffId = Integer.parseInt(staffIdStr);      
             StaffDAO staffDAO = new StaffDAO();
             Staff staff = staffDAO.getStaffById(staffId);
 
