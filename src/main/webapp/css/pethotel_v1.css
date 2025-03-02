@@ -134,46 +134,47 @@ h4 {
 }
 
 .pethotel-name {
-    font-size: 22px;
+    font-size: 30px;
     font-weight: bold;
     margin: 10px 0;
 }
 
 .pethotel-type {
     color: #D3A376;
-    font-size: 18px;
+    font-size: 25px;
 }
 
 .pethotel-price {
     font-weight: bold;
-    font-size: 20px;
+    font-size: 25px;
     background-color: #fcdb51;
     padding: 5px 10px;
-    border-radius: 5px;
-    display: inline-block;
-    margin: 10px 0;
+    border-radius: 10px;
+    max-width: 190px;
+    display: block; /* Đảm bảo xuống dòng */
+    text-align: left; /* Căn trái */
+    margin-left: -10px; /* Tạo khoảng cách với lề trái */
 }
 
 .pethotel-weight {
-    font-size: 16px;
+    font-size: 20px;
     color: #8C6E63;
 }
 
 /* Nút đặt phòng */
 .booking {
+    max-width: 210px; /* Giới hạn chiều rộng tối đa */
+    margin: 0 auto;
+    font-size: 25px;
+    font-weight: bold;
     display: block;
     text-decoration: none;
     background-color: #8C6E63;
     color: white;
     padding: 8px 16px;
-    border-radius: 5px;
+    border-radius: 10px;
     margin-top: 10px;
     transition: background 0.3s;
-}
-
-.booking:hover {
-    background-color: #fcdb51;
-    color: black;
 }
 
 /* Nút cuộn */
@@ -212,6 +213,14 @@ h4 {
     transition: all 0.4s ease-in-out;
 }
 
+.pethotel-card:hover .pethotel-weight {
+    color: #FFE0B2;
+    transition: all 0.4s ease-in-out;
+}
+.pethotel-card:hover .pethotel-type {
+    color: #FFE0B2;
+    transition: all 0.4s ease-in-out;
+}
 .pethotel-card:hover .cannang-text {
     color: #FFE0B2;
     transition: all 0.4s ease-in-out;
@@ -219,6 +228,7 @@ h4 {
 
 .pethotel-card:hover .booking {
     background-color: #fcdb51;
+    color: black;
     border: 1px solid #fcdb51;
     transition: all 0.4s ease-in-out;
 }
