@@ -8,14 +8,15 @@
 <%@page import="java.text.NumberFormat"%>
 <%@page import="java.util.Locale"%>
 <%@page import="model.PetHotel"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@include file="./components/header.jsp" %>
 <!DOCTYPE html>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Chi tiết phòng khách sạn thú cưng</title>
-        <link rel="stylesheet" href="./css/pethoteldetail_v2.css">
+        <link rel="stylesheet" href="./css/pethoteldetail_v1.css">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
     </head>
     <body>
@@ -69,7 +70,7 @@
                     <img src="<%= similarRoom.getRoomImage()%>" alt="<%= similarRoom.getRoomName()%>" 
                          onclick="window.location.href = 'pethoteldetail?id=<%= similarRoom.getRoomId()%>'">
                     <div class="pethotel-name"><%= similarRoom.getRoomName()%></div>
-                    <div class="pethotel-type"><%= similarRoom.getRoomType()%></div>
+                    <div class="pethotel-type">Dành cho <%= similarRoom.getRoomType()%></div>
                     <div class="pethotel-price"><%= NumberFormat.getInstance(new Locale("vi", "VN")).format(similarRoom.getPricePerNight())%> đ/đêm</div>
                     <div class="pethotel-weight">
                         Cân nặng: <%= similarRoom.getMinWeight()%> - <%= similarRoom.getMaxWeight()%> kg

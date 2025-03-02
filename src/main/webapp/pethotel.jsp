@@ -3,9 +3,9 @@
 <%@page import="java.util.List"%>
 <%@page import="dao.PetHotelDAO"%>
 <%@page import="model.PetHotel"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@include file="./components/header.jsp" %>
 <!DOCTYPE html>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -137,5 +137,6 @@
                 });
             });
         </script>
+        
     </body>
 </html>
