@@ -166,7 +166,7 @@ public class ProductDAO {
         return false;
     }
 
-    public boolean createProduct(Product product) {
+    public boolean addProduct(Product product) {
         String query = "INSERT INTO Products (category_id, product_name, product_petType, product_price, product_image, stock, description, is_active) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try {
@@ -187,11 +187,11 @@ public class ProductDAO {
         return false;
     }
 
-    public List<Product> filterByPrice(List<Product> products, String giaFilter) {
+    public List<Product> filterByPrice(List<Product> products, String priceFilter) {
         List<Product> filteredList = new ArrayList<>();
         for (Product product : products) {
             double price = product.getProductPrice();
-            switch (giaFilter) {
+            switch (priceFilter) {
                 case "1":
                     if (price < 100000) {
                         filteredList.add(product);
@@ -231,11 +231,11 @@ public class ProductDAO {
         return filteredList;
     }
 
-    public List<Product> sortProducts(List<Product> products, String sapxepFilter) {
-        if (sapxepFilter == null || sapxepFilter.isEmpty()) {
+    public List<Product> sortProducts(List<Product> products, String sortFilter) {
+        if (sortFilter == null || sortFilter.isEmpty()) {
             return products;
         }
-        switch (sapxepFilter) {
+        switch (sortFilter) {
             case "1":
                 products.sort(Comparator.comparingDouble(Product::getProductPrice));
                 break;

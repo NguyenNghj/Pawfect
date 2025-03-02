@@ -17,7 +17,7 @@ import model.Category;
  *
  * @author Nguyen Tri Nghi - CE180897
  */
-public class CreateCategoryServlet extends HttpServlet {
+public class AddCategoryServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -57,7 +57,7 @@ public class CreateCategoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/dashboard/admin/createcategory.jsp").forward(request, response);
+        request.getRequestDispatcher("/dashboard/admin/addcategory.jsp").forward(request, response);
     }
 
     /**
@@ -76,7 +76,7 @@ public class CreateCategoryServlet extends HttpServlet {
         boolean isActive = Boolean.parseBoolean(request.getParameter("isActive"));
         Category category = new Category(categoryName, isActive);
 
-        boolean isCreated = categoryDAO.createCategory(category);
+        boolean isCreated = categoryDAO.addCategory(category);
 
         if (isCreated) {
             // Redirect to the category list page or success page
