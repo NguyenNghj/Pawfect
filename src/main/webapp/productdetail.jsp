@@ -8,10 +8,10 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">       
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <link rel="stylesheet" href="./css/productdetail.css">
         <title>${product.productName}</title>
     </head>
@@ -69,6 +69,149 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="review">
+                        <h1 class="mb-4">Đánh giá - Nhận xét từ khách hàng</h1>
+
+                        <!-- Rating Summary Section -->
+                        <div class="rating-summary p-4 mb-4">
+                            <div class="row align-items-center">
+                                <div class="col-md-3 text-center mb-3 mb-md-0">
+                                    <div class="rating-average">${averageStar}/5</div>
+                                    <div class="stars my-2">
+                                        <c:forEach var="i" begin="1" end="5">
+                                            <c:choose>                                            
+                                                <c:when test="${i <= averageStar}">
+                                                    <i class="fas fa-star" style="color: #FFD43B;"></i>
+                                                </c:when>
+
+                                                <c:when test="${i - 1 < averageStar && i > averageStar}">
+                                                    <i class="fas fa-star-half-alt" style="color: #FFD43B;"></i>
+                                                </c:when>
+
+                                                <c:otherwise>
+                                                    <i class="far fa-star" style="color: #FFD43B;"></i>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+
+
+                                    </div>
+                                    <div class="rating-count">(${totalFeedback} đánh giá)</div>
+                                    <div class="mt-3">
+                                        <button class="btn btn-primary"
+                                                data-bs-toggle="modal" data-bs-target="#feedbackModal"                   
+                                                >
+                                            Gửi đánh giá của bạn
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="feedbackModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <div class="modal-title fs-5" id="feedbackModalLabel">
+                                                    <span>Đánh giá sản phẩm</span>
+                                                    <h1><b>${product.productName}</b></h1>
+                                                </div>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form id="feedbackForm" action="/dashboard/staff/feedbackmanagement?action=feedback" method="post">
+                                                <div class="modal-body">
+                                                    <div class="input-group mb-3">
+                                                        <label class="input-group-text" for="inputGroupSelect01">Đánh giá của bạn về sản phẩm</label>
+                                                        <select name="rating" class="form-select" id="customer-rating" required>
+                                                            <option selected>Chọn</option>
+                                                            <option value="5">5</option>
+                                                            <option value="4">4</option>
+                                                            <option value="3">3</option>
+                                                            <option value="2">2</option>
+                                                            <option value="1">1</option>
+                                                        </select>
+                                                        <label class="input-group-text" for="inputGroupSelect01"><i class="fas fa-star" style="color: #FFD43B;"></i></label>
+                                                    </div>
+                                                    <div class="form-floating">
+                                                        <textarea name="comment" class="form-control" placeholder="Leave a comment here" id="customer-comment" style="height: 140px" required></textarea>
+                                                        <label for="floatingTextarea2">Nhập nội dung đánh giá của bạn về sản phẩm này</label>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
+                                                    <button type="button" class="btn btn-primary" id="confirm-btn"
+                                                            data-product-id="${param.id}"
+                                                            >
+                                                        Gửi đánh giá
+                                                    </button>
+                                                </div>
+                                                <input type="hidden" name="productId" id="productId">
+                                            </form>                                            
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-9">
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <button class="btn btn-outline-secondary btn-sm">Tất cả</button>
+                                        <button class="btn btn-outline-primary btn-sm active">5 Sao (4)</button>
+                                        <button class="btn btn-outline-secondary btn-sm">4 Sao (2)</button>
+                                        <button class="btn btn-outline-secondary btn-sm">3 Sao (2)</button>
+                                        <button class="btn btn-outline-secondary btn-sm">2 Sao (0)</button>
+                                        <button class="btn btn-outline-secondary btn-sm">1 Sao (0)</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Reviews List -->
+                        <div class="reviews-list">
+
+                            <c:if test="${empty feedbacks}">
+                                <div>
+                                    <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
+                                        Không có đánh giá nào!
+                                    </h5>
+                                </div>
+                            </c:if>
+
+                            <c:forEach items="${feedbacks}" var="f">
+                                <!-- Review 1 (Example with employee response) -->
+                                <div class="review-item p-3 mb-3">
+                                    <div class="reviewer-name fw-bold">${f.customerName}</div>
+                                    <div class="stars">
+                                        <c:forEach var="i" begin="1" end="5">
+                                            <c:choose>
+                                                <c:when test="${i <= f.rating}">
+                                                    <i class="fas fa-star" style="color: #FFD43B;"></i>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <i class="far fa-star" style="color: #FFD43B;"></i>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </div>
+                                    <div class="mb-2">
+                                        <span style="color: #95a5a6;">${f.feedbackDate}</span>
+                                    </div>
+                                    <p class="review-text">${f.comment}</p>
+
+                                    <c:if test="${not empty f.reply}">
+                                        <!-- Employee Response -->
+                                        <div class="employee-response mt-3">
+                                            <div class="employee-name fw-bold">Nhân viên ${f.staffName}</div>
+                                            <p class="response-text">${f.reply}</p>
+                                        </div>
+                                    </c:if>
+
+                                </div>
+                            </c:forEach>
+
                         </div>
                     </div>
                 </div>
@@ -133,7 +276,8 @@
                     </c:if>
                 </div>
             </div>           
-        </div>                     
+        </div>   
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
@@ -297,5 +441,96 @@
                 });
             });
         </script>
+
+        <script>
+            // Bắt sự kiện khi nhấn nút gui
+            document.getElementById("confirm-btn").addEventListener("click", function (event) {
+                event.preventDefault(); // Ngăn form gửi ngay lập tức           
+
+                function getCookie(name) {
+                    let cookies = document.cookie.split(';'); // Lấy tất cả cookie
+                    for (let i = 0; i < cookies.length; i++) {
+                        let cookie = cookies[i].trim(); // Xóa khoảng trắng 2 bên
+                        if (cookie.startsWith(name + "=")) {
+                            return cookie.substring(name.length + 1); // Lấy giá trị của cookie
+                        }
+                    }
+                    return null; // Trả về null nếu không tìm thấy cookie
+                }
+
+                // Kiểm tra xem cookie "staffId" có tồn tại không
+                let customerId = getCookie("customerId");
+
+                if (customerId) {
+                    console.log("Cookie customerId", customerId);
+                } else {
+                    console.log("Không tìm thấy cookie customerId.");
+                    Swal.fire({
+                        title: "Bạn chưa đăng nhập!",
+                        text: "Vui lòng đăng nhập trước khi gửi đánh giá.",
+                        icon: "warning",
+                        confirmButtonText: "OK"
+                    });
+                    return;
+                }
+
+                // Lấy nội dung nội dung đánh giá của khách
+                let commentContent = document.getElementById("customer-comment").value.trim();
+                let ratingContent = document.getElementById("customer-rating").value;
+
+                let productId = this.getAttribute("data-product-id");
+
+                console.log(productId);
+
+                document.getElementById("productId").value = productId;
+
+                // Kiểm tra nếu ô nội dung trống
+                if (ratingContent === "Chọn") {
+                    Swal.fire({
+                        title: "Ðánh giá không được để trống!",
+                        text: "Vui lòng đánh giá trước khi gửi.",
+                        icon: "error"
+                    });
+                    return; // Dừng thực thi nếu ô nội dung trống
+                }
+
+                // Kiểm tra nếu ô nội dung trống
+                if (commentContent === "") {
+                    Swal.fire({
+                        title: "Nội dung đánh giá không được để trống!",
+                        text: "Vui lòng nhập nội dung trước khi gửi.",
+                        icon: "error"
+                    });
+                    return; // Dừng thực thi nếu ô nội dung trống
+                }
+
+                // Nếu hợp lệ, hiển thị xác nhận
+                Swal.fire({
+                    title: "Xác nhận gửi?",
+                    text: "Bạn có chắc chắn muốn gửi đánh giá này?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Đồng ý!",
+                    cancelButtonText: "Hủy!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Hiển thị alert thành công
+                        Swal.fire({
+                            title: "Thành công!",
+                            text: "Đánh giá đã được gửi.",
+                            icon: "success",
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            // Gửi form sau khi hiện alert xong
+                            document.getElementById("feedbackForm").submit();
+                        });
+                    }
+                });
+            });
+        </script>
+     
     </body>
 </html>

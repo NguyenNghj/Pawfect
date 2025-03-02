@@ -162,7 +162,7 @@
                                                 <th scope="col" style="width: 11%;">Đánh giá</th>
                                                 <th scope="col">Nhận xét</th>        
                                                 <th scope="col" style="width: 9%;">Trạng thái</th>
-                                                <th scope="col" style="width: 13%;">Hành động</th>
+                                                <th scope="col" style="width: 14%;">Hành động</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -191,22 +191,39 @@
                                                             <span class="text-success fw-bold">Hiện</span>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <span class="text-warning fw-bold">Ẩn</span>
+                                                            <span class="text-danger fw-bold">Ẩn</span>
                                                         </c:otherwise>
                                                     </c:choose>                                                   
                                                 </td>
                                                 <td>
-                                                    <button type="button" class="btn btn-primary">
+                                                    <button type="button" class="btn btn-primary open-modal"
+                                                            data-bs-toggle="modal" data-bs-target="#feedbackModal"
+                                                            data-feedback-id="${f.feedbackId}"
+                                                            data-product-name="${f.productName}"
+                                                            data-customer-name="${f.customerName}"
+                                                            data-rating="${f.rating}"
+                                                            data-comment="${f.comment}"
+                                                            data-reply="${f.reply}"
+                                                            data-status="${param.status}"
+                                                            >
                                                         Chi tiết
                                                     </button>
                                                     <c:choose>
                                                         <c:when test="${f.isVisible == true}">
-                                                            <button type="button" class="btn btn-danger" id="hideButton${f.feedbackId}">
+                                                            <button type="button" class="btn btn-danger hideButton1"
+                                                                    data-feedback-id="${f.feedbackId}"
+                                                                    data-customer-name="${f.customerName}"
+                                                                    data-status="${param.status}"
+                                                                    >
                                                                 Ẩn
                                                             </button>
                                                         </c:when>
                                                         <c:otherwise>
-                                                            <button type="button" class="btn btn-success" id="hideButton${f.feedbackId}">
+                                                            <button type="button" class="btn btn-success hideButton2"
+                                                                    data-feedback-id="${f.feedbackId}"
+                                                                    data-customer-name="${f.customerName}"
+                                                                    data-status="${param.status}"
+                                                                    >
                                                                 Hiện
                                                             </button>
                                                         </c:otherwise>
@@ -217,7 +234,59 @@
 
                                     </tbody>
                                 </table>
-                                        
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="feedbackModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="feedbackModalLabel">  </h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <form id="feedbackForm" action="feedbackmanagement?&action=reply" method="post">
+                                                <div class="modal-body">
+
+                                                    <div class="mb-3">
+                                                        <label for="product-name" class="col-form-label"><b>Sản phẩm:</b></label>
+                                                        <input type="text" class="form-control" id="product-name" readonly>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col">
+                                                            <label for="customer-name" class="col-form-label"><b>Khách hàng:</b></label>
+                                                            <input type="text" class="form-control" id="customer-name" readonly>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <label for="fb-rating" class="col-form-label"><b>Đánh giá:</b></label>
+                                                            <div class="input-group"> 
+                                                                <input type="text" class="form-control" id="fb-rating" value="5" readonly>
+                                                                <span class="input-group-text">
+                                                                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="fb-comment" class="col-form-label"><b>Bình luận của khách:</b></label>
+                                                        <textarea style="height: 80px;" class="form-control" id="fb-comment" readonly></textarea>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="fb-reply" class="col-form-label"><b>Phản hồi của nhân viên:</b></label>
+                                                        <textarea style="height: 80px;" name="reply" class="form-control" id="fb-reply" required></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                    <button type="submit" class="btn btn-primary" id="confirm-btn">Lưu</button>
+                                                </div>
+
+                                                <input type="hidden" name="feedbackId" id="feedback-id">
+                                                <input type="hidden" name="status" id="status">
+                                            </form>                                       
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!-- Nếu 'không' có đánh giá nào! -->
                                 <c:if test="${empty feedbacks}">                     
                                     <div>
@@ -240,6 +309,172 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+
+
+                // Bắt sự kiện khi nhấn nút Lưu
+                document.getElementById("confirm-btn").addEventListener("click", function (event) {
+                    event.preventDefault(); // Ngăn form gửi ngay lập tức
+
+                    // Lấy nội dung phản hồi của nhân viên
+                    let replyContent = document.getElementById("fb-reply").value.trim();
+
+                    // Kiểm tra nếu ô phản hồi trống
+                    if (replyContent === "") {
+                        Swal.fire({
+                            title: "Phản hồi không được để trống!",
+                            text: "Vui lòng nhập phản hồi trước khi lưu.",
+                            icon: "error"
+                        });
+                        return; // Dừng thực thi nếu ô phản hồi trống
+                    }
+
+                    // Nếu hợp lệ, hiển thị xác nhận
+                    Swal.fire({
+                        title: "Xác nhận lưu?",
+                        text: "Bạn có chắc chắn muốn lưu phản hồi này?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Đồng ý!",
+                        cancelButtonText: "Hủy!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Hiển thị alert thành công
+                            Swal.fire({
+                                title: "Thành công!",
+                                text: "Phản hồi đã được lưu.",
+                                icon: "success",
+                                timer: 1500,
+                                showConfirmButton: false
+                            }).then(() => {
+                                // Gửi form sau khi hiện alert xong
+                                document.getElementById("feedbackForm").submit();
+                            });
+                        }
+                    });
+                });
+
+
+
+                // Lắng nghe sự kiện click trên các nút mở modal
+                document.querySelectorAll(".open-modal").forEach(button => {
+                    button.addEventListener("click", function () {
+                        // Lấy dữ liệu từ thuộc tính data-*
+                        let feedbackId = this.getAttribute("data-feedback-id");
+                        let productName = this.getAttribute("data-product-name");
+                        let customerName = this.getAttribute("data-customer-name");
+                        let rating = this.getAttribute("data-rating");
+                        let comment = this.getAttribute("data-comment");
+                        let reply = this.getAttribute("data-reply");
+                        let status = this.getAttribute("data-status");
+
+                        console.log(feedbackId);
+                        console.log(productName);
+                        console.log(customerName);
+                        console.log(rating);
+                        console.log(comment);
+                        console.log(reply);
+
+                        // Gán dữ liệu vào modal
+                        document.getElementById("product-name").value = productName;
+                        document.getElementById("customer-name").value = customerName;
+                        document.getElementById("fb-rating").value = rating;
+                        document.getElementById("fb-comment").value = comment;
+                        document.getElementById("fb-reply").value = reply || ""; // Nếu null thì hiển thị chuỗi rỗng
+                        // Cập nhật tiêu đề modal
+                        document.getElementById("feedbackModalLabel").textContent = "Phản hồi #" + feedbackId;
+                        document.getElementById("feedback-id").value = feedbackId;
+                        document.getElementById("status").value = status;
+
+                    });
+                });
+
+
+                // Xóa dữ liệu khi modal đóng
+                let feedbackModal = document.getElementById("feedbackModal");
+                feedbackModal.addEventListener("hidden.bs.modal", function () {
+                    document.getElementById("product-name").value = "";
+                    document.getElementById("customer-name").value = "";
+                    document.getElementById("fb-rating").value = "";
+                    document.getElementById("fb-comment").value = "";
+                    document.getElementById("fb-reply").value = "";
+                });
+
+
+                document.querySelectorAll(".hideButton1").forEach(button => {
+                    button.addEventListener("click", function () {
+                        let feedbackId = this.getAttribute("data-feedback-id");
+                        let customerName = this.getAttribute("data-customer-name");
+                        let status = this.getAttribute("data-status");
+
+                        // Kiểm tra xem có lấy đúng feedbackId không
+                        console.log("Feedback ID:", feedbackId);
+                        console.log("Customer Name:", customerName);
+                        console.log("Status:", status);
+
+                        Swal.fire({
+                            title: "Xác nhận ẩn đánh giá?",
+                            text: "Bạn có chắc muốn ẩn đánh giá của khách hàng " + customerName + "?",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Đồng ý!",
+                            cancelButtonText: "Huỷ!"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                Swal.fire({
+                                    title: "Đã ẩn!",
+                                    text: "Đánh giá của khách hàng đã bị ẩn.",
+                                    icon: "success"
+                                }).then(() => {
+                                    // Chuyển trang sau khi thông báo hoàn tất
+                                    window.location.href = "feedbackmanagement?action=isVisible&feedbackId=" + feedbackId + "&status=" + status;
+                                });
+                            }
+                        });
+                    });
+                });
+
+
+                document.querySelectorAll(".hideButton2").forEach(button => {
+                    button.addEventListener("click", function () {
+                        let feedbackId = this.getAttribute("data-feedback-id");
+                        let customerName = this.getAttribute("data-customer-name");
+                        let status = this.getAttribute("data-status");
+
+                        // Kiểm tra xem có lấy đúng feedbackId không
+                        console.log("Feedback ID:", feedbackId);
+                        console.log("Customer Name:", customerName);
+                        console.log("Status:", status);
+
+                        Swal.fire({
+                            title: "Xác nhận hiện đánh giá?",
+                            text: "Bạn có chắc muốn hiện đánh giá của khách hàng " + customerName + "?",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Đồng ý!",
+                            cancelButtonText: "Huỷ!"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                Swal.fire({
+                                    title: "Đã hiện!",
+                                    text: "Đánh giá của khách hàng đã hiện.",
+                                    icon: "success"
+                                }).then(() => {
+                                    // Chuyển trang sau khi thông báo hoàn tất
+                                    window.location.href = "feedbackmanagement?action=isVisible&feedbackId=" + feedbackId + "&status=" + status;
+                                });
+                            }
+                        });
+                    });
+                });
+            });
+        </script>
     </body>
 </html>

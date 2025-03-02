@@ -113,16 +113,16 @@
                                     <img class="profile-img" src="https://img.freepik.com/foto-gratis/hombre-tiro-medio-peinado-afro_23-2150677136.jpg" alt="">
                                 </button>
                                 <ul class="dropdown-menu ps-2 pe-2 pt-2 pb-2">
-                                    <div class="d-grid gap-2"                                       
-                                         <% if ("Admin".equals(staffRole)) { %>
-                                         <li class="profile-img-switch-employee d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
-                                        <i class="fa-solid fa-repeat"></i>
-                                        <a class="dropdown-item" style="padding: 0;" href="admin/dashboard.jsp">Switch to admin</a>
+                                    <div class="d-grid gap-2">                                       
+                                        <% if ("Admin".equals(staffRole)) { %>
+                                        <li class="profile-img-switch-employee d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
+                                            <i class="fa-solid fa-repeat"></i>
+                                            <a class="dropdown-item" style="padding: 0;" href="admin/dashboard.jsp">Đổi sang NV</a>
                                         </li>
-                                        <% }%>
+                                        <% } %>
                                         <li class="profile-img-switch-store d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-store"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="#">Go to store</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="#">Tới cửa hàng</a>
                                         </li>
                                         <hr style="margin: 0;">
                                         <li class="profile-img-info1 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
@@ -131,7 +131,7 @@
                                         </li>
                                         <li class="profile-img-info2 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-right-from-bracket" style="font-size: 20px;"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="logoutstaff">Logout</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="logoutstaff">Đăng xuất</a>
                                         </li>
                                     </div>
                                 </ul>

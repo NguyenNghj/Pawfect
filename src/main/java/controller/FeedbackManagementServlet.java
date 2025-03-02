@@ -8,6 +8,7 @@ import dao.FeedbackDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -65,6 +66,15 @@ public class FeedbackManagementServlet extends HttpServlet {
                 case "view":
                     viewFeedbackList(request, response);
                     break;
+                case "isVisible":
+                    updateIsVisibleFeedback(request, response);
+                    break;
+                case "reply":
+                    replyFeedback(request, response);
+                    break;
+                case "feedback":
+                    feedbackProduct(request, response);
+                    break;
                 default:
                     // listNhanVien(request, response);
                     break;
@@ -74,14 +84,99 @@ public class FeedbackManagementServlet extends HttpServlet {
         }
     }
     
+    private void feedbackProduct(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+
+        String customerId = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("customerId".equals(cookie.getName())) {
+                    customerId = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        System.out.println("CustomerId: " + customerId);
+
+        int productId = Integer.parseInt(request.getParameter("productId"));
+        System.out.println("ProductId: " + productId);
+        int intCstomerId = Integer.parseInt(customerId);
+        int rating = Integer.parseInt(request.getParameter("rating"));
+        System.out.println("Rating: " + rating);
+        String comment = request.getParameter("comment");
+        System.out.println("Comment: " + comment);
+
+        boolean update = FeedbackDAO.addFeedback(intCstomerId, productId, rating, comment);
+        if (update) {
+            System.out.println("Danh gia thanh cong.");
+            response.sendRedirect("/product?id=" + productId);
+        } else {
+            System.out.println("Danh gia that bai!!");
+        }
+
+    }
+
+    private void replyFeedback(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+
+        String staffId = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("staffId".equals(cookie.getName())) {
+                    staffId = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        System.out.println("StaffId: " + staffId);
+
+        int feedbackId = Integer.parseInt(request.getParameter("feedbackId"));
+        System.out.println("FeedbackId: " + feedbackId);
+        int intStaffId = Integer.parseInt(staffId);
+        String reply = request.getParameter("reply");
+        System.out.println("Reply: " + reply);
+        String status = request.getParameter("status");
+
+        boolean update = FeedbackDAO.replyFeedback(intStaffId, reply, feedbackId);
+        if (update) {
+            System.out.println("Phan hoi danh gia thanh cong.");
+            response.sendRedirect("feedbackmanagement?action=view" + "&status=" + status);
+        } else {
+            System.out.println("Phan hoi danh gia that bai!!");
+        }
+
+    }
+
+    private void updateIsVisibleFeedback(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+
+        int feedbackId = Integer.parseInt(request.getParameter("feedbackId"));
+        System.out.println("FeedbackId: " + feedbackId);
+        String status = request.getParameter("status");
+        System.out.println("Status: " + status);
+
+        boolean update = FeedbackDAO.isVisibleFeedback(feedbackId);
+        if (update) {
+            System.out.println("Thay doi trang thai danh gia thanh cong.");
+            response.sendRedirect("feedbackmanagement?action=view" + "&status=" + status);
+        } else {
+            System.out.println("Thay doi trang thai danh gia that bai!!");
+        }
+
+    }
+
     private void viewFeedbackList(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         List<Feedback> feedbacks = null;
         try {
 //            int customerId = 1;
             int status = Integer.parseInt(request.getParameter("status"));
-            
-            if(status != 0){
+
+            if (status != 0) {
                 feedbacks = FeedbackDAO.getProductFeedbackByRating(status);
             } else {
                 feedbacks = FeedbackDAO.getAllProductFeedback();
@@ -106,7 +201,6 @@ public class FeedbackManagementServlet extends HttpServlet {
 //                default:
 //                    feedbacks = FeedbackDAO.getAllProductFeedback();
 //            }
-
             request.setAttribute("feedbackStatus", status);
             request.setAttribute("feedbacks", feedbacks);
             request.getRequestDispatcher("/dashboard/staff/feedback.jsp").forward(request, response);

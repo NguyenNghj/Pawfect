@@ -21,6 +21,44 @@ public class FeedbackDAO {
 
     protected static Connection Con = null;
 
+    protected static String Add_Feedback = "INSERT INTO Feedbacks (customer_id, product_id, rating, comment) VALUES\n"
+            + "(?, ?, ?, ?)";
+
+    protected static String Get_Product_Feedback_By_ProductId = "SELECT\n"
+            + "    f.feedback_id,\n"
+            + "    f.customer_id,\n"
+            + "    f.staff_id,\n"
+            + "    f.product_id,\n"
+            + "    c.full_name AS customer_name,\n"
+            + "    s.full_name AS staff_name,\n"
+            + "    p.product_name,\n"
+            + "    f.rating,\n"
+            + "    f.comment,\n"
+            + "    f.reply,\n"
+            + "    f.feedback_date,\n"
+            + "    f.is_visible\n"
+            + "FROM\n"
+            + "    Feedbacks f\n"
+            + "JOIN\n"
+            + "    Customers c ON f.customer_id = c.customer_id\n"
+            + "LEFT JOIN\n"
+            + "    Staffs s ON f.staff_id = s.staff_id\n"
+            + "JOIN\n"
+            + "    Products p ON f.product_id = p.product_id\n"
+            + "WHERE\n"
+            + "    f.product_id = ?"
+            + "ORDER BY\n"
+            + "     f.feedback_date DESC";
+
+    protected static String Reply_Feedback = "UPDATE Feedbacks\n"
+            + "SET staff_id = ?,\n"
+            + "	reply = ?\n"
+            + "WHERE feedback_id = ?";
+
+    protected static String Is_Visible_Feedback = "UPDATE Feedbacks\n"
+            + "SET is_visible = CASE WHEN is_visible = 1 THEN 0 ELSE 1 END\n"
+            + "WHERE feedback_id = ?";
+
     protected static String Get_Product_Feedback_By_Rating = "SELECT\n"
             + "    f.feedback_id,\n"
             + "    f.customer_id,\n"
@@ -66,6 +104,103 @@ public class FeedbackDAO {
             + "    Staffs s ON f.staff_id = s.staff_id\n"
             + "JOIN\n"
             + "    Products p ON f.product_id = p.product_id";
+    
+    
+    public static boolean addFeedback(int customerId, int productId, int rating, String comment) {
+        boolean rs = false;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Add_Feedback);
+            ps.setInt(1, customerId);
+            ps.setInt(2, productId);
+            ps.setInt(3, rating);
+            ps.setString(4, comment);
+            rs = ps.executeUpdate() > 0;
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return rs;
+    }
+
+    public static List<Feedback> getProductFeedbackByProductId(int productId) {
+        List<Feedback> list = new ArrayList<>();
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Get_Product_Feedback_By_ProductId);
+            ps.setInt(1, productId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Feedback o = new Feedback(
+                        rs.getInt("feedback_id"),
+                        rs.getInt("customer_id"),
+                        rs.getInt("staff_id"),
+                        rs.getInt("product_id"),
+                        rs.getString("customer_name"),
+                        rs.getString("staff_name"),
+                        rs.getString("product_name"),
+                        rs.getInt("rating"),
+                        rs.getString("comment"),
+                        rs.getString("reply"),
+                        rs.getTimestamp("feedback_date"),
+                        rs.getBoolean("is_visible")
+                );
+                list.add(o);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return list;
+    }
+
+    public static boolean replyFeedback(int staffId, String reply, int feedbackId) {
+        boolean update = false;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Reply_Feedback);
+            ps.setInt(1, staffId);
+            ps.setString(2, reply);
+            ps.setInt(3, feedbackId);
+            update = ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return update;
+    }
+
+    public static boolean isVisibleFeedback(int feedbackId) {
+        boolean update = false;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Is_Visible_Feedback);
+            ps.setInt(1, feedbackId);
+            update = ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return update;
+    }
 
     public static List<Feedback> getProductFeedbackByRating(int rating) {
         List<Feedback> list = new ArrayList<>();

@@ -5,6 +5,7 @@
 package controller;
 
 import dao.CartDAO;
+import dao.FeedbackDAO;
 import dao.ProductDAO;
 import dao.ProductDAO;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import model.CartItem;
+import model.Feedback;
 import model.Product;
 
 /**
@@ -88,6 +90,22 @@ public class ProductDetailServlet extends HttpServlet {
         }
         // Set tong so luong san pham trong gio hang
         request.setAttribute("totalQuantity", totalQuantity);
+        
+        List<Feedback> feedbacks = FeedbackDAO.getProductFeedbackByProductId(productId);
+        int totalFeedback = 0;
+        double totalStar = 0;
+        double averageStar = 0;
+        for (Feedback feedback : feedbacks) {
+            totalFeedback += 1;
+            totalStar += feedback.getRating();
+        }
+        System.out.println("totalFeedback: " + totalFeedback);
+        System.out.println("averageStar: " + averageStar);
+        
+        averageStar = totalStar / (double) totalFeedback;
+        request.setAttribute("feedbacks", feedbacks);
+        request.setAttribute("totalFeedback", totalFeedback);
+        request.setAttribute("averageStar", averageStar);
 
         // Gửi dữ liệu sản phẩm sang trang JSP
         List<Product> productList = productDAO.getAllActiveProductsByCategoryName(product.getCategoryName());
