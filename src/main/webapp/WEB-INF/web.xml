@@ -161,6 +161,22 @@
         <servlet-class>controller.LogoutAdminServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>StaffProfileServlet</servlet-name>
+        <servlet-class>controller.StaffProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangeStaffPasswordServlet</servlet-name>
+        <servlet-class>controller.ChangeStaffPasswordServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AdminProfileServlet</servlet-name>
+        <servlet-class>controller.AdminProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangeAdminPasswordServlet</servlet-name>
+        <servlet-class>controller.ChangeAdminPasswordServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>StaffServlet</servlet-name>
         <servlet-class>controller.StaffServlet</servlet-class>
     </servlet>
@@ -355,6 +371,22 @@
     <servlet-mapping>
         <servlet-name>LogoutAdminServlet</servlet-name>
         <url-pattern>/dashboard/admin/logoutadmin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffProfileServlet</servlet-name>
+        <url-pattern>/dashboard/staff/staffprofile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeStaffPasswordServlet</servlet-name>
+        <url-pattern>/dashboard/staff/changestaffpassword</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminProfileServlet</servlet-name>
+        <url-pattern>/dashboard/admin/adminprofile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeAdminPasswordServlet</servlet-name>
+        <url-pattern>/dashboard/admin/changeadminpassword</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>StaffServlet</servlet-name>
