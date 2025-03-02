@@ -10,6 +10,7 @@ import dao.ProductDAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -77,12 +78,26 @@ public class ProductListServlet extends HttpServlet {
             products = productDAO.filterByPetType(products, petTypeFilter);
         }
 
-        int customerId = 1;
+        String username = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("customerId".equals(cookie.getName())) {
+                    username = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
         int totalQuantity = 0;
-        List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
-        if (!cartItems.isEmpty()) {
-            for (CartItem cartItem : cartItems) {
-                totalQuantity += cartItem.getQuantity();
+        if (username != null) {
+            int customerId = Integer.parseInt(username);
+
+            List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+            if (!cartItems.isEmpty()) {
+                for (CartItem cartItem : cartItems) {
+                    totalQuantity += cartItem.getQuantity();
+                }
             }
         }
 

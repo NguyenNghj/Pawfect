@@ -279,7 +279,7 @@
             </section>
         </div>
 
-        <div class="tieuchi">
+        <div class="tieuchi mb-5">
             <div class="container">
                 <div class="row tatcatieuchi">
                     <div class="col-md-3 col-6">
@@ -326,6 +326,85 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script> 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script>
+
+            $('.add-to-cart').click(function (event) {
+
+                // Hàm lấy giá trị cookie theo tên
+                function getCookie(name) {
+                    event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
+
+                    let cookies = document.cookie.split("; ");
+                    for (let i = 0; i < cookies.length; i++) {
+                        let cookie = cookies[i].split("=");
+                        if (cookie[0] === name) {
+                            return cookie[1]; // Trả về giá trị cookie
+                        }
+                    }
+                    return null;
+                }
+
+                // Kiểm tra xem cookie có tồn tại không (ví dụ: 'cartItems')
+                let customerCookie = getCookie("customerId");
+
+                if (!customerCookie) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Bạn chưa đăng nhập!",
+                        text: "Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng."
+                    });
+                    return;
+                }
+
+                var productId = $(this).data('product-id');
+                console.log("productId:", productId);
+                var productName = $(this).data('product-name');
+                console.log("productName:", productName);
+                var action = "add";
+                var customerId = customerCookie; // ID của khách hàng (cần lấy từ session hoặc cookie)
+
+                $.ajax({
+                    url: "cart",
+                    type: "POST",
+                    data: {
+                        action: action,
+                        productId: productId,
+                        customerId: customerId,
+                        quantity: "1"
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status === "success") {
+
+                            $("#cart-count").text(response.totalQuantity); // Cập nhật phần tử trong header của bạn
+
+                            console.log("Đã thêm sản phẩm vào giỏ hàng!");
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success",
+                                title: "Thêm giỏ hàng thành công!",
+                                text: productName + " đã được thêm vào giỏ hàng.",
+                                showConfirmButton: false,
+                                backdrop: false,
+                                width: '300px',
+                                timer: 3000,
+                                returnFocus: false
+                            });
+                        } else {
+                            console.error("Lỗi thêm vào giỏ hàng:", response.message);
+                            alert("Lỗi: " + response.message);
+                        }
+                    },
+                    error: function (error) {
+                        console.error("Lỗi AJAX:", error);
+                        alert("Lỗi kết nối đến server.");
+                    }
+                });
+            });
+        </script>
+        
+        <%@include file="./components/footer.jsp" %>
     </body>
 
 </html>
