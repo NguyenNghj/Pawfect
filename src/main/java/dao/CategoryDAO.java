@@ -42,6 +42,27 @@ public class CategoryDAO {
         return categories;
     }
 
+    public List<Category> getAllActiveCategories() {
+        List<Category> categories = new ArrayList<>();
+        String query = "SELECT category_id, category_name FROM Category WHERE is_active = 1";
+
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                categories.add(new Category(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        true // Mặc định là đang hoạt động
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Nên thay bằng logging trong thực tế
+        }
+        return categories;
+    }
+
     public Category getCategoryById(int categoryId) {
         String query = "SELECT category_id, category_name, is_active FROM Category WHERE category_id = ?";
         try {
