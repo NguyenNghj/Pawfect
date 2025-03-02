@@ -72,6 +72,9 @@ public class FeedbackManagementServlet extends HttpServlet {
                 case "reply":
                     replyFeedback(request, response);
                     break;
+                case "feedback":
+                    feedbackProduct(request, response);
+                    break;
                 default:
                     // listNhanVien(request, response);
                     break;
@@ -79,6 +82,40 @@ public class FeedbackManagementServlet extends HttpServlet {
         } catch (ServletException | IOException | SQLException e) {
             throw new ServletException(e);
         }
+    }
+    
+    private void feedbackProduct(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+
+        String customerId = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("customerId".equals(cookie.getName())) {
+                    customerId = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        System.out.println("CustomerId: " + customerId);
+
+        int productId = Integer.parseInt(request.getParameter("productId"));
+        System.out.println("ProductId: " + productId);
+        int intCstomerId = Integer.parseInt(customerId);
+        int rating = Integer.parseInt(request.getParameter("rating"));
+        System.out.println("Rating: " + rating);
+        String comment = request.getParameter("comment");
+        System.out.println("Comment: " + comment);
+
+        boolean update = FeedbackDAO.addFeedback(intCstomerId, productId, rating, comment);
+        if (update) {
+            System.out.println("Danh gia thanh cong.");
+            response.sendRedirect("/product?id=" + productId);
+        } else {
+            System.out.println("Danh gia that bai!!");
+        }
+
     }
 
     private void replyFeedback(HttpServletRequest request, HttpServletResponse response)

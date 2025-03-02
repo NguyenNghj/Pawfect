@@ -20,8 +20,10 @@ import model.Feedback;
 public class FeedbackDAO {
 
     protected static Connection Con = null;
-    
-    
+
+    protected static String Add_Feedback = "INSERT INTO Feedbacks (customer_id, product_id, rating, comment) VALUES\n"
+            + "(?, ?, ?, ?)";
+
     protected static String Get_Product_Feedback_By_ProductId = "SELECT\n"
             + "    f.feedback_id,\n"
             + "    f.customer_id,\n"
@@ -46,7 +48,7 @@ public class FeedbackDAO {
             + "WHERE\n"
             + "    f.product_id = ?"
             + "ORDER BY\n"
-            +"     f.feedback_date DESC";
+            + "     f.feedback_date DESC";
 
     protected static String Reply_Feedback = "UPDATE Feedbacks\n"
             + "SET staff_id = ?,\n"
@@ -104,6 +106,32 @@ public class FeedbackDAO {
             + "    Products p ON f.product_id = p.product_id";
     
     
+    public static boolean addFeedback(int customerId, int productId, int rating, String comment) {
+        boolean rs = false;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Add_Feedback);
+            ps.setInt(1, customerId);
+            ps.setInt(2, productId);
+            ps.setInt(3, rating);
+            ps.setString(4, comment);
+            rs = ps.executeUpdate() > 0;
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return rs;
+    }
+
     public static List<Feedback> getProductFeedbackByProductId(int productId) {
         List<Feedback> list = new ArrayList<>();
         try {
@@ -145,8 +173,7 @@ public class FeedbackDAO {
         }
         return list;
     }
-    
-    
+
     public static boolean replyFeedback(int staffId, String reply, int feedbackId) {
         boolean update = false;
         try {

@@ -104,7 +104,7 @@
                                     <div class="rating-count">(${totalFeedback} đánh giá)</div>
                                     <div class="mt-3">
                                         <button class="btn btn-primary"
-                                                data-bs-toggle="modal" data-bs-target="#feedbackModal"
+                                                data-bs-toggle="modal" data-bs-target="#feedbackModal"                   
                                                 >
                                             Gửi đánh giá của bạn
                                         </button>
@@ -122,11 +122,11 @@
                                                 </div>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <form action="" method="post">
+                                            <form id="feedbackForm" action="/dashboard/staff/feedbackmanagement?action=feedback" method="post">
                                                 <div class="modal-body">
                                                     <div class="input-group mb-3">
                                                         <label class="input-group-text" for="inputGroupSelect01">Đánh giá của bạn về sản phẩm</label>
-                                                        <select class="form-select" id="inputGroupSelect01" required>
+                                                        <select name="rating" class="form-select" id="customer-rating" required>
                                                             <option selected>Chọn</option>
                                                             <option value="5">5</option>
                                                             <option value="4">4</option>
@@ -137,14 +137,19 @@
                                                         <label class="input-group-text" for="inputGroupSelect01"><i class="fas fa-star" style="color: #FFD43B;"></i></label>
                                                     </div>
                                                     <div class="form-floating">
-                                                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 140px" required></textarea>
+                                                        <textarea name="comment" class="form-control" placeholder="Leave a comment here" id="customer-comment" style="height: 140px" required></textarea>
                                                         <label for="floatingTextarea2">Nhập nội dung đánh giá của bạn về sản phẩm này</label>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
-                                                    <button type="button" class="btn btn-primary">Gửi đánh giá</button>
+                                                    <button type="button" class="btn btn-primary" id="confirm-btn"
+                                                            data-product-id="${param.id}"
+                                                            >
+                                                        Gửi đánh giá
+                                                    </button>
                                                 </div>
+                                                <input type="hidden" name="productId" id="productId">
                                             </form>                                            
                                         </div>
                                     </div>
@@ -176,7 +181,7 @@
                             </c:if>
 
                             <c:forEach items="${feedbacks}" var="f">
-                                <!-- Review 3 (Example with employee response) -->
+                                <!-- Review 1 (Example with employee response) -->
                                 <div class="review-item p-3 mb-3">
                                     <div class="reviewer-name fw-bold">${f.customerName}</div>
                                     <div class="stars">
@@ -436,5 +441,96 @@
                 });
             });
         </script>
+
+        <script>
+            // Bắt sự kiện khi nhấn nút gui
+            document.getElementById("confirm-btn").addEventListener("click", function (event) {
+                event.preventDefault(); // Ngăn form gửi ngay lập tức           
+
+                function getCookie(name) {
+                    let cookies = document.cookie.split(';'); // Lấy tất cả cookie
+                    for (let i = 0; i < cookies.length; i++) {
+                        let cookie = cookies[i].trim(); // Xóa khoảng trắng 2 bên
+                        if (cookie.startsWith(name + "=")) {
+                            return cookie.substring(name.length + 1); // Lấy giá trị của cookie
+                        }
+                    }
+                    return null; // Trả về null nếu không tìm thấy cookie
+                }
+
+                // Kiểm tra xem cookie "staffId" có tồn tại không
+                let customerId = getCookie("customerId");
+
+                if (customerId) {
+                    console.log("Cookie customerId", customerId);
+                } else {
+                    console.log("Không tìm thấy cookie customerId.");
+                    Swal.fire({
+                        title: "Bạn chưa đăng nhập!",
+                        text: "Vui lòng đăng nhập trước khi gửi đánh giá.",
+                        icon: "warning",
+                        confirmButtonText: "OK"
+                    });
+                    return;
+                }
+
+                // Lấy nội dung nội dung đánh giá của khách
+                let commentContent = document.getElementById("customer-comment").value.trim();
+                let ratingContent = document.getElementById("customer-rating").value;
+
+                let productId = this.getAttribute("data-product-id");
+
+                console.log(productId);
+
+                document.getElementById("productId").value = productId;
+
+                // Kiểm tra nếu ô nội dung trống
+                if (ratingContent === "Chọn") {
+                    Swal.fire({
+                        title: "Ðánh giá không được để trống!",
+                        text: "Vui lòng đánh giá trước khi gửi.",
+                        icon: "error"
+                    });
+                    return; // Dừng thực thi nếu ô nội dung trống
+                }
+
+                // Kiểm tra nếu ô nội dung trống
+                if (commentContent === "") {
+                    Swal.fire({
+                        title: "Nội dung đánh giá không được để trống!",
+                        text: "Vui lòng nhập nội dung trước khi gửi.",
+                        icon: "error"
+                    });
+                    return; // Dừng thực thi nếu ô nội dung trống
+                }
+
+                // Nếu hợp lệ, hiển thị xác nhận
+                Swal.fire({
+                    title: "Xác nhận gửi?",
+                    text: "Bạn có chắc chắn muốn gửi đánh giá này?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Đồng ý!",
+                    cancelButtonText: "Hủy!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Hiển thị alert thành công
+                        Swal.fire({
+                            title: "Thành công!",
+                            text: "Đánh giá đã được gửi.",
+                            icon: "success",
+                            timer: 1500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            // Gửi form sau khi hiện alert xong
+                            document.getElementById("feedbackForm").submit();
+                        });
+                    }
+                });
+            });
+        </script>
+     
     </body>
 </html>
