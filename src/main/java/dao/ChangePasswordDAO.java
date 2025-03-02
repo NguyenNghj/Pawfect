@@ -37,7 +37,8 @@ public class ChangePasswordDAO {
         }
         return isValid;
     }
-public boolean checkStaffadminPassword(String password, String staffId) {
+
+    public boolean checkStaffadminPassword(String password, String staffId) {
         boolean isValid = false;
         String query = "SELECT * FROM Staffs WHERE password = ? and staff_id=? ";
         try {
@@ -54,7 +55,8 @@ public boolean checkStaffadminPassword(String password, String staffId) {
         }
         return isValid;
     }
-  public void changeStaffAdminPassword(String password, String staffId) {
+
+    public void changeStaffAdminPassword(String password, String staffId) {
         String query = "UPDATE Staffs \n"
                 + "SET password = ? WHERE staff_id = ?";
         try {
