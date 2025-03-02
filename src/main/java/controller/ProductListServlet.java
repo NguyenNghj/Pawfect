@@ -10,6 +10,7 @@ import dao.ProductDAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -77,6 +78,29 @@ public class ProductListServlet extends HttpServlet {
             products = productDAO.filterByPetType(products, petTypeFilter);
         }
 
+        String username = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("customerId".equals(cookie.getName())) {
+                    username = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        int totalQuantity = 0;
+        if (username != null) {
+            int customerId = Integer.parseInt(username);
+
+            List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+            if (!cartItems.isEmpty()) {
+                for (CartItem cartItem : cartItems) {
+                    totalQuantity += cartItem.getQuantity();
+                }
+            }
+        }
+
         // Áp dụng bộ lọc giá
         if (priceFilter != null) {
             products = productDAO.filterByPrice(products, priceFilter);
@@ -87,14 +111,6 @@ public class ProductListServlet extends HttpServlet {
             products = productDAO.sortProducts(products, sortFilter);
         }
         
-        int customerId = 1;
-        int totalQuantity = 0;
-        List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
-        if (!cartItems.isEmpty()) {
-            for (CartItem cartItem : cartItems) {
-                totalQuantity += cartItem.getQuantity();
-            }
-        }
 
         // Set danh sách sản phẩm cho request
         request.setAttribute("products", products);

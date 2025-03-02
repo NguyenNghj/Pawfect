@@ -4,17 +4,20 @@
  */
 package controller;
 
+import dao.CartDAO;
 import dao.FeedbackDAO;
 import dao.ProductDAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.List;
+import model.CartItem;
 import model.Feedback;
 import model.Product;
 
@@ -70,6 +73,34 @@ public class HomePageServlet extends HttpServlet {
         List<Feedback> feedbacks = FeedbackDAO.getAllProductFeedback();
         Collections.shuffle(feedbacks);
         request.setAttribute("feedbacks", feedbacks);
+        
+        
+        // Kiem tra cookie de lay tong sl san pham trong gio hang
+        String username = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("customerId".equals(cookie.getName())) {
+                    username = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        int totalQuantity = 0;
+        if (username != null) {
+            int customerId = Integer.parseInt(username);
+
+            List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+            if (!cartItems.isEmpty()) {
+                for (CartItem cartItem : cartItems) {
+                    totalQuantity += cartItem.getQuantity();
+                }
+            }
+        }
+        // Set tong so luong san pham trong gio hang
+        request.setAttribute("totalQuantity", totalQuantity);
+        
 
         request.setAttribute("products", products);
         RequestDispatcher dispatcher = request.getRequestDispatcher("homepage.jsp");

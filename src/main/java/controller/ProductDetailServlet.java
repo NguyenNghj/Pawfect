@@ -7,11 +7,11 @@ package controller;
 import dao.CartDAO;
 import dao.FeedbackDAO;
 import dao.ProductDAO;
-import dao.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -80,17 +80,31 @@ public class ProductDetailServlet extends HttpServlet {
 //            return;
 //        }
 
-        int customerId = 1;
+        String username = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("customerId".equals(cookie.getName())) {
+                    username = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
         int totalQuantity = 0;
-        List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
-        if (!cartItems.isEmpty()) {
-            for (CartItem cartItem : cartItems) {
-                totalQuantity += cartItem.getQuantity();
+        if (username != null) {
+            int customerId = Integer.parseInt(username);
+
+            List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+            if (!cartItems.isEmpty()) {
+                for (CartItem cartItem : cartItems) {
+                    totalQuantity += cartItem.getQuantity();
+                }
             }
         }
         // Set tong so luong san pham trong gio hang
         request.setAttribute("totalQuantity", totalQuantity);
-        
+
         List<Feedback> feedbacks = FeedbackDAO.getProductFeedbackByProductId(productId);
         int totalFeedback = 0;
         double totalStar = 0;
@@ -101,11 +115,16 @@ public class ProductDetailServlet extends HttpServlet {
         }
         System.out.println("totalFeedback: " + totalFeedback);
         System.out.println("averageStar: " + averageStar);
-        
+
         averageStar = totalStar / (double) totalFeedback;
         request.setAttribute("feedbacks", feedbacks);
         request.setAttribute("totalFeedback", totalFeedback);
-        request.setAttribute("averageStar", averageStar);
+        if(averageStar >= 1){
+            request.setAttribute("averageStar", averageStar);
+        } else {
+            request.setAttribute("averageStar", (int) averageStar);
+        }
+        
 
         // Gửi dữ liệu sản phẩm sang trang JSP
         List<Product> productList = productDAO.getAllActiveProductsByCategoryName(product.getCategoryName());

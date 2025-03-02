@@ -155,7 +155,7 @@
                         </div>
 
                         <!-- CART ICON -->
-                        <a class="cart-btn" href="cart?action=view">
+                        <a class="cart-btn" href="cart?action=view" id="cartLink">
                             <i class="bi bi-cart-fill cart-icon"></i>
                             <span id="cart-count" class="cart-text">
                                 <c:choose>
@@ -193,11 +193,38 @@
             });
         </script>
 
-
-
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+            document.getElementById("cartLink").addEventListener("click", function (event) {
+                // Hàm lấy giá trị cookie theo tên
+                function getCookie(name) {
+                    let cookies = document.cookie.split("; ");
+                    for (let i = 0; i < cookies.length; i++) {
+                        let cookie = cookies[i].split("=");
+                        if (cookie[0] === name) {
+                            return cookie[1]; // Trả về giá trị cookie
+                        }
+                    }
+                    return null;
+                }
+
+                // Kiểm tra xem cookie có tồn tại không (ví dụ: 'cartItems')
+                let cartCookie = getCookie("customerId");
+
+                if (!cartCookie) {
+                    event.preventDefault(); // Ngăn chặn chuyển hướng
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Bạn chưa đăng nhập!",
+                        text: "Bạn cần đăng nhập để sử dụng giỏ hàng."
+                    });
+                }
+            });
+        </script>
     </body>
 
 </html>

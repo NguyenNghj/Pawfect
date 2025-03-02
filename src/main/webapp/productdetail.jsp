@@ -81,7 +81,7 @@
                         <div class="rating-summary p-4 mb-4">
                             <div class="row align-items-center">
                                 <div class="col-md-3 text-center mb-3 mb-md-0">
-                                    <div class="rating-average">${averageStar}/5</div>
+                                    <div class="rating-average">${averageStar > 0 ? averageStar : 0}/5</div>
                                     <div class="stars my-2">
                                         <c:forEach var="i" begin="1" end="5">
                                             <c:choose>                                            
@@ -358,13 +358,41 @@
         <script>
             $('.add-to-cart').click(function (event) {
                 event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
+
+                // Hàm lấy giá trị cookie theo tên
+                function getCookie(name) {
+                    event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
+
+                    let cookies = document.cookie.split("; ");
+                    for (let i = 0; i < cookies.length; i++) {
+                        let cookie = cookies[i].split("=");
+                        if (cookie[0] === name) {
+                            return cookie[1]; // Trả về giá trị cookie
+                        }
+                    }
+                    return null;
+                }
+
+                // Kiểm tra xem cookie có tồn tại không (ví dụ: 'cartItems')
+                let customerCookie = getCookie("customerId");
+
+                if (!customerCookie) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Bạn chưa đăng nhập!",
+                        text: "Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng."
+                    });
+                    return;
+                }
+
+
                 const value = $('.input-number').val();
                 var productId = $(this).data('product-id');
                 console.log("productId:", productId);
                 var productName = $(this).data('product-name');
                 console.log("productName:", productName);
                 var action = "add";
-                var customerId = 1; // ID của khách hàng (cần lấy từ session hoặc cookie)
+                var customerId = customerCookie; // ID của khách hàng (cần lấy từ session hoặc cookie)
 
                 $.ajax({
                     url: "cart",
@@ -407,11 +435,40 @@
 
 
             $('.buy-now').click(function (event) {
+
+
+                // Hàm lấy giá trị cookie theo tên
+                function getCookie(name) {
+                    event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
+
+                    let cookies = document.cookie.split("; ");
+                    for (let i = 0; i < cookies.length; i++) {
+                        let cookie = cookies[i].split("=");
+                        if (cookie[0] === name) {
+                            return cookie[1]; // Trả về giá trị cookie
+                        }
+                    }
+                    return null;
+                }
+
+                // Kiểm tra xem cookie có tồn tại không (ví dụ: 'cartItems')
+                let customerCookie = getCookie("customerId");
+
+                if (!customerCookie) {
+                    Swal.fire({
+                        icon: "warning",
+                        title: "Bạn chưa đăng nhập!",
+                        text: "Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng."
+                    });
+                    return;
+                }
+
+
                 const value = $('.input-number').val();
                 var productId = $(this).data('product-id');
                 console.log("productId:", productId);
                 var action = "add";
-                var customerId = 1; // ID của khách hàng (cần lấy từ session hoặc cookie)
+                var customerId = customerCookie; // ID của khách hàng (cần lấy từ session hoặc cookie)
 
                 $.ajax({
                     url: "cart",
@@ -531,6 +588,6 @@
                 });
             });
         </script>
-     
+
     </body>
 </html>
