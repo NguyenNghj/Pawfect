@@ -1,0 +1,347 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Feb 28, 2025, 4:11:16 PM
+    Author     : Nguyen Tien Thanh
+*/
+* {
+    font-family: 'Baloo 2', sans-serif !important;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #d9d9d9;
+}
+
+h3 {
+    text-align: center;
+    font-weight: bold;
+    color: #8c6e63;
+    font-size: 40px;
+    text-transform: uppercase;
+    margin: 20px 0;
+}
+
+.detail-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 50px auto;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+.image-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+}
+
+.image-container img {
+    width: 80%; /* Giảm kích thước ảnh */
+    max-width: 400px; /* Đảm bảo không quá to */
+    height: 400px;
+    object-fit: cover;
+    border-radius: 8px; /* Bo góc nhẹ cho đẹp */
+}
+
+.info-container {
+    flex: 1;
+    padding: 50px;
+}
+.info-container h2 {
+    text-align: center;
+    font-size: 30px;
+    color: #8c6e63;
+}
+.detail {
+    flex-wrap: wrap; /* Đảm bảo không bị tràn trên màn hình nhỏ */
+    padding-left: 20px;
+    padding-right: 20px;
+    height: auto;
+    background: #FFF2DF;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.detail:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.room-type, .room-price, .room-weight, .room-description {
+    font-size: 17px;
+    margin-bottom: 10px;
+    color: black;
+}
+
+.divider {
+    border: none;
+    height: 1px; /* Độ dày của đường kẻ */
+    background: black; /* Màu xám nhạt */
+    margin: 15px 0; /* Khoảng cách trên dưới */
+}
+
+.button-container {
+    display: flex;
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    gap: 20px; /* Khoảng cách giữa hai nút */
+    margin-top: 20px; /* Tạo khoảng cách với phần trên */
+}
+
+.booking-btn, .back-btn {
+    display: inline-block;
+    padding: 12px 24px; /* Kích thước nút đồng đều */
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    min-width: 180px; /* Đảm bảo độ rộng giống nhau */
+}
+
+.booking-btn {
+    background-color: #8c6e63;
+    color: white;
+}
+
+.booking-btn:hover {
+    background-color: #fcdb51;
+    color: black;
+}
+
+.back-btn {
+    background-color: grey;
+    color: white;
+}
+
+.back-btn:hover {
+    background-color: #d9d9d9;
+    color: #333;
+}
+
+
+/* Wrapper chứa danh sách phòng */
+.hotel-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 20px 0;
+}
+
+.hotel-list {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 10px;
+    width: 100%;
+    max-width: 1280px;
+    white-space: nowrap;
+    scrollbar-width: none; /* Ẩn thanh cuộn trên Firefox */
+}
+
+.hotel-list::-webkit-scrollbar {
+    display: none; /* Ẩn thanh cuộn trên Chrome */
+}
+
+.pethotel-card {
+    color: #3E2522;
+    position: relative;
+    border-radius: 20px;
+    background-color: white;
+    width: 300px; /* Giảm kích thước để vừa 4 card trên hàng ngang */
+    height: auto;
+    padding-bottom: 20px;
+    flex: 0 0 auto; /* Đảm bảo không bị co giãn */
+    text-align: center;
+}
+
+.scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #8c6e63;
+    ;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 24px;
+    z-index: 100;
+    display: block;
+}
+
+/* Nút cuộn trái */
+#scrollLeft {
+    left: 40px; /* Đưa sát vào */
+}
+
+/* Nút cuộn phải */
+#scrollRight {
+    right: 40px; /* Đưa sát vào */
+}
+
+
+.pethotel-card img {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.pethotel-name {
+    font-size: 30px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.pethotel-type {
+    color: #D3A376;
+    font-size: 25px;
+}
+
+.pethotel-price {
+    font-weight: bold;
+    font-size: 25px;
+    background-color: #fcdb51;
+    padding: 5px 10px;
+    border-radius: 10px;
+    max-width: 190px;
+    display: block; /* Đảm bảo xuống dòng */
+    text-align: left; /* Căn trái */
+    margin-left: -10px; /* Tạo khoảng cách với lề trái */
+}
+
+.pethotel-weight {
+    font-size: 20px;
+    color: #8C6E63;
+}
+
+/* Nút đặt phòng */
+.booking {
+    max-width: 210px; /* Giới hạn chiều rộng tối đa */
+    margin: 0 auto;
+    font-size: 25px;
+    font-weight: bold;
+    display: block;
+    text-decoration: none;
+    background-color: #8C6E63;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 10px;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+
+/* Nút cuộn */
+.scroll-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 10px; /* Bo góc */
+    background-color: #8C6E63;
+    color: white;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+    z-index: 10;
+}
+
+.scroll-btn:hover {
+    background-color: #fcdb51;
+    color: black;
+    transform: translateY(-3px); /* Hiệu ứng nhấc lên */
+}
+
+
+
+
+
+.pethotel-card:hover {
+    background-color: #8C6E63;
+    transition: all 0.4s ease-in-out;
+}
+
+/* Khi .pethotel-card hover thì các phần tử con cũng thay đổi */
+.pethotel-card:hover .pethotel-name {
+    color: #FFE0B2;
+    transition: all 0.4s ease-in-out;
+}
+
+.pethotel-card:hover .pethotel-weight {
+    color: #FFE0B2;
+    transition: all 0.4s ease-in-out;
+}
+.pethotel-card:hover .pethotel-type {
+    color: #FFE0B2;
+    transition: all 0.4s ease-in-out;
+}
+.pethotel-card:hover .cannang-text {
+    color: #FFE0B2;
+    transition: all 0.4s ease-in-out;
+}
+
+.pethotel-card:hover .booking {
+    background-color: #fcdb51;
+    color: black;
+    border: 1px solid #fcdb51;
+    transition: all 0.4s ease-in-out;
+}
+
+
+
+
+
+/* Ẩn nút cuộn khi không cần thiết */
+@media (max-width: 1200px) {
+    .hotel-container {
+        width: 95%;
+    }
+}
+
+@media (max-width: 768px) {
+    .hotel-list {
+        justify-content: center;
+    }
+
+    .pethotel-card {
+        width: 100%;
+    }
+
+
+    .popup {
+        display: none;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        border-radius: 8px;
+    }
+    .popup-content {
+        text-align: center;
+    }
+    .popup-content button {
+        margin-top: 10px;
+        padding: 8px 16px;
+        border: none;
+        background: red;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+}
