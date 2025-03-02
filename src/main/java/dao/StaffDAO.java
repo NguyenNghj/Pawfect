@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StaffDAO {
-
     Connection conn = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
@@ -26,7 +25,7 @@ public class StaffDAO {
 
             while (rs.next()) {
                 staffList.add(new Staff(
-                        rs.getString("staff_id"),
+                        rs.getInt("staff_id"),
                         rs.getString("role_name"),
                         rs.getString("password"),
                         rs.getString("full_name"),
@@ -56,7 +55,7 @@ public class StaffDAO {
 
             if (rs.next()) {
                 return new Staff(
-                        rs.getString("staff_id"),
+                        rs.getInt("staff_id"),
                         rs.getString("role_name"),
                         rs.getString("password"),
                         rs.getString("full_name"),
@@ -89,7 +88,7 @@ public class StaffDAO {
             ps.setString(5, staff.getPhone());
             ps.setString(6, staff.getAddress());
             ps.setString(7, staff.getGender());
-            ps.setDate(8, staff.getBirthdate());
+            ps.setDate(8, staff.getBirthDate());
             ps.setString(9, staff.getImage());
             ps.setBoolean(10, staff.isActive());
 
@@ -114,10 +113,10 @@ public class StaffDAO {
             ps.setString(5, staff.getPhone());
             ps.setString(6, staff.getAddress());
             ps.setString(7, staff.getGender());
-            ps.setDate(8, staff.getBirthdate());
+            ps.setDate(8, staff.getBirthDate());
             ps.setString(9, staff.getImage());
             ps.setBoolean(10, staff.isActive());
-            ps.setString(11, staff.getStaffId());
+            ps.setInt(11, staff.getStaffId()); // Sửa lỗi
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {

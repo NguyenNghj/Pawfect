@@ -1,31 +1,23 @@
-
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.sql.Date;
 
-/**
- *
- * @author LENOVO
- */
 public class Staff {
-
-    private String staffId;
+    private int staffId;
     private String roleName;
     private String password;
     private String fullName;
     private String email;
     private String phone;
-    private String address; 
+    private String address;
     private String gender;
-    private Date birthdate;
+    private Date birthDate;
     private String image;
-    private boolean active;
+    private boolean isActive;
 
-    public Staff(String staffId, String roleName, String password, String fullName, String email, String phone, String address, String gender, Date birthdate, String image, boolean active) {
+    // Constructor đầy đủ
+    public Staff(int staffId, String roleName, String password, String fullName, String email, String phone, String address,
+                 String gender, Date birthDate, String image, boolean isActive) {
         this.staffId = staffId;
         this.roleName = roleName;
         this.password = password;
@@ -34,12 +26,14 @@ public class Staff {
         this.phone = phone;
         this.address = address;
         this.gender = gender;
-        this.birthdate = birthdate;
+        this.birthDate = birthDate;
         this.image = image;
-        this.active = active;
+        this.isActive = isActive;
     }
 
-    public Staff(String roleName, String password, String fullName, String email, String phone, String address, String gender, Date birthdate, String image, boolean active) {
+    // Constructor không có staffId (dùng khi thêm mới)
+    public Staff(String roleName, String password, String fullName, String email, String phone, String address,
+                 String gender, Date birthDate, String image, boolean isActive) {
         this.roleName = roleName;
         this.password = password;
         this.fullName = fullName;
@@ -47,16 +41,18 @@ public class Staff {
         this.phone = phone;
         this.address = address;
         this.gender = gender;
-        this.birthdate = birthdate;
+        this.birthDate = birthDate;
         this.image = image;
-        this.active = active;
+        this.isActive = isActive;
     }
 
-    public String getStaffId() {
+
+    // Getters và Setters
+    public int getStaffId() {
         return staffId;
     }
 
-    public void setStaffId(String staffId) {
+    public void setStaffId(int staffId) {
         this.staffId = staffId;
     }
 
@@ -116,12 +112,12 @@ public class Staff {
         this.gender = gender;
     }
 
-    public Date getBirthdate() {
-        return birthdate;
+    public Date getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirthdate(Date birthdate) {
-        this.birthdate = birthdate;
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     public String getImage() {
@@ -133,11 +129,10 @@ public class Staff {
     }
 
     public boolean isActive() {
-        return active;
+        return isActive;
     }
 
     public void setActive(boolean active) {
-        this.active = active;
+        isActive = active;
     }
-
 }
