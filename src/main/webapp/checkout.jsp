@@ -25,7 +25,7 @@
                     <div class="row">
                         <div class="header-logo">
                             <a href="#">
-                                <img src="./images/logos/Logo.png" alt="">
+                                <img src="./img/header/logo.png" alt="">
                             </a>
                         </div>
                     </div>
