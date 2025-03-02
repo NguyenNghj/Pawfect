@@ -107,7 +107,7 @@
                                 <label for="createProductCategory">Thể loại</label>
                                 <select class="form-select" name="categoryId" id="categoryId" onchange="updateProductStatusOptions()">
                                     <c:forEach var="category" items="${categories}">
-                                        <option value="${category.categoryId}" data-is-active="${category.isActive}">
+                                        <option value="${category.categoryId}" data-is-active="${category.active}">
                                             ${category.categoryName}
                                         </option>
                                     </c:forEach>

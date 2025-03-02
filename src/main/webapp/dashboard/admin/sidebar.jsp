@@ -16,10 +16,10 @@
     </div>
 
     <div class="row">                  
-        <nav class="navbar bg-body-tertiary">                                    
+        <nav class="navbar bg-body-tertiary" id="dashboard">                                    
             <a class="navbar-brand d-flex align-items-center gap-3" href="dashboard">
                 <i class="fa-solid fa-chart-line fa-lg"></i> 
-                Thống kê
+                <span>Thống kê</span>
             </a>
         </nav>
         <nav class="navbar bg-body-tertiary">                        
@@ -50,19 +50,19 @@
                 </div>                                              
             </div>                    
         </nav>
-        <nav class="navbar bg-body-tertiary active">                                           
-            <a class="navbar-brand d-flex align-items-center gap-3" style="color: white; pointer-events: none;" href="#">
+        <nav class="navbar bg-body-tertiary" id="product">                                            
+            <a class="navbar-brand d-flex align-items-center gap-3" href="product">
                 <i class="fa-solid fa-box fa-lg"></i>
                 <span>Sản phẩm</span>
             </a>                          
         </nav>
-        <nav class="navbar bg-body-tertiary">                   
+        <nav class="navbar bg-body-tertiary" id="category">                   
             <a class="navbar-brand d-flex align-items-center gap-3" href="category">
                 <i class="fa-solid fa-boxes-stacked fa-lg"></i>
                 <span>Thể loại sản phẩm</span>
             </a>
         </nav>
-        <nav class="navbar bg-body-tertiary">                                            
+        <nav class="navbar bg-body-tertiary" id="petroom">                                            
             <a class="navbar-brand d-flex align-items-center gap-3" href="petroom">
                 <i class="fa-solid fa-hotel fa-lg"></i>  
                 <span>Pet Hotel</span>
@@ -75,17 +75,83 @@
     </div>
 
     <div class="row">
-        <nav class="navbar bg-body-tertiary">                                   
+        <nav class="navbar bg-body-tertiary" id="profile">                                   
             <a class="navbar-brand d-flex align-items-center gap-3" href="profile">
                 <i class="fa-solid fa-address-book fa-lg"></i>   
                 <span>Thông tin cá nhân</span>
             </a>                          
         </nav>
-        <nav class="navbar bg-body-tertiary">                                              
+        <nav class="navbar bg-body-tertiary" id="logout">                                              
             <a class="navbar-brand d-flex align-items-center gap-3" href="#">
                 <i class="fa-solid fa-right-from-bracket fa-lg"></i>
                 <span>Logout</span>
             </a>
         </nav>
     </div>
+
+    <%
+        Cookie[] cookies = request.getCookies();
+        String staffRole = "";
+        String staffName = "";
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                String name = cookie.getName();
+                String value = cookie.getValue();
+
+                if ("staffRole".equals(name)) {
+                    staffRole = value;
+                } else if ("staffName".equals(name)) {
+                    staffName = value;
+                }
+
+                // Nếu đã lấy được cả hai giá trị thì thoát vòng lặp
+                if (!staffRole.isEmpty() && !staffName.isEmpty()) {
+                    break;
+                }
+            }
+        }
+    %>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Lấy đường dẫn hiện tại
+            const currentPath = window.location.pathname.split("/").pop();
+
+            // Danh sách các trang và ID tương ứng
+            const navItems = {
+                "dashboard": "dashboard",
+                "product": "product",
+                "category": "category",
+                "petroom": "petroom",
+                "profile": "profile",
+                "logout": "logout"
+            };
+
+            // Xóa lớp 'active' khỏi tất cả các navbar
+            document.querySelectorAll(".navbar").forEach(nav => {
+                nav.classList.remove("active");
+                let icon = nav.querySelector("i");
+                let span = nav.querySelector("span");
+                if (icon)
+                    icon.style.color = "";
+                if (span)
+                    span.style.color = "";
+            });
+
+            // Kiểm tra nếu trang hiện tại khớp với ID trong danh sách
+            if (navItems[currentPath]) {
+                let activeNav = document.getElementById(navItems[currentPath]);
+                if (activeNav) {
+                    activeNav.classList.add("active");
+                    let activeIcon = activeNav.querySelector("i");
+                    let activeSpan = activeNav.querySelector("span");
+                    if (activeIcon)
+                        activeIcon.style.color = "white";
+                    if (activeSpan)
+                        activeSpan.style.color = "white";
+                }
+            }
+        });
+    </script>
 </div>
