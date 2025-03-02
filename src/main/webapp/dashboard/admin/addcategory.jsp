@@ -123,7 +123,7 @@
                                 </select>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Tạo thể loại</button>
+                            <button type="submit" class="btn btn-primary">Thêm thể loại</button>
                             <a href="<c:url value='/dashboard/admin/category'/>" class="btn btn-secondary">Trở về</a>
                         </form>
                     </div>
