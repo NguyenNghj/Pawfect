@@ -14,11 +14,12 @@ import java.sql.ResultSet;
  */
 public class ViewFinancialStatisticsDAO extends DBContext {
 //sản phẩm
+
     public double getTotaMoneyByMonth(int month) {
-       String sql = "SELECT SUM(oi.quantity) AS totalProducts " +
-             "FROM [pawfect].[dbo].[OrderItems] oi " +
-             "JOIN [pawfect].[dbo].[Orders] o ON oi.order_id = o.order_id " +
-             "WHERE MONTH(o.order_date) = ? AND o.status = N'Hoàn thành';";
+        String sql = "SELECT SUM(oi.quantity) AS totalProducts "
+                + "FROM [pawfect].[dbo].[OrderItems] oi "
+                + "JOIN [pawfect].[dbo].[Orders] o ON oi.order_id = o.order_id "
+                + "WHERE MONTH(o.order_date) = ? AND o.status = N'Hoàn thành';";
 
         try {
             PreparedStatement st = conn.prepareStatement(sql);
@@ -31,12 +32,12 @@ public class ViewFinancialStatisticsDAO extends DBContext {
         }
         return 0;
     }
+
     //doanh thu
-     public double getTotaMoneyByMonthh(int month){
-       String sql ="SELECT SUM(total_amount) AS totalRevenue " +
-"FROM [pawfect].[dbo].[Orders]" +
-"WHERE MONTH(order_date) = ? AND status = N'Hoàn thành';";
-
+    public double getTotaMoneyByMonthh(int month) {
+        String sql = "SELECT SUM(total_amount) AS totalRevenue "
+                + "FROM [pawfect].[dbo].[Orders]"
+                + "WHERE MONTH(order_date) = ? AND status = N'Hoàn thành';";
 
         try {
             PreparedStatement st = conn.prepareStatement(sql);
@@ -49,13 +50,13 @@ public class ViewFinancialStatisticsDAO extends DBContext {
         }
         return 0;
     }
-     //sp bán chạy
-     public double getTotaMoneyByMonthhh(int month){
-       String sql ="SELECT SUM(oi.quantity) AS totalProducts " +
-             "FROM [pawfect].[dbo].[OrderItems] oi " +
-             "JOIN [pawfect].[dbo].[Orders] o ON oi.order_id = o.order_id " +
-             "WHERE MONTH(o.order_date) = ? AND o.status = N'Hoàn thành';";
+    //sp bán chạy
 
+    public double getTotaMoneyByMonthhh(int month) {
+        String sql = "SELECT SUM(oi.quantity) AS totalProducts "
+                + "FROM [pawfect].[dbo].[OrderItems] oi "
+                + "JOIN [pawfect].[dbo].[Orders] o ON oi.order_id = o.order_id "
+                + "WHERE MONTH(o.order_date) = ? AND o.status = N'Hoàn thành';";
 
         try {
             PreparedStatement st = conn.prepareStatement(sql);

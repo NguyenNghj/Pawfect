@@ -10,7 +10,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import model.Staff;
 import model.User;
 
 /**
@@ -18,10 +17,11 @@ import model.User;
  * @author LENOVO
  */
 public class ProfileDAO {
-    
+
     Connection conn = null;
     PreparedStatement pt = null;
     ResultSet rs = null;
+
     public User getUser(String customerId) {
         User user = new User();
         String query = "SELECT * FROM Customers WHERE customer_id=?";
@@ -46,32 +46,33 @@ public class ProfileDAO {
         return user;
 
     }
-     public Staff getStaff(String staffId) {
-        Staff staff = new Staff();
-        String query = "SELECT * FROM Staffs WHERE staff_id=?";
 
-        try {
-            conn = new DBContext().getConnection();
-            pt = conn.prepareStatement(query);
-            pt.setString(1, staffId);
-             rs = pt.executeQuery();
-            if (rs.next()) {
-                staff.setEmail(rs.getString("email"));
-                staff.setPassword(rs.getString("password"));
-                staff.setName(rs.getString("full_name"));
-                staff.setPhone(rs.getString("phone"));
-                staff.setAddress(rs.getString("address"));
-                staff.setGender(rs.getString("gender"));
-                staff.setBirthdate(rs.getDate("birth_date"));
-                staff.setImage(rs.getString("image"));
-            }
-        } catch (SQLException e) {
-
-        }
-        return staff;
-
-    }
- public void editStaffProfile(String staffId,String name,String phone ,String address, String gender,Date birthdate ) {
+//    public Staff getStaff(String staffId) {
+//     
+//        String query = "SELECT * FROM Staffs WHERE staff_id=?";
+//
+//        try {
+//            conn = new DBContext().getConnection();
+//            pt = conn.prepareStatement(query);
+//            pt.setString(1, staffId);
+//            rs = pt.executeQuery();
+//            if (rs.next()) {
+//                staff.setEmail(rs.getString("email"));
+//                staff.setPassword(rs.getString("password"));
+//                staff.setName(rs.getString("full_name"));
+//                staff.setPhone(rs.getString("phone"));
+//                staff.setAddress(rs.getString("address"));
+//                staff.setGender(rs.getString("gender"));
+//                staff.setBirthdate(rs.getDate("birth_date"));
+//                staff.setImage(rs.getString("image"));
+//            }
+//        } catch (SQLException e) {
+//
+//        }
+//        return staff;
+//
+//    }
+    public void editStaffProfile(String staffId, String name, String phone, String address, String gender, Date birthdate) {
         String query = "UPDATE Staffs \n"
                 + "SET \n"
                 + "    full_name = ?,\n"
@@ -81,7 +82,7 @@ public class ProfileDAO {
                 + "    birth_date = ? WHERE staff_id = ?;";
 
         try {
-          conn = new DBContext().getConnection();
+            conn = new DBContext().getConnection();
             pt = conn.prepareStatement(query);
             pt.setString(1, name);
             pt.setString(2, phone);
@@ -94,6 +95,7 @@ public class ProfileDAO {
 
         }
     }
+
     public void editProfile(User user, String customerId) {
         String query = "UPDATE Customers \n"
                 + "SET email = ?,\n"
@@ -104,7 +106,7 @@ public class ProfileDAO {
                 + "    birth_date = ? WHERE customer_id = ?;";
 
         try {
-          conn = new DBContext().getConnection();
+            conn = new DBContext().getConnection();
             pt = conn.prepareStatement(query);
             pt.setString(1, user.getEmail());
             pt.setString(2, user.getFullName());
@@ -119,4 +121,3 @@ public class ProfileDAO {
         }
     }
 }
-

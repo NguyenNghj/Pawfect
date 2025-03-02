@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller;
 
 import dao.ProfileDAO;
+import dao.StaffDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,41 +15,43 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.Date;
 import model.Staff;
-import model.User;
 
 /**
  *
  * @author LENOVO
  */
 public class StaffProfileServlet extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet StaffProfileServlet</title>");  
+            out.println("<title>Servlet StaffProfileServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet StaffProfileServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet StaffProfileServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -57,26 +59,45 @@ public class StaffProfileServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-         String staffId = null;   
+            throws ServletException, IOException {
+        String staffIdStr = null;
         Cookie[] cookies = request.getCookies();
+
         if (cookies != null) {
-            for (Cookie cookie : cookies) {            
+            for (Cookie cookie : cookies) {
                 if ("staffId".equals(cookie.getName())) {
-                         staffId  = cookie.getValue();
+                    staffIdStr = cookie.getValue();
                     break;
                 }
             }
         }
-        ProfileDAO profileDAO = new ProfileDAO();
 
-Staff staff =profileDAO.getStaff(staffId);
-request.setAttribute("staff", staff);
- request.getRequestDispatcher("profile.jsp").forward(request, response);
-    } 
+        if (staffIdStr == null || staffIdStr.isEmpty()) {
+            response.sendRedirect("login.jsp?error=Không tìm thấy ID nhân viên.");
+            return;
+        }
 
-    /** 
+        try {
+            int staffId = Integer.parseInt(staffIdStr);
+            ProfileDAO profileDAO = new ProfileDAO();
+            StaffDAO staffDAO = new StaffDAO();
+            Staff staff = staffDAO.getStaffById(staffId);
+
+            if (staff == null) {
+                response.sendRedirect("error.jsp?message=Nhân viên không tồn tại.");
+                return;
+            }
+
+            request.setAttribute("staff", staff);
+            request.getRequestDispatcher("profile.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("error.jsp?message=ID nhân viên không hợp lệ.");
+        }
+    }
+
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -84,31 +105,32 @@ request.setAttribute("staff", staff);
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        String staffId = null;   
+            throws ServletException, IOException {
+        String staffId = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
-            for (Cookie cookie : cookies) {            
+            for (Cookie cookie : cookies) {
                 if ("staffId".equals(cookie.getName())) {
-                         staffId  = cookie.getValue();
+                    staffId = cookie.getValue();
                     break;
                 }
             }
         }
-        
+
         String fullName = request.getParameter("name");
-   String birthDateStr = request.getParameter("birthdate");
-     Date birthDate = Date.valueOf(birthDateStr); 
+        String birthDateStr = request.getParameter("birthdate");
+        Date birthDate = Date.valueOf(birthDateStr);
         String gender = request.getParameter("gender");
         String address = request.getParameter("address");
         String phoneNumber = request.getParameter("phone");
         ProfileDAO profileDAO = new ProfileDAO();
-        profileDAO.editStaffProfile(staffId, fullName,phoneNumber,address, gender, birthDate);
-         response.sendRedirect("staffprofile");
+        profileDAO.editStaffProfile(staffId, fullName, phoneNumber, address, gender, birthDate);
+        response.sendRedirect("staffprofile");
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

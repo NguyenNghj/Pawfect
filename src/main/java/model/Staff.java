@@ -12,15 +12,60 @@ import java.sql.Date;
  * @author LENOVO
  */
 public class Staff {
-  private String name,password,email,phone,address,image,gender;
-  private Date birthdate;
 
-    public String getName() {
-        return name;
+    private String staffId;
+    private String roleName;
+    private String password;
+    private String fullName;
+    private String email;
+    private String phone;
+    private String address; 
+    private String gender;
+    private Date birthdate;
+    private String image;
+    private boolean active;
+
+    public Staff(String staffId, String roleName, String password, String fullName, String email, String phone, String address, String gender, Date birthdate, String image, boolean active) {
+        this.staffId = staffId;
+        this.roleName = roleName;
+        this.password = password;
+        this.fullName = fullName;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.gender = gender;
+        this.birthdate = birthdate;
+        this.image = image;
+        this.active = active;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Staff(String roleName, String password, String fullName, String email, String phone, String address, String gender, Date birthdate, String image, boolean active) {
+        this.roleName = roleName;
+        this.password = password;
+        this.fullName = fullName;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.gender = gender;
+        this.birthdate = birthdate;
+        this.image = image;
+        this.active = active;
+    }
+
+    public String getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(String staffId) {
+        this.staffId = staffId;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
     public String getPassword() {
@@ -29,6 +74,14 @@ public class Staff {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {
@@ -55,14 +108,6 @@ public class Staff {
         this.address = address;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
     public String getGender() {
         return gender;
     }
@@ -78,18 +123,21 @@ public class Staff {
     public void setBirthdate(Date birthdate) {
         this.birthdate = birthdate;
     }
-  
-public Staff(){}
 
-    public Staff(String name, String password, String email, String phone, String address, String image, String gender, Date birthdate) {
-        this.name = name;
-        this.password = password;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
         this.image = image;
-        this.gender = gender;
-        this.birthdate = birthdate;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
 }
