@@ -110,7 +110,7 @@
                                 %>            
                                 <span><%= staffName%></span>
                                 <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img class="profile-img" src="https://img.freepik.com/foto-gratis/hombre-tiro-medio-peinado-afro_23-2150677136.jpg" alt="">
+                                    <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
                                 </button>
                                 <ul class="dropdown-menu ps-2 pe-2 pt-2 pb-2">
                                     <div class="d-grid gap-2">                                       

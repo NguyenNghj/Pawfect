@@ -25,7 +25,29 @@
 
                 <!-- SIDEBAR -->
                 <jsp:include page="sidebar.jsp"/>
+ <%
+                    Cookie[] cookies = request.getCookies();
+                    String staffRole = "";
+                    String staffName = "";
 
+                    if (cookies != null) {
+                        for (Cookie cookie : cookies) {
+                            String name = cookie.getName();
+                            String value = cookie.getValue();
+
+                            if ("staffRole".equals(name)) {
+                                staffRole = value;
+                            } else if ("staffName".equals(name)) {
+                                staffName = value;
+                            }
+
+                            // Nếu đã lấy được cả hai giá trị thì thoát vòng lặp
+                            if (!staffRole.isEmpty() && !staffName.isEmpty()) {
+                                break;
+                            }
+                        }
+                    }
+                %>
                 <!-- MAIN -->
                 <div class="col" id="main" style="padding: 0 40px;">
                     <div class="row pt-4">
@@ -34,9 +56,9 @@
                                 <h1>Quản lí thể loại</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
-                                <span>Username2025 (Admin)</span>
+                                <span><%= staffName%></span>
                                 <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img class="profile-img" src="https://img.freepik.com/foto-gratis/hombre-tiro-medio-peinado-afro_23-2150677136.jpg" alt="">
+                                    <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
                                 </button>
                                 <ul class="dropdown-menu ps-2 pe-2 pt-2 pb-2">
                                     <div class="d-grid gap-2">
@@ -51,11 +73,11 @@
                                         <hr style="margin: 0;">
                                         <li class="profile-img-info1 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-user-pen"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="profile.jsp">Profile</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="adminprofile">Profile</a>
                                         </li>
                                         <li class="profile-img-info2 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-right-from-bracket" style="font-size: 20px;"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="#">Logout</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="logoutadmin">Logout</a>
                                         </li>
                                     </div>
                                 </ul>

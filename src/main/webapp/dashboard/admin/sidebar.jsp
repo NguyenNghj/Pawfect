@@ -76,13 +76,13 @@
 
     <div class="row">
         <nav class="navbar bg-body-tertiary" id="profile">                                   
-            <a class="navbar-brand d-flex align-items-center gap-3" href="profile">
+            <a class="navbar-brand d-flex align-items-center gap-3" href="adminprofile">
                 <i class="fa-solid fa-address-book fa-lg"></i>   
                 <span>Thông tin cá nhân</span>
             </a>                          
         </nav>
         <nav class="navbar bg-body-tertiary" id="logout">                                              
-            <a class="navbar-brand d-flex align-items-center gap-3" href="#">
+            <a class="navbar-brand d-flex align-items-center gap-3" href="logoutadmin">
                 <i class="fa-solid fa-right-from-bracket fa-lg"></i>
                 <span>Logout</span>
             </a>
