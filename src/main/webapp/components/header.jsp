@@ -4,6 +4,9 @@
     Author     : Vu Quang Duc - CE181221
 --%>
 
+<%@page import="dao.CategoryDAO"%>
+<%@page import="model.Category"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
@@ -19,16 +22,22 @@
         <link rel="stylesheet" href="./css/header.css">
     </head>
 
-    <body>
+    <body>              
         <header class="header-container">
             <div class="container-fluid">
                 <div class="row align-items-center">
                     <!-- LOGO HEADER -->
                     <div class="col-auto">
-                        <a href="#">
+                        <a href="pawfect">
                             <img class="logo-header" src="./img/header/logo.png" alt="PawPect Logo">
                         </a>
                     </div>
+
+                    <!-- NAVIGATION -->
+                    <%
+                        CategoryDAO categoryDAO = new CategoryDAO();
+                        List<Category> categories = categoryDAO.getAllActiveCategories();
+                    %>
 
                     <!-- NAVIGATION -->
                     <div class="col-6 col-lg">
@@ -36,34 +45,69 @@
                             <div class="col-auto">
                                 <a class="btn" href="#">Về PawPect</a>
                             </div>
+
+                            <!-- Dropdown Sản phẩm cho Chó -->
                             <div class="col-auto dropdown">
-                                <a class="btn dropdown-toggle" href="/products?pettype=1&page=1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="btn dropdown-toggle" href="products?pettype=1&page=1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Sản phẩm cho Chó
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="/products?pettype=1&page=1&category=food">Đồ ăn</a></li>
-                                    <li><a class="dropdown-item" href="/products?pettype=1&page=1&category=accessory">Phụ kiện</a></li>
-                                    <li><a class="dropdown-item" href="/products?pettype=1&page=1&category=toy">Đồ chơi</a></li>
+                                    <%
+                                        for (Category category : categories) {
+                                    %>
+                                    <li>
+                                        <a class="dropdown-item" href="products?pettype=1&page=1&category=<%= category.getCategoryId()%>">
+                                            <%= category.getCategoryName()%>
+                                        </a>
+                                    </li>
+                                    <%
+                                        }
+                                    %>
                                 </ul>
                             </div>
 
+                            <!-- Dropdown Sản phẩm cho Mèo -->
                             <div class="col-auto dropdown">
-                                <a class="btn dropdown-toggle" href="/products?pettype=2&page=1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="btn dropdown-toggle" href="products?pettype=2&page=1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Sản phẩm cho Mèo
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="/products?pettype=2&page=1&category=food">Đồ ăn</a></li>
-                                    <li><a class="dropdown-item" href="/products?pettype=2&page=1&category=accessory">Phụ kiện</a></li>
-                                    <li><a class="dropdown-item" href="/products?pettype=2&page=1&category=toy">Đồ chơi</a></li>
+                                    <%
+                                        for (Category category : categories) {
+                                    %>
+                                    <li>
+                                        <a class="dropdown-item" href="products?pettype=2&page=1&category=<%= category.getCategoryId()%>">
+                                            <%= category.getCategoryName()%>
+                                        </a>
+                                    </li>
+                                    <%
+                                        }
+                                    %>
                                 </ul>
                             </div>
-
 
                             <div class="col-auto">
                                 <a class="btn" href="pethotel">Khách sạn thú cưng</a>
                             </div>
                         </nav>
                     </div>
+
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            document.querySelectorAll(".btn.dropdown-toggle").forEach(function (button) {
+                                button.addEventListener("click", function (event) {
+                                    // Kiểm tra nếu dropdown đang mở thì ngăn điều hướng
+                                    if (this.nextElementSibling && this.nextElementSibling.classList.contains("show")) {
+                                        event.preventDefault(); // Ngăn chặn hành vi mặc định
+                                    } else {
+                                        // Chuyển hướng đến URL trong href
+                                        window.location.href = this.getAttribute("href");
+                                    }
+                                });
+                            });
+                        });
+                    </script>
 
                     <!-- ICONS: Search, User, Cart -->
                     <div class="col-auto d-flex justify-content-end align-items-center gap-3">
@@ -75,7 +119,8 @@
                         <%
                             String username = null;
                             Cookie[] cookies = request.getCookies();
-                            if (cookies != null) {
+                            if (cookies
+                                    != null) {
                                 for (Cookie cookie : cookies) {
                                     if ("customerId".equals(cookie.getName())) {
                                         username = cookie.getValue();
@@ -90,7 +135,8 @@
                                 <i class='bx bxs-user-circle'></i>
                             </a>
                             <ul class="dropdown-menu">
-                                <% if (username != null) { %>
+                                <% if (username
+                                            != null) { %>
                                 <li><a class="dropdown-item d-flex align-items-center gap-3" href="profile">
                                         <i class="bx bxs-user-detail"></i> Thông tin
                                     </a></li>
