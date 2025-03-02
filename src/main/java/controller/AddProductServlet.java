@@ -25,7 +25,7 @@ import model.Product;
  * @author Nguyen Tri Nghi - CE180897
  */
 @MultipartConfig
-public class CreateProductServlet extends HttpServlet {
+public class AddProductServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -68,7 +68,7 @@ public class CreateProductServlet extends HttpServlet {
         CategoryDAO categoryDAO = new CategoryDAO();
         List<Category> categories = categoryDAO.getAllCategories();
         request.setAttribute("categories", categories);
-        request.getRequestDispatcher("/dashboard/admin/createproduct.jsp").forward(request, response);
+        request.getRequestDispatcher("/dashboard/admin/addproduct.jsp").forward(request, response);
     }
 
     /**
@@ -117,7 +117,7 @@ public class CreateProductServlet extends HttpServlet {
                     productPrice, fileName, stock, description, productActive);
 
             ProductDAO productDAO = new ProductDAO();
-            boolean createSuccess = productDAO.createProduct(product);
+            boolean createSuccess = productDAO.addProduct(product);
 
             if (createSuccess) {
                 response.sendRedirect("/dashboard/admin/product?success=1");

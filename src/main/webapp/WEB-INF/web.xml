@@ -145,8 +145,8 @@
         <servlet-class>controller.FeedbackManagementServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CreateProductServlet</servlet-name>
-        <servlet-class>controller.CreateProductServlet</servlet-class>
+        <servlet-name>AddProductServlet</servlet-name>
+        <servlet-class>controller.AddProductServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddPetServlet</servlet-name>
@@ -193,8 +193,8 @@
         <servlet-class>controller.EditCategoryServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CreateCategoryServlet</servlet-name>
-        <servlet-class>controller.CreateCategoryServlet</servlet-class>
+        <servlet-name>AddCategoryServlet</servlet-name>
+        <servlet-class>controller.AddCategoryServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>PetHotelServlet</servlet-name>
@@ -341,8 +341,8 @@
         <url-pattern>/dashboard/staff/feedbackmanagement</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CreateProductServlet</servlet-name>
-        <url-pattern>/dashboard/admin/createproduct</url-pattern>
+        <servlet-name>AddProductServlet</servlet-name>
+        <url-pattern>/dashboard/admin/addproduct</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddPetServlet</servlet-name>
@@ -389,8 +389,8 @@
         <url-pattern>/dashboard/admin/editcategory</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CreateCategoryServlet</servlet-name>
-        <url-pattern>/dashboard/admin/createcategory</url-pattern>
+        <servlet-name>AddCategoryServlet</servlet-name>
+        <url-pattern>/dashboard/admin/addcategory</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
