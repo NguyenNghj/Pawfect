@@ -72,7 +72,7 @@ public class LoginStaffServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       String email = request.getParameter("email");
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
 
         UserDAO userDAO = new UserDAO();
@@ -85,7 +85,7 @@ public class LoginStaffServlet extends HttpServlet {
             Cookie staffRole = new Cookie("staffRole", account.getRole());
             staffRole.setMaxAge(60 * 60 * 24 * 1);
             response.addCookie(staffRole);
-             Cookie staffName = new Cookie("staffName", account.getUsername());
+            Cookie staffName = new Cookie("staffName", account.getUsername());
             staffName.setMaxAge(60 * 60 * 24 * 1);
             response.addCookie(staffName);
             if (account.getRole().equals("Admin")){

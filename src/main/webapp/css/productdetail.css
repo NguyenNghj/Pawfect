@@ -13,12 +13,17 @@ input[type="number"]::-webkit-outer-spin-button {
     margin: 0;
 }
 
-* {
+/** {
     font-family: 'Baloo 2', sans-serif !important;
-}
+}*/
+
+/*body {
+    background-color: #F4F4F4;
+}*/
 
 body {
-    background-color: #F4F4F4;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f8f9fa;
 }
 
 .breadcrumb {
@@ -346,4 +351,83 @@ body {
 .page-link:hover {
     color: #FFE0B2;
     border-color: #FFE0B2;
+}
+
+.review {
+    border: 1px solid #c4cdd5;
+    border-radius: 7px;
+    padding: 20px;
+    background: white;
+}
+
+h1 {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.rating-summary {
+  background-color: #f0f4fa;
+  border-radius: 8px;
+}
+
+.rating-average {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1e40af;
+}
+
+.stars {
+    color: #facc15; /* Màu vàng giống Font Awesome */
+}
+
+.rating-count {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.btn-outline-primary.active {
+  background-color: #fff;
+  color: #1e40af;
+  border-color: #1e40af;
+}
+
+.review-item {
+  background-color: #fff;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.reviewer-name {
+  font-size: 1rem;
+}
+
+.review-text {
+  color: #333;
+  margin-bottom: 0;
+}
+
+.employee-response {
+  background-color: #f8f9fa;
+  border-left: 3px solid #1e40af;
+  padding: 10px;
+  border-radius: 0 8px 8px 0;
+}
+
+.employee-name {
+  color: #1e40af;
+  font-size: 0.9rem;
+}
+
+.response-text {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0;
+}
+
+/* Make buttons more compact on mobile */
+@media (max-width: 768px) {
+  .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
 }
