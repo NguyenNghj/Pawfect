@@ -196,22 +196,6 @@
         <servlet-name>CreateCategoryServlet</servlet-name>
         <servlet-class>controller.CreateCategoryServlet</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>StaffProfileServlet</servlet-name>
-        <servlet-class>controller.StaffProfileServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ChangeStaffPasswordServlet</servlet-name>
-        <servlet-class>controller.ChangeStaffPasswordServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>AdminProfileServlet</servlet-name>
-        <servlet-class>controller.AdminProfileServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ChangeAdminPasswordServlet</servlet-name>
-        <servlet-class>controller.ChangeAdminPasswordServlet</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>PetHotelServlet</servlet-name>
         <url-pattern>/pethotel</url-pattern>
@@ -407,22 +391,6 @@
     <servlet-mapping>
         <servlet-name>CreateCategoryServlet</servlet-name>
         <url-pattern>/dashboard/admin/createcategory</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>StaffProfileServlet</servlet-name>
-        <url-pattern>/dashboard/staff/staffprofile</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ChangeStaffPasswordServlet</servlet-name>
-        <url-pattern>/dashboard/staff/changestaffpassword</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AdminProfileServlet</servlet-name>
-        <url-pattern>/dashboard/admin/adminprofile</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ChangeAdminPasswordServlet</servlet-name>
-        <url-pattern>/dashboard/admin/changeadminpassword</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
