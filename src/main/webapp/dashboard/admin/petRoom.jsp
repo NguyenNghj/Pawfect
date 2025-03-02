@@ -26,7 +26,7 @@
 
                 <!-- SIDEBAR -->
                 <jsp:include page="sidebar.jsp"/>
-<%
+                <%
                     Cookie[] cookies = request.getCookies();
                     String staffRole = "";
                     String staffName = "";
@@ -96,9 +96,10 @@
                         </nav>
                     </div>   
 
-                    <button class="btn btn-primary" onclick="window.location.href = 'addroom'">
-                        <i class="fa fa-plus"></i> Thêm Phòng Mới
+                    <button class="btn btn-success" onclick="window.location.href = 'addroom'">
+                        <i class="fa fa-plus"></i> Thêm Phòng
                     </button>
+
 
 
 
