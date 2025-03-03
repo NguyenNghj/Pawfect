@@ -11,11 +11,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.User;
+import util.EmailVerify;
 
 /**
  *
@@ -86,17 +89,36 @@ public class RegisterServlet extends HttpServlet {
         String phoneNumber = request.getParameter("phoneNumber");
 
         RegisterDAO registerDAO = new RegisterDAO();
-        if (registerDAO.userExists(email)) {
-            try {
-                registerDAO.register(new User(email, password, fullName, phoneNumber, address, gender, birthDate));
-            } catch (NoSuchAlgorithmException ex) {
-                Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            response.sendRedirect("login.jsp");
-
-        } else {
+ System.out.println("Checking if user exists: " + email);
+System.out.println("User exists: " + registerDAO.userExists(email));
+        if (!registerDAO.userExists(email)) {
             request.setAttribute("error", "Email bạn đăng ký đã tồn tại");
+           
             request.getRequestDispatcher("register.jsp").forward(request, response);
+ 
+         
+        }
+        else{
+        String verificationCode = String.format("%06d", new Random().nextInt(999999));
+        HttpSession session = request.getSession();
+        session.setAttribute("email", email);
+        session.setAttribute("password", password);
+        session.setAttribute("fullName", fullName);
+        session.setAttribute("phoneNumber", phoneNumber);
+        session.setAttribute("address", address);
+        session.setAttribute("gender", gender);
+        session.setAttribute("birthDate", birthDate);
+        session.setAttribute("verificationCode", verificationCode);
+
+        try {
+            EmailVerify.sendVerificationEmail(email, verificationCode);
+        } catch (Exception e) {
+            Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, e);
+            request.setAttribute("error", "Lỗi khi gửi email xác nhận. Vui lòng thử lại!");
+            request.getRequestDispatcher("register.jsp").forward(request, response);
+            
+        }
+        response.sendRedirect("verify");
         }
     }
 
