@@ -589,32 +589,91 @@
                     } else {
                         resetImage();
                     }
+                });
 
-                    let commentContent = document.getElementById("customer-comment").value.trim();
-                    let ratingContent = document.getElementById("customer-rating").value;
-                    let productId = confirmBtn.getAttribute("data-product-id");
+                // Hàm reset toàn bộ modal
+                function resetModal() {
+                    selectedRating = 0;
+                    ratingInput.value = '';
+                    highlightStars(0);
+                    document.getElementById("customer-comment").value = '';
+                    resetImage();
+                    console.log('Modal reset: sao, comment, và ảnh đã được xóa');
+                }
 
+                // Hàm reset ảnh
+                function resetImage() {
+                    fileInput.value = '';
+                    fileName.textContent = 'Chưa chọn ảnh';
+                    imagePreview.innerHTML = '';
+                    imagePreview.classList.remove('active');
+                    imageBase64Input.value = '';
+                    imageNameInput.value = '';
+                }
+
+                // Xử lý nút gửi đánh giá
+                confirmBtn.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    localStorage.setItem("scrollFeedback", window.scrollY);
+
+                    const customerId = getCookie("customerId");
+                    if (!customerId) {
+                        showAlert("Bạn chưa đăng nhập!", "Vui lòng đăng nhập trước khi gửi đánh giá.", "warning");
+                        return;
+                function highlightStars(rating) {
+                    stars.forEach(star => {
+                        star.classList.toggle('selected', star.getAttribute('data-rating') <= rating);
+                    });
+                }
+
+                // Xử lý upload ảnh
+                uploadBtn.addEventListener('click', () => {
+                    console.log('Nút upload được nhấn');
+                    fileInput.click();
+                });
+
+                fileInput.addEventListener('change', function () {
+                    const file = this.files[0];
+                    console.log('File selected:', file);
+                    if (file) {
+                        fileName.textContent = file.name;
+                        const reader = new FileReader();
+                        reader.onload = e => {
+                            console.log('FileReader onload:', e.target.result.substring(0, 50) + '...');
+                            const base64String = e.target.result;
+                            const img = document.createElement('img');
+                            img.src = base64String;
+                            img.alt = 'Preview';
+                            imagePreview.innerHTML = '';
+                            imagePreview.appendChild(img);
+                            imagePreview.classList.add('active');
+                            console.log('Image preview display:', imagePreview.style.display);
+
+                            imageBase64Input.value = base64String.split(',')[1];
+                            imageNameInput.value = file.name;
+                            console.log('Base64 stored:', imageBase64Input.value.substring(0, 50) + '...');
+                        };
+                        reader.onerror = e => console.error('FileReader error:', e);
+                        reader.readAsDataURL(file);
+                    } else {
+                        resetImage();
+                    }
+
+                    const commentContent = document.getElementById("customer-comment").value.trim();
+                    const ratingContent = ratingInput.value;
+                    const productId = confirmBtn.getAttribute("data-product-id");
                     document.getElementById("productId").value = productId;
 
-                    if (ratingContent === "Chọn") {
-                        Swal.fire({
-                            title: "Đánh giá không được để trống!",
-                            text: "Vui lòng đánh giá trước khi gửi.",
-                            icon: "error"
-                        });
+                    if (!ratingContent) {
+                        showAlert("Đánh giá không được để trống!", "Vui lòng chọn số sao trước khi gửi.", "error");
                         return;
                     }
 
-                    if (commentContent === "") {
-                        Swal.fire({
-                            title: "Nội dung đánh giá không được để trống!",
-                            text: "Vui lòng nhập nội dung trước khi gửi.",
-                            icon: "error"
-                        });
+                    if (!commentContent) {
+                        showAlert("Nội dung đánh giá không được để trống!", "Vui lòng nhập nội dung trước khi gửi.", "error");
                         return;
                     }
 
-                    // Nếu hợp lệ, hiển thị xác nhận
                     Swal.fire({
                         title: "Xác nhận gửi?",
                         text: "Bạn có chắc chắn muốn gửi đánh giá này?",
@@ -624,7 +683,7 @@
                         cancelButtonColor: "#d33",
                         confirmButtonText: "Đồng ý!",
                         cancelButtonText: "Hủy!"
-                    }).then((result) => {
+                    }).then(result => {
                         if (result.isConfirmed) {
                             Swal.fire({
                                 title: "Thành công!",
