@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Product;
+import model.Staff;
 
 /**
  *
@@ -103,4 +104,34 @@ String sql = "SELECT TOP 5 p.product_id, p.product_name, p.product_price, p.prod
     }
     return topProducts;
 }
+     public List<Staff> getTopStaffs() {
+        List<Staff> topStaffs = new ArrayList<>();
+        String sql = "SELECT TOP 5 s.staff_id, s.full_name, COUNT(o.order_id) AS total_orders, " +
+                 "SUM(oi.quantity) AS total_sold, SUM(oi.quantity *  o.total_amount) AS total_revenue " +
+                 "FROM [pawfect].[dbo].[Orders] o " +
+                 "JOIN [pawfect].[dbo].[OrderItems] oi ON o.order_id = oi.order_id " +
+                 "JOIN [pawfect].[dbo].[Staffs] s ON o.staff_id = s.staff_id " +
+                 "WHERE o.status = N'Hoàn thành' " +
+                 "GROUP BY s.staff_id, s.full_name " +
+                 "ORDER BY total_sold DESC;";
+        
+        try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                int staffId = rs.getInt("staff_id");
+            String fullName = rs.getString("full_name");
+            int totalOrders = rs.getInt("total_orders");
+            int totalSold = rs.getInt("total_sold");
+            double totalRevenue = rs.getDouble("total_revenue");
+                // Chỉ sử dụng các thông tin cần thiết từ Staff model
+                 Staff staff = new Staff(staffId, fullName, totalOrders, totalSold, totalRevenue);
+            topStaffs.add(staff);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return topStaffs;
+    }
 }

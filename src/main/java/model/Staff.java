@@ -14,6 +14,9 @@ public class Staff {
     private Date birthDate;
     private String image;
     private boolean isActive;
+      private int totalOrders;   // Thêm biến totalOrders
+    private int totalSold;     // Thêm biến totalSold
+    private double totalRevenue;
 
     // Constructor đầy đủ
     public Staff(int staffId, String roleName, String password, String fullName, String email, String phone, String address,
@@ -29,6 +32,7 @@ public class Staff {
         this.birthDate = birthDate;
         this.image = image;
         this.isActive = isActive;
+        
     }
 
     // Constructor không có staffId (dùng khi thêm mới)
@@ -45,6 +49,14 @@ public class Staff {
         this.image = image;
         this.isActive = isActive;
     }
+     public Staff(int staffId, String fullName, int totalOrders, int totalSold, double totalRevenue) {
+        this.staffId = staffId;
+        this.fullName = fullName;
+        this.totalOrders = totalOrders;
+        this.totalSold = totalSold;
+        this.totalRevenue = totalRevenue;
+    }
+
 
 
     // Getters và Setters
@@ -135,4 +147,30 @@ public class Staff {
     public void setActive(boolean active) {
         isActive = active;
     }
+    
+    // Getters và Setters cho các thuộc tính mới
+    public int getTotalOrders() {
+        return totalOrders;
+    }
+
+    public void setTotalOrders(int totalOrders) {
+        this.totalOrders = totalOrders;
+    }
+
+    public int getTotalSold() {
+        return totalSold;
+    }
+
+    public void setTotalSold(int totalSold) {
+        this.totalSold = totalSold;
+    }
+
+    public double getTotalRevenue() {
+        return totalRevenue;
+    }
+
+    public void setTotalRevenue(double totalRevenue) {
+        this.totalRevenue = totalRevenue;
+    }
+
 }
