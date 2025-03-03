@@ -73,10 +73,16 @@ h2 {
 }
 
 .nut-loc:hover {
+    background-color:  #fdefb4;
     transform: scale(1.05);
     cursor: pointer;
 }
 
+.nut-loc.active{
+    background-color:  #fdefb4;
+    color: #3E2522 !important;
+    border: 2px solid #3E2522;
+}
 .filterbox {
     gap: 10px;
     display: flex;
@@ -198,8 +204,14 @@ h2 {
 }
 
 .category-item:hover {
-    color: #8C6E63;
+    background-color:  #fdefb4;
     transform: scale(1.05);
+}
+
+.category-item.active {
+    background-color:  #fdefb4;
+    color: #3E2522 !important;
+    border: 2px solid #3E2522;
 }
 
 .col-md-3 {
@@ -235,10 +247,5 @@ h2 {
     border-color: #FFE0B2;
 }
 
-.nut-loc.active{
-    background: #d5f5e3;
-}
 
-.category-item.active {
-    background: #d5f5e3;
-}
+
