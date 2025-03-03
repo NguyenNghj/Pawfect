@@ -124,33 +124,48 @@
                                             </div>
                                             <form id="feedbackForm" action="/dashboard/staff/feedbackmanagement?action=feedback" method="post">
                                                 <div class="modal-body">
-                                                    <div class="input-group mb-3">
-                                                        <label class="input-group-text" for="inputGroupSelect01">Đánh giá của bạn về sản phẩm</label>
-                                                        <select name="rating" class="form-select" id="customer-rating" required>
-                                                            <option selected>Chọn</option>
-                                                            <option value="5">5</option>
-                                                            <option value="4">4</option>
-                                                            <option value="3">3</option>
-                                                            <option value="2">2</option>
-                                                            <option value="1">1</option>
-                                                        </select>
-                                                        <label class="input-group-text" for="inputGroupSelect01"><i class="fas fa-star" style="color: #FFD43B;"></i></label>
+                                                    <!-- Rating Stars -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Đánh giá của bạn</label>
+                                                        <div class="star-rating">
+                                                            <i class="fas fa-star" data-rating="1"></i>
+                                                            <i class="fas fa-star" data-rating="2"></i>
+                                                            <i class="fas fa-star" data-rating="3"></i>
+                                                            <i class="fas fa-star" data-rating="4"></i>
+                                                            <i class="fas fa-star" data-rating="5"></i>
+                                                        </div>
+                                                        <input type="hidden" name="rating" id="rating-value" required>
                                                     </div>
-                                                    <div class="form-floating">
+
+                                                    <!-- Comment Textarea -->
+                                                    <div class="form-floating mb-3">
                                                         <textarea name="comment" class="form-control" placeholder="Leave a comment here" id="customer-comment" style="height: 140px" required></textarea>
-                                                        <label for="floatingTextarea2">Nhập nội dung đánh giá của bạn về sản phẩm này</label>
+                                                        <label for="customer-comment">Nhập nội dung đánh giá của bạn</label>
+                                                    </div>
+
+                                                    <!-- Image Upload -->
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Tải lên hình ảnh (tùy chọn)</label>
+                                                        <div class="input-group custom-file-upload">
+                                                            <input type="file" class="form-control" id="feedbackImage" name="feedbackImage" accept="image/*" hidden>
+                                                            <button type="button" class="btn btn-outline-primary" id="upload-btn">
+                                                                <i class="fas fa-camera"></i> Chọn ảnh
+                                                            </button>
+                                                            <span class="file-name ms-2" id="file-name">Chưa chọn ảnh</span>
+                                                        </div>
+                                                        <div class="image-preview mt-2" id="image-preview"></div>
+                                                        <input type="hidden" name="imageBase64" id="imageBase64"> <!-- Lưu chuỗi Base64 -->
+                                                        <input type="hidden" name="imageName" id="imageName"> <!-- Lưu tên file -->
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
-                                                    <button type="button" class="btn btn-primary" id="confirm-btn"
-                                                            data-product-id="${param.id}"
-                                                            >
+                                                    <button type="button" class="btn btn-secondary" id="cancel-btn" data-bs-dismiss="modal">Hủy</button>
+                                                    <button type="button" class="btn btn-primary" id="confirm-btn" data-product-id="${param.id}">
                                                         Gửi đánh giá
                                                     </button>
                                                 </div>
-                                                <input type="hidden" name="productId" id="productId">
-                                            </form>                                            
+                                                <input type="hidden" name="productId" id="productId" value="${param.id}">
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -277,6 +292,8 @@
                 </div>
             </div>           
         </div>   
+
+        <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -502,61 +519,124 @@
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                const confirmBtn = document.getElementById("confirm-btn");
+                // Lấy các phần tử DOM
+                const stars = document.querySelectorAll('.star-rating .fa-star');
+                const ratingInput = document.getElementById('rating-value');
+                const uploadBtn = document.getElementById('upload-btn');
+                const fileInput = document.getElementById('feedbackImage');
+                const fileName = document.getElementById('file-name');
+                const imagePreview = document.getElementById('image-preview');
+                const imageBase64Input = document.getElementById('imageBase64');
+                const imageNameInput = document.getElementById('imageName');
+                const confirmBtn = document.getElementById('confirm-btn');
+                const cancelBtn = document.getElementById('cancel-btn');
+                const feedbackModal = document.getElementById('feedbackModal');
+                let selectedRating = 0;
 
+                // Kiểm tra phần tử tồn tại
+                if (!stars.length || !ratingInput || !uploadBtn || !fileInput || !fileName || !imagePreview ||
+                        !imageBase64Input || !imageNameInput || !confirmBtn || !cancelBtn || !feedbackModal) {
+                    console.error('Một hoặc nhiều phần tử không được tìm thấy');
+                    return;
+                }
+
+                // Xử lý sao đánh giá
+                stars.forEach(star => {
+                    star.addEventListener('mouseover', () => highlightStars(star.getAttribute('data-rating')));
+                    star.addEventListener('mouseout', () => highlightStars(selectedRating));
+                    star.addEventListener('click', () => {
+                        selectedRating = star.getAttribute('data-rating');
+                        ratingInput.value = selectedRating;
+                        highlightStars(selectedRating);
+                    });
+                });
+
+                function highlightStars(rating) {
+                    stars.forEach(star => {
+                        star.classList.toggle('selected', star.getAttribute('data-rating') <= rating);
+                    });
+                }
+
+                // Xử lý upload ảnh
+                uploadBtn.addEventListener('click', () => {
+                    console.log('Nút upload được nhấn');
+                    fileInput.click();
+                });
+
+                fileInput.addEventListener('change', function () {
+                    const file = this.files[0];
+                    console.log('File selected:', file);
+                    if (file) {
+                        fileName.textContent = file.name;
+                        const reader = new FileReader();
+                        reader.onload = e => {
+                            console.log('FileReader onload:', e.target.result.substring(0, 50) + '...');
+                            const base64String = e.target.result;
+                            const img = document.createElement('img');
+                            img.src = base64String;
+                            img.alt = 'Preview';
+                            imagePreview.innerHTML = '';
+                            imagePreview.appendChild(img);
+                            imagePreview.classList.add('active');
+                            console.log('Image preview display:', imagePreview.style.display);
+
+                            imageBase64Input.value = base64String.split(',')[1];
+                            imageNameInput.value = file.name;
+                            console.log('Base64 stored:', imageBase64Input.value.substring(0, 50) + '...');
+                        };
+                        reader.onerror = e => console.error('FileReader error:', e);
+                        reader.readAsDataURL(file);
+                    } else {
+                        resetImage();
+                    }
+                });
+
+                // Hàm reset toàn bộ modal
+                function resetModal() {
+                    selectedRating = 0;
+                    ratingInput.value = '';
+                    highlightStars(0);
+                    document.getElementById("customer-comment").value = '';
+                    resetImage();
+                    console.log('Modal reset: sao, comment, và ảnh đã được xóa');
+                }
+
+                // Hàm reset ảnh
+                function resetImage() {
+                    fileInput.value = '';
+                    fileName.textContent = 'Chưa chọn ảnh';
+                    imagePreview.innerHTML = '';
+                    imagePreview.classList.remove('active');
+                    imageBase64Input.value = '';
+                    imageNameInput.value = '';
+                }
+
+                // Xử lý nút gửi đánh giá
                 confirmBtn.addEventListener("click", function (event) {
-                    event.preventDefault(); // Ngăn form gửi ngay lập tức
-
-                    // Lưu vị trí cuộn trước khi gửi
+                    event.preventDefault();
                     localStorage.setItem("scrollFeedback", window.scrollY);
 
-                    function getCookie(name) {
-                        let cookies = document.cookie.split(';');
-                        for (let i = 0; i < cookies.length; i++) {
-                            let cookie = cookies[i].trim();
-                            if (cookie.startsWith(name + "=")) {
-                                return cookie.substring(name.length + 1);
-                            }
-                        }
-                        return null;
-                    }
-
-                    let customerId = getCookie("customerId");
+                    const customerId = getCookie("customerId");
                     if (!customerId) {
-                        Swal.fire({
-                            title: "Bạn chưa đăng nhập!",
-                            text: "Vui lòng đăng nhập trước khi gửi đánh giá.",
-                            icon: "warning",
-                            confirmButtonText: "OK"
-                        });
+                        showAlert("Bạn chưa đăng nhập!", "Vui lòng đăng nhập trước khi gửi đánh giá.", "warning");
                         return;
                     }
 
-                    let commentContent = document.getElementById("customer-comment").value.trim();
-                    let ratingContent = document.getElementById("customer-rating").value;
-                    let productId = confirmBtn.getAttribute("data-product-id");
-
+                    const commentContent = document.getElementById("customer-comment").value.trim();
+                    const ratingContent = ratingInput.value;
+                    const productId = confirmBtn.getAttribute("data-product-id");
                     document.getElementById("productId").value = productId;
 
-                    if (ratingContent === "Chọn") {
-                        Swal.fire({
-                            title: "Đánh giá không được để trống!",
-                            text: "Vui lòng đánh giá trước khi gửi.",
-                            icon: "error"
-                        });
+                    if (!ratingContent) {
+                        showAlert("Đánh giá không được để trống!", "Vui lòng chọn số sao trước khi gửi.", "error");
                         return;
                     }
 
-                    if (commentContent === "") {
-                        Swal.fire({
-                            title: "Nội dung đánh giá không được để trống!",
-                            text: "Vui lòng nhập nội dung trước khi gửi.",
-                            icon: "error"
-                        });
+                    if (!commentContent) {
+                        showAlert("Nội dung đánh giá không được để trống!", "Vui lòng nhập nội dung trước khi gửi.", "error");
                         return;
                     }
 
-                    // Nếu hợp lệ, hiển thị xác nhận
                     Swal.fire({
                         title: "Xác nhận gửi?",
                         text: "Bạn có chắc chắn muốn gửi đánh giá này?",
@@ -566,7 +646,7 @@
                         cancelButtonColor: "#d33",
                         confirmButtonText: "Đồng ý!",
                         cancelButtonText: "Hủy!"
-                    }).then((result) => {
+                    }).then(result => {
                         if (result.isConfirmed) {
                             Swal.fire({
                                 title: "Thành công!",
@@ -581,13 +661,35 @@
                     });
                 });
 
-                // Khôi phục vị trí cuộn sau khi xác nhận gửi feedback
-                if (localStorage.getItem("scrollFeedback")) {
-                    window.scrollTo(0, localStorage.getItem("scrollFeedback"));
-                    localStorage.removeItem("scrollFeedback"); // Xóa sau khi khôi phục
+                // Xử lý nút Hủy và đóng modal
+                cancelBtn.addEventListener("click", resetModal);
+                feedbackModal.addEventListener('hidden.bs.modal', resetModal);
+
+                // Hàm tiện ích lấy cookie
+                function getCookie(name) {
+                    const cookies = document.cookie.split(';');
+                    for (let cookie of cookies) {
+                        const [key, value] = cookie.trim().split('=');
+                        if (key === name)
+                            return value;
+                    }
+                    return null;
+                }
+
+                // Hàm tiện ích hiển thị Swal alert
+                function showAlert(title, text, icon) {
+                    Swal.fire({title, text, icon, confirmButtonText: "OK"});
+                }
+
+                // Khôi phục vị trí cuộn
+                const scrollFeedback = localStorage.getItem("scrollFeedback");
+                if (scrollFeedback) {
+                    window.scrollTo(0, scrollFeedback);
+                    localStorage.removeItem("scrollFeedback");
                 }
             });
         </script>
+
 
     </body>
 </html>
