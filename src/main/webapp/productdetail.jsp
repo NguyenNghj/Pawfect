@@ -307,6 +307,7 @@
                     });
                 });
             });
+
         </script>
 
         <script>
@@ -500,92 +501,91 @@
         </script>
 
         <script>
-            // Bắt sự kiện khi nhấn nút gui
-            document.getElementById("confirm-btn").addEventListener("click", function (event) {
-                event.preventDefault(); // Ngăn form gửi ngay lập tức           
+            document.addEventListener("DOMContentLoaded", function () {
+                const confirmBtn = document.getElementById("confirm-btn");
 
-                function getCookie(name) {
-                    let cookies = document.cookie.split(';'); // Lấy tất cả cookie
-                    for (let i = 0; i < cookies.length; i++) {
-                        let cookie = cookies[i].trim(); // Xóa khoảng trắng 2 bên
-                        if (cookie.startsWith(name + "=")) {
-                            return cookie.substring(name.length + 1); // Lấy giá trị của cookie
+                confirmBtn.addEventListener("click", function (event) {
+                    event.preventDefault(); // Ngăn form gửi ngay lập tức
+
+                    // Lưu vị trí cuộn trước khi gửi
+                    localStorage.setItem("scrollFeedback", window.scrollY);
+
+                    function getCookie(name) {
+                        let cookies = document.cookie.split(';');
+                        for (let i = 0; i < cookies.length; i++) {
+                            let cookie = cookies[i].trim();
+                            if (cookie.startsWith(name + "=")) {
+                                return cookie.substring(name.length + 1);
+                            }
                         }
+                        return null;
                     }
-                    return null; // Trả về null nếu không tìm thấy cookie
-                }
 
-                // Kiểm tra xem cookie "staffId" có tồn tại không
-                let customerId = getCookie("customerId");
-
-                if (customerId) {
-                    console.log("Cookie customerId", customerId);
-                } else {
-                    console.log("Không tìm thấy cookie customerId.");
-                    Swal.fire({
-                        title: "Bạn chưa đăng nhập!",
-                        text: "Vui lòng đăng nhập trước khi gửi đánh giá.",
-                        icon: "warning",
-                        confirmButtonText: "OK"
-                    });
-                    return;
-                }
-
-                // Lấy nội dung nội dung đánh giá của khách
-                let commentContent = document.getElementById("customer-comment").value.trim();
-                let ratingContent = document.getElementById("customer-rating").value;
-
-                let productId = this.getAttribute("data-product-id");
-
-                console.log(productId);
-
-                document.getElementById("productId").value = productId;
-
-                // Kiểm tra nếu ô nội dung trống
-                if (ratingContent === "Chọn") {
-                    Swal.fire({
-                        title: "Ðánh giá không được để trống!",
-                        text: "Vui lòng đánh giá trước khi gửi.",
-                        icon: "error"
-                    });
-                    return; // Dừng thực thi nếu ô nội dung trống
-                }
-
-                // Kiểm tra nếu ô nội dung trống
-                if (commentContent === "") {
-                    Swal.fire({
-                        title: "Nội dung đánh giá không được để trống!",
-                        text: "Vui lòng nhập nội dung trước khi gửi.",
-                        icon: "error"
-                    });
-                    return; // Dừng thực thi nếu ô nội dung trống
-                }
-
-                // Nếu hợp lệ, hiển thị xác nhận
-                Swal.fire({
-                    title: "Xác nhận gửi?",
-                    text: "Bạn có chắc chắn muốn gửi đánh giá này?",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Đồng ý!",
-                    cancelButtonText: "Hủy!"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Hiển thị alert thành công
+                    let customerId = getCookie("customerId");
+                    if (!customerId) {
                         Swal.fire({
-                            title: "Thành công!",
-                            text: "Đánh giá đã được gửi.",
-                            icon: "success",
-                            timer: 1500,
-                            showConfirmButton: false
-                        }).then(() => {
-                            // Gửi form sau khi hiện alert xong
-                            document.getElementById("feedbackForm").submit();
+                            title: "Bạn chưa đăng nhập!",
+                            text: "Vui lòng đăng nhập trước khi gửi đánh giá.",
+                            icon: "warning",
+                            confirmButtonText: "OK"
                         });
+                        return;
                     }
+
+                    let commentContent = document.getElementById("customer-comment").value.trim();
+                    let ratingContent = document.getElementById("customer-rating").value;
+                    let productId = confirmBtn.getAttribute("data-product-id");
+
+                    document.getElementById("productId").value = productId;
+
+                    if (ratingContent === "Chọn") {
+                        Swal.fire({
+                            title: "Đánh giá không được để trống!",
+                            text: "Vui lòng đánh giá trước khi gửi.",
+                            icon: "error"
+                        });
+                        return;
+                    }
+
+                    if (commentContent === "") {
+                        Swal.fire({
+                            title: "Nội dung đánh giá không được để trống!",
+                            text: "Vui lòng nhập nội dung trước khi gửi.",
+                            icon: "error"
+                        });
+                        return;
+                    }
+
+                    // Nếu hợp lệ, hiển thị xác nhận
+                    Swal.fire({
+                        title: "Xác nhận gửi?",
+                        text: "Bạn có chắc chắn muốn gửi đánh giá này?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Đồng ý!",
+                        cancelButtonText: "Hủy!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: "Thành công!",
+                                text: "Đánh giá đã được gửi.",
+                                icon: "success",
+                                timer: 1500,
+                                showConfirmButton: false
+                            }).then(() => {
+                                document.getElementById("feedbackForm").submit();
+                            });
+                        }
+                    });
                 });
+
+                // Khôi phục vị trí cuộn sau khi xác nhận gửi feedback
+                if (localStorage.getItem("scrollFeedback")) {
+                    window.scrollTo(0, localStorage.getItem("scrollFeedback"));
+                    localStorage.removeItem("scrollFeedback"); // Xóa sau khi khôi phục
+                }
             });
         </script>
 
