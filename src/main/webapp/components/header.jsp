@@ -115,6 +115,20 @@
                         <div class="search-container">
                             <input type="text" id="search-box" class="search-box" placeholder="Nhập từ khóa cần tìm...">
                         </div>
+
+                        <script>
+                            document.getElementById("search-box").addEventListener("keypress", function (event) {
+                                if (event.key === "Enter") {
+                                    let keyword = this.value.trim();
+                                    if (keyword) {
+                                        window.location.href = "/product?search=" + encodeURIComponent(keyword);
+                                    }
+                                }
+                            });
+
+                        </script>
+
+                        </scrip>
                         <!-- USER ICON -->
                         <%
                             String username = null;
