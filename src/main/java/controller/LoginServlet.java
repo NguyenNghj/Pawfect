@@ -14,6 +14,8 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import model.Account;
 
 /**
@@ -71,24 +73,33 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       String email = request.getParameter("email");
+      String email = request.getParameter("email");
         String password = request.getParameter("password");
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] hashBytes = md.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashBytes) {
+                sb.append(String.format("%02x", b)); 
+            }
+            String hashedPassword = sb.toString();
+            UserDAO userDAO = new UserDAO();
+            Account account = userDAO.login(email, hashedPassword);
 
-        UserDAO userDAO = new UserDAO();
-        Account account = new Account();
-        account = userDAO.login(email, password);
-        if (!Account.IsEmpty(account)) {
-            Cookie customerId = new Cookie("customerId", account.getCustomerId());
-            customerId.setMaxAge(60 * 60 * 24 * 1);
-            response.addCookie(customerId);
-            response.sendRedirect("products");
-        } else {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
-request.setAttribute("error", "sai email hoặc mật khẩu");
-dispatcher.forward(request, response);
+            if (!Account.IsEmpty(account)) {
+                Cookie customerId = new Cookie("customerId", account.getCustomerId());
+                customerId.setMaxAge(60 * 60 * 24);
+                response.addCookie(customerId);
+                response.sendRedirect("products");
+            } else {
+                request.setAttribute("error", "Sai email hoặc mật khẩu");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+                dispatcher.forward(request, response);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            throw new ServletException("Lỗi mã hóa mật khẩu MD5", e);
         }
     }
-
     /** 
      * Returns a short description of the servlet.
      * @return a String containing servlet description
