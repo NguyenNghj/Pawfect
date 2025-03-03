@@ -8,18 +8,23 @@
 <%@page import="java.text.NumberFormat"%>
 <%@page import="java.util.Locale"%>
 <%@page import="model.PetHotel"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@include file="./components/header.jsp" %>
 <!DOCTYPE html>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Chi tiết phòng khách sạn thú cưng</title>
-        <link rel="stylesheet" href="./css/pethoteldetail_v2.css">
+        <title>Phòng ${room.roomName} dành cho ${room.roomType}</title>
+        <link rel="stylesheet" href="./css/pethoteldetail.css">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
     </head>
     <body>
-
+                <ol class="breadcrumb">
+            <li><a class="trang-chu" href="/pawfect">Trang chủ</a></li>
+            <li><a class="trang-chu" href="/pethotel">Khách sạn thú cưng</a></li>
+            <li>Phòng ${room.roomName} dành cho ${room.roomType}</li>
+        </ol>
         <%-- Lấy dữ liệu phòng từ request attribute --%>
         <%
             PetHotel room = (PetHotel) request.getAttribute("room");
@@ -40,7 +45,7 @@
             </div>
 
             <div class="info-container">
-                <h2><%= room.getRoomName()%></h2>
+                <h2>Phòng <%= room.getRoomName()%></h2>
                 <div class="detail">                
                     <p class="room-type">Dành cho <%= room.getRoomType()%></p>
                     <p class="room-price">Giá: <%= NumberFormat.getInstance(new Locale("vi", "VN")).format(room.getPricePerNight())%> đ/đêm</p>
@@ -69,12 +74,12 @@
                     <img src="<%= similarRoom.getRoomImage()%>" alt="<%= similarRoom.getRoomName()%>" 
                          onclick="window.location.href = 'pethoteldetail?id=<%= similarRoom.getRoomId()%>'">
                     <div class="pethotel-name"><%= similarRoom.getRoomName()%></div>
-                    <div class="pethotel-type"><%= similarRoom.getRoomType()%></div>
+                    <div class="pethotel-type">Dành cho <%= similarRoom.getRoomType()%></div>
                     <div class="pethotel-price"><%= NumberFormat.getInstance(new Locale("vi", "VN")).format(similarRoom.getPricePerNight())%> đ/đêm</div>
                     <div class="pethotel-weight">
                         Cân nặng: <%= similarRoom.getMinWeight()%> - <%= similarRoom.getMaxWeight()%> kg
                     </div>
-                    <a href="customerbooking.jsp?id=<%= similarRoom.getRoomId()%>" class="booking-btn" data-status="<%= similarRoom.getStatus()%>">Đặt phòng ngay</a>
+                    <a href="customerbooking.jsp?id=<%= similarRoom.getRoomId()%>" class="booking" data-status="<%= similarRoom.getStatus()%>">Đặt phòng ngay</a>
                 </div>
 
                 <%

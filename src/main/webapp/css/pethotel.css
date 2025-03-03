@@ -6,8 +6,31 @@
 }
 
 body {
-    background-color: #d9d9d9;
+    background-color: #F4F4F4;
     text-align: center;
+}
+
+.breadcrumb {
+    background-color: #ffffff;
+    list-style: none;
+    display: flex;
+    gap: 10px;
+    padding: 15px 0 15px 50px;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.breadcrumb li::after {
+    content: " \/ ";
+}
+
+.breadcrumb li:last-child::after {
+    content: "";
+}
+
+.trang-chu {
+    color: #D3A376;
+    text-decoration: none;
 }
 
 h3 {
@@ -100,30 +123,9 @@ h4 {
     text-align: center;
 }
 
-.scroll-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #8c6e63;
-    ;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    font-size: 24px;
-    z-index: 100;
-    display: block;
-}
 
-/* Nút cuộn trái */
-#scrollLeft {
-    left: 40px; /* Đưa sát vào */
-}
 
-/* Nút cuộn phải */
-#scrollRight {
-    right: 40px; /* Đưa sát vào */
-}
+
 
 
 .pethotel-card img {
@@ -179,8 +181,12 @@ h4 {
 
 /* Nút cuộn */
 .scroll-btn {
-    width: 60px;
-    height: 60px;
+    position: absolute;
+    top: 50%;
+    padding: 5px;
+    display: block;
+    width: 50px;
+    height: 50px;
     border-radius: 10px; /* Bo góc */
     background-color: #8C6E63;
     color: white;
@@ -195,10 +201,20 @@ h4 {
 .scroll-btn:hover {
     background-color: #fcdb51;
     color: black;
-    transform: translateY(-3px); /* Hiệu ứng nhấc lên */
+    transform: scale(1.2); /* Phóng to 10% */
+    transform-origin: center; /* Đảm bảo phóng to từ trung tâm */
+    transition: transform 0.2s ease-in-out;
 }
 
+/* Nút cuộn trái */
+#scrollLeft {
+    left: 30px; /* Đưa sát vào */
+}
 
+/* Nút cuộn phải */
+#scrollRight {
+    right: 30px; /* Đưa sát vào */
+}
 
 
 
@@ -225,7 +241,6 @@ h4 {
     color: #FFE0B2;
     transition: all 0.4s ease-in-out;
 }
-
 .pethotel-card:hover .booking {
     background-color: #fcdb51;
     color: black;

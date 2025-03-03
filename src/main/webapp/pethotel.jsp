@@ -3,17 +3,21 @@
 <%@page import="java.util.List"%>
 <%@page import="dao.PetHotelDAO"%>
 <%@page import="model.PetHotel"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@include file="./components/header.jsp" %>
 <!DOCTYPE html>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Danh sách phòng cho thú cưng</title>
-        <link rel="stylesheet" href="./css/pethotel_v1.css">
+        <link rel="stylesheet" href="./css/pethotel.css">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
     </head>
     <body>
+        <ol class="breadcrumb">
+            <li><a class="trang-chu" href="/pawfect">Trang chủ</a></li>
+            <li>Khách sạn thú cưng</li>
+        </ol>
         <h3>Danh sách phòng lưu trú thú cưng</h3>
         <h4>Bạn hãy lựa chọn phòng dựa vào cân nặng và giống chó hoặc mèo nhé!</h4>
 
@@ -136,6 +140,19 @@
                     });
                 });
             });
+        </script>
+        <script>
+            document.addEventListener("click", function (event) {
+                localStorage.setItem("scrollPosition", event.pageY); // Lưu vị trí Y khi click
+            });
+        </script>
+        <script>window.onload = function () {
+                let scrollPosition = localStorage.getItem("scrollPosition");
+                if (scrollPosition) {
+                    window.scrollTo(0, scrollPosition); // Cuộn tới vị trí cũ
+                    localStorage.removeItem("scrollPosition"); // Xóa dữ liệu sau khi cuộn
+                }
+            };
         </script>
     </body>
 </html>

@@ -119,6 +119,7 @@
                                 <table class="table table-hover">
                                     <thead class="table-primary" style="text-align: center; vertical-align: middle; padding: 12px; font-weight: bold;">
                                         <tr>
+                                            <th scope="col">Hình ảnh</th>
                                             <th scope="col">Tên phòng</th>
                                             <th scope="col">Loại</th>
                                             <th scope="col">Cân nặng tối thiểu (kg)</th>
@@ -134,6 +135,7 @@
                                         <% if (petRooms != null && !petRooms.isEmpty()) {
                                                 for (PetHotel room : petRooms) {%>
                                         <tr>
+                                            <td> <img src="<%= room.getRoomImage()%>" alt="Hình ảnh phòng" width="150" height="150"> </td>
                                             <td style="width: 12%;"><%= room.getRoomName()%></td>
                                             <td style="width: 9%;"><%= room.getRoomType()%></td>
                                             <td style="text-align: center;"><%= room.getMinWeight()%></td>
