@@ -589,6 +589,54 @@
                     } else {
                         resetImage();
                     }
+
+                    let commentContent = document.getElementById("customer-comment").value.trim();
+                    let ratingContent = document.getElementById("customer-rating").value;
+                    let productId = confirmBtn.getAttribute("data-product-id");
+
+                    document.getElementById("productId").value = productId;
+
+                    if (ratingContent === "Chọn") {
+                        Swal.fire({
+                            title: "Đánh giá không được để trống!",
+                            text: "Vui lòng đánh giá trước khi gửi.",
+                            icon: "error"
+                        });
+                        return;
+                    }
+
+                    if (commentContent === "") {
+                        Swal.fire({
+                            title: "Nội dung đánh giá không được để trống!",
+                            text: "Vui lòng nhập nội dung trước khi gửi.",
+                            icon: "error"
+                        });
+                        return;
+                    }
+
+                    // Nếu hợp lệ, hiển thị xác nhận
+                    Swal.fire({
+                        title: "Xác nhận gửi?",
+                        text: "Bạn có chắc chắn muốn gửi đánh giá này?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Đồng ý!",
+                        cancelButtonText: "Hủy!"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: "Thành công!",
+                                text: "Đánh giá đã được gửi.",
+                                icon: "success",
+                                timer: 1500,
+                                showConfirmButton: false
+                            }).then(() => {
+                                document.getElementById("feedbackForm").submit();
+                            });
+                        }
+                    });
                 });
 
                 // Hàm reset toàn bộ modal
