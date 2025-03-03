@@ -241,6 +241,7 @@ body {
     gap: 10px;
 }
 .slide-hinhanh {
+    border-radius: 10px;
     aspect-ratio: 16 / 9;
     max-width: 100rem;
 }
