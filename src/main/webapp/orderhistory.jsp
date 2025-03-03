@@ -21,7 +21,7 @@
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb p-3" style="background-color: white; border-radius: 5px;">
-                    <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Tài khoản</li>
                 </ol>
             </nav>
@@ -32,12 +32,15 @@
                     <!-- Top Cards -->
                     <div class="row g-4 mb-4">
                         <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <i class="bi bi-clipboard-check fs-4 text-primary"></i>
-                                    <a href="#" class="text-decoration-none">Lịch sử đơn hàng</a>
+                            <a href="#" class="text-decoration-none">
+                                <div class="card h-100 active-card">
+                                    <div class="card-body d-flex align-items-center gap-3">
+                                        <i class="bi bi-clipboard-check fs-4 text-light fw-bold"></i>
+                                        <span style="color: white; font-weight: bold">Lịch sử đơn hàng</span>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
+                            
                         </div>
                         <div class="col-md-4">
                             <div class="card h-100">
@@ -48,12 +51,14 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <i class="bi bi-person-circle fs-4"></i>
-                                    <span>Xin chào, <span class="text-primary">[tên khách hàng]</span></span>
+                            <a href="profile" class="text-decoration-none">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex align-items-center gap-3">
+                                        <i class="bi bi-person-circle fs-4"></i>
+                                        <span>Xin chào, <span class="text-primary">${customer.fullName}</span></span>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
 
@@ -80,7 +85,7 @@
                                         <a class="nav-link <c:if test="${orderStatus == 'ht'}">active</c:if>" href="order?&action=view&status=ht">Hoàn thành</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link <c:if test="${orderStatus == 'ych'}">active</c:if>" href="order?&action=view&status=ych">Yêu cầu huỷ...</a>
+                                        <a class="nav-link <c:if test="${orderStatus == 'ych'}">active</c:if>" href="order?&action=view&status=ych">Yêu cầu huỷ</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link <c:if test="${orderStatus == 'dh'}">active</c:if>" href="order?&action=view&status=dh">Đã huỷ</a>
@@ -208,15 +213,15 @@
                 <!-- Sidebar -->
                 <div class="col-md-4">
                     <div class="list-group account-action">
-                        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                        <a href="profile" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-regular fa-user fa-lg" style="color: #0062ad;"></i>
                             <span>Thông tin cá nhân</span>
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                        <a href="viewpet" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-solid fa-paw fa-lg" style="color: #8C6E63;"></i>
                             <span>Thú cưng của tôi</span>
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                        <a href="changepassword" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-solid fa-key fa-lg" style="color: #eabd1a;"></i>
                             <span>Đổi mật khẩu</span>
                         </a>

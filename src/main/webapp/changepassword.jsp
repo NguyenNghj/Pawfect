@@ -12,7 +12,7 @@
         <title>JSP Page</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <link rel="stylesheet" href="CSS/account.css">
+        <link rel="stylesheet" href="./css/account.css">
     </head>
     <body>
         <div class="container py-4">
@@ -32,14 +32,14 @@
 
                         <!-- Lịch sử đơn hàng -->
                         <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <i class="bi bi-clipboard-check fs-4 text-primary"></i>
-                                    <a href="#" class="text-decoration-none text-dark">
-                                        Lịch sử đơn hàng
-                                    </a>
+                            <a href="order?&action=view&status=tc" class="text-decoration-none">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex align-items-center gap-3">
+                                        <i class="bi bi-clipboard-check fs-4 text-primary"></i>
+                                        <span class="text-decoration-none text-dark">Lịch sử đơn hàng</span>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                         <!-- Lịch sử đật lịch -->
                         <div class="col-md-4">
@@ -52,12 +52,14 @@
                         </div>
                         <!-- Xin chào khách hàng -->
                         <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <i class="bi bi-person-circle fs-4"></i>
-                                    <span>Xin chào, <span class="text-primary">[${customer.fullName}]</span></span>
+                            <a href="profile" class="text-decoration-none">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex align-items-center gap-3">
+                                        <i class="bi bi-person-circle fs-4"></i>
+                                        <span>Xin chào, <span class="text-primary">${customer.fullName}</span></span>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                     <form action="changepassword" method="POST" onsubmit="return validatePasswordForm()">
@@ -65,19 +67,19 @@
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title mb-2">Đổi mật khẩu</h5>
-                                <% 
-    String message = (String) session.getAttribute("message");
-    String messageType = (String) session.getAttribute("messageType");
-    if (message != null) { 
-%>
-    <div class="alert alert-<%= "success".equals(messageType) ? "success" : "danger" %>">
-        <%= message %>
-    </div>
-<% 
-    session.removeAttribute("message");
-    session.removeAttribute("messageType");
-    } 
-%>
+                                <%
+                                    String message = (String) session.getAttribute("message");
+                                    String messageType = (String) session.getAttribute("messageType");
+                                    if (message != null) {
+                                %>
+                                <div class="alert alert-<%= "success".equals(messageType) ? "success" : "danger"%>">
+                                    <%= message%>
+                                </div>
+                                <%
+                                        session.removeAttribute("message");
+                                        session.removeAttribute("messageType");
+                                    }
+                                %>
 
                                 <p style="color: #4c4c4c;">Để đảm bảo tính bảo mật vui lòng đặt mật khẩu với ít nhất 6 kí tự</p>
                                 <div class="d-grid gap-2 account-info">
@@ -138,51 +140,51 @@
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
     </body>
     <script>
-                function validatePasswordForm() {
-    let isValid = true;
+                        function validatePasswordForm() {
+                            let isValid = true;
 
-    // Lấy giá trị input
-    let oldPassword = document.getElementById("oldPassword").value.trim();
-    let newPassword = document.getElementById("newPassword").value.trim();
-    let confirmPassword = document.getElementById("confirmPassword").value.trim();
+                            // Lấy giá trị input
+                            let oldPassword = document.getElementById("oldPassword").value.trim();
+                            let newPassword = document.getElementById("newPassword").value.trim();
+                            let confirmPassword = document.getElementById("confirmPassword").value.trim();
 
-    // Xóa thông báo lỗi cũ
-    document.getElementById("oldPasswordError").innerHTML = "";
-    document.getElementById("newPasswordError").innerHTML = "";
-    document.getElementById("confirmPasswordError").innerHTML = "";
+                            // Xóa thông báo lỗi cũ
+                            document.getElementById("oldPasswordError").innerHTML = "";
+                            document.getElementById("newPasswordError").innerHTML = "";
+                            document.getElementById("confirmPasswordError").innerHTML = "";
 
-    // Kiểm tra Mật khẩu cũ
-    if (oldPassword === "") {
-        document.getElementById("oldPasswordError").innerHTML = "Vui lòng nhập mật khẩu cũ!";
-        isValid = false;
-    }
-    if (oldPassword.length < 6) {
-        document.getElementById("oldPasswordError").innerHTML = "Mật khẩu phải có ít nhất 6 ký tự!";
-        isValid = false;
-    }
+                            // Kiểm tra Mật khẩu cũ
+                            if (oldPassword === "") {
+                                document.getElementById("oldPasswordError").innerHTML = "Vui lòng nhập mật khẩu cũ!";
+                                isValid = false;
+                            }
+                            if (oldPassword.length < 6) {
+                                document.getElementById("oldPasswordError").innerHTML = "Mật khẩu phải có ít nhất 6 ký tự!";
+                                isValid = false;
+                            }
 
-    // Kiểm tra Mật khẩu mới
-    if (newPassword.length < 6) {
-        document.getElementById("newPasswordError").innerHTML = "Mật khẩu mới phải có ít nhất 6 ký tự!";
-        isValid = false;
-    }
+                            // Kiểm tra Mật khẩu mới
+                            if (newPassword.length < 6) {
+                                document.getElementById("newPasswordError").innerHTML = "Mật khẩu mới phải có ít nhất 6 ký tự!";
+                                isValid = false;
+                            }
 
-    // Kiểm tra Xác nhận mật khẩu
-    if (confirmPassword === "") {
-        document.getElementById("confirmPasswordError").innerHTML = "Vui lòng nhập lại mật khẩu!";
-        isValid = false;
-    } else if (confirmPassword !== newPassword) {
-        document.getElementById("confirmPasswordError").innerHTML = "Mật khẩu xác nhận không khớp!";
-        isValid = false;
-    }
+                            // Kiểm tra Xác nhận mật khẩu
+                            if (confirmPassword === "") {
+                                document.getElementById("confirmPasswordError").innerHTML = "Vui lòng nhập lại mật khẩu!";
+                                isValid = false;
+                            } else if (confirmPassword !== newPassword) {
+                                document.getElementById("confirmPasswordError").innerHTML = "Mật khẩu xác nhận không khớp!";
+                                isValid = false;
+                            }
 
-    // Nếu tất cả hợp lệ, hiển thị hộp thoại xác nhận
-    if (isValid) {
-        return confirm("Bạn có chắc chắn muốn đổi mật khẩu không?");
-    }
+                            // Nếu tất cả hợp lệ, hiển thị hộp thoại xác nhận
+                            if (isValid) {
+                                return confirm("Bạn có chắc chắn muốn đổi mật khẩu không?");
+                            }
 
-    return false;
-}
+                            return false;
+                        }
 
     </script>
 </html>
