@@ -16,6 +16,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
 
 header {
     background-color: #8C6E63;
+    padding: 0 40px;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
 }
 
 
@@ -23,6 +28,7 @@ header {
     width: 120px;
     height: auto;
     object-fit: cover;
+    padding-bottom:5px;
 }
 
 /* Menu */
