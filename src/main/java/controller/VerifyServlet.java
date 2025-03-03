@@ -5,24 +5,25 @@
 
 package controller;
 
-import dao.UserDAO;
-import jakarta.servlet.RequestDispatcher;
+import dao.RegisterDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.security.MessageDigest;
+import jakarta.servlet.http.HttpSession;
 import java.security.NoSuchAlgorithmException;
-import model.Account;
+import java.sql.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import model.User;
 
 /**
  *
  * @author LENOVO
  */
-public class LoginServlet extends HttpServlet {
+public class VerifyServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -39,10 +40,10 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");  
+            out.println("<title>Servlet VerifyServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet VerifyServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,8 +60,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-         RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
-        dispatcher.forward(request, response);
+        request.getRequestDispatcher("verify.jsp").forward(request, response);
     } 
 
     /** 
@@ -73,33 +73,38 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-      String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] hashBytes = md.digest(password.getBytes());
-            StringBuilder sb = new StringBuilder();
-            for (byte b : hashBytes) {
-                sb.append(String.format("%02x", b)); 
-            }
-            String hashedPassword = sb.toString();
-            UserDAO userDAO = new UserDAO();
-            Account account = userDAO.login(email, hashedPassword);
+       String userInputCode = request.getParameter("verificationCode");
+        HttpSession session = request.getSession();
+        String verificationCode = (String) session.getAttribute("verificationCode");
 
-            if (!Account.IsEmpty(account)) {
-                Cookie customerId = new Cookie("customerId", account.getCustomerId());
-                customerId.setMaxAge(60 * 60 * 24);
-                response.addCookie(customerId);
-                response.sendRedirect("products");
-            } else {
-                request.setAttribute("error", "Sai email hoặc mật khẩu");
-                RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
-                dispatcher.forward(request, response);
+        if (userInputCode != null && userInputCode.equals(verificationCode)) {
+            // Nếu mã đúng, đăng ký người dùng vào database
+            RegisterDAO registerDAO = new RegisterDAO();
+            try {
+                registerDAO.register(new User(
+                    (String) session.getAttribute("email"),
+                    (String) session.getAttribute("password"),
+                    (String) session.getAttribute("fullName"),
+                    (String) session.getAttribute("phoneNumber"),
+                    (String) session.getAttribute("address"),
+                    (String) session.getAttribute("gender"),
+                    (Date) session.getAttribute("birthDate")
+                ));
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(VerifyServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (NoSuchAlgorithmException e) {
-            throw new ServletException("Lỗi mã hóa mật khẩu MD5", e);
+
+            // Xóa session sau khi đăng ký thành công
+            session.invalidate();
+
+            // Chuyển hướng về trang đăng nhập
+            response.sendRedirect("login.jsp");
+        } else {
+            request.setAttribute("error", "Mã xác nhận không đúng!");
+            request.getRequestDispatcher("verify.jsp").forward(request, response);
         }
     }
+
     /** 
      * Returns a short description of the servlet.
      * @return a String containing servlet description
