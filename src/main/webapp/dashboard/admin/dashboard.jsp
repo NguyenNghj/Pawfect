@@ -7,6 +7,7 @@
 <%@page import="model.Product"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -87,68 +88,68 @@
                     width: 80%;
                 }
             }
-              h4 {
-        display: inline-block;
-        padding: 12px 24px;
-        border: 2px solid #5d4037; /* Viền nâu đậm */
-        border-radius: 8px;
-        background-color: #d7ccc8; /* Đồng bộ với nền chung */
-        color: #212529; /* Màu chữ nâu */
-        font-size: 22px;
-        text-align: center;
-        font-weight: bold;
-        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
-    }
+            h4 {
+                display: inline-block;
+                padding: 12px 24px;
+                border: 2px solid #5d4037; /* Viền nâu đậm */
+                border-radius: 8px;
+                background-color: #d7ccc8; /* Đồng bộ với nền chung */
+                color: #212529; /* Màu chữ nâu */
+                font-size: 22px;
+                text-align: center;
+                font-weight: bold;
+                box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+            }
 
-    /* Style cho bảng */
-    table {
-        width: 60%;
-        border-collapse: collapse;
-        margin-top: 15px;
-        background-color: #5d4037; /* Màu nền đồng bộ */
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
-    }
+            /* Style cho bảng */
+            table {
+                width: 60%;
+                border-collapse: collapse;
+                margin-top: 15px;
+                background-color: #5d4037; /* Màu nền đồng bộ */
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+            }
 
-    table, th, td {
-        border: 2px solid #795548; /* Viền màu nâu */
-    }
+            table, th, td {
+                border: 2px solid #795548; /* Viền màu nâu */
+            }
 
-    th, td {
-        padding: 12px;
-        text-align: center;
-    }
+            th, td {
+                padding: 12px;
+                text-align: center;
+            }
 
-    th {
-        background-color: #d7ccc8; /* Màu nền tiêu đề */
-        color: #5d4037; /* Chữ màu trắng */
-    }
+            th {
+                background-color: #d7ccc8; /* Màu nền tiêu đề */
+                color: #5d4037; /* Chữ màu trắng */
+            }
 
-    tr:nth-child(even) {
-        background-color: #f5f5f5; /* Màu nền xen kẽ */
-    }
+            tr:nth-child(even) {
+                background-color: #f5f5f5; /* Màu nền xen kẽ */
+            }
 
-    tr:hover {
-        background-color: #d7ccc8; /* Hiệu ứng hover */
-    }
+            tr:hover {
+                background-color: #d7ccc8; /* Hiệu ứng hover */
+            }
 
-    img {
-        border-radius: 8px;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    }
+            img {
+                border-radius: 8px;
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            }
 
-    /* Đảm bảo hiển thị tốt trên màn hình nhỏ */
-    @media (max-width: 768px) {
-        table {
-            font-size: 14px;
-        }
+            /* Đảm bảo hiển thị tốt trên màn hình nhỏ */
+            @media (max-width: 768px) {
+                table {
+                    font-size: 14px;
+                }
 
-        h4 {
-            font-size: 18px;
-            padding: 8px 16px;
-        }
-    }
+                h4 {
+                    font-size: 18px;
+                    padding: 8px 16px;
+                }
+            }
 
         </style>
 
@@ -435,103 +436,119 @@
 
 
                         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-                        <body>
 
-                            <!-- 🟢 Bảng top 5 sản phẩm -->
-                            <h4>Top 5 Sản Phẩm Bán Chạy</h4>
-                            <table border="1">
+                        <h4>Top 5 Nhân Viên Bán Hàng</h4>
+                        <table border="1">
+                            <tr>
+                                <th>ID</th>
+                                <th>Họ và Tên</th>
+                                <th>Tổng số sản phẩm đã bán</th>
+                                <th>Tổng doanh thu</th>
+                            </tr>
+                            <c:forEach var="staff" items="${topStaffs}">
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Tên Sản Phẩm</th>
-                                    <th>Giá</th>
-                                    <th>Ảnh</th>
-                                    <th>Đã Bán</th>
+                                    <td>${staff.staffId}</td>
+                                    <td>${staff.fullName}</td>
+                                    <td>${staff.totalSold}</td>
+                                    <td>${staff.totalRevenue}</td>
                                 </tr>
-                                <%
-                                    List<Product> topProducts = (List<Product>) request.getAttribute("topProducts");
-                                    if (topProducts != null) {
-                                        for (Product p : topProducts) {
-                                %>
-                                <tr>
-                                    <td><%= p.getProductId()%></td>
-                                    <td><%= p.getProductName()%></td>
-                                    <td><%= p.getProductPrice()%> VND</td>
-                                    <td><img src="<%= p.getProductImage()%>" width="50"></td>
-                                    <td><%= p.getStock()%></td> <!-- total_sold gán vào stock -->
-                                </tr>
-                                <%
-                                    }
-                                } else {
-                                %>
-                                <tr><td colspan="5">Không có dữ liệu.</td></tr>
-                                <% }%>
-                            </table>
+                            </c:forEach>
+                        </table>
 
-                            <!-- 🟢 Biểu đồ thống kê -->
-                            <script>
-                                var ctx1 = document.getElementById("sale-revenue").getContext("2d");
-                                var myChart1 = new Chart(ctx1, {
-                                    type: "line",
-                                    data: {
-                                        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                                        datasets: [{
-                                                label: "Sản phẩm",
-                                                data: [${requestScope.Month1}, ${requestScope.Month2}, ${requestScope.Month3}, ${requestScope.Month4}, ${requestScope.Month5},
-                                ${requestScope.Month6}, ${requestScope.Month7}, ${requestScope.Month8}, ${requestScope.Month9}, ${requestScope.Month10},
-                                ${requestScope.Month11}, ${requestScope.Month12}],
-                                                backgroundColor: "rgba(121, 85, 72, 0.5)",
-                                                borderColor: "#5d4037",
-                                                borderWidth: 2,
-                                                pointBackgroundColor: "#3e2723",
-                                                pointBorderColor: "#ffccbc"
-                                            }]
-                                    },
-                                    options: {
-                                        responsive: true,
-                                        maintainAspectRatio: false,
-                                        scales: {
-                                            yAxes: [{
-                                                    ticks: {
-                                                        beginAtZero: true
-                                                    }
-                                                }]
-                                        }
-                                    }
-                                });
+                        <!-- 🟢 Bảng top 5 sản phẩm -->
+                        <h4>Top 5 Sản Phẩm Bán Chạy</h4>
+                        <table border="1">
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên Sản Phẩm</th>
+                                <th>Giá</th>
+                                <th>Ảnh</th>
+                                <th>Đã Bán</th>
+                            </tr>
+                            <%
+                                List<Product> topProducts = (List<Product>) request.getAttribute("topProducts");
+                                if (topProducts != null) {
+                                    for (Product p : topProducts) {
+                            %>
+                            <tr>
+                                <td><%= p.getProductId()%></td>
+                                <td><%= p.getProductName()%></td>
+                                <td><%= p.getProductPrice()%> VND</td>
+                                <td><img src="<%= p.getProductImage()%>" width="50"></td>
+                                <td><%= p.getStock()%></td> <!-- total_sold gán vào stock -->
+                            </tr>
+                            <%
+                                }
+                            } else {
+                            %>
+                            <tr><td colspan="5">Không có dữ liệu.</td></tr>
+                            <% }%>
+                        </table>
 
-                                var ctx2 = document.getElementById("revenue-chart").getContext("2d");
-                                var myChart2 = new Chart(ctx2, {
-                                    type: "line",
-                                    data: {
-                                        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                                        datasets: [{
-                                                label: "Doanh thu",
-                                                data: [${requestScope.Monthh1}, ${requestScope.Monthh2}, ${requestScope.Monthh3}, ${requestScope.Monthh4}, ${requestScope.Monthh5},
-                                ${requestScope.Monthh6}, ${requestScope.Monthh7}, ${requestScope.Monthh8}, ${requestScope.Monthh9}, ${requestScope.Monthh10},
-                                ${requestScope.Monthh11}, ${requestScope.Monthh12}],
-                                                backgroundColor: "rgba(255, 223, 128, 0.5)", // Màu vàng nhạt
-                                                borderColor: "#FFD700", // Màu vàng gold
-                                                borderWidth: 2,
-                                                pointBackgroundColor: "#FFD700",
-                                                pointBorderColor: "#FFCC00"
+                        <!-- 🟢 Biểu đồ thống kê -->
+                        <script>
+                            var ctx1 = document.getElementById("sale-revenue").getContext("2d");
+                            var myChart1 = new Chart(ctx1, {
+                                type: "line",
+                                data: {
+                                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                                    datasets: [{
+                                            label: "Sản phẩm",
+                                            data: [${requestScope.Month1}, ${requestScope.Month2}, ${requestScope.Month3}, ${requestScope.Month4}, ${requestScope.Month5},
+                            ${requestScope.Month6}, ${requestScope.Month7}, ${requestScope.Month8}, ${requestScope.Month9}, ${requestScope.Month10},
+                            ${requestScope.Month11}, ${requestScope.Month12}],
+                                            backgroundColor: "rgba(121, 85, 72, 0.5)",
+                                            borderColor: "#5d4037",
+                                            borderWidth: 2,
+                                            pointBackgroundColor: "#3e2723",
+                                            pointBorderColor: "#ffccbc"
+                                        }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    scales: {
+                                        yAxes: [{
+                                                ticks: {
+                                                    beginAtZero: true
+                                                }
                                             }]
-                                    },
-                                    options: {
-                                        responsive: true,
-                                        maintainAspectRatio: false,
-                                        scales: {
-                                            yAxes: [{
-                                                    ticks: {
-                                                        beginAtZero: true
-                                                    }
-                                                }]
-                                        }
                                     }
-                                });
-                            </script>
-                        </body>
+                                }
+                            });
+
+                            var ctx2 = document.getElementById("revenue-chart").getContext("2d");
+                            var myChart2 = new Chart(ctx2, {
+                                type: "line",
+                                data: {
+                                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                                    datasets: [{
+                                            label: "Doanh thu",
+                                            data: [${requestScope.Monthh1}, ${requestScope.Monthh2}, ${requestScope.Monthh3}, ${requestScope.Monthh4}, ${requestScope.Monthh5},
+                            ${requestScope.Monthh6}, ${requestScope.Monthh7}, ${requestScope.Monthh8}, ${requestScope.Monthh9}, ${requestScope.Monthh10},
+                            ${requestScope.Monthh11}, ${requestScope.Monthh12}],
+                                            backgroundColor: "rgba(255, 223, 128, 0.5)", // Màu vàng nhạt
+                                            borderColor: "#FFD700", // Màu vàng gold
+                                            borderWidth: 2,
+                                            pointBackgroundColor: "#FFD700",
+                                            pointBorderColor: "#FFCC00"
+                                        }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    scales: {
+                                        yAxes: [{
+                                                ticks: {
+                                                    beginAtZero: true
+                                                }
+                                            }]
+                                    }
+                                }
+                            });
+                        </script>                       
                     </div>    
-                                                <!-- comment -->
+                    <!-- comment -->
                 </div>
             </div>
         </div>
