@@ -14,6 +14,8 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import model.Account;
 import model.AccountStaff;
 
@@ -74,10 +76,17 @@ public class LoginStaffServlet extends HttpServlet {
     throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-
+   try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] hashBytes = md.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashBytes) {
+                sb.append(String.format("%02x", b)); 
+            }
+            String hashedPassword = sb.toString();
         UserDAO userDAO = new UserDAO();
         AccountStaff account = new AccountStaff();
-        account = userDAO.loginStaff(email, password);
+        account = userDAO.loginStaff(email,hashedPassword);
         if (!AccountStaff.IsEmpty(account)) {
             Cookie staffId = new Cookie("staffId", account.getStaffId());
             staffId.setMaxAge(60 * 60 * 24 * 1);
@@ -94,6 +103,10 @@ public class LoginStaffServlet extends HttpServlet {
         } else {
             response.sendRedirect("loginadmin.jsp?error=Invalid Credentials");
         }
+    }catch (NoSuchAlgorithmException e) {
+            throw new ServletException("Lỗi mã hóa mật khẩu MD5", e);
+        }
+   
     }
 
     /** 

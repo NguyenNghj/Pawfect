@@ -5,6 +5,7 @@
 
 package controller;
 
+import static controller.ChangeAdminPasswordServlet.hashMD5;
 import dao.ChangePasswordDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -68,31 +69,39 @@ public class ChangeStaffPasswordServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       String staffId = null;
-Cookie[] cookies = request.getCookies();
-if (cookies != null) {
-    for (Cookie cookie : cookies) {
-        if ("staffId".equals(cookie.getName())) {
-            staffId = cookie.getValue();
-            break;
+        String staffId = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("staffId".equals(cookie.getName())) {
+                    staffId = cookie.getValue();
+                    break;
+                }
+            }
         }
-    }
-}
 
-String password = request.getParameter("password");
-String newPassword = request.getParameter("newPassword");
+        if (staffId == null) {
+            response.sendRedirect("adminlogin");
+            return;
+        }
 
-ChangePasswordDAO cf = new ChangePasswordDAO();
-if (cf.checkStaffadminPassword(password, staffId)) {
-    cf.changeStaffAdminPassword(newPassword, staffId); // Sửa password -> newPassword
-    request.getSession().setAttribute("message", "Mật khẩu đã được thay đổi thành công!");
-    request.getSession().setAttribute("messageType", "success");
-    response.sendRedirect("staffprofile"); // Đảm bảo đường dẫn đúng
-} else {
-    request.getSession().setAttribute("message", "Mật khẩu cũ không đúng. Vui lòng thử lại!");
-    request.getSession().setAttribute("messageType", "error");
-    response.sendRedirect("staffprofile");
-}
+        String password = request.getParameter("password");
+        String newPassword = request.getParameter("newPassword");
+
+        String hashedOldPassword = hashMD5(password);
+        String hashedNewPassword = hashMD5(newPassword);
+
+        ChangePasswordDAO cf = new ChangePasswordDAO();
+        if (cf.checkStaffadminPassword(hashedOldPassword, staffId)) {
+            cf.changeStaffAdminPassword(hashedNewPassword, staffId);
+            request.getSession().setAttribute("message", "Mật khẩu đã được thay đổi thành công!");
+            request.getSession().setAttribute("messageType", "success");
+            response.sendRedirect("staffprofile");
+        } else {
+            request.getSession().setAttribute("message", "Mật khẩu cũ không đúng. Vui lòng thử lại!");
+            request.getSession().setAttribute("messageType", "error");
+            response.sendRedirect("staffprofile");
+        }
         
     }
 

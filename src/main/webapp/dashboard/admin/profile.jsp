@@ -130,7 +130,7 @@
                                 </div>
                             </form>
                         </div>
-                        <input type="hidden" name="password" value="${staff.password}">
+                      
                         <div class="col d-grid gap-3">
                             <div class="d-grid gap-3 profile-info">
                                 <h3 style="margin: 0;">Thông tin người dùng</h3>
@@ -139,7 +139,7 @@
                                 <span><b>Điện thoại:</b> ${staff.phone}</span>
                                 <span><b>Địa chỉ:</b> ${staff.address}</span>
                                 <span><b>Giới tính:</b> ${staff.gender}</span>
-                                <span><b>Sinh nhật:</b> ${staff.birthdate}</span>
+                                <span><b>Sinh nhật:</b> ${staff.birthDate}</span>
                             </div>
                             <div>
                                 <button type="button" class="btn btn-success d-flex align-items-center gap-2"
@@ -186,7 +186,7 @@
                                                     </div>
 
                                                     <div class="form-floating mb-3">
-                                                        <input type="date" class="form-control" name="birthdate" value="${staff.birthdate}">
+                                                        <input type="date" class="form-control" name="birthdate" value="${staff.birthDate}">
                                                         <label>Birthday</label>
                                                         <span id="birthdateError" class="text-danger"></span>
                                                     </div>
@@ -275,6 +275,47 @@
 
                 if (newPassword !== confirmPassword) {
                     document.getElementById("confirmPasswordError").innerHTML = "Mật khẩu xác nhận không khớp!";
+                    isValid = false;
+                }
+
+                return isValid;
+            }
+            
+             function validateStaffForm() {
+                let isValid = true;
+
+                let name = document.getElementsByName("name")[0].value.trim();
+                let phone = document.getElementsByName("phone")[0].value.trim();
+                let address = document.getElementsByName("address")[0].value.trim();
+                let birthdate = document.getElementsByName("birthdate")[0].value.trim();
+
+                document.getElementById("nameError").innerHTML = "";
+                document.getElementById("phoneError").innerHTML = "";
+                document.getElementById("addressError").innerHTML = "";
+                document.getElementById("birthdateError").innerHTML = "";
+
+                // Kiểm tra Họ và Tên
+                if (name === "") {
+                    document.getElementById("nameError").innerHTML = "Vui lòng nhập họ và tên!";
+                    isValid = false;
+                }
+
+                // Kiểm tra Số điện thoại (chỉ chấp nhận số, ít nhất 10 số)
+                let phonePattern = /^[0-9]{10,11}$/;
+                if (!phonePattern.test(phone)) {
+                    document.getElementById("phoneError").innerHTML = "Số điện thoại không hợp lệ!";
+                    isValid = false;
+                }
+
+                // Kiểm tra Địa chỉ
+                if (address === "") {
+                    document.getElementById("addressError").innerHTML = "Vui lòng nhập địa chỉ!";
+                    isValid = false;
+                }
+
+                // Kiểm tra Ngày sinh
+                if (birthdate === "") {
+                    document.getElementById("birthdateError").innerHTML = "Vui lòng chọn ngày sinh!";
                     isValid = false;
                 }
 

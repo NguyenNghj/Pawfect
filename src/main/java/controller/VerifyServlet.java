@@ -78,7 +78,6 @@ public class VerifyServlet extends HttpServlet {
         String verificationCode = (String) session.getAttribute("verificationCode");
 
         if (userInputCode != null && userInputCode.equals(verificationCode)) {
-            // Nếu mã đúng, đăng ký người dùng vào database
             RegisterDAO registerDAO = new RegisterDAO();
             try {
                 registerDAO.register(new User(
@@ -93,11 +92,7 @@ public class VerifyServlet extends HttpServlet {
             } catch (NoSuchAlgorithmException ex) {
                 Logger.getLogger(VerifyServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            // Xóa session sau khi đăng ký thành công
             session.invalidate();
-
-            // Chuyển hướng về trang đăng nhập
             response.sendRedirect("login.jsp");
         } else {
             request.setAttribute("error", "Mã xác nhận không đúng!");

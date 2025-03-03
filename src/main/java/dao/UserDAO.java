@@ -5,6 +5,8 @@
 package dao;
 
 import db.DBContext;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -48,8 +50,7 @@ public class UserDAO {
         return account;
     }
      
-       public AccountStaff loginStaff(String username, String password) {
-       
+       public AccountStaff loginStaff(String username, String password) {    
         String query = "SELECT * FROM Staffs WHERE email = ? AND password = ? and is_active= 1";
  AccountStaff account = new AccountStaff();
         try {
@@ -98,6 +99,26 @@ public class UserDAO {
              conn = new DBContext().getConnection();
           pt = conn.prepareStatement(sql);
             pt.setString(1, googleUser.getId());  
+            pt.executeUpdate();
+        } catch (SQLException e) {
+
+        }
+    }
+   
+    public void updateNewPassword(String email,String password) throws NoSuchAlgorithmException {
+        String sql = "UPDATE Customers SET password = ? WHERE email = ?";
+        try {
+             MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] hashBytes = md.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashBytes) {
+                sb.append(String.format("%02x", b)); 
+            }
+            String hashedPassword = sb.toString();
+             conn = new DBContext().getConnection();
+          pt = conn.prepareStatement(sql);
+            pt.setString(1, hashedPassword);  
+            pt.setString(2, email);  
             pt.executeUpdate();
         } catch (SQLException e) {
 
