@@ -5,6 +5,7 @@
 
 package controller;
 
+import static controller.ChangeAdminPasswordServlet.hashMD5;
 import dao.ChangePasswordDAO;
 import dao.ProfileDAO;
 import java.io.IOException;
@@ -83,29 +84,40 @@ public class ChangePasswordServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String customerId = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("customerId".equals(cookie.getName())) {
-                    customerId = cookie.getValue();
-                    break;
-                }
-            }
+      String customerId = null;
+Cookie[] cookies = request.getCookies();
+if (cookies != null) {
+    for (Cookie cookie : cookies) {
+        if ("customerId".equals(cookie.getName())) {
+            customerId = cookie.getValue();
+            break;
         }
-        String password = request.getParameter("password");
-        String newPassword = request.getParameter("newPassword");
-       ChangePasswordDAO fw = new ChangePasswordDAO();
-        if (fw.checkPassword(password, customerId)) {
-fw.changePassword(newPassword, customerId);
-  request.getSession().setAttribute("message", "Mật khẩu đã được thay đổi thành công!");
-    request.getSession().setAttribute("messageType", "success");
-  response.sendRedirect(request.getContextPath()+"/profile");
-        } else {
-            request.getSession().setAttribute("message", "Mật khẩu cũ không đúng. Vui lòng thử lại!");
-    request.getSession().setAttribute("messageType", "error");
-             response.sendRedirect(request.getContextPath()+"/changepassword"); 
     }
+}
+
+if (customerId == null) {
+    response.sendRedirect(request.getContextPath() + "/login");
+    return;
+}
+
+String password = request.getParameter("password"); 
+String newPassword = request.getParameter("newPassword");
+
+
+String hashedOldPassword = hashMD5(password);
+String hashedNewPassword = hashMD5(newPassword);
+
+ChangePasswordDAO fw = new ChangePasswordDAO();
+if (fw.checkPassword(hashedOldPassword, customerId)) {
+    fw.changePassword(hashedNewPassword, customerId);
+    request.getSession().setAttribute("message", "Mật khẩu đã được thay đổi thành công!");
+    request.getSession().setAttribute("messageType", "success");
+    response.sendRedirect(request.getContextPath() + "/profile");
+} else {
+    request.getSession().setAttribute("message", "Mật khẩu cũ không đúng. Vui lòng thử lại!");
+    request.getSession().setAttribute("messageType", "error");
+    response.sendRedirect(request.getContextPath() + "/changepassword");
+}
 }
     /** 
      * Returns a short description of the servlet.

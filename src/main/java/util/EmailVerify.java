@@ -39,9 +39,10 @@ public class EmailVerify {
         message.setFrom(new InternetAddress(fromEmail));
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
         message.setSubject("Verify Mail ");
-        message.setText("you verify code : " + verificationCode + "\nVui lòng nhập mã này để hoàn tất đăng ký.");
+        message.setText("you verify code : " + verificationCode );
 
         Transport.send(message);
     }
+      
 }
 
