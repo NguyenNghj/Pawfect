@@ -9,9 +9,9 @@ package constant;
  * @author Duy Khanh
  */
 public class Iconstant {
-    public static final String GOOGLE_CLIENT_ID = "21377970205-gucvst02847uk8qbv7ia3qvmhgscfi6c.apps.googleusercontent.com";
+    public static final String GOOGLE_CLIENT_ID = "294264350287-37gq949okctp7k1mhet86u4h136c03vh.apps.googleusercontent.com";
 
-    public static final String GOOGLE_CLIENT_SECRET = "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";
+    public static final String GOOGLE_CLIENT_SECRET = "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";
 
     public static final String GOOGLE_REDIRECT_URI = "http://localhost:8080/GoogleLoginServlet";
 
