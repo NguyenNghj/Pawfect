@@ -19,7 +19,7 @@
         <style>
 
             body {
-                background-color: #F3E5D8; /* Màu nền tổng thể */
+            
             }
 
             #main {
