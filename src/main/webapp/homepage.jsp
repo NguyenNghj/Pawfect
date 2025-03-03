@@ -127,7 +127,7 @@
                     </div>
                 </a>
 
-                <a href="/booking" class="chi-tiet-dich-vu">
+                <a href="/pethotel" class="chi-tiet-dich-vu">
                     <div class="dich-vu-box">
                         <i class='bx bx-notepad dich-vu-icon'></i>
                         <h3>Đặt lịch</h3>
