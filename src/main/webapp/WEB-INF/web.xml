@@ -200,6 +200,10 @@
         <servlet-name>VerifyServlet</servlet-name>
         <servlet-class>controller.VerifyServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StaffAddServlet</servlet-name>
+        <servlet-class>controller.StaffAddServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>PetHotelServlet</servlet-name>
         <url-pattern>/pethotel</url-pattern>
@@ -399,6 +403,10 @@
     <servlet-mapping>
         <servlet-name>VerifyServlet</servlet-name>
         <url-pattern>/verify</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffAddServlet</servlet-name>
+        <url-pattern>/dashboard/admin/staffadd</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
