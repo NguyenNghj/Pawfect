@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,14 +74,12 @@ public class StaffDAO {
         }
         return null;
     }
-
+  // Thêm nhân viên mới
     public boolean addStaff(Staff staff) {
-        String query = "INSERT INTO Staffs (role_name, password, full_name, email, phone, address, gender, birth_date, image, is_active) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Staffs (role_name, password, full_name, email, phone, address, gender, birth_date, image, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ? ,?, 1)"; // is_active luôn là 1
 
-        try {
-            conn = new DBContext().getConnection();
-            ps = conn.prepareStatement(query);
+        try ( Connection conn = new DBContext().getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+// Đảm bảo set đúng vị trí cho tất cả giá trị
             ps.setString(1, staff.getRoleName());
             ps.setString(2, staff.getPassword());
             ps.setString(3, staff.getFullName());
@@ -89,14 +88,36 @@ public class StaffDAO {
             ps.setString(6, staff.getAddress());
             ps.setString(7, staff.getGender());
             ps.setDate(8, staff.getBirthDate());
-            ps.setString(9, staff.getImage());
-            ps.setBoolean(10, staff.isActive());
 
-            return ps.executeUpdate() > 0;
+// Xử lý image null đúng cách
+            if (staff.getImage() != null && !staff.getImage().trim().isEmpty()) {
+                ps.setString(9, staff.getImage());
+            } else {
+                ps.setNull(9, Types.VARCHAR);
+            }
+
+
+            // Debug log
+            System.out.println("Executing SQL: " + sql);
+            System.out.println("With values: "
+                    + staff.getRoleName() + ", "
+                    + staff.getPassword() + ", "
+                    + staff.getFullName() + ", "
+                    + staff.getEmail() + ", "
+                    + staff.getPhone() + ", "
+                    + staff.getAddress() + ", "
+                    + staff.getGender() + ", "
+                    + staff.getBirthDate() + ", "
+                    + (staff.getImage() != null ? staff.getImage() : "NULL") + ", "
+                    + staff.isActive());
+
+            int affectedRows = ps.executeUpdate();
+            return affectedRows > 0;
+
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
     public boolean updateStaff(Staff staff) {

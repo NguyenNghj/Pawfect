@@ -1,22 +1,28 @@
 <%-- 
-    Document   : accountStaff
-    Created on : Feb 11, 2025, 3:47:15 PM
-    Author     : Vu Quang Duc - CE181221
+    Document   : createcategory
+    Created on : Mar 1, 2025, 6:00:11 PM
+    Author     : Nguyen Tri Nghi - CE180897
 --%>
 
-<%@page import="dao.StaffDAO"%>
 <%@page import="model.Staff"%>
-<%@page import="java.util.List"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="model.Staff"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.util.List" %>
+
+
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="../../css/dashboard.css">
         <title>JSP Page</title>
-        <style>
+           <style>
             /* Thiết kế cơ bản cho nút */
             .delete-btn {
                 color: white;
@@ -48,7 +54,6 @@
 
                 <!-- SIDEBAR -->
                 <jsp:include page="sidebar.jsp"/>
-
  <%
                     Cookie[] cookies = request.getCookies();
                     String staffRole = "";
@@ -72,7 +77,7 @@
                         }
                     }
                 %>
-                <!-- MAIN -->
+             <!-- MAIN -->
                 <div class="col" id="main" style="padding: 0 40px;">
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
@@ -121,70 +126,12 @@
 
                     <div class="row">
                         <div class="col-3 p-0" style="margin-top: 60px;">
-                            <button type="button" class="btn btn-primary"
-                                    data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                    >
-                                <i class="fa-solid fa-plus"></i>
-                                New Employee
-                            </button>
 
-                            <!-- Modal of Add Staff -->
-                            <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm Nhân Viên</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form action="staffadd" method="post">
-                                                <div class="form-floating mb-3">
-                                                    <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
-                                                    <label for="email">Email</label>                        
-                                                </div>
-                                                <div class="form-floating mb-3">
-                                                    <input type="password" class="form-control" id="password" name="password" placeholder="Mật khẩu" required>
-                                                    <label for="password">Password</label>                        
-                                                </div>
-                                                <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Họ và tên" required>
-                                                    <label for="full_name">Full Name</label>                        
-                                                </div>
-                                                <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Số điện thoại">
-                                                    <label for="phone">Phone</label>                        
-                                                </div>
-                                                <div class="form-floating mb-3">
-                                                    <input type="text" class="form-control" id="address" name="address" placeholder="Địa chỉ">
-                                                    <label for="address">Address</label>                        
-                                                </div>
-                                                <div class="form-floating mb-3">
-                                                    <select class="form-select" id="gender" name="gender">
-                                                        <option selected value="Khác">Others</option>
-                                                        <option value="Nam">Male</option>
-                                                        <option value="Nữ">Female</option>
-                                                    </select>
-                                                    <label for="gender">Gender</label>                      
-                                                </div>
-                                                <div class="form-floating mb-3">
-                                                    <input type="date" class="form-control" id="birth_date" name="birth_date" required>
-                                                    <label for="birth_date">Birth Date</label>
-                                                </div>
-                                                <div class="form-check mb-3">
-                                                    <input class="form-check-input" type="checkbox" id="is_active" name="is_active" checked>
-                                                    <label class="form-check-label" for="is_active">
-                                                        Active
-                                                    </label>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-primary">Add</button> <!-- Đổi sang submit -->
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <nav class="navbar navbar-light bg-light">
+                                <a href="staffadd" class="btn btn-success">+ Thêm Nhân Viên</a>
+                            </nav>
+
+
 
                         </div>        
                     </div>
@@ -193,7 +140,6 @@
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <div class="main-dashboard-table">
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
-                                 style="background-color: #007BFF; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
                                 <i class="fa-solid fa-address-card" style="font-size: 22px;"></i>
                                 <h4 class="mb-0">Danh Sách Nhân Viên</h4>
                             </div>
@@ -257,7 +203,6 @@
                     </div>          
 
                 </div>
-
             </div>
         </div>
 
@@ -265,25 +210,7 @@
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-        <script>
-                                                       const exampleModal = document.getElementById('exampleModal')
-                                                       if (exampleModal) {
-                                                           exampleModal.addEventListener('show.bs.modal', event => {
-                                                               // Button that triggered the modal
-                                                               const button = event.relatedTarget
-                                                               // Extract info from data-bs-* attributes
-                                                               const recipient = button.getAttribute('data-bs-whatever')
-                                                               // If necessary, you could initiate an Ajax request here
-                                                               // and then do the updating in a callback.
 
-                                                               // Update the modal's content.
-                                                               const modalTitle = exampleModal.querySelector('.modal-title')
-                                                               const modalBodyInput = exampleModal.querySelector('.modal-body input')
-
-                                                               modalTitle.textContent = `New message to ${recipient}`
-                                                               modalBodyInput.value = recipient
-                                                           })
-                                                       }
-        </script>
     </body>
 </html>
+
