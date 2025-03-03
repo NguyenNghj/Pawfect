@@ -11,7 +11,10 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.User;
 
 /**
@@ -84,7 +87,11 @@ public class RegisterServlet extends HttpServlet {
 
         RegisterDAO registerDAO = new RegisterDAO();
         if (registerDAO.userExists(email)) {
-            registerDAO.register(new User(email, password, fullName, phoneNumber, address, gender, birthDate));
+            try {
+                registerDAO.register(new User(email, password, fullName, phoneNumber, address, gender, birthDate));
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(RegisterServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
             response.sendRedirect("login.jsp");
 
         } else {
