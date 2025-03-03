@@ -14,9 +14,30 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 }
 
 body {
-    background-color: #d9d9d9;
+    background-color: #F4F4F4;
+}
+.breadcrumb {
+    background-color: #ffffff;
+    list-style: none;
+    display: flex;
+    gap: 10px;
+    padding: 15px 0 15px 50px;
+    border-radius: 10px;
+    font-size: 20px;
 }
 
+.breadcrumb li::after {
+    content: " \/ ";
+}
+
+.breadcrumb li:last-child::after {
+    content: "";
+}
+
+.trang-chu {
+    color: #D3A376;
+    text-decoration: none;
+}
 h3 {
     text-align: center;
     font-weight: bold;
@@ -56,34 +77,43 @@ h3 {
     padding: 50px;
 }
 .info-container h2 {
+    padding-bottom: 20px;
+    font-weight: bold;
     text-align: center;
-    font-size: 30px;
+    font-size: 40px;
     color: #8c6e63;
 }
 .detail {
+    font-size: 24px;
+    padding-bottom: 20px;
+    padding-top: 20px;
     flex-wrap: wrap; /* Đảm bảo không bị tràn trên màn hình nhỏ */
     padding-left: 20px;
     padding-right: 20px;
     height: auto;
-    background: #FFF2DF;
+    background: #FEF7EF;
     border-radius: 15px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
 }
 
 .detail:hover {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
 }
 
-.room-type, .room-price, .room-weight, .room-description {
+.room-type, .room-price, .room-weight{
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: black;
+}
+.room-description {
     font-size: 17px;
     margin-bottom: 10px;
     color: black;
 }
-
 .divider {
     border: none;
-    height: 1px; /* Độ dày của đường kẻ */
-    background: black; /* Màu xám nhạt */
+    height: 2px; /* Độ dày của đường kẻ */
+    background-color: black; /* Màu xám nhạt */
     margin: 15px 0; /* Khoảng cách trên dưới */
 }
 
@@ -91,7 +121,7 @@ h3 {
     display: flex;
     justify-content: center; /* Căn giữa theo chiều ngang */
     gap: 20px; /* Khoảng cách giữa hai nút */
-    margin-top: 20px; /* Tạo khoảng cách với phần trên */
+    margin-top: 50px; /* Tạo khoảng cách với phần trên */
 }
 
 .booking-btn, .back-btn {
@@ -166,30 +196,6 @@ h3 {
     text-align: center;
 }
 
-.scroll-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #8c6e63;
-    ;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    font-size: 24px;
-    z-index: 100;
-    display: block;
-}
-
-/* Nút cuộn trái */
-#scrollLeft {
-    left: 40px; /* Đưa sát vào */
-}
-
-/* Nút cuộn phải */
-#scrollRight {
-    right: 40px; /* Đưa sát vào */
-}
 
 
 .pethotel-card img {
@@ -245,8 +251,12 @@ h3 {
 
 /* Nút cuộn */
 .scroll-btn {
-    width: 60px;
-    height: 60px;
+    position: absolute;
+    top: 50%;
+    padding: 5px;
+    display: block;
+    width: 50px;
+    height: 50px;
     border-radius: 10px; /* Bo góc */
     background-color: #8C6E63;
     color: white;
@@ -261,11 +271,20 @@ h3 {
 .scroll-btn:hover {
     background-color: #fcdb51;
     color: black;
-    transform: translateY(-3px); /* Hiệu ứng nhấc lên */
+    transform: scale(1.2); /* Phóng to 10% */
+    transform-origin: center; /* Đảm bảo phóng to từ trung tâm */
+    transition: transform 0.2s ease-in-out;
 }
 
+/* Nút cuộn trái */
+#scrollLeft {
+    left: 30px; /* Đưa sát vào */
+}
 
-
+/* Nút cuộn phải */
+#scrollRight {
+    right: 30px; /* Đưa sát vào */
+}
 
 
 .pethotel-card:hover {
@@ -291,13 +310,13 @@ h3 {
     color: #FFE0B2;
     transition: all 0.4s ease-in-out;
 }
-
 .pethotel-card:hover .booking {
     background-color: #fcdb51;
     color: black;
     border: 1px solid #fcdb51;
     transition: all 0.4s ease-in-out;
 }
+
 
 
 

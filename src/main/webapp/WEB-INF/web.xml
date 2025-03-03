@@ -49,8 +49,8 @@
         <servlet-class>controller.PetHotelManagementServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AdminDeleteRoomServlet</servlet-name>
-        <servlet-class>controller.PetHotelDeleManagementServlet</servlet-class>
+        <servlet-name>DeletePetHotelServlet</servlet-name>
+        <servlet-class>controller.DeletePetHotelServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
@@ -89,12 +89,12 @@
         <servlet-class>controller.CustomersBanServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AdminAddRoomServlet</servlet-name>
-        <servlet-class>controller.PetHotelAddManagementServlet</servlet-class>
+        <servlet-name>AddPetHotelServlet</servlet-name>
+        <servlet-class>controller.AddPetHotelServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AdminEditRoomServlet</servlet-name>
-        <servlet-class>controller.PetHotelEditManagementServlet</servlet-class>
+        <servlet-name>EditPetHotelServlet</servlet-name>
+        <servlet-class>controller.EditPetHotelServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ViewPetServlet</servlet-name>
@@ -253,7 +253,7 @@
         <url-pattern>/dashboard/admin/petroom</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AdminDeleteRoomServlet</servlet-name>
+        <servlet-name>DeletePetHotelServlet</servlet-name>
         <url-pattern>/deleteroom</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
@@ -293,11 +293,11 @@
         <url-pattern>/dashboard/admin/customersban</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AdminAddRoomServlet</servlet-name>
+        <servlet-name>AddPetHotelServlet</servlet-name>
         <url-pattern>/dashboard/admin/addroom</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AdminEditRoomServlet</servlet-name>
+        <servlet-name>EditPetHotelServlet</servlet-name>
         <url-pattern>/dashboard/admin/editroom</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
