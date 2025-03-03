@@ -4,6 +4,8 @@
     Author     : Vu Quang Duc - CE181221
 --%>
 
+<%@page import="model.Product"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -85,6 +87,68 @@
                     width: 80%;
                 }
             }
+              h4 {
+        display: inline-block;
+        padding: 12px 24px;
+        border: 2px solid #5d4037; /* Viền nâu đậm */
+        border-radius: 8px;
+        background-color: #d7ccc8; /* Đồng bộ với nền chung */
+        color: #212529; /* Màu chữ nâu */
+        font-size: 22px;
+        text-align: center;
+        font-weight: bold;
+        box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Style cho bảng */
+    table {
+        width: 60%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        background-color: #5d4037; /* Màu nền đồng bộ */
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    table, th, td {
+        border: 2px solid #795548; /* Viền màu nâu */
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #d7ccc8; /* Màu nền tiêu đề */
+        color: #5d4037; /* Chữ màu trắng */
+    }
+
+    tr:nth-child(even) {
+        background-color: #f5f5f5; /* Màu nền xen kẽ */
+    }
+
+    tr:hover {
+        background-color: #d7ccc8; /* Hiệu ứng hover */
+    }
+
+    img {
+        border-radius: 8px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Đảm bảo hiển thị tốt trên màn hình nhỏ */
+    @media (max-width: 768px) {
+        table {
+            font-size: 14px;
+        }
+
+        h4 {
+            font-size: 18px;
+            padding: 8px 16px;
+        }
+    }
 
         </style>
 
@@ -94,31 +158,113 @@
             <div class="row">
 
                 <!-- SIDEBAR -->
-                <jsp:include page="sidebar.jsp"/>
+                <div class="col-2" id="sidebar">
+                    <div class="row pt-4 sidebar-brandName">
+                        <div class="col d-flex justify-content-center align-items-center gap-3">
+                            <i class="fa-solid fa-paw fa-beat" style="font-size: 36px;"></i>
+                            <span>
+                                <h3 style="margin: 0;">PetCare</h3>
+                            </span>
+                        </div>
+                    </div>
 
-                <%
-                    Cookie[] cookies = request.getCookies();
-                    String staffRole = "";
-                    String staffName = "";
+                    <div class="row">                  
+                        <nav class="navbar bg-body-tertiary justify-content-start gap-3 active">       
+                            <i class="fa-solid fa-chart-line fa-lg" style="color: white;"></i>        
+                            <a class="navbar-brand" style="color: white; pointer-events: none;" href="#">Dashboard</a>
+                        </nav>
+                        <nav class="navbar bg-body-tertiary">                        
+                            <div class="accordion w-100" id="accordionExample1">                               
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed gap-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                        <i class="fa-solid fa-users fa-lg"></i>Account
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample1">
+                                    <div class="accordion-body">
+                                        <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;">
+                                            <div class="container-fluid">
+                                                <a class="navbar-brand" href="accountAdmin.jsp">Admin</a>
+                                            </div>
+                                        </nav>
+                                        <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;">
+                                            <div class="container-fluid">
+                                                <a class="navbar-brand" href="staff">Employee</a>
+                                            </div>
+                                        </nav>
+                                        <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;">
+                                            <div class="container-fluid">
+                                                <a class="navbar-brand" href="customers">Customer</a>
+                                            </div>
+                                        </nav>
+                                    </div>
+                                </div>                                              
+                            </div>                    
+                        </nav>
+                        <nav class="navbar bg-body-tertiary">                                           
+                            <a class="navbar-brand d-flex align-items-center gap-3" href="product.jsp">
+                                <i class="fa-solid fa-box fa-lg"></i>
+                                <span>Product</span>
+                            </a>                          
+                        </nav>
+                        <nav class="navbar bg-body-tertiary">                   
+                            <a class="navbar-brand d-flex align-items-center gap-3" href="productCategory.jsp">
+                                <i class="fa-solid fa-boxes-stacked fa-lg"></i>
+                                <span>Product Category</span>
+                            </a>
+                        </nav>
+                        <nav class="navbar bg-body-tertiary">                                            
+                            <a class="navbar-brand d-flex align-items-center gap-3" href="petRoom.jsp">
+                                <i class="fa-solid fa-hotel fa-lg"></i>  
+                                <span>Pet Rooms</span>
+                            </a>
+                        </nav>
+                        <!-- <nav class="navbar bg-body-tertiary">                        
+                            <div class="accordion w-100" id="accordionExample2">                               
+                                <h2 class="accordion-header">                           
+                                    <button class="accordion-button collapsed gap-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        <i class="fa-solid fa-comment fa-lg"></i>Feedback
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample2">
+                                    <div class="accordion-body">                                  
+                                        <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;">
+                                            <div class="container-fluid">
+                                                <a class="navbar-brand" href="#">Product</a>
+                                            </div>
+                                        </nav>
+                                        <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;">
+                                        <div class="container-fluid">
+                                                <a class="navbar-brand" href="#">Kennel</a>
+                                            </div>
+                                        </nav>
+                                    </div>
+                                </div>                                              
+                            </div>                    
+                        </nav>                   -->
+                    </div>
 
-                    if (cookies != null) {
-                        for (Cookie cookie : cookies) {
-                            String name = cookie.getName();
-                            String value = cookie.getValue();
+                    <div class="row">
+                        <hr style="margin: 10px 0;">
+                    </div>
 
-                            if ("staffRole".equals(name)) {
-                                staffRole = value;
-                            } else if ("staffName".equals(name)) {
-                                staffName = value;
-                            }
+                    <div class="row">
+                        <nav class="navbar bg-body-tertiary">                                   
+                            <a class="navbar-brand d-flex align-items-center gap-3" href="profile.jsp">
+                                <i class="fa-solid fa-address-book fa-lg"></i>   
+                                <span>Profile</span>
+                            </a>                          
+                        </nav>
+                        <nav class="navbar bg-body-tertiary">                                              
+                            <a class="navbar-brand d-flex align-items-center gap-3" href="#">
+                                <i class="fa-solid fa-right-from-bracket fa-lg"></i>
+                                <span>Logout</span>
+                            </a>
+                        </nav>
+                    </div>
+                </div>
 
-                            // Nếu đã lấy được cả hai giá trị thì thoát vòng lặp
-                            if (!staffRole.isEmpty() && !staffName.isEmpty()) {
-                                break;
-                            }
-                        }
-                    }
-                %>
+
                 <!-- MAIN -->
                 <div class="col" id="main" style="padding: 0 40px;">
                     <div class="row pt-4">
@@ -127,20 +273,16 @@
                                 <h1>Dashboard</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
-                                <span><%= staffName%></span>
+                                <span>Username2025 (Admin)</span>
                                 <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
+                                    <img class="profile-img" src="https://img.freepik.com/foto-gratis/hombre-tiro-medio-peinado-afro_23-2150677136.jpg" alt="">
                                 </button>
                                 <ul class="dropdown-menu ps-2 pe-2 pt-2 pb-2">
                                     <div class="d-grid gap-2">
-
-
-                                        <% if ("Admin".equals(staffRole)) { %>
                                         <li class="profile-img-switch-employee d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-repeat"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="dashboard/staff/dashboard.jsp">Switch to employee</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="#">Switch to employee</a>
                                         </li>
-                                        <% }%>
                                         <li class="profile-img-switch-store d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-store"></i>
                                             <a class="dropdown-item" style="padding: 0;" href="#">Go to store</a>
@@ -148,11 +290,11 @@
                                         <hr style="margin: 0;">
                                         <li class="profile-img-info1 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-user-pen"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="adminprofile">Profile</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="profile.jsp">Profile</a>
                                         </li>
                                         <li class="profile-img-info2 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-right-from-bracket" style="font-size: 20px;"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="logoutadmin">Logout</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="#">Logout</a>
                                         </li>
                                     </div>
                                 </ul>
@@ -293,76 +435,104 @@
 
 
                         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-                        <script type="text/javascript">
-                            var ctx1 = document.getElementById("sale-revenue").getContext("2d");
-                            var myChart1 = new Chart(ctx1, {
-                                type: "line",
-                                data: {
-                                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                                    datasets: [{
-                                            label: "Sản phẩm",
-                                            data: [${requestScope.Month1}, ${requestScope.Month2}, ${requestScope.Month3}, ${requestScope.Month4}, ${requestScope.Month5},
-                            ${requestScope.Month6}, ${requestScope.Month7}, ${requestScope.Month8}, ${requestScope.Month9}, ${requestScope.Month10},
-                            ${requestScope.Month11}, ${requestScope.Month12}],
-                                            backgroundColor: "rgba(121, 85, 72, 0.5)",
-                                            borderColor: "#5d4037",
-                                            borderWidth: 2,
-                                            pointBackgroundColor: "#3e2723",
-                                            pointBorderColor: "#ffccbc"
-                                        }]
-                                },
-                                options: {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    scales: {
-                                        yAxes: [{
-                                                ticks: {
-                                                    beginAtZero: true
-                                                }
-                                            }]
-                                    }
-                                }
-                            });
+                        <body>
 
-                            var ctx2 = document.getElementById("revenue-chart").getContext("2d");
-                            var myChart2 = new Chart(ctx2, {
-                                type: "line",
-                                data: {
-                                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                                    datasets: [{
-                                            label: "Doanh thu",
-                                            data: [${requestScope.Monthh1}, ${requestScope.Monthh2}, ${requestScope.Monthh3}, ${requestScope.Monthh4}, ${requestScope.Monthh5},
-                            ${requestScope.Monthh6}, ${requestScope.Monthh7}, ${requestScope.Monthh8}, ${requestScope.Monthh9}, ${requestScope.Monthh10},
-                            ${requestScope.Monthh11}, ${requestScope.Monthh12}],
-                                            backgroundColor: "rgba(255, 223, 128, 0.5)", // Màu vàng nhạt
-                                            borderColor: "#FFD700", // Màu vàng gold
-                                            borderWidth: 2,
-                                            pointBackgroundColor: "#FFD700",
-                                            pointBorderColor: "#FFCC00"
-                                        }]
-                                },
-                                options: {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    scales: {
-                                        yAxes: [{
-                                                ticks: {
-                                                    beginAtZero: true
-                                                }
-                                            }]
+                            <!-- 🟢 Bảng top 5 sản phẩm -->
+                            <h4>Top 5 Sản Phẩm Bán Chạy</h4>
+                            <table border="1">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Tên Sản Phẩm</th>
+                                    <th>Giá</th>
+                                    <th>Ảnh</th>
+                                    <th>Đã Bán</th>
+                                </tr>
+                                <%
+                                    List<Product> topProducts = (List<Product>) request.getAttribute("topProducts");
+                                    if (topProducts != null) {
+                                        for (Product p : topProducts) {
+                                %>
+                                <tr>
+                                    <td><%= p.getProductId()%></td>
+                                    <td><%= p.getProductName()%></td>
+                                    <td><%= p.getProductPrice()%> VND</td>
+                                    <td><img src="<%= p.getProductImage()%>" width="50"></td>
+                                    <td><%= p.getStock()%></td> <!-- total_sold gán vào stock -->
+                                </tr>
+                                <%
                                     }
-                                }
-                            });
-                        </script>
+                                } else {
+                                %>
+                                <tr><td colspan="5">Không có dữ liệu.</td></tr>
+                                <% }%>
+                            </table>
 
+                            <!-- 🟢 Biểu đồ thống kê -->
+                            <script>
+                                var ctx1 = document.getElementById("sale-revenue").getContext("2d");
+                                var myChart1 = new Chart(ctx1, {
+                                    type: "line",
+                                    data: {
+                                        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                                        datasets: [{
+                                                label: "Sản phẩm",
+                                                data: [${requestScope.Month1}, ${requestScope.Month2}, ${requestScope.Month3}, ${requestScope.Month4}, ${requestScope.Month5},
+                                ${requestScope.Month6}, ${requestScope.Month7}, ${requestScope.Month8}, ${requestScope.Month9}, ${requestScope.Month10},
+                                ${requestScope.Month11}, ${requestScope.Month12}],
+                                                backgroundColor: "rgba(121, 85, 72, 0.5)",
+                                                borderColor: "#5d4037",
+                                                borderWidth: 2,
+                                                pointBackgroundColor: "#3e2723",
+                                                pointBorderColor: "#ffccbc"
+                                            }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        scales: {
+                                            yAxes: [{
+                                                    ticks: {
+                                                        beginAtZero: true
+                                                    }
+                                                }]
+                                        }
+                                    }
+                                });
+
+                                var ctx2 = document.getElementById("revenue-chart").getContext("2d");
+                                var myChart2 = new Chart(ctx2, {
+                                    type: "line",
+                                    data: {
+                                        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                                        datasets: [{
+                                                label: "Doanh thu",
+                                                data: [${requestScope.Monthh1}, ${requestScope.Monthh2}, ${requestScope.Monthh3}, ${requestScope.Monthh4}, ${requestScope.Monthh5},
+                                ${requestScope.Monthh6}, ${requestScope.Monthh7}, ${requestScope.Monthh8}, ${requestScope.Monthh9}, ${requestScope.Monthh10},
+                                ${requestScope.Monthh11}, ${requestScope.Monthh12}],
+                                                backgroundColor: "rgba(255, 223, 128, 0.5)", // Màu vàng nhạt
+                                                borderColor: "#FFD700", // Màu vàng gold
+                                                borderWidth: 2,
+                                                pointBackgroundColor: "#FFD700",
+                                                pointBorderColor: "#FFCC00"
+                                            }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        scales: {
+                                            yAxes: [{
+                                                    ticks: {
+                                                        beginAtZero: true
+                                                    }
+                                                }]
+                                        }
+                                    }
+                                });
+                            </script>
+                        </body>
                     </div>    
-
-
-
-
-
+                                                <!-- comment -->
                 </div>
-
             </div>
         </div>
 
