@@ -145,24 +145,24 @@
             <div class="hinhanh">
                 <div class="hinhanh-hang1">
                     <div class="hinhanhne">
-                        <img src="imge.jpg">
+                        <img src="/img/homepage/c1.jpeg">
                     </div>
                     <div class="hinhanhne">
-                        <img src="imge.jpg">
+                        <img src="/img/homepage/c1.jpeg">
                     </div>
                     <div class="hinhanhne">
-                        <img src="imge.jpg">
+                        <img src="/img/homepage/c1.jpeg">
                     </div>
                 </div>
                 <div class="hinhanh-hang2">
                     <div class="hinhanhne">
-                        <img src="imge.jpg">
+                        <img src="/img/homepage/c1.jpeg">
                     </div>
                     <div class="hinhanhne">
-                        <img src="imge.jpg">
+                        <img src="/img/homepage/c1.jpeg">
                     </div>
                     <div class="hinhanhne">
-                        <img src="imge.jpg">
+                        <img src="/img/homepage/c1.jpeg">
                     </div>
                 </div>
             </div>
