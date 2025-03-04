@@ -80,29 +80,29 @@
 
                 </div>
 
- <%
-                                    Cookie[] cookies = request.getCookies();
-                                    String staffRole = "";
-                                    String staffName = "";
+                <%
+                    Cookie[] cookies = request.getCookies();
+                    String staffRole = "";
+                    String staffName = "";
 
-                                    if (cookies != null) {
-                                        for (Cookie cookie : cookies) {
-                                            String name = cookie.getName();
-                                            String value = cookie.getValue();
+                    if (cookies != null) {
+                        for (Cookie cookie : cookies) {
+                            String name = cookie.getName();
+                            String value = cookie.getValue();
 
-                                            if ("staffRole".equals(name)) {
-                                                staffRole = value;
-                                            } else if ("staffName".equals(name)) {
-                                                staffName = value;
-                                            }
+                            if ("staffRole".equals(name)) {
+                                staffRole = value;
+                            } else if ("staffName".equals(name)) {
+                                staffName = value;
+                            }
 
-                                            // Nếu đã lấy được cả hai giá trị thì thoát vòng lặp
-                                            if (!staffRole.isEmpty() && !staffName.isEmpty()) {
-                                                break;
-                                            }
-                                        }
-                                    }
-                                %> 
+                            // Nếu đã lấy được cả hai giá trị thì thoát vòng lặp
+                            if (!staffRole.isEmpty() && !staffName.isEmpty()) {
+                                break;
+                            }
+                        }
+                    }
+                %> 
                 <!-- MAIN -->
                 <div class="col" id="main" style="padding: 0 40px;">
                     <div class="row pt-4">
@@ -117,10 +117,10 @@
                                 </button>
                                 <ul class="dropdown-menu ps-2 pe-2 pt-2 pb-2">
                                     <div class="d-grid gap-2">
-                                          <% if ("Admin".equals(staffRole)) { %>
-                                         <li class="profile-img-switch-employee d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
-                                        <i class="fa-solid fa-repeat"></i>
-                                        <a class="dropdown-item" style="padding: 0;" href="admin/dashboard.jsp">Switch to admin</a>
+                                        <% if ("Admin".equals(staffRole)) { %>
+                                        <li class="profile-img-switch-employee d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
+                                            <i class="fa-solid fa-repeat"></i>
+                                            <a class="dropdown-item" style="padding: 0;" href="admin/dashboard.jsp">Switch to admin</a>
                                         </li>
                                         <% }%>
                                         <li class="profile-img-switch-store d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
@@ -233,6 +233,7 @@
                                                             data-comment="${f.comment}"
                                                             data-reply="${f.reply}"
                                                             data-status="${param.status}"
+                                                            data-img="${f.imagePath}"
                                                             >
                                                         Chi tiết
                                                     </button>
@@ -298,6 +299,18 @@
                                                         <label for="fb-comment" class="col-form-label"><b>Bình luận của khách:</b></label>
                                                         <textarea style="height: 80px;" class="form-control" id="fb-comment" readonly></textarea>
                                                     </div>
+
+                                                    <div id="feedback-image-container" class="mt-2">
+                                                        <div class="mb-1">
+                                                            <span><b>Hình ảnh phản hồi</b></span>
+                                                        </div>
+                                                        <img id="feedback-image"
+                                                             src=".${f.imagePath}"
+                                                             alt="Product review image"
+                                                             style="width: 140px; height: 120px; object-fit: cover;"
+                                                             />
+                                                    </div>
+
                                                     <div class="mb-3">
                                                         <label for="fb-reply" class="col-form-label"><b>Phản hồi của nhân viên:</b></label>
                                                         <textarea style="height: 80px;" name="reply" class="form-control" id="fb-reply" required></textarea>
@@ -398,6 +411,16 @@
                         let comment = this.getAttribute("data-comment");
                         let reply = this.getAttribute("data-reply");
                         let status = this.getAttribute("data-status");
+                        let imagePath = this.getAttribute("data-img");
+                        let imageContainer = document.getElementById("feedback-image-container");
+                        let imageTag = document.getElementById("feedback-image");
+
+                        if (imagePath) {
+                            imageTag.src = imagePath;
+                            imageContainer.style.display = "block"; // Hiện ảnh nếu có
+                        } else {
+                            imageContainer.style.display = "none"; // Ẩn nếu không có ảnh
+                        }
 
                         console.log(feedbackId);
                         console.log(productName);
