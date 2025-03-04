@@ -21,8 +21,8 @@ public class FeedbackDAO {
 
     protected static Connection Con = null;
 
-    protected static String Add_Feedback = "INSERT INTO Feedbacks (customer_id, product_id, rating, comment) VALUES\n"
-            + "(?, ?, ?, ?)";
+    protected static String Add_Feedback = "INSERT INTO Feedbacks (customer_id, product_id, rating, comment, image_path) VALUES\n"
+            + "(?, ?, ?, ?, ?)";
 
     protected static String Get_Product_Feedback_By_ProductId = "SELECT\n"
             + "    f.feedback_id,\n"
@@ -35,6 +35,7 @@ public class FeedbackDAO {
             + "    f.rating,\n"
             + "    f.comment,\n"
             + "    f.reply,\n"
+            + "    f.image_path,\n"
             + "    f.feedback_date,\n"
             + "    f.is_visible\n"
             + "FROM\n"
@@ -70,6 +71,7 @@ public class FeedbackDAO {
             + "    f.rating,\n"
             + "    f.comment,\n"
             + "    f.reply,\n"
+            + "    f.image_path,\n"
             + "    f.feedback_date,\n"
             + "    f.is_visible\n"
             + "FROM\n"
@@ -94,6 +96,7 @@ public class FeedbackDAO {
             + "    f.rating,\n"
             + "    f.comment,\n"
             + "    f.reply,\n"
+            + "    f.image_path,\n"
             + "    f.feedback_date,\n"
             + "    f.is_visible\n"
             + "FROM\n"
@@ -104,9 +107,8 @@ public class FeedbackDAO {
             + "    Staffs s ON f.staff_id = s.staff_id\n"
             + "JOIN\n"
             + "    Products p ON f.product_id = p.product_id";
-    
-    
-    public static boolean addFeedback(int customerId, int productId, int rating, String comment) {
+
+    public static boolean addFeedback(int customerId, int productId, int rating, String comment, String image_path) {
         boolean rs = false;
         try {
             Con = new DBContext().getConnection();
@@ -115,6 +117,7 @@ public class FeedbackDAO {
             ps.setInt(2, productId);
             ps.setInt(3, rating);
             ps.setString(4, comment);
+            ps.setString(5, image_path);
             rs = ps.executeUpdate() > 0;
             ps.close();
         } catch (SQLException e) {
@@ -152,6 +155,7 @@ public class FeedbackDAO {
                         rs.getInt("rating"),
                         rs.getString("comment"),
                         rs.getString("reply"),
+                        rs.getString("image_path"),
                         rs.getTimestamp("feedback_date"),
                         rs.getBoolean("is_visible")
                 );
@@ -222,6 +226,7 @@ public class FeedbackDAO {
                         rs.getInt("rating"),
                         rs.getString("comment"),
                         rs.getString("reply"),
+                        rs.getString("image_path"),
                         rs.getTimestamp("feedback_date"),
                         rs.getBoolean("is_visible")
                 );
@@ -263,6 +268,7 @@ public class FeedbackDAO {
                         rs.getInt("rating"),
                         rs.getString("comment"),
                         rs.getString("reply"),
+                        rs.getString("image_path"),
                         rs.getTimestamp("feedback_date"),
                         rs.getBoolean("is_visible")
                 );

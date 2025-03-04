@@ -49,7 +49,7 @@
                             </a>
                         </nav>                  
                         <nav class="navbar bg-body-tertiary">
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="feedback.jsp" >
+                            <a class="navbar-brand d-flex align-items-center gap-3" href="feedbackmanagement?&action=view&status=0" >
                                 <i class="fa-solid fa-comment fa-lg"></i>
                                 <span>Product Feedbacks</span>
                             </a>

@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@include file="./components/header.jsp" %>
 
+
 <html lang="vi">
     <head>
         <meta charset="UTF-8">
@@ -122,7 +123,7 @@
                                                 </div>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <form id="feedbackForm" action="/dashboard/staff/feedbackmanagement?action=feedback" method="post">
+                                            <form id="feedbackForm" action="/dashboard/staff/feedbackmanagement?action=feedback" method="post" enctype="multipart/form-data">
                                                 <div class="modal-body">
                                                     <!-- Rating Stars -->
                                                     <div class="mb-3">
@@ -154,8 +155,6 @@
                                                             <span class="file-name ms-2" id="file-name">Chưa chọn ảnh</span>
                                                         </div>
                                                         <div class="image-preview mt-2" id="image-preview"></div>
-                                                        <input type="hidden" name="imageBase64" id="imageBase64"> <!-- Lưu chuỗi Base64 -->
-                                                        <input type="hidden" name="imageName" id="imageName"> <!-- Lưu tên file -->
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
@@ -196,35 +195,47 @@
                             </c:if>
 
                             <c:forEach items="${feedbacks}" var="f">
-                                <!-- Review 1 (Example with employee response) -->
-                                <div class="review-item p-3 mb-3">
-                                    <div class="reviewer-name fw-bold">${f.customerName}</div>
-                                    <div class="stars">
-                                        <c:forEach var="i" begin="1" end="5">
-                                            <c:choose>
-                                                <c:when test="${i <= f.rating}">
-                                                    <i class="fas fa-star" style="color: #FFD43B;"></i>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <i class="far fa-star" style="color: #FFD43B;"></i>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </c:forEach>
-                                    </div>
-                                    <div class="mb-2">
-                                        <span style="color: #95a5a6;">${f.feedbackDate}</span>
-                                    </div>
-                                    <p class="review-text">${f.comment}</p>
-
-                                    <c:if test="${not empty f.reply}">
-                                        <!-- Employee Response -->
-                                        <div class="employee-response mt-3">
-                                            <div class="employee-name fw-bold">Nhân viên ${f.staffName}</div>
-                                            <p class="response-text">${f.reply}</p>
+                                <c:if test="${f.isVisible == true}">
+                                    <!-- Review 1 (Example with employee response) -->
+                                    <div class="review-item p-3 mb-3">
+                                        <div class="reviewer-name fw-bold">${f.customerName}</div>
+                                        <div class="stars">
+                                            <c:forEach var="i" begin="1" end="5">
+                                                <c:choose>
+                                                    <c:when test="${i <= f.rating}">
+                                                        <i class="fas fa-star" style="color: #FFD43B;"></i>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <i class="far fa-star" style="color: #FFD43B;"></i>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:forEach>
                                         </div>
-                                    </c:if>
+                                        <div class="mb-2">
+                                            <span style="color: #95a5a6;">${f.feedbackDate}</span>
+                                        </div>
+                                        <p class="review-text">${f.comment}</p>
 
-                                </div>
+                                        <c:if test="${not empty f.imagePath}">
+                                            <div class="mt-2">
+                                                <img
+                                                    src=".${f.imagePath}"
+                                                    alt="Product review image"
+                                                    style="width: 140px; height: 120px; object-fit: cover;"
+                                                    />
+                                            </div>
+                                        </c:if>
+
+                                        <c:if test="${not empty f.reply}">
+                                            <!-- Employee Response -->
+                                            <div class="employee-response mt-2">
+                                                <div class="employee-name fw-bold">Nhân viên ${f.staffName}</div>
+                                                <p class="response-text">${f.reply}</p>
+                                            </div>
+                                        </c:if>
+
+                                    </div>
+                                </c:if>
                             </c:forEach>
 
                         </div>
@@ -526,16 +537,13 @@
                 const fileInput = document.getElementById('feedbackImage');
                 const fileName = document.getElementById('file-name');
                 const imagePreview = document.getElementById('image-preview');
-                const imageBase64Input = document.getElementById('imageBase64');
-                const imageNameInput = document.getElementById('imageName');
                 const confirmBtn = document.getElementById('confirm-btn');
                 const cancelBtn = document.getElementById('cancel-btn');
                 const feedbackModal = document.getElementById('feedbackModal');
                 let selectedRating = 0;
 
                 // Kiểm tra phần tử tồn tại
-                if (!stars.length || !ratingInput || !uploadBtn || !fileInput || !fileName || !imagePreview ||
-                        !imageBase64Input || !imageNameInput || !confirmBtn || !cancelBtn || !feedbackModal) {
+                if (!stars.length || !ratingInput || !uploadBtn || !fileInput || !fileName || !imagePreview || !confirmBtn || !cancelBtn || !feedbackModal) {
                     console.error('Một hoặc nhiều phần tử không được tìm thấy');
                     return;
                 }
@@ -579,10 +587,6 @@
                             imagePreview.appendChild(img);
                             imagePreview.classList.add('active');
                             console.log('Image preview display:', imagePreview.style.display);
-
-                            imageBase64Input.value = base64String.split(',')[1];
-                            imageNameInput.value = file.name;
-                            console.log('Base64 stored:', imageBase64Input.value.substring(0, 50) + '...');
                         };
                         reader.onerror = e => console.error('FileReader error:', e);
                         reader.readAsDataURL(file);
@@ -607,8 +611,6 @@
                     fileName.textContent = 'Chưa chọn ảnh';
                     imagePreview.innerHTML = '';
                     imagePreview.classList.remove('active');
-                    imageBase64Input.value = '';
-                    imageNameInput.value = '';
                 }
 
                 // Xử lý nút gửi đánh giá
@@ -689,7 +691,6 @@
                 }
             });
         </script>
-
 
     </body>
 </html>
