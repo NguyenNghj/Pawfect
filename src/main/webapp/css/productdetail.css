@@ -22,8 +22,8 @@ input[type="number"]::-webkit-outer-spin-button {
 }*/
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  background-color: #f8f9fa;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f8f9fa;
 }
 
 .breadcrumb {
@@ -361,19 +361,19 @@ body {
 }
 
 h1 {
-  font-size: 1.5rem;
-  color: #333;
+    font-size: 1.5rem;
+    color: #333;
 }
 
 .rating-summary {
-  background-color: #f0f4fa;
-  border-radius: 8px;
+    background-color: #f0f4fa;
+    border-radius: 8px;
 }
 
 .rating-average {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #1e40af;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1e40af;
 }
 
 .stars {
@@ -381,53 +381,110 @@ h1 {
 }
 
 .rating-count {
-  color: #6c757d;
-  font-size: 0.9rem;
+    color: #6c757d;
+    font-size: 0.9rem;
 }
 
 .btn-outline-primary.active {
-  background-color: #fff;
-  color: #1e40af;
-  border-color: #1e40af;
+    background-color: #fff;
+    color: #1e40af;
+    border-color: #1e40af;
 }
 
 .review-item {
-  background-color: #fff;
-  border-radius: 8px;
-  border: 1px solid #e9ecef;
+    background-color: #fff;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
 }
 
 .reviewer-name {
-  font-size: 1rem;
+    font-size: 1rem;
 }
 
 .review-text {
-  color: #333;
-  margin-bottom: 0;
+    color: #333;
+    margin-bottom: 0;
 }
 
 .employee-response {
-  background-color: #f8f9fa;
-  border-left: 3px solid #1e40af;
-  padding: 10px;
-  border-radius: 0 8px 8px 0;
+    background-color: #f8f9fa;
+    border-left: 3px solid #1e40af;
+    padding: 10px;
+    border-radius: 0 8px 8px 0;
 }
 
 .employee-name {
-  color: #1e40af;
-  font-size: 0.9rem;
+    color: #1e40af;
+    font-size: 0.9rem;
 }
 
 .response-text {
-  font-size: 0.9rem;
-  color: #555;
-  margin-bottom: 0;
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0;
+}
+
+
+.star-rating {
+    display: flex;
+    direction: row;
+    gap: 5px;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.star-rating .fa-star {
+    color: #ccc;
+    transition: color 0.2s ease;
+}
+
+.star-rating .fa-star:hover,
+.star-rating .fa-star.hover,
+.star-rating .fa-star.selected {
+    color: #FFD43B;
+}
+
+.custom-file-upload {
+    display: flex;
+    align-items: center;
+}
+
+.btn-outline-primary {
+    border-radius: 25px;
+    padding: 8px 20px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.file-name {
+    color: #6c757d;
+}
+
+.image-preview {
+    max-width: 100%;
+    display: none;
+}
+
+.image-preview.active {
+    display: block !important;
+}
+
+.image-preview img {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 10px;
+    margin-top: 10px;
+    object-fit: cover;
 }
 
 /* Make buttons more compact on mobile */
 @media (max-width: 768px) {
-  .btn {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
-  }
+    .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
 }

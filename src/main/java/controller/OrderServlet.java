@@ -5,9 +5,11 @@
 package controller;
 
 import dao.OrderDAO;
+import dao.ProfileDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,6 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import model.Order;
 import model.OrderItem;
+import model.User;
 import util.Email;
 
 /**
@@ -171,6 +174,21 @@ public class OrderServlet extends HttpServlet {
 
     private void viewOrderDetail(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
+        
+        String customerId = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("customerId".equals(cookie.getName())) {
+                    customerId = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        ProfileDAO profileDAO = new ProfileDAO();
+        User user = profileDAO.getUser(customerId);
+        request.setAttribute("customer", user);
+        
         int orderId = Integer.parseInt(request.getParameter("orderId"));
 
         List<OrderItem> orderitems = OrderDAO.getOrderItemsByOrderId(orderId);
@@ -190,31 +208,46 @@ public class OrderServlet extends HttpServlet {
     private void viewOrderHistory(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         List<Order> orders = null;
+        
+        String customerId = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("customerId".equals(cookie.getName())) {
+                    customerId = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        ProfileDAO profileDAO = new ProfileDAO();
+        User user = profileDAO.getUser(customerId);
+        request.setAttribute("customer", user);
+        
         try {
-            int customerId = 1;
+            int intCustomerId = Integer.parseInt(customerId);
             String status = request.getParameter("status");
 
             switch (status) {
                 case "cxn":
-                    orders = OrderDAO.getOrderByCustomerIdVsStatus(customerId, "Chờ xác nhận");
+                    orders = OrderDAO.getOrderByCustomerIdVsStatus(intCustomerId, "Chờ xác nhận");
                     break;
                 case "clh":
-                    orders = OrderDAO.getOrderByCustomerIdVsStatus(customerId, "Chờ lấy hàng");
+                    orders = OrderDAO.getOrderByCustomerIdVsStatus(intCustomerId, "Chờ lấy hàng");
                     break;
                 case "cgh":
-                    orders = OrderDAO.getOrderByCustomerIdVsStatus(customerId, "Chờ giao hàng");
+                    orders = OrderDAO.getOrderByCustomerIdVsStatus(intCustomerId, "Chờ giao hàng");
                     break;
                 case "ht":
-                    orders = OrderDAO.getOrderByCustomerIdVsStatus(customerId, "Hoàn thành");
+                    orders = OrderDAO.getOrderByCustomerIdVsStatus(intCustomerId, "Hoàn thành");
                     break;
                 case "ych":
-                    orders = OrderDAO.getOrderByCustomerIdVsStatus(customerId, "Yêu cầu huỷ...");
+                    orders = OrderDAO.getOrderByCustomerIdVsStatus(intCustomerId, "Yêu cầu huỷ...");
                     break;
                 case "dh":
-                    orders = OrderDAO.getOrderByCustomerIdVsStatus(customerId, "Đã huỷ");
+                    orders = OrderDAO.getOrderByCustomerIdVsStatus(intCustomerId, "Đã huỷ");
                     break;
                 default:
-                    orders = OrderDAO.getOrderByCustomerId(customerId);
+                    orders = OrderDAO.getOrderByCustomerId(intCustomerId);
             }
 
             request.setAttribute("orderStatus", status);

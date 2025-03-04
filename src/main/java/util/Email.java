@@ -31,8 +31,8 @@ public class Email {
     // Email: ducquangvu1404@gmail.com
     // Password: arzo kpkq gdhe yiqt
 
-    final static String from = "ducquangvu1404@gmail.com";
-    final static String password = "arzo kpkq gdhe yiqt";
+    final static String from = "pawfectg3@gmail.com";
+    final static String password = "ldof gbqp hurw qrkn";
 
     public static boolean sendEmail(String to, String subject, String content) {
         Properties props = new Properties();

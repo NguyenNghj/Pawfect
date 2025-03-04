@@ -795,7 +795,7 @@
                                                   <td valign="top" class="pc-w620-padding-0-0-0-0" align="left">
                                                    <div class="pc-font-alt" style="text-decoration: none;">
                                                     <div style="font-size: 18px;line-height: 25.2px;text-align:left;text-align-last:left;color:#001942;font-weight:500;font-style:normal;">
-                                                     <div class="pc-w620-text-align-left"><span style="font-family: 'Fira Sans', Arial, Helvetica, sans-serif;line-height: 140%; letter-spacing: -0.03em;">hi@sellymoon.com</span>
+                                                     <div class="pc-w620-text-align-left"><span style="font-family: 'Fira Sans', Arial, Helvetica, sans-serif;line-height: 140%; letter-spacing: -0.03em;">pawfectg3@gmail.com</span>
                                                      </div>
                                                     </div>
                                                    </div>
@@ -894,7 +894,7 @@
                                                   <td valign="top" class="pc-w620-padding-0-0-0-0" align="left">
                                                    <div class="pc-font-alt" style="text-decoration: none;">
                                                     <div style="font-size: 18px;line-height: 25.2px;text-align:left;text-align-last:left;color:#001942;font-weight:500;font-style:normal;">
-                                                     <div class="pc-w620-text-align-left"><span style="font-family: 'Fira Sans', Arial, Helvetica, sans-serif;line-height: 140%; letter-spacing: -0.03em;">+1 (234) 567-8901</span>
+                                                     <div class="pc-w620-text-align-left"><span style="font-family: 'Fira Sans', Arial, Helvetica, sans-serif;line-height: 140%; letter-spacing: -0.03em;">0969018211</span>
                                                      </div>
                                                     </div>
                                                    </div>
