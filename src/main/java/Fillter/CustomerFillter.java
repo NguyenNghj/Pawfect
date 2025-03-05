@@ -30,7 +30,7 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
         path.startsWith(req.getContextPath() + "/img/") ||
         path.startsWith(req.getContextPath() + "/js/") ||
         path.equals(req.getContextPath() + "/") ||  
-        path.startsWith(req.getContextPath() + "/login")||    path.startsWith(req.getContextPath() + "/GoogleLoginServlet")|| path.startsWith(req.getContextPath() + "/compoments/")|| path.startsWith(req.getContextPath() + "/dashboard")|| path.startsWith(req.getContextPath() + "/register")|| path.startsWith(req.getContextPath() + "/forgetpassword")||path.startsWith(req.getContextPath() + "/verify")) {
+        path.startsWith(req.getContextPath() + "/login")||   path.startsWith(req.getContextPath() + "/compoments/")|| path.startsWith(req.getContextPath() + "/dashboard")) {
         chain.doFilter(request, response);
         return;
     }
