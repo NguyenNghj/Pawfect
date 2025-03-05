@@ -11,6 +11,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.List" %>
 
@@ -31,7 +32,7 @@
 
                 <!-- SIDEBAR -->
                 <jsp:include page="sidebar.jsp"/>
- <%
+                <%
                     Cookie[] cookies = request.getCookies();
                     String staffRole = "";
                     String staffName = "";
@@ -93,15 +94,15 @@
 
                     <div class="row mt-2">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item" style="color: #6c757d;">Dashboard</li>
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Product</li>
+                            <ol class="breadcrumb" style="background: #8C6E63; padding: 10px">
+                                <li class="breadcrumb-item" style="color: #FFE0B2">Dashboard</li>
+                                <li class="breadcrumb-item"><a href="/dashboard/admin/product">Quản lí sản phẩm</a></li>
+                                <li class="breadcrumb-item active" aria-current="page" style="color: #FFE0B2">${product.productName}</li>
                             </ol>
                         </nav>
                     </div>   
 
-                    <!--                    <div class="row">
+                    <!--                    <div class="row">   
                                             <div class="col-3 p-0" style="margin-top: 60px;">
                                                 <button type="button" class="btn btn-primary">
                                                     <i class="fa-solid fa-plus"></i>
@@ -208,8 +209,21 @@
                                 }
                             }
                         </script>
+
                         <script>
-                            // Function to update the product status options based on selected category
+                            document.getElementById("productActive").addEventListener("change", function () {
+                                if (this.value === "false") {
+                                    Swal.fire({
+                                        title: "Cảnh báo!",
+                                        text: "Tất cả sản phẩm thuộc thể loại này sẽ ngừng bán!",
+                                        icon: "warning",
+                                        confirmButtonText: "OK"
+                                    });
+                                }
+                            });
+                        </script>
+
+                        <script>
                             function updateProductStatusOptions() {
                                 const categorySelect = document.getElementById('categoryId');
                                 const selectedOption = categorySelect.options[categorySelect.selectedIndex];
@@ -217,11 +231,9 @@
                                 const productActiveSelect = document.getElementById('productActive');
                                 const activeOption = productActiveSelect.querySelector('option[value="true"]');
 
-                                // If the category is inactive, disable "Đang bán"
                                 if (!isActive) {
                                     activeOption.disabled = true;
                                     if (activeOption.selected) {
-                                        // If "Đang bán" is selected, select "Ngừng bán" instead
                                         productActiveSelect.value = 'false';
                                     }
                                 } else {
@@ -229,7 +241,6 @@
                                 }
                             }
 
-                            // Call the function on page load to set the correct state based on the initial category
                             window.onload = function () {
                                 updateProductStatusOptions();
                             };

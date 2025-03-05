@@ -12,7 +12,6 @@ import jakarta.mail.Session;
 import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
-import java.util.Properties;
 
 /**
  *
@@ -20,8 +19,7 @@ import java.util.Properties;
  */
 
     import java.util.Properties;
-import jakarta.mail.*;
-import jakarta.mail.internet.*;
+
 
 public class SendMail {
     public static void sendEmail(String to, String subject, String messageText) {
