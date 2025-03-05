@@ -53,7 +53,7 @@ public class Email {
         Session session = Session.getInstance(props, auth);
 
         // Gui email
-//        final String to = "vuquangduc1404@gmail.com";
+        //        final String to = "vuquangduc1404@gmail.com";
         // Tao mot tin nhan
         MimeMessage msg = new MimeMessage(session);
         try {

@@ -111,15 +111,14 @@ public class EditProductServlet extends HttpServlet {
                 uploadDir.mkdirs();
             }
 
-            String fileName = existingImage; // Giữ ảnh cũ mặc định
             Part filePart = request.getPart("productImage");
-            String newFileName = null;
+            String newFileName = null;  // Giữ ảnh cũ mặc định
 
             if (filePart != null && filePart.getSize() > 0) {
                 // Lấy tên file mới
                 newFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
             }
-
+            
             // Cập nhật thông tin sản phẩm trước
             Product product = new Product(productId, categoryId, productName, productPetType,
                     productPrice, newFileName != null ? newFileName : existingImage, stock, description, productActive);
