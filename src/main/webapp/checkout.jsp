@@ -24,7 +24,7 @@
                     <!-- Logo -->
                     <div class="row">
                         <div class="header-logo">
-                            <a href="#">
+                            <a href="pawfect">
                                 <img src="./img/header/logo.png" alt="">
                             </a>
                         </div>

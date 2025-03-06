@@ -166,7 +166,11 @@
                                             <fmt:formatNumber value="${product.productPrice}" pattern="#,##0" />đ
                                         </p>
                                         <a href="#">
-                                            <button class="add-to-cart" data-product-id="${product.productId}" data-product-name="${product.productName}">
+                                            <button class="add-to-cart"
+                                                    data-product-id="${product.productId}"
+                                                    data-product-name="${product.productName}"
+                                                    data-product-stock="${product.stock}"
+                                                    >
                                                 <i class="cart-icon"></i>
                                             </button>
                                         </a>
@@ -235,11 +239,11 @@
         <script>
 
             $('.add-to-cart').click(function (event) {
-                
+
                 // Hàm lấy giá trị cookie theo tên
                 function getCookie(name) {
                     event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
-                    
+
                     let cookies = document.cookie.split("; ");
                     for (let i = 0; i < cookies.length; i++) {
                         let cookie = cookies[i].split("=");
@@ -249,10 +253,10 @@
                     }
                     return null;
                 }
-                
+
                 // Kiểm tra xem cookie có tồn tại không (ví dụ: 'cartItems')
                 let customerCookie = getCookie("customerId");
-                
+
                 if (!customerCookie) {
                     Swal.fire({
                         icon: "warning",
@@ -260,14 +264,15 @@
                         text: "Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng."
                     });
                     return;
-                }                              
+                }
 
-                var productId = $(this).data('product-id');
+                let stock = $(this).data('product-stock');
+                let productId = $(this).data('product-id');
                 console.log("productId:", productId);
-                var productName = $(this).data('product-name');
+                let productName = $(this).data('product-name');
                 console.log("productName:", productName);
-                var action = "add";
-                var customerId = customerCookie; // ID của khách hàng (cần lấy từ session hoặc cookie)
+                let action = "add";
+                let customerId = customerCookie; // ID của khách hàng (cần lấy từ session hoặc cookie)
 
                 $.ajax({
                     url: "cart",
@@ -276,7 +281,8 @@
                         action: action,
                         productId: productId,
                         customerId: customerId,
-                        quantity: "1"
+                        quantity: "1",
+                        stock: stock
                     },
                     dataType: "json",
                     success: function (response) {
@@ -298,7 +304,16 @@
                             });
                         } else {
                             console.error("Lỗi thêm vào giỏ hàng:", response.message);
-                            alert("Lỗi: " + response.message);
+                            // Kiểm tra nếu lỗi là do vượt tồn kho
+                            if (response.message === "Vượt quá tồn kho") {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Số lượng vượt quá tồn kho! Giỏ hàng hiện tại " + response.quantityFromCart,
+                                    text: "Chỉ còn " + response.stock + " sản phẩm trong kho."
+                                });
+                            } else {
+                                alert("Lỗi: " + response.message);
+                            }
                         }
                     },
                     error: function (error) {

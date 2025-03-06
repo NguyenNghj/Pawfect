@@ -50,7 +50,7 @@
                                     <p class="description">${product.description}</p>
 
                                     <div style="display: flex; align-items: center; gap: 10px;">
-                                        <form>
+                                        <form onsubmit="return false;">
                                             <fieldset class="data-quantity" style="display: flex; align-items: center; border: none;">
                                                 <button type="button" class="sub">−</button>
                                                 <input type="number" class="input-number" min="1" value="1">
@@ -82,7 +82,9 @@
                         <div class="rating-summary p-4 mb-4">
                             <div class="row align-items-center">
                                 <div class="col-md-3 text-center mb-3 mb-md-0">
-                                    <div class="rating-average">${averageStar > 0 ? averageStar : 0}/5</div>
+                                    <div class="rating-average">
+                                        <fmt:formatNumber value="${averageStar > 0 ? averageStar : 0}" pattern="#0.0" />/5
+                                    </div>
                                     <div class="stars my-2">
                                         <c:forEach var="i" begin="1" end="5">
                                             <c:choose>                                            
@@ -172,7 +174,7 @@
                                 <div class="col-md-9">
                                     <div class="d-flex flex-wrap gap-2">
                                         <button class="btn btn-outline-secondary btn-sm">Tất cả</button>
-                                        <button class="btn btn-outline-primary btn-sm active">5 Sao (4)</button>
+                                        <button class="btn btn-outline-success btn-sm active">5 Sao (4)</button>
                                         <button class="btn btn-outline-secondary btn-sm">4 Sao (2)</button>
                                         <button class="btn btn-outline-secondary btn-sm">3 Sao (2)</button>
                                         <button class="btn btn-outline-secondary btn-sm">2 Sao (0)</button>
@@ -309,32 +311,32 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                // Nếu là chuyển trang trong chi tiết sản phẩm, khôi phục vị trí cuộn
-                if (localStorage.getItem("scrollPosition") && localStorage.getItem("isPagination") === "true") {
-                    window.scrollTo(0, localStorage.getItem("scrollPosition"));
-                }
+                                            document.addEventListener("DOMContentLoaded", function () {
+                                                // Nếu là chuyển trang trong chi tiết sản phẩm, khôi phục vị trí cuộn
+                                                if (localStorage.getItem("scrollPosition") && localStorage.getItem("isPagination") === "true") {
+                                                    window.scrollTo(0, localStorage.getItem("scrollPosition"));
+                                                }
 
-                // Xóa dữ liệu sau khi khôi phục để tránh lỗi khi quay lại trang trước
-                localStorage.removeItem("scrollPosition");
-                localStorage.removeItem("isPagination");
+                                                // Xóa dữ liệu sau khi khôi phục để tránh lỗi khi quay lại trang trước
+                                                localStorage.removeItem("scrollPosition");
+                                                localStorage.removeItem("isPagination");
 
-                // Lưu vị trí cuộn khi nhấn phân trang trong trang chi tiết sản phẩm
-                document.querySelectorAll(".page-link").forEach(link => {
-                    link.addEventListener("click", function () {
-                        localStorage.setItem("scrollPosition", window.scrollY);
-                        localStorage.setItem("isPagination", "true"); // Đánh dấu là phân trang
-                    });
-                });
+                                                // Lưu vị trí cuộn khi nhấn phân trang trong trang chi tiết sản phẩm
+                                                document.querySelectorAll(".page-link").forEach(link => {
+                                                    link.addEventListener("click", function () {
+                                                        localStorage.setItem("scrollPosition", window.scrollY);
+                                                        localStorage.setItem("isPagination", "true"); // Đánh dấu là phân trang
+                                                    });
+                                                });
 
-                // Khi click vào sản phẩm trong danh sách (chuyển trang chi tiết), không lưu vị trí cuộn
-                document.querySelectorAll(".product-card a").forEach(link => {
-                    link.addEventListener("click", function () {
-                        localStorage.removeItem("scrollPosition"); // Xóa để luôn cuộn lên đầu
-                        localStorage.removeItem("isPagination");
-                    });
-                });
-            });
+                                                // Khi click vào sản phẩm trong danh sách (chuyển trang chi tiết), không lưu vị trí cuộn
+                                                document.querySelectorAll(".product-card a").forEach(link => {
+                                                    link.addEventListener("click", function () {
+                                                        localStorage.removeItem("scrollPosition"); // Xóa để luôn cuộn lên đầu
+                                                        localStorage.removeItem("isPagination");
+                                                    });
+                                                });
+                                            });
 
         </script>
 
@@ -414,8 +416,8 @@
                     return;
                 }
 
-
-                const value = $('.input-number').val();
+                const stock = ${product.stock};
+                const quantityToAdd = $('.input-number').val();
                 var productId = $(this).data('product-id');
                 console.log("productId:", productId);
                 var productName = $(this).data('product-name');
@@ -430,7 +432,8 @@
                         action: action,
                         productId: productId,
                         customerId: customerId,
-                        quantity: value
+                        stock: stock,
+                        quantity: quantityToAdd
                     },
                     dataType: "json",
                     success: function (response) {
@@ -452,7 +455,16 @@
                             });
                         } else {
                             console.error("Lỗi thêm vào giỏ hàng:", response.message);
-                            alert("Lỗi: " + response.message);
+                            // Kiểm tra nếu lỗi là do vượt tồn kho
+                            if (response.message === "Vượt quá tồn kho") {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Số lượng vượt quá tồn kho! Giỏ hàng hiện tại " + response.quantityFromCart,
+                                    text: "Chỉ còn " + response.stock + " sản phẩm trong kho."
+                                });
+                            } else {
+                                alert("Lỗi: " + response.message);
+                            }
                         }
                     },
                     error: function (error) {
@@ -464,7 +476,6 @@
 
 
             $('.buy-now').click(function (event) {
-
 
                 // Hàm lấy giá trị cookie theo tên
                 function getCookie(name) {
@@ -492,8 +503,8 @@
                     return;
                 }
 
-
-                const value = $('.input-number').val();
+                const stock = ${product.stock};
+                const quantityToAdd = $('.input-number').val();
                 var productId = $(this).data('product-id');
                 console.log("productId:", productId);
                 var action = "add";
@@ -506,7 +517,8 @@
                         action: action,
                         productId: productId,
                         customerId: customerId,
-                        quantity: value
+                        quantity: quantityToAdd,
+                        stock: stock
                     },
                     dataType: "json",
                     success: function (response) {
@@ -517,7 +529,16 @@
 
                         } else {
                             console.error("Lỗi mua ngay!!", response.message);
-                            alert("Lỗi: " + response.message);
+                            // Kiểm tra nếu lỗi là do vượt tồn kho
+                            if (response.message === "Vượt quá tồn kho") {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Số lượng vượt quá tồn kho! Giỏ hàng hiện tại " + response.quantityFromCart,
+                                    text: "Chỉ còn " + response.stock + " sản phẩm trong kho."
+                                });
+                            } else {
+                                alert("Lỗi: " + response.message);
+                            }
                         }
                     },
                     error: function (error) {

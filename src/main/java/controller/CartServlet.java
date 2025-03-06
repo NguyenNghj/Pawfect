@@ -111,9 +111,20 @@ public class CartServlet extends HttpServlet {
         int customerId = Integer.parseInt(request.getParameter("customerId"));
         int productId = Integer.parseInt(request.getParameter("productId"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
+        int stock = Integer.parseInt(request.getParameter("stock"));
 
         JSONObject json = new JSONObject();
         response.setContentType("application/json");
+
+        int quantityFromCart = CartDAO.getQuantityOfProduct(customerId, productId);
+        if (quantityFromCart + quantity > stock) {
+            json.put("status", "error");
+            json.put("message", "Vượt quá tồn kho");
+            json.put("stock", stock); // Trả về tồn kho để hiển thị thông báo phía client
+            json.put("quantityFromCart", quantityFromCart);
+            response.getWriter().write(json.toString());
+            return;
+        }
 
         boolean checkProdut = CartDAO.checkProductInCart(productId, customerId);
         if (checkProdut) {
@@ -140,7 +151,7 @@ public class CartServlet extends HttpServlet {
 
     private void getCart(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        
+
         String username = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -151,7 +162,7 @@ public class CartServlet extends HttpServlet {
                 }
             }
         }
-        
+
         int customerId = Integer.parseInt(username);
 
         List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
@@ -221,6 +232,18 @@ public class CartServlet extends HttpServlet {
             int customerId = Integer.parseInt(request.getParameter("customerId"));
             // Lay yeu cau Tang hoac Giam so luong san pham
             String target = request.getParameter("target");
+//            int stock = Integer.parseInt(request.getParameter("stock"));
+//            int quantity = Integer.parseInt(request.getParameter("quantity"));
+//
+//            int quantityFromCart = CartDAO.getQuantityOfProduct(customerId, productId);
+//            if (quantityFromCart + quantity > stock) {
+//                json.put("status", "error");
+//                json.put("message", "Vượt quá tồn kho");
+//                json.put("stock", stock); // Trả về tồn kho để hiển thị thông báo phía client
+//                json.put("quantityFromCart", quantityFromCart);
+//                response.getWriter().write(json.toString());
+//                return;
+//            }
 
             // Tang so luong san pham
             if (target.equals("increase")) {
