@@ -18,11 +18,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
 }
 
 .header-logo a img {
-    width: 178px;
-    height: 108px;
+    width: 130px;
+    /*height: 108px;*/
     object-fit: cover;
     margin-bottom: 30px;
     border-radius: 7px;
+    background: #8c6e63;
+    padding-bottom: 10px;
 }
 
 .title-main {
