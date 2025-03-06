@@ -15,9 +15,22 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <link rel="stylesheet" href="./css/productdetail.css">
         <title>${product.productName}</title>
+
     </head>
 
     <body>
+        <script>
+            (function () {
+                if ((localStorage.getItem("isPagination") === "true" || localStorage.getItem("isRatingFilter") === "true")
+                        && (localStorage.getItem("scrollPosition") || localStorage.getItem("ratingScrollPosition"))) {
+
+                    let scrollTo = localStorage.getItem("isPagination") === "true"
+                            ? localStorage.getItem("scrollPosition")
+                            : localStorage.getItem("ratingScrollPosition");
+                    window.scrollTo(0, parseInt(scrollTo));
+                }
+            })();
+        </script>
         <ol class="breadcrumb">
             <li><a class="trang-chu" href="/products">Trang chủ</a></li>
             <li><a class="trang-chu" href="/products?category=${product.categoryName}">${product.categoryName}</a></li>
@@ -173,20 +186,21 @@
 
                                 <div class="col-md-9">
                                     <div class="d-flex flex-wrap gap-2">
-                                        <button class="btn btn-outline-secondary btn-sm">Tất cả</button>
-                                        <button class="btn btn-outline-success btn-sm active">5 Sao (4)</button>
-                                        <button class="btn btn-outline-secondary btn-sm">4 Sao (2)</button>
-                                        <button class="btn btn-outline-secondary btn-sm">3 Sao (2)</button>
-                                        <button class="btn btn-outline-secondary btn-sm">2 Sao (0)</button>
-                                        <button class="btn btn-outline-secondary btn-sm">1 Sao (0)</button>
+                                        <a href="product?id=${param.id}&rating=tc" class="btn btn-outline-secondary btn-sm <c:if test="${param.rating == 'tc'}">active</c:if>">Tất cả</a>
+                                        <a href="product?id=${param.id}&rating=5s" class="btn btn-outline-secondary btn-sm <c:if test="${param.rating == '5s'}">active</c:if>">5 Sao (${fiveStar})</a>
+                                        <a href="product?id=${param.id}&rating=4s" class="btn btn-outline-secondary btn-sm <c:if test="${param.rating == '4s'}">active</c:if>">4 Sao (${fourStar})</a>
+                                        <a href="product?id=${param.id}&rating=3s" class="btn btn-outline-secondary btn-sm <c:if test="${param.rating == '3s'}">active</c:if>">3 Sao (${threeStar})</a>
+                                        <a href="product?id=${param.id}&rating=2s" class="btn btn-outline-secondary btn-sm <c:if test="${param.rating == '2s'}">active</c:if>">2 Sao (${twoStar})</a>
+                                        <a href="product?id=${param.id}&rating=1s" class="btn btn-outline-secondary btn-sm <c:if test="${param.rating == '1s'}">active</c:if>">1 Sao (${oneStar})</a>
+                                        <a href="product?id=${param.id}&rating=img" class="btn btn-outline-secondary btn-sm <c:if test="${param.rating == 'img'}">active</c:if>">Có hình ảnh (${haveImg})</a>
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
 
-                        </div>
-
-                        <!-- Reviews List -->
-                        <div class="reviews-list">
+                            <!-- Reviews List -->
+                            <div class="reviews-list">
 
                             <c:if test="${empty feedbacks}">
                                 <div>
@@ -262,7 +276,7 @@
                                         <img src="${product.productImage}" alt="${product.productName}">
                                     </div>
                                     <div class="product-info">
-                                        <a class="product-name" href="product?id=${product.productId}">${product.productName}</a>
+                                        <a class="product-name" href="product?id=${product.productId}&rating=${param.rating}">${product.productName}</a>
                                         <p class="product-price">
                                             <fmt:formatNumber value="${product.productPrice}" pattern="#,##0" />đ
                                         </p>
@@ -280,7 +294,7 @@
                         <div class="pagination-wrapper">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination">
-                                    <c:set var="queryParams" value="id=${param.id}" />
+                                    <c:set var="queryParams" value="id=${param.id}&rating=${param.rating}" />
 
                                     <!-- Nút Previous -->
                                     <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
@@ -328,6 +342,7 @@
                                                         localStorage.setItem("isPagination", "true"); // Đánh dấu là phân trang
                                                     });
                                                 });
+
 
                                                 // Khi click vào sản phẩm trong danh sách (chuyển trang chi tiết), không lưu vị trí cuộn
                                                 document.querySelectorAll(".product-card a").forEach(link => {
@@ -713,5 +728,30 @@
             });
         </script>
 
+        <%-- Luu vi tri cuon trang khi chon option hien feedback san pham --%>
+        <script>
+
+            document.addEventListener("DOMContentLoaded", function () {
+                // Lưu vị trí cuộn hiện tại khi click vào các liên kết lọc đánh giá
+                const ratingFilterLinks = document.querySelectorAll('.rating-summary .btn-outline-secondary');
+                ratingFilterLinks.forEach(link => {
+                    link.addEventListener('click', function (e) {
+                        // Lưu vị trí cuộn hiện tại
+                        localStorage.setItem("ratingScrollPosition", window.scrollY);
+                        localStorage.setItem("isRatingFilter", "true");
+                    });
+                });
+
+                // Khôi phục vị trí cuộn sau khi trang được tải lại nếu đang lọc đánh giá
+                if (localStorage.getItem("isRatingFilter") === "true" && localStorage.getItem("ratingScrollPosition")) {
+                    window.scrollTo(0, localStorage.getItem("ratingScrollPosition"));
+                    // Không xóa dữ liệu ngay lập tức để cho phép load hoàn tất
+                    setTimeout(function () {
+                        localStorage.removeItem("ratingScrollPosition");
+                        localStorage.removeItem("isRatingFilter");
+                    }, 100);
+                }
+            });
+        </script>
     </body>
 </html>
