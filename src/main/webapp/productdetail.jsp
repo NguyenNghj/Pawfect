@@ -402,59 +402,37 @@
                 updateButtonState();
             });
 
-            // Kiểm tra khi nhập số lượng trực tiếp vào ô input
-            inputField.addEventListener("input", function () {
-                let value = parseInt(inputField.value);
-                if (isNaN(value) || value < 1) {
-                    inputField.value = 1; // Giá trị tối thiểu là 1
-                } else if (value > stock) {
-                    inputField.value = stock; // Không cho nhập quá số lượng tồn kho
-                }
-                updateButtonState();
+        <%-- Xu ly xem them product feedback --%>
+        <script>
+            let initialFeedbacks = $(".feedback-item").length; // Tổng số feedback có sẵn
+            let itemsToShow = 4; // Số feedback hiển thị ban đầu
+
+            $(".feedback-item").slice(itemsToShow).hide(); // Ẩn feedback vượt quá số quy định
+
+            // Ẩn nút "Xem thêm" nếu tổng feedback nhỏ hơn hoặc bằng itemsToShow
+            if (initialFeedbacks <= itemsToShow) {
+                $("#loadMore").hide();
+            }
+
+
+            $(document).ready(function () {
+                $("#loadMore").click(function () {
+                    let hiddenFeedbacks = $(".feedback-item:hidden"); // Lấy feedback chưa hiển thị
+                    let itemsToShow = hiddenFeedbacks.slice(0, 4); // Lấy số feedback muốn hiển thị tiếp theo
+
+                    if (itemsToShow.length > 0) {
+                        itemsToShow.fadeIn(); // Hiển thị chúng
+                    }
+
+                    if ($(".feedback-item:hidden").length === 0) {
+                        $("#loadMore").hide(); // Ẩn nút nếu không còn feedback nào
+                    }
+                });
             });
+        </script>
 
-            // Cập nhật trạng thái nút ngay khi tải trang
-            updateButtonState();
-        });
-
-    </script>
-
-
-    <%-- Xu ly xem them product feedback --%>
-    <script>
-        let initialFeedbacks = $(".feedback-item").length; // Tổng số feedback có sẵn
-        let itemsToShow = 4; // Số feedback hiển thị ban đầu
-
-        $(".feedback-item").slice(itemsToShow).hide(); // Ẩn feedback vượt quá số quy định
-
-        // Ẩn nút "Xem thêm" nếu tổng feedback nhỏ hơn hoặc bằng itemsToShow
-        if (initialFeedbacks <= itemsToShow) {
-            $("#loadMore").hide();
-        }
-
-
-        $(document).ready(function () {
-            $("#loadMore").click(function () {
-                let hiddenFeedbacks = $(".feedback-item:hidden"); // Lấy feedback chưa hiển thị
-                let itemsToShow = hiddenFeedbacks.slice(0, 4); // Lấy số feedback muốn hiển thị tiếp theo
-
-                if (itemsToShow.length > 0) {
-                    itemsToShow.fadeIn(); // Hiển thị chúng
-                }
-
-                if ($(".feedback-item:hidden").length === 0) {
-                    $("#loadMore").hide(); // Ẩn nút nếu không còn feedback nào
-                }
-            });
-        });
-    </script>
-
-    <script>
-        $('.add-to-cart').click(function (event) {
-            event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
-
-            // Hàm lấy giá trị cookie theo tên
-            function getCookie(name) {
+        <script>
+            $('.add-to-cart').click(function (event) {
                 event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
 
                 let cookies = document.cookie.split("; ");
