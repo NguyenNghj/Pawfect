@@ -138,7 +138,7 @@
                                                 </div>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <form id="feedbackForm" action="/dashboard/staff/feedbackmanagement?action=feedback" method="post" enctype="multipart/form-data">
+                                            <form id="feedbackForm" action="/dashboard/staff/feedbackmanagement?action=feedback&filterRating=${param.rating}" method="post" enctype="multipart/form-data">
                                                 <div class="modal-body">
                                                     <!-- Rating Stars -->
                                                     <div class="mb-3">
@@ -210,10 +210,11 @@
                                 </div>
                             </c:if>
 
-                            <c:forEach items="${feedbacks}" var="f">
+                            <c:forEach items="${feedbacks}" var="f" varStatus="loop">
                                 <c:if test="${f.isVisible == true}">
                                     <!-- Review 1 (Example with employee response) -->
-                                    <div class="review-item p-3 mb-3">
+                                    <div class="review-item p-3 mb-3 feedback-item"
+                                         style="<c:if test='${loop.index >= 4}'>display: none;</c:if>" >
                                         <div class="reviewer-name fw-bold">${f.customerName}</div>
                                         <div class="stars">
                                             <c:forEach var="i" begin="1" end="5">
@@ -252,9 +253,16 @@
 
                                     </div>
                                 </c:if>
-                            </c:forEach>
-
+                            </c:forEach>                           
+                        </div> 
+                        <div style="text-align: center">
+                            <!-- Nút Xem thêm -->
+                            <button id="loadMore" class="btn btn-success"
+                                    style="--bs-btn-padding-y: .45rem; --bs-btn-padding-x: 1.7rem; --bs-btn-font-size: 1.1rem;">
+                                Xem thêm đánh giá
+                            </button>
                         </div>
+
                     </div>
                 </div>
 
@@ -399,6 +407,35 @@
                 updateButtonState();
             });
 
+        </script>
+
+        <%-- Xu ly xem them product feedback --%>
+        <script>
+            let initialFeedbacks = $(".feedback-item").length; // Tổng số feedback có sẵn
+            let itemsToShow = 4; // Số feedback hiển thị ban đầu
+
+            $(".feedback-item").slice(itemsToShow).hide(); // Ẩn feedback vượt quá số quy định
+
+            // Ẩn nút "Xem thêm" nếu tổng feedback nhỏ hơn hoặc bằng itemsToShow
+            if (initialFeedbacks <= itemsToShow) {
+                $("#loadMore").hide();
+            }
+
+
+            $(document).ready(function () {
+                $("#loadMore").click(function () {
+                    let hiddenFeedbacks = $(".feedback-item:hidden"); // Lấy feedback chưa hiển thị
+                    let itemsToShow = hiddenFeedbacks.slice(0, 4); // Lấy số feedback muốn hiển thị tiếp theo
+
+                    if (itemsToShow.length > 0) {
+                        itemsToShow.fadeIn(); // Hiển thị chúng
+                    }
+
+                    if ($(".feedback-item:hidden").length === 0) {
+                        $("#loadMore").hide(); // Ẩn nút nếu không còn feedback nào
+                    }
+                });
+            });
         </script>
 
         <script>

@@ -44,8 +44,8 @@
                 <div class="col-md-6 illustration-side">
   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6KYofPjHBJzD0wDz_YLzcTZySiyqzSWXRRw&s" alt="E-commerce illustration" class="img-fluid">                </div>
                 <div class="col-md-6 form-side d-flex align-items-center justify-content-center">
-                    <div class="login-form text-center">
-                        <h1 class="mb-4">Đăng nhập cho nhân viên</h1>
+                    <h1 class="mb-4">Đăng nhập cho nhân viên</h1>
+                    <div class="login-form text-center">                     
                         <% if (request.getParameter("error") != null) { %>
                         <p class="text-danger">Sai email hoặc mật khẩu. Vui lòng thử lại.</p>
                         <% } %>

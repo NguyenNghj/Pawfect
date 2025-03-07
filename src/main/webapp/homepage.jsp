@@ -179,12 +179,15 @@
                                     <img src="${product.productImage}" alt="${product.productName}">
                                 </div>
                                 <div class="product-info">
-                                    <a class="product-name" href="product?id=${product.productId}">${product.productName}</a>
+                                    <a class="product-name" href="product?id=${product.productId}&rating=tc">${product.productName}</a>
                                     <p class="product-price">
                                         <fmt:formatNumber value="${product.productPrice}" pattern="#,##0" />đ
                                     </p>
                                     <a href="#">
-                                        <button class="add-to-cart" data-product-id="${product.productId}" data-product-name="${product.productName}">
+                                        <button class="add-to-cart"
+                                                data-product-id="${product.productId}"
+                                                data-product-name="${product.productName}"
+                                                data-product-stock="${product.stock}">
                                             <i class="cart-icon"></i>
                                         </button>
                                     </a>
@@ -357,6 +360,7 @@
                     return;
                 }
 
+                const stock = $(this).data('product-stock');
                 var productId = $(this).data('product-id');
                 console.log("productId:", productId);
                 var productName = $(this).data('product-name');
@@ -371,6 +375,7 @@
                         action: action,
                         productId: productId,
                         customerId: customerId,
+                        stock: stock,
                         quantity: "1"
                     },
                     dataType: "json",
