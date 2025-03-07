@@ -1,7 +1,7 @@
 <%-- 
-    Document   : product
-    Created on : Feb 11, 2025, 3:54:05 PM
-    Author     : Vu Quang Duc - CE181221
+    Document   : voucher
+    Created on : Mar 7, 2025, 9:23:18 PM
+    Author     : Nguyen Tri Nghi - CE180897
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -53,7 +53,7 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Quản lí sản phẩm</h1>
+                                <h1>Quản lí mã giảm </h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
                                 <span><%= staffName%></span>
@@ -95,30 +95,22 @@
                         </nav>
                     </div>   
 
-
-                    <div class="row d-flex align-items-center" style="margin-top: 30px;">
-                        <!-- Button Thêm Sản Phẩm -->
-                        <div class="col-md-6">
-                            <a href="/dashboard/admin/addproduct" class="btn btn-success">
-                                <i class="fa-solid fa-plus"></i> Thêm sản phẩm
+                    <div class="row">
+                        <div class="col-3 p-0" style="margin-top: 60px;">
+                            <a href="/dashboard/admin/addvoucher" type="button" class="btn btn-success">
+                                <i class="fa-solid fa-plus"></i>
+                                Thêm mã giảm giá
                             </a>
-                        </div>
-
-                        <!-- Form Tìm Kiếm -->
-                        <div class="col-md-6">
-                            <form action="ordermanagement?&action=search&status=${param.status}" method="post" class="d-flex">
-                                <label for="inputName" class="col-sm-2 col-form-label">Tìm kiếm:</label>
-                                <input name="searchContent" type="search" class="form-control" id="inputName" placeholder="Tên sản phẩm...">
-                            </form>
-                        </div>
+                        </div>        
                     </div>
+
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <div class="main-dashboard-table">
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
                                  style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
                                 <i class="fa-solid fa-boxes-stacked fa-lg"></i>
-                                <h4 class="mb-0">Danh sách sản phẩm</h4>
+                                <h4 class="mb-0">Danh sách mã giảm giá</h4>
                             </div>
                             <div style="padding: 15px 15px 25px 15px;">
                                 <table class="table">

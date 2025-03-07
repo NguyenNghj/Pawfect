@@ -33,17 +33,17 @@
                     <div class="accordion-body">
                         <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;">
                             <div class="container-fluid">
-                                <a class="navbar-brand" href="admin">Admin</a>
+                                <a class="navbar-brand" href="admin">Quản trị viên</a>
                             </div>
                         </nav>
                         <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;">
                             <div class="container-fluid">
-                                <a class="navbar-brand" href="staff">Employee</a>
+                                <a class="navbar-brand" href="staff">Nhân viên</a>
                             </div>
                         </nav>
                         <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;">
                             <div class="container-fluid">
-                                <a class="navbar-brand" href="customers">Customer</a>
+                                <a class="navbar-brand" href="customers">Khách hàng</a>
                             </div>
                         </nav>
                     </div>
@@ -55,6 +55,12 @@
                 <i class="fa-solid fa-box fa-lg"></i>
                 <span>Sản phẩm</span>
             </a>                          
+        </nav>
+        <nav class="navbar bg-body-tertiary" id="category">                   
+            <a class="navbar-brand d-flex align-items-center gap-3" href="voucher">
+                <i class="fa-solid fa-ticket"></i>
+                <span>Mã giảm giá</span>
+            </a>
         </nav>
         <nav class="navbar bg-body-tertiary" id="category">                   
             <a class="navbar-brand d-flex align-items-center gap-3" href="category">
