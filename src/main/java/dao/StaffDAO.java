@@ -1,6 +1,8 @@
 package dao;
 
 import db.DBContext;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import model.Staff;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -158,5 +160,29 @@ public class StaffDAO {
             e.printStackTrace();
         }
         return false;
+    }
+    /**
+     * Hashes a password using MD5 algorithm
+     *
+     * @param password - The plain text password to hash
+     * @return A string representing the MD5 hashed password
+     */
+    public static String hashPasswordMD5(String password) {
+        String hashedPassword = null;
+        if (password != null) {
+            try {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                md.update(password.getBytes());
+                byte[] digest = md.digest();
+                StringBuilder sb = new StringBuilder();
+                for (byte b : digest) {
+                    sb.append(String.format("%02x", b & 0xff));
+                }
+                hashedPassword = sb.toString();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+        }
+        return hashedPassword;
     }
 }

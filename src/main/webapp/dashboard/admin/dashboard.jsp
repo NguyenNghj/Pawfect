@@ -3,11 +3,11 @@
     Created on : Feb 11, 2025, 3:42:47 PM
     Author     : Vu Quang Duc - CE181221
 --%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <%@page import="model.Product"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,11 +15,14 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="../../css/dashboard.css">
-        <title>JSP Page</title>
+        <title>Thống Kê</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
         <style>
 
             body {
-            
+                width: 100%
             }
 
             #main {
@@ -51,6 +54,7 @@
                 border-radius: 50%;
                 border: 2px solid #5d4037;
             }
+
 
             .chart-container {
 
@@ -150,6 +154,12 @@
                     padding: 8px 16px;
                 }
             }
+            #pet-hotel-revenue {
+                max-width: 500px; /* Điều chỉnh chiều rộng theo mong muốn */
+                max-height: 400px; /* Điều chỉnh chiều cao theo mong muốn */
+            }
+
+
 
         </style>
 
@@ -432,11 +442,31 @@
                                 <h2>Lượng Đơn Hàng</h2>
                                 <canvas id="sale-revenue"></canvas>
                             </div>
+
                         </div>
 
+                        <!-- 🟢 Bảng top 5 sản phẩm bán chạy -->
+                        <h4>Top 5 Sản Phẩm Bán Chạy</h4>
+                        <table border="1">
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên Sản Phẩm</th>
+                                <th>Giá</th>
+                                <th>Ảnh</th>
+                                <th>Đã Bán</th>
+                            </tr>
+                            <c:forEach var="p" items="${topProducts}">
+                                <tr>
+                                    <td>${p.productId}</td>
+                                    <td>${p.productName}</td>
+                                    <td>${p.productPrice} VND</td>
+                                    <td><img src="${p.productImage}" width="50"></td>
+                                    <td>${p.stock}</td> <!-- total_sold gán vào stock -->
+                                </tr>
+                            </c:forEach>
+                        </table>
 
-                        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-
+                        <!-- 🟢 Bảng top 5 nhân viên bán hàng -->
                         <h4>Top 5 Nhân Viên Bán Hàng</h4>
                         <table border="1">
                             <tr>
@@ -450,42 +480,18 @@
                                     <td>${staff.staffId}</td>
                                     <td>${staff.fullName}</td>
                                     <td>${staff.totalSold}</td>
-                                    <td>${staff.totalRevenue}</td>
+                                    <td>${staff.totalRevenue} VND</td>
                                 </tr>
                             </c:forEach>
                         </table>
 
-                        <!-- 🟢 Bảng top 5 sản phẩm -->
-                        <h4>Top 5 Sản Phẩm Bán Chạy</h4>
-                        <table border="1">
-                            <tr>
-                                <th>ID</th>
-                                <th>Tên Sản Phẩm</th>
-                                <th>Giá</th>
-                                <th>Ảnh</th>
-                                <th>Đã Bán</th>
-                            </tr>
-                            <%
-                                List<Product> topProducts = (List<Product>) request.getAttribute("topProducts");
-                                if (topProducts != null) {
-                                    for (Product p : topProducts) {
-                            %>
-                            <tr>
-                                <td><%= p.getProductId()%></td>
-                                <td><%= p.getProductName()%></td>
-                                <td><%= p.getProductPrice()%> VND</td>
-                                <td><img src="<%= p.getProductImage()%>" width="50"></td>
-                                <td><%= p.getStock()%></td> <!-- total_sold gán vào stock -->
-                            </tr>
-                            <%
-                                }
-                            } else {
-                            %>
-                            <tr><td colspan="5">Không có dữ liệu.</td></tr>
-                            <% }%>
-                        </table>
+                        <!-- 🟢 Biểu đồ thống kê Pet Hotel Booking (ĐÃ DI CHUYỂN XUỐNG DƯỚI) -->
+                        <div class="container">
+                            <h2>Doanh Thu Pet Hotel</h2>
+                            <canvas id="pet-hotel-revenue"></canvas>
+                        </div>
 
-                        <!-- 🟢 Biểu đồ thống kê -->
+                        <!-- 🟢 Biểu đồ -->
                         <script>
                             var ctx1 = document.getElementById("sale-revenue").getContext("2d");
                             var myChart1 = new Chart(ctx1, {
@@ -508,11 +514,9 @@
                                     responsive: true,
                                     maintainAspectRatio: false,
                                     scales: {
-                                        yAxes: [{
-                                                ticks: {
-                                                    beginAtZero: true
-                                                }
-                                            }]
+                                        y: {
+                                            beginAtZero: true
+                                        }
                                     }
                                 }
                             });
@@ -523,12 +527,12 @@
                                 data: {
                                     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                                     datasets: [{
-                                            label: "Doanh thu",
+                                            label: "Doanh thu (VND)",
                                             data: [${requestScope.Monthh1}, ${requestScope.Monthh2}, ${requestScope.Monthh3}, ${requestScope.Monthh4}, ${requestScope.Monthh5},
                             ${requestScope.Monthh6}, ${requestScope.Monthh7}, ${requestScope.Monthh8}, ${requestScope.Monthh9}, ${requestScope.Monthh10},
                             ${requestScope.Monthh11}, ${requestScope.Monthh12}],
-                                            backgroundColor: "rgba(255, 223, 128, 0.5)", // Màu vàng nhạt
-                                            borderColor: "#FFD700", // Màu vàng gold
+                                            backgroundColor: "rgba(255, 223, 128, 0.5)",
+                                            borderColor: "#FFD700",
                                             borderWidth: 2,
                                             pointBackgroundColor: "#FFD700",
                                             pointBorderColor: "#FFCC00"
@@ -538,16 +542,46 @@
                                     responsive: true,
                                     maintainAspectRatio: false,
                                     scales: {
-                                        yAxes: [{
-                                                ticks: {
-                                                    beginAtZero: true
-                                                }
-                                            }]
+                                        y: {
+                                            beginAtZero: true
+                                        }
                                     }
                                 }
                             });
-                        </script>                       
-                    </div>    
+
+                            // 🟢 Biểu đồ Pet Hotel Booking
+                            var ctx3 = document.getElementById("pet-hotel-revenue").getContext("2d");
+                            var myChart3 = new Chart(ctx3, {
+                                type: "line",
+                                data: {
+                                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                                    datasets: [{
+                                            label: "Doanh thu Pet Hotel (VND)",
+                                            data: [
+                            ${requestScope.Monthhh1}, ${requestScope.Monthhh2}, ${requestScope.Monthhh3}, ${requestScope.Monthhh4}, ${requestScope.Monthhh5},
+                            ${requestScope.Monthhh6}, ${requestScope.Monthhh7}, ${requestScope.Monthhh8}, ${requestScope.Monthhh9}, ${requestScope.Monthhh10},
+                            ${requestScope.Monthhh11}, ${requestScope.Monthhh12}
+                                            ],
+                                            backgroundColor: "rgba(255, 165, 0, 0.5)", // Màu cam nhạt
+                                            borderColor: "#FFA500", // Màu cam đậm
+                                            borderWidth: 2,
+                                            pointBackgroundColor: "#FF8C00", // Cam đậm hơn
+                                            pointBorderColor: "#FF4500" // Cam đỏ
+                                        }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+
+                        </script>
+                    </div>
                     <!-- comment -->
                 </div>
             </div>
