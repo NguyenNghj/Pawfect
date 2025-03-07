@@ -771,5 +771,34 @@
             }
         });
     </script>
+
+    <%-- Xu ly xem them product feedback --%>
+    <script>
+        let initialFeedbacks = $(".feedback-item").length; // Tổng số feedback có sẵn
+        let itemsToShow = 4; // Số feedback hiển thị ban đầu
+
+        $(".feedback-item").slice(itemsToShow).hide(); // Ẩn feedback vượt quá số quy định
+
+        // Ẩn nút "Xem thêm" nếu tổng feedback nhỏ hơn hoặc bằng itemsToShow
+        if (initialFeedbacks <= itemsToShow) {
+            $("#loadMore").hide();
+        }
+
+
+        $(document).ready(function () {
+            $("#loadMore").click(function () {
+                let hiddenFeedbacks = $(".feedback-item:hidden"); // Lấy feedback chưa hiển thị
+                let itemsToShow = hiddenFeedbacks.slice(0, 4); // Lấy số feedback muốn hiển thị tiếp theo
+
+                if (itemsToShow.length > 0) {
+                    itemsToShow.fadeIn(); // Hiển thị chúng
+                }
+
+                if ($(".feedback-item:hidden").length === 0) {
+                    $("#loadMore").hide(); // Ẩn nút nếu không còn feedback nào
+                }
+            });
+        });
+    </script>
 </body>
 </html>
