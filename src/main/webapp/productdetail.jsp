@@ -15,9 +15,22 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
         <link rel="stylesheet" href="./css/productdetail.css">
         <title>${product.productName}</title>
+
     </head>
 
     <body>
+        <script>
+            (function () {
+                if ((localStorage.getItem("isPagination") === "true" || localStorage.getItem("isRatingFilter") === "true")
+                        && (localStorage.getItem("scrollPosition") || localStorage.getItem("ratingScrollPosition"))) {
+
+                    let scrollTo = localStorage.getItem("isPagination") === "true"
+                            ? localStorage.getItem("scrollPosition")
+                            : localStorage.getItem("ratingScrollPosition");
+                    window.scrollTo(0, parseInt(scrollTo));
+                }
+            })();
+        </script>
         <ol class="breadcrumb">
             <li><a class="trang-chu" href="/products">Trang chủ</a></li>
             <li><a class="trang-chu" href="/products?category=${product.categoryName}">${product.categoryName}</a></li>
@@ -50,7 +63,7 @@
                                     <p class="description">${product.description}</p>
 
                                     <div style="display: flex; align-items: center; gap: 10px;">
-                                        <form>
+                                        <form onsubmit="return false;">
                                             <fieldset class="data-quantity" style="display: flex; align-items: center; border: none;">
                                                 <button type="button" class="sub">−</button>
                                                 <input type="number" class="input-number" min="1" value="1">
@@ -82,7 +95,9 @@
                         <div class="rating-summary p-4 mb-4">
                             <div class="row align-items-center">
                                 <div class="col-md-3 text-center mb-3 mb-md-0">
-                                    <div class="rating-average">${averageStar > 0 ? averageStar : 0}/5</div>
+                                    <div class="rating-average">
+                                        <fmt:formatNumber value="${averageStar > 0 ? averageStar : 0}" pattern="#0.0" />/5
+                                    </div>
                                     <div class="stars my-2">
                                         <c:forEach var="i" begin="1" end="5">
                                             <c:choose>                                            
@@ -171,20 +186,21 @@
 
                                 <div class="col-md-9">
                                     <div class="d-flex flex-wrap gap-2">
-                                        <button class="btn btn-outline-secondary btn-sm">Tất cả</button>
-                                        <button class="btn btn-outline-primary btn-sm active">5 Sao (4)</button>
-                                        <button class="btn btn-outline-secondary btn-sm">4 Sao (2)</button>
-                                        <button class="btn btn-outline-secondary btn-sm">3 Sao (2)</button>
-                                        <button class="btn btn-outline-secondary btn-sm">2 Sao (0)</button>
-                                        <button class="btn btn-outline-secondary btn-sm">1 Sao (0)</button>
+                                        <a href="product?id=${param.id}&rating=tc" class="btn btn-outline-secondary btn-sm <c:if test="${param.rating == 'tc'}">active</c:if>">Tất cả</a>
+                                        <a href="product?id=${param.id}&rating=5s" class="btn btn-outline-secondary btn-sm <c:if test="${param.rating == '5s'}">active</c:if>">5 Sao (${fiveStar})</a>
+                                        <a href="product?id=${param.id}&rating=4s" class="btn btn-outline-secondary btn-sm <c:if test="${param.rating == '4s'}">active</c:if>">4 Sao (${fourStar})</a>
+                                        <a href="product?id=${param.id}&rating=3s" class="btn btn-outline-secondary btn-sm <c:if test="${param.rating == '3s'}">active</c:if>">3 Sao (${threeStar})</a>
+                                        <a href="product?id=${param.id}&rating=2s" class="btn btn-outline-secondary btn-sm <c:if test="${param.rating == '2s'}">active</c:if>">2 Sao (${twoStar})</a>
+                                        <a href="product?id=${param.id}&rating=1s" class="btn btn-outline-secondary btn-sm <c:if test="${param.rating == '1s'}">active</c:if>">1 Sao (${oneStar})</a>
+                                        <a href="product?id=${param.id}&rating=img" class="btn btn-outline-secondary btn-sm <c:if test="${param.rating == 'img'}">active</c:if>">Có hình ảnh (${haveImg})</a>
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
 
-                        </div>
-
-                        <!-- Reviews List -->
-                        <div class="reviews-list">
+                            <!-- Reviews List -->
+                            <div class="reviews-list">
 
                             <c:if test="${empty feedbacks}">
                                 <div>
@@ -275,7 +291,7 @@
                                         <img src="${product.productImage}" alt="${product.productName}">
                                     </div>
                                     <div class="product-info">
-                                        <a class="product-name" href="product?id=${product.productId}">${product.productName}</a>
+                                        <a class="product-name" href="product?id=${product.productId}&rating=${param.rating}">${product.productName}</a>
                                         <p class="product-price">
                                             <fmt:formatNumber value="${product.productPrice}" pattern="#,##0" />đ
                                         </p>
@@ -329,6 +345,7 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
+
                         document.addEventListener("DOMContentLoaded", function () {
                             // Nếu là chuyển trang trong chi tiết sản phẩm, khôi phục vị trí cuộn
                             if (localStorage.getItem("scrollPosition") && localStorage.getItem("isPagination") === "true") {
@@ -434,8 +451,8 @@
                     return;
                 }
 
-
-                const value = $('.input-number').val();
+                const stock = ${product.stock};
+                const quantityToAdd = $('.input-number').val();
                 var productId = $(this).data('product-id');
                 console.log("productId:", productId);
                 var productName = $(this).data('product-name');
@@ -450,7 +467,8 @@
                         action: action,
                         productId: productId,
                         customerId: customerId,
-                        quantity: value
+                        stock: stock,
+                        quantity: quantityToAdd
                     },
                     dataType: "json",
                     success: function (response) {
@@ -472,7 +490,16 @@
                             });
                         } else {
                             console.error("Lỗi thêm vào giỏ hàng:", response.message);
-                            alert("Lỗi: " + response.message);
+                            // Kiểm tra nếu lỗi là do vượt tồn kho
+                            if (response.message === "Vượt quá tồn kho") {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Số lượng vượt quá tồn kho! Giỏ hàng hiện tại " + response.quantityFromCart,
+                                    text: "Chỉ còn " + response.stock + " sản phẩm trong kho."
+                                });
+                            } else {
+                                alert("Lỗi: " + response.message);
+                            }
                         }
                     },
                     error: function (error) {
@@ -484,7 +511,6 @@
 
 
             $('.buy-now').click(function (event) {
-
 
                 // Hàm lấy giá trị cookie theo tên
                 function getCookie(name) {
@@ -512,8 +538,8 @@
                     return;
                 }
 
-
-                const value = $('.input-number').val();
+                const stock = ${product.stock};
+                const quantityToAdd = $('.input-number').val();
                 var productId = $(this).data('product-id');
                 console.log("productId:", productId);
                 var action = "add";
@@ -526,7 +552,8 @@
                         action: action,
                         productId: productId,
                         customerId: customerId,
-                        quantity: value
+                        quantity: quantityToAdd,
+                        stock: stock
                     },
                     dataType: "json",
                     success: function (response) {
@@ -537,7 +564,16 @@
 
                         } else {
                             console.error("Lỗi mua ngay!!", response.message);
-                            alert("Lỗi: " + response.message);
+                            // Kiểm tra nếu lỗi là do vượt tồn kho
+                            if (response.message === "Vượt quá tồn kho") {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Số lượng vượt quá tồn kho! Giỏ hàng hiện tại " + response.quantityFromCart,
+                                    text: "Chỉ còn " + response.stock + " sản phẩm trong kho."
+                                });
+                            } else {
+                                alert("Lỗi: " + response.message);
+                            }
                         }
                     },
                     error: function (error) {
@@ -712,5 +748,30 @@
             });
         </script>
 
+        <%-- Luu vi tri cuon trang khi chon option hien feedback san pham --%>
+        <script>
+
+            document.addEventListener("DOMContentLoaded", function () {
+                // Lưu vị trí cuộn hiện tại khi click vào các liên kết lọc đánh giá
+                const ratingFilterLinks = document.querySelectorAll('.rating-summary .btn-outline-secondary');
+                ratingFilterLinks.forEach(link => {
+                    link.addEventListener('click', function (e) {
+                        // Lưu vị trí cuộn hiện tại
+                        localStorage.setItem("ratingScrollPosition", window.scrollY);
+                        localStorage.setItem("isRatingFilter", "true");
+                    });
+                });
+
+                // Khôi phục vị trí cuộn sau khi trang được tải lại nếu đang lọc đánh giá
+                if (localStorage.getItem("isRatingFilter") === "true" && localStorage.getItem("ratingScrollPosition")) {
+                    window.scrollTo(0, localStorage.getItem("ratingScrollPosition"));
+                    // Không xóa dữ liệu ngay lập tức để cho phép load hoàn tất
+                    setTimeout(function () {
+                        localStorage.removeItem("ratingScrollPosition");
+                        localStorage.removeItem("isRatingFilter");
+                    }, 100);
+                }
+            });
+        </script>
     </body>
 </html>

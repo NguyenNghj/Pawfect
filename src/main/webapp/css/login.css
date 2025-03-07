@@ -18,7 +18,14 @@ body {
     background-color: var(--light-bg);
     height: 100vh;
 }
-
+body {
+    font-family: 'Baloo 2', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6KYofPjHBJzD0wDz_YLzcTZySiyqzSWXRRw&s') no-repeat center center/cover;
+}
 .login-container {
     height: 100vh;
     max-width: 1400px;
@@ -88,6 +95,9 @@ body {
     border-radius: 8px;
     font-weight: 500;
     transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-google:hover {
@@ -187,4 +197,33 @@ body {
     .form-side {
         padding: 2rem 1.5rem;
     }
+}
+.input-box {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+.input-box input {
+    width: 100%; /* Đảm bảo input không vượt quá kích thước của container */
+    padding: 10px 40px 10px 15px; /* Điều chỉnh padding để vừa với icon */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.input-box i {
+    position: absolute;
+    right: 15px;
+    font-size: 20px;
+    color: gray;
+}
+.title {
+    font-size: 32px; /* Tăng kích thước chữ */
+    font-weight: bold; /* In đậm */
+    text-align: center; /* Căn giữa */
+    margin-bottom: 15px; /* Thêm khoảng cách bên dưới */
 }

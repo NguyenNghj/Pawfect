@@ -276,12 +276,13 @@
                     return;
                 }
 
-                var productId = $(this).data('product-id');
+                let stock = $(this).data('product-stock');
+                let productId = $(this).data('product-id');
                 console.log("productId:", productId);
-                var productName = $(this).data('product-name');
+                let productName = $(this).data('product-name');
                 console.log("productName:", productName);
-                var action = "add";
-                var customerId = customerCookie; // ID của khách hàng (cần lấy từ session hoặc cookie)
+                let action = "add";
+                let customerId = customerCookie; // ID của khách hàng (cần lấy từ session hoặc cookie)
 
                 $.ajax({
                     url: "cart",
@@ -290,7 +291,8 @@
                         action: action,
                         productId: productId,
                         customerId: customerId,
-                        quantity: "1"
+                        quantity: "1",
+                        stock: stock
                     },
                     dataType: "json",
                     success: function (response) {
@@ -312,7 +314,16 @@
                             });
                         } else {
                             console.error("Lỗi thêm vào giỏ hàng:", response.message);
-                            alert("Lỗi: " + response.message);
+                            // Kiểm tra nếu lỗi là do vượt tồn kho
+                            if (response.message === "Vượt quá tồn kho") {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Số lượng vượt quá tồn kho! Giỏ hàng hiện tại " + response.quantityFromCart,
+                                    text: "Chỉ còn " + response.stock + " sản phẩm trong kho."
+                                });
+                            } else {
+                                alert("Lỗi: " + response.message);
+                            }
                         }
                     },
                     error: function (error) {
@@ -322,5 +333,7 @@
                 });
             });
         </script>
+               
     </body>
 </html>
+

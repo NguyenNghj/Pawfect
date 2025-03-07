@@ -30,6 +30,14 @@ public class DashboardFillter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
+          String path = req.getRequestURI();
+           
+    if (path.startsWith(req.getContextPath() + "/css/") ||
+        path.startsWith(req.getContextPath() + "/img/") ||
+        path.startsWith(req.getContextPath() + "/js/")) {
+        chain.doFilter(request, response);
+        return;
+    }
         boolean hasStaffId = false;
         Cookie[] cookies = req.getCookies();
         if (cookies != null) {
