@@ -271,32 +271,30 @@
                     <div class="row product-row">
                         <c:set var="itemsPerPage" value="3" />
                         <c:set var="totalProducts" value="${fn:length(productList)}" />
+                        <c:set var="totalPages" value="${(totalProducts + itemsPerPage - 1) / itemsPerPage}" />
 
-                        <!-- Lọc danh sách sản phẩm bỏ qua sản phẩm có ID trùng với param.id -->
-                        <c:set var="filteredProducts" value="${productList}" />
-                        <c:if test="${not empty param.id}">
-                            <c:set var="filteredProducts" value="" />
-                            <c:forEach var="product" items="${productList}">
-                                <c:if test="${product.productId != param.id}">
-                                    <c:set var="filteredProducts" value="${filteredProducts},${product}" />
-                                </c:if>
-                            </c:forEach>
-                            <c:set var="filteredProducts" value="${fn:split(filteredProducts, ',')}" />
-                        </c:if>
-
-                        <!-- Tính toán phân trang dựa trên filteredProducts -->
-                        <c:set var="totalFiltered" value="${fn:length(filteredProducts)}" />
-                        <c:set var="totalPages" value="${(totalFiltered + itemsPerPage - 1) / itemsPerPage}" />
                         <c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
                         <c:set var="start" value="${(currentPage - 1) * itemsPerPage}" />
                         <c:set var="end" value="${start + itemsPerPage}" />
 
-                        <!-- Hiển thị sản phẩm theo phân trang -->
-                        <c:forEach var="product" items="${filteredProducts}" varStatus="loop">
-                            <c:if test="${loop.index >= start && loop.index < end}">
-                                <div class="col-md-4 col-6 mb-4 product-card">
-                                    <div class="product-image">
-                                        <img src="${product.productImage}" alt="${product.productName}">
+                        <c:forEach var="product" items="${productList}" varStatus="loop">
+                            <c:if test="${product.productId != param.id}"> 
+                                <c:if test="${loop.index >= start && loop.index < end}">
+                                    <div class="col-md-4 col-6 mb-4 product-card">
+                                        <div class="product-image">
+                                            <img src="${product.productImage}" alt="${product.productName}">
+                                        </div>
+                                        <div class="product-info">
+                                            <a class="product-name" href="product?id=${product.productId}">${product.productName}</a>
+                                            <p class="product-price">
+                                                <fmt:formatNumber value="${product.productPrice}" pattern="#,##0" />đ
+                                            </p>
+                                            <a href="#">
+                                                <button class="add-to-cart" data-product-id="${product.productId}" data-product-name="${product.productName}">
+                                                    <i class="cart-icon"></i>
+                                                </button>
+                                            </a>
+                                        </div>
                                     </div>
                                     <div class="product-info">
                                         <a class="product-name" href="product?id=${product.productId}&rating=${param.rating}">${product.productName}</a>
@@ -312,7 +310,6 @@
                                 </div>
                             </c:if>
                         </c:forEach>
-
                     </div>               
                     <c:if test="${totalPages > 1}">
                         <nav aria-label="Page navigation">
