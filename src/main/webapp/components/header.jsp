@@ -121,7 +121,7 @@
                                 if (event.key === "Enter") {
                                     let keyword = this.value.trim();
                                     if (keyword) {
-                                        window.location.href = "/product?search=" + encodeURIComponent(keyword);
+                                        window.location.href = "/products?search=" + encodeURIComponent(keyword);
                                     }
                                 }
                             });
