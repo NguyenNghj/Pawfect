@@ -247,13 +247,28 @@
                     <div class="row product-row">
                         <c:set var="itemsPerPage" value="3" />
                         <c:set var="totalProducts" value="${fn:length(productList)}" />
-                        <c:set var="totalPages" value="${(totalProducts + itemsPerPage - 1) / itemsPerPage}" />
 
+                        <!-- Lọc danh sách sản phẩm bỏ qua sản phẩm có ID trùng với param.id -->
+                        <c:set var="filteredProducts" value="${productList}" />
+                        <c:if test="${not empty param.id}">
+                            <c:set var="filteredProducts" value="" />
+                            <c:forEach var="product" items="${productList}">
+                                <c:if test="${product.productId != param.id}">
+                                    <c:set var="filteredProducts" value="${filteredProducts},${product}" />
+                                </c:if>
+                            </c:forEach>
+                            <c:set var="filteredProducts" value="${fn:split(filteredProducts, ',')}" />
+                        </c:if>
+
+                        <!-- Tính toán phân trang dựa trên filteredProducts -->
+                        <c:set var="totalFiltered" value="${fn:length(filteredProducts)}" />
+                        <c:set var="totalPages" value="${(totalFiltered + itemsPerPage - 1) / itemsPerPage}" />
                         <c:set var="currentPage" value="${param.page != null ? param.page : 1}" />
                         <c:set var="start" value="${(currentPage - 1) * itemsPerPage}" />
                         <c:set var="end" value="${start + itemsPerPage}" />
 
-                        <c:forEach var="product" items="${productList}" varStatus="loop">
+                        <!-- Hiển thị sản phẩm theo phân trang -->
+                        <c:forEach var="product" items="${filteredProducts}" varStatus="loop">
                             <c:if test="${loop.index >= start && loop.index < end}">
                                 <div class="col-md-4 col-6 mb-4 product-card">
                                     <div class="product-image">
@@ -273,33 +288,38 @@
                                 </div>
                             </c:if>
                         </c:forEach>
+
                     </div>               
                     <c:if test="${totalPages > 1}">
-                        <div class="pagination-wrapper">
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination">
-                                    <c:set var="queryParams" value="id=${param.id}" />
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
 
-                                    <!-- Nút Previous -->
-                                    <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                                        <a class="page-link" href="?${queryParams}&page=${currentPage - 1}">Previous</a>
+                                <!-- Nút Previous -->
+                                <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                    <a class="page-link" href="javascript:updatePage(${currentPage - 1})">Previous</a>
+                                </li>
+
+                                <!-- Hiển thị số trang -->
+                                <c:forEach var="i" begin="1" end="${totalPages}">
+                                    <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                        <a class="page-link" href="javascript:updatePage(${i})">${i}</a>
                                     </li>
+                                </c:forEach>
 
-                                    <!-- Hiển thị số trang -->
-                                    <c:forEach var="i" begin="1" end="${totalPages}">
-                                        <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                            <a class="page-link" href="?${queryParams}&page=${i}">${i}</a>
-                                        </li>
-                                    </c:forEach>
-
-                                    <!-- Nút Next -->
-                                    <li class="page-item ${currentPage >= (totalPages-1) ? 'disabled' : ''}">
-                                        <a class="page-link" href="?${queryParams}&page=${currentPage + 1}">Next</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
+                                <!-- Nút Next -->
+                                <li class="page-item ${currentPage >= totalPages-1 ? 'disabled' : ''}">
+                                    <a class="page-link" href="javascript:updatePage(${currentPage + 1})">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
                     </c:if>
+                    <script>
+                        function updatePage(page) {
+                            let urlParams = new URLSearchParams(window.location.search);
+                            urlParams.set('page', page); // Cập nhật số trang
+                            window.location.search = urlParams.toString();
+                        }
+                    </script>
                 </div>
             </div>           
         </div>   
@@ -309,32 +329,32 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                // Nếu là chuyển trang trong chi tiết sản phẩm, khôi phục vị trí cuộn
-                if (localStorage.getItem("scrollPosition") && localStorage.getItem("isPagination") === "true") {
-                    window.scrollTo(0, localStorage.getItem("scrollPosition"));
-                }
+                        document.addEventListener("DOMContentLoaded", function () {
+                            // Nếu là chuyển trang trong chi tiết sản phẩm, khôi phục vị trí cuộn
+                            if (localStorage.getItem("scrollPosition") && localStorage.getItem("isPagination") === "true") {
+                                window.scrollTo(0, localStorage.getItem("scrollPosition"));
+                            }
 
-                // Xóa dữ liệu sau khi khôi phục để tránh lỗi khi quay lại trang trước
-                localStorage.removeItem("scrollPosition");
-                localStorage.removeItem("isPagination");
+                            // Xóa dữ liệu sau khi khôi phục để tránh lỗi khi quay lại trang trước
+                            localStorage.removeItem("scrollPosition");
+                            localStorage.removeItem("isPagination");
 
-                // Lưu vị trí cuộn khi nhấn phân trang trong trang chi tiết sản phẩm
-                document.querySelectorAll(".page-link").forEach(link => {
-                    link.addEventListener("click", function () {
-                        localStorage.setItem("scrollPosition", window.scrollY);
-                        localStorage.setItem("isPagination", "true"); // Đánh dấu là phân trang
-                    });
-                });
+                            // Lưu vị trí cuộn khi nhấn phân trang trong trang chi tiết sản phẩm
+                            document.querySelectorAll(".page-link").forEach(link => {
+                                link.addEventListener("click", function () {
+                                    localStorage.setItem("scrollPosition", window.scrollY);
+                                    localStorage.setItem("isPagination", "true"); // Đánh dấu là phân trang
+                                });
+                            });
 
-                // Khi click vào sản phẩm trong danh sách (chuyển trang chi tiết), không lưu vị trí cuộn
-                document.querySelectorAll(".product-card a").forEach(link => {
-                    link.addEventListener("click", function () {
-                        localStorage.removeItem("scrollPosition"); // Xóa để luôn cuộn lên đầu
-                        localStorage.removeItem("isPagination");
-                    });
-                });
-            });
+                            // Khi click vào sản phẩm trong danh sách (chuyển trang chi tiết), không lưu vị trí cuộn
+                            document.querySelectorAll(".product-card a").forEach(link => {
+                                link.addEventListener("click", function () {
+                                    localStorage.removeItem("scrollPosition"); // Xóa để luôn cuộn lên đầu
+                                    localStorage.removeItem("isPagination");
+                                });
+                            });
+                        });
 
         </script>
 
