@@ -63,7 +63,13 @@ public class ProductManagementServlet extends HttpServlet {
             throws ServletException, IOException {
         ProductDAO productDAO = new ProductDAO();
         CategoryDAO categoryDAO = new CategoryDAO();
-        List<Product> products = productDAO.getAllProducts();
+        String keyword = request.getParameter("search");
+        List<Product> products;
+        if (keyword != null) {
+            products = productDAO.searchProducts(keyword);
+        } else {
+            products = productDAO.getAllProducts();
+        }
         List<Category> categoryList = categoryDAO.getAllCategories();
         request.setAttribute("categories", categoryList);
         request.setAttribute("productList", products);
@@ -82,7 +88,7 @@ public class ProductManagementServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-    
+
     }
 
     /**
