@@ -260,3 +260,31 @@ body, h1, h2, h3, h4, h5, h6, p, a, span, button, .breadcrumb-item, .navbar-bran
 .hidden-input {
     display: none;
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.page-link {
+    padding: 8px 12px;
+    margin: 0 5px;
+    text-decoration: none;
+    color: #3E2522;
+    border-radius: 5px;
+    transition: 0.3s;
+    border: 1px solid transparent;
+}
+
+.page-item.active .page-link,
+.page-link.active {
+    background-color: #FFE0B2;
+    color: #000;
+    border-color: #FFE0B2;
+}
+
+.page-link:hover {
+    color: #FFE0B2;
+    border-color: #FFE0B2;
+}

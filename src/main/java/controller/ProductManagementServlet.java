@@ -66,7 +66,7 @@ public class ProductManagementServlet extends HttpServlet {
         List<Product> products = productDAO.getAllProducts();
         List<Category> categoryList = categoryDAO.getAllCategories();
         request.setAttribute("categories", categoryList);
-        request.setAttribute("products", products);
+        request.setAttribute("productList", products);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard/admin/product.jsp");
         dispatcher.forward(request, response);
     }
