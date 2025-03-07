@@ -27,8 +27,10 @@
         <!-- Thêm Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        <title>JSP Page</title>
+        <title>Thêm Nhân Viên</title>
         <style>
+            
+            
             /* Thiết kế cơ bản cho nút */
        .form-control {
     width: 100% !important; /* Giảm chiều rộng xuống 60% */

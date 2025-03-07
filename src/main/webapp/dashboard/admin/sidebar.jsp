@@ -33,7 +33,7 @@
                     <div class="accordion-body">
                         <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;">
                             <div class="container-fluid">
-                                <a class="navbar-brand" href="accountAdmin">Admin</a>
+                                <a class="navbar-brand" href="admin">Admin</a>
                             </div>
                         </nav>
                         <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;">
