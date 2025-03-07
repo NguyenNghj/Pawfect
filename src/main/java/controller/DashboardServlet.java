@@ -75,7 +75,8 @@ public class DashboardServlet extends HttpServlet {
         double Month10 = dao.getTotaMoneyByMonth(10);
         double Month11 = dao.getTotaMoneyByMonth(11);
         double Month12 = dao.getTotaMoneyByMonth(12);
-// Hiển thị tổng tiền 
+        
+        // Hiển thị tổng tiền 
         double Monthh1 = dao.getTotaMoneyByMonthh(01);
         double Monthh2 = dao.getTotaMoneyByMonthh(02);
         double Monthh3 = dao.getTotaMoneyByMonthh(03);
@@ -89,6 +90,20 @@ public class DashboardServlet extends HttpServlet {
         double Monthh11 = dao.getTotaMoneyByMonthh(11);
         double Monthh12 = dao.getTotaMoneyByMonthh(12);
 
+        // hiển thị tổng số đơn đã được duyệt       
+        double Monthhh1 = dao.getTotalMoneyFromPetHotelByMonth(01);
+        double Monthhh2 = dao.getTotalMoneyFromPetHotelByMonth(02);
+        double Monthhh3 = dao.getTotalMoneyFromPetHotelByMonth(03);
+        double Monthhh4 = dao.getTotalMoneyFromPetHotelByMonth(04);
+        double Monthhh5 = dao.getTotalMoneyFromPetHotelByMonth(05);
+        double Monthhh6 = dao.getTotalMoneyFromPetHotelByMonth(06);
+        double Monthhh7 = dao.getTotalMoneyFromPetHotelByMonth(07);
+        double Monthhh8 = dao.getTotalMoneyFromPetHotelByMonth(8);
+        double Monthhh9 = dao.getTotalMoneyFromPetHotelByMonth(9);
+        double Monthhh10 = dao.getTotalMoneyFromPetHotelByMonth(10);
+        double Monthhh11 = dao.getTotalMoneyFromPetHotelByMonth(11);
+        double Monthhh12 = dao.getTotalMoneyFromPetHotelByMonth(12);
+
         request.setAttribute("Month1", Month1);
         request.setAttribute("Month2", Month2);
         request.setAttribute("Month3", Month3);
@@ -101,36 +116,50 @@ public class DashboardServlet extends HttpServlet {
         request.setAttribute("Month10", Month10);
         request.setAttribute("Month11", Month11);
         request.setAttribute("Month12", Month12);
+
+        request.setAttribute("Monthh1", Monthh1);
+        request.setAttribute("Monthh2", Monthh2);
+        request.setAttribute("Monthh3", Monthh3);
+        request.setAttribute("Monthh4", Monthh4);
+        request.setAttribute("Monthh5", Monthh5);
+        request.setAttribute("Monthh6", Monthh6);
+        request.setAttribute("Monthh7", Monthh7);
+        request.setAttribute("Monthh8", Monthh8);
+        request.setAttribute("Monthh9", Monthh9);
+        request.setAttribute("Monthh10", Monthh10);
+        request.setAttribute("Monthh11", Monthh11);
+        request.setAttribute("Monthh12", Monthh12);
+
+        request.setAttribute("Monthhh1", Monthhh1);
+        request.setAttribute("Monthhh2", Monthhh2);
+        request.setAttribute("Monthhh3", Monthhh3);
+        request.setAttribute("Monthhh4", Monthhh4);
+        request.setAttribute("Monthhh5", Monthhh5);
+        request.setAttribute("Monthhh6", Monthhh6);
+        request.setAttribute("Monthhh7", Monthhh7);
+        request.setAttribute("Monthhh8", Monthhh8);
+        request.setAttribute("Monthhh9", Monthhh9);
+        request.setAttribute("Monthhh10", Monthhh10);
+        request.setAttribute("Monthhh11", Monthhh11);
+        request.setAttribute("Monthhh12", Monthhh12);
         
-       request.setAttribute("Monthh1", Monthh1);
-request.setAttribute("Monthh2", Monthh2);
-request.setAttribute("Monthh3", Monthh3);
-request.setAttribute("Monthh4", Monthh4);
-request.setAttribute("Monthh5", Monthh5);
-request.setAttribute("Monthh6", Monthh6);
-request.setAttribute("Monthh7", Monthh7);
-request.setAttribute("Monthh8", Monthh8);
-request.setAttribute("Monthh9", Monthh9);
-request.setAttribute("Monthh10", Monthh10);
-request.setAttribute("Monthh11", Monthh11);
-request.setAttribute("Monthh12", Monthh12);
- ProductDAO productDAO = new ProductDAO();
-List<Product> topProducts = new ViewFinancialStatisticsDAO().getTopSellingProducts();
+        ProductDAO productDAO = new ProductDAO();
+        List<Product> topProducts = new ViewFinancialStatisticsDAO().getTopSellingProducts();
         // Gửi danh sách đến JSP để hiển thị
         request.setAttribute("topProducts", topProducts);
-                try {
-        List<Staff> topStaffs = dao.getTopStaffs();
+        try {
+            List<Staff> topStaffs = dao.getTopStaffs();
 
-        // Debug: In ra console để kiểm tra dữ liệu
-        for (Staff s : topStaffs) {
-            System.out.println("Staff: " + s.getStaffId() + " - " + s.getFullName());
+            // Debug: In ra console để kiểm tra dữ liệu
+            for (Staff s : topStaffs) {
+                System.out.println("Staff: " + s.getStaffId() + " - " + s.getFullName());
+            }
+
+            request.setAttribute("topStaffs", topStaffs);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ServletException("Lỗi khi lấy danh sách top nhân viên", e);
         }
-
-        request.setAttribute("topStaffs", topStaffs);
-    } catch (Exception e) {
-        e.printStackTrace();
-        throw new ServletException("Lỗi khi lấy danh sách top nhân viên", e);
-    }  
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);
     }
 

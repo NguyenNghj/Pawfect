@@ -134,4 +134,21 @@ String sql = "SELECT TOP 5 p.product_id, p.product_name, p.product_price, p.prod
         
         return topStaffs;
     }
+      public double getTotalMoneyFromPetHotelByMonth(int month) {
+    String sql = "SELECT SUM(phb.total_price) AS totalRevenue " +
+                 "FROM [pawfect].[dbo].[PetHotelBookings] phb " +
+                 "WHERE MONTH(phb.booking_date) = ? AND phb.status = N'Đã duyệt';";
+
+    try {
+        PreparedStatement st = conn.prepareStatement(sql);
+        st.setInt(1, month);
+        ResultSet rs = st.executeQuery();
+        if (rs.next()) {
+            return rs.getDouble(1);
+        }
+    } catch (Exception e) {
+        e.printStackTrace(); // Thêm debug lỗi nếu cần
+    }
+    return 0;
+}
 }

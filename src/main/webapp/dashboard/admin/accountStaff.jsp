@@ -21,8 +21,29 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="../../css/dashboard.css">
-        <title>JSP Page</title>
+        <title>Quản Lí Nhân Viên</title>
            <style>
+               .main-dashboard-table-header {
+    background-color: #8C6E63; /* Màu nền */
+    padding: 12px 20px; /* Tạo khoảng cách giữa nội dung và viền */
+    border-radius: 8px; /* Bo góc nhẹ */
+    display: flex; /* Căn theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: center; /* Căn giữa nội dung */
+    gap: 10px; /* Khoảng cách giữa icon và tiêu đề */
+    color: white; /* Màu chữ */
+    font-weight: bold; /* Làm đậm chữ */
+}
+
+.main-dashboard-table-header i {
+    font-size: 22px; /* Kích thước icon */
+}
+
+.main-dashboard-table-header h4 {
+    margin: 0; /* Loại bỏ margin để tránh khoảng cách không cần thiết */
+    font-size: 20px; /* Điều chỉnh kích thước chữ */
+}
+
             /* Thiết kế cơ bản cho nút */
             .delete-btn {
                 color: white;
@@ -45,6 +66,8 @@
             .delete-btn + .delete-btn {
                 margin-left: 10px;
             }
+            
+            
 
         </style>
     </head>
@@ -156,7 +179,7 @@
                                             <th>Địa chỉ</th>
                                             <th>Giới tính</th>
                                             <th>Ngày sinh</th>
-                                            <th>Trạng thái</th>
+                                             <th>Trạng Thái</th> 
                                             <th>Hành động</th> <!-- Thêm cột này -->
                                         </tr>
                                     </thead>
