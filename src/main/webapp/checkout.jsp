@@ -375,7 +375,7 @@
 
                                                 // 3. Gọi AJAX
                                                 $.ajax({
-                                                    url: 'checkout',
+                                                    url: 'order',
                                                     type: 'POST',
                                                     data: {
                                                         action: "order",

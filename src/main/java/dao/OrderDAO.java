@@ -24,6 +24,20 @@ public class OrderDAO {
 
     protected static Connection Con = null;
 
+    protected static String Search_Order = "SELECT \n"
+            + "    o.*,\n"
+            + "    s.full_name AS staff_name,\n"
+            + "    pm.name AS payment_method_name,\n"
+            + "    sm.name AS shipping_method_name,\n"
+            + "    sm.shipping_fee AS shipping_method_fee,\n"
+            + "    c.full_name AS customer_name\n"
+            + "FROM Orders o\n"
+            + "LEFT JOIN Customers c ON o.customer_id = c.customer_id\n"
+            + "LEFT JOIN Staffs s ON o.staff_id = s.staff_id\n"
+            + "LEFT JOIN PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
+            + "LEFT JOIN ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
+            + "WHERE c.full_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ?";
+
     protected static String Approval_Order = "UPDATE Orders\n"
             + "SET status = ?, \n"
             + "    staff_id = ?,\n"
@@ -162,6 +176,55 @@ public class OrderDAO {
             + "    oi.order_id = ?";
     
     
+    public static List<Order> searchOrder(String search) {
+        List<Order> list = new ArrayList<>();
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Search_Order);
+            ps.setString(1, "%" + search + "%");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Order o = new Order(
+                        rs.getInt("order_id"),
+                        rs.getInt("customer_id"),
+                        rs.getInt("staff_id"),
+                        rs.getInt("paymentMethod_id"),
+                        rs.getInt("shippingMethod_id"),
+                        rs.getString("recipient_name"),
+                        rs.getString("recipient_phone"),
+                        rs.getString("shipping_address"),
+                        rs.getString("delivery_notes"),
+                        rs.getDouble("total_amount"),
+                        rs.getString("reason_cancel"),
+                        rs.getBoolean("request_cancel"),
+                        rs.getString("status"),
+                        rs.getTimestamp("order_date"),
+                        rs.getString("staff_name"),
+                        rs.getString("payment_method_name"),
+                        rs.getString("shipping_method_name"),
+                        rs.getDouble("shipping_method_fee"),
+                        rs.getString("customer_name")
+                );
+                list.add(o);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return list;
+    }
+
     public static boolean approvalOrder(String status, int staffId, String reasonCancel, int orderId) {
         boolean update = false;
         try {

@@ -70,6 +70,7 @@ public class FeedbackManagementServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
+        System.out.println("Action: " + action);
         try {
             switch (action) {
                 case "view":
@@ -169,11 +170,13 @@ public class FeedbackManagementServlet extends HttpServlet {
             int formatRating = Integer.parseInt(getPartAsString(request.getPart("rating")));
             int formatProductId = Integer.parseInt(getPartAsString(request.getPart("productId")));
             String comment = getPartAsString(request.getPart("comment"));
+            String filterRating = request.getParameter("filterRating");
 
             System.out.println("CustomerId: " + intCustomerId);
             System.out.println("ProductId: " + formatProductId);
             System.out.println("Rating: " + formatRating);
             System.out.println("Comment: " + comment);
+            System.out.println("FilterRating: " + filterRating);
 
             // Xử lý file ảnh (nếu có)
             Part filePart = request.getPart("feedbackImage");
@@ -197,7 +200,7 @@ public class FeedbackManagementServlet extends HttpServlet {
                 out.println("  timerProgressBar: true,"); // Thanh tiến trình
                 out.println("  showConfirmButton: false"); // Ẩn nút OK
                 out.println("}).then(() => {");
-                out.println("  window.location.href = '/product?id=" + formatProductId + "';");
+                out.println("  window.location.href = '/product?id=" + formatProductId + "&rating=" + filterRating + "';");
                 out.println("});");
                 out.println("</script>");
                 out.println("</body></html>");
