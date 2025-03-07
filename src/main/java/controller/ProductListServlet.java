@@ -69,7 +69,7 @@ public class ProductListServlet extends HttpServlet {
 
         // Nếu có từ khóa tìm kiếm, thực hiện tìm kiếm
         if (searchKeyword != null) {
-            products = productDAO.searchProducts(searchKeyword);
+            products = productDAO.searchActiveProducts(searchKeyword);
         } else if (categoryName != null) {
             // Nếu không tìm kiếm thì lọc theo danh mục
             products = productDAO.getAllActiveProductsByCategoryName(categoryName);

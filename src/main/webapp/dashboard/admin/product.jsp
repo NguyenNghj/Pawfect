@@ -106,9 +106,9 @@
 
                         <!-- Form Tìm Kiếm -->
                         <div class="col-md-6">
-                            <form action="ordermanagement?&action=search&status=${param.status}" method="post" class="d-flex">
+                            <form action="product" method="get" class="d-flex">
                                 <label for="inputName" class="col-sm-2 col-form-label">Tìm kiếm:</label>
-                                <input name="searchContent" type="search" class="form-control" id="inputName" placeholder="Tên sản phẩm...">
+                                <input name="search" type="search" class="form-control" id="inputName" placeholder="Tên sản phẩm...">
                             </form>
                         </div>
                     </div>
@@ -122,66 +122,74 @@
                             </div>
                             <div style="padding: 15px 15px 25px 15px;">
                                 <table class="table">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Id</th>
-                                                <th scope="col">Hình ảnh</th>
-                                                <th scope="col">Thể loại</th>
-                                                <th scope="col">Tên sản phẩm</th>
-                                                <th scope="col">Dành cho</th>
-                                                <th scope="col">Giá</th>
-                                                <th scope="col">Tồn kho</th>
-                                                <th scope="col">Trạng thái</th>
-                                                <th scope="col">Hành động</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:set var="itemsPerPage" value="10" />
-                                            <c:set var="totalProducts" value="${fn:length(productList)}" />
-                                            <c:set var="totalPages" value="${(totalProducts + itemsPerPage - 1) / itemsPerPage}" />
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Id</th>
+                                            <th scope="col">Hình ảnh</th>
+                                            <th scope="col">Thể loại</th>
+                                            <th scope="col">Tên sản phẩm</th>
+                                            <th scope="col">Dành cho</th>
+                                            <th scope="col">Giá</th>
+                                            <th scope="col">Tồn kho</th>
+                                            <th scope="col">Trạng thái</th>
+                                            <th scope="col">Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:set var="itemsPerPage" value="10" />
+                                        <c:set var="totalProducts" value="${fn:length(productList)}" />
+                                        <c:set var="totalPages" value="${(totalProducts + itemsPerPage - 1) / itemsPerPage}" />
 
-                                            <!-- Ensure currentPage is set correctly -->
-                                            <c:set var="currentPage">
-                                                <c:choose>
-                                                    <c:when test="${not empty param.page}">
-                                                        ${param.page}
-                                                    </c:when>
-                                                    <c:otherwise>1</c:otherwise>
-                                                </c:choose>
-                                            </c:set>
+                                        <!-- Ensure currentPage is set correctly -->
+                                        <c:set var="currentPage">
+                                            <c:choose>
+                                                <c:when test="${not empty param.page}">
+                                                    ${param.page}
+                                                </c:when>
+                                                <c:otherwise>1</c:otherwise>
+                                            </c:choose>
+                                        </c:set>
 
-                                            <c:set var="start" value="${(currentPage - 1) * itemsPerPage}" />
-                                            <c:set var="end" value="${start + itemsPerPage}" />
+                                        <c:set var="start" value="${(currentPage - 1) * itemsPerPage}" />
+                                        <c:set var="end" value="${start + itemsPerPage}" />
 
-                                            <c:forEach var="product" items="${productList}" varStatus="loop">
-                                                <c:if test="${loop.index >= start and loop.index < end}">
-                                                    <tr>
-                                                        <th scope="row">${product.productId}</th>
-                                                        <td><img src="/img/products/${product.productImage}" alt="Hình ảnh" width="50"></td>
-                                                        <td>${product.categoryName}</td>
-                                                        <td>${product.productName}</td>
-                                                        <td>${product.productPetType}</td>
-                                                        <td>${product.productPrice}</td>
-                                                        <td>${product.stock}</td>
-                                                        <td>
-                                                            <c:choose>
-                                                                <c:when test="${product.active}">
-                                                                    <span class="text-success">Đang bán</span>
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    <span class="text-danger">Ngừng bán</span>
-                                                                </c:otherwise>
-                                                            </c:choose>
-                                                        </td>
-                                                        <td>
-                                                            <a href="/dashboard/admin/editproduct?productId=${product.productId}" class="btn btn-primary">Chỉnh sửa</a>
-                                                        </td>
-                                                    </tr>
-                                                </c:if>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>                     
+                                        <c:choose>
+                                            <c:when test="${empty productList}">
+                                                <tr>
+                                                    <td colspan="9" style="text-align: center; font-size: 20px;">Không tìm thấy sản phẩm</td>
+                                                </tr>                           
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:forEach var="product" items="${productList}" varStatus="loop">
+                                                    <c:if test="${loop.index >= start and loop.index < end}">
+                                                        <tr>
+                                                            <th scope="row">${product.productId}</th>
+                                                            <td><img src="/img/products/${product.productImage}" alt="Hình ảnh" width="50"></td>
+                                                            <td>${product.categoryName}</td>
+                                                            <td>${product.productName}</td>
+                                                            <td>${product.productPetType}</td>
+                                                            <td>${product.productPrice}</td>
+                                                            <td>${product.stock}</td>
+                                                            <td>
+                                                                <c:choose>
+                                                                    <c:when test="${product.active}">
+                                                                        <span class="text-success">Đang bán</span>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <span class="text-danger">Ngừng bán</span>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </td>
+                                                            <td>
+                                                                <a href="/dashboard/admin/editproduct?productId=${product.productId}" class="btn btn-primary">Chỉnh sửa</a>
+                                                            </td>
+                                                        </tr>
+                                                    </c:if>
+                                                </c:forEach>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </tbody>
+                                </table>                     
                             </div>
                         </div>
                     </div> 
