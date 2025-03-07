@@ -174,8 +174,7 @@ public class OrderDAO {
             + "    Orders AS o ON oi.order_id = o.order_id\n"
             + "WHERE\n"
             + "    oi.order_id = ?";
-    
-    
+
     public static List<Order> searchOrder(String search) {
         List<Order> list = new ArrayList<>();
         try {
