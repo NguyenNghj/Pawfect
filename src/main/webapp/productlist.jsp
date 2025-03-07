@@ -166,7 +166,7 @@
                                                 <img src="${product.productImage}" alt="${product.productName}">
                                             </div>
                                             <div class="product-info">
-                                                <a class="product-name" href="product?id=${product.productId}">${product.productName}</a>
+                                                <a class="product-name" href="product?id=${product.productId}&rating=tc">${product.productName}</a>
                                                 <p class="product-price">
                                                     <fmt:formatNumber value="${product.productPrice}" pattern="#,##0" />đ
                                                 </p>
@@ -333,7 +333,7 @@
                 });
             });
         </script>
-               
+
     </body>
 </html>
 
