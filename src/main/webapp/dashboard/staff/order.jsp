@@ -233,7 +233,17 @@
                                                     <!-- Địa chỉ giao hàng -->
                                                     <td class="bodycolor-name-address-total align-middle">${o.address}</td>
                                                     <!-- Tổng tiền đơn hàng -->
-                                                    <td class="bodycolor-name-address-total align-middle"><f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ</td>                                              
+                                                    <td class="bodycolor-name-address-total align-middle">
+                                                        <c:choose>
+                                                            <c:when test="${o.discountAmount != 0}">
+                                                                <f:formatNumber value="${o.discountAmount}" pattern="#,##0" />đ
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
+                                                            </c:otherwise>
+                                                        </c:choose>
+
+                                                    </td>                                              
                                                     <!-- Trạng thái đơn hàng -->
                                                     <td class="align-middle">
                                                         <c:choose>

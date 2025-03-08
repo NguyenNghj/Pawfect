@@ -5,16 +5,20 @@
 package controller;
 
 import dao.CartDAO;
-import dao.OrderDAO;
+import dao.VoucherDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.List;
 import model.CartItem;
+import model.Voucher;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -68,6 +72,9 @@ public class CheckoutServlet extends HttpServlet {
                 case "view":
                     viewCheckout(request, response);
                     break;
+                case "voucher":
+                    applyVoucher(request, response);
+                    break;
                 default:
                     // listNhanVien(request, response);
                     break;
@@ -76,7 +83,59 @@ public class CheckoutServlet extends HttpServlet {
             throw new ServletException(e);
         }
     }
-   
+
+    private void applyVoucher(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+
+        JSONObject json = new JSONObject();
+        response.setContentType("application/json");
+
+        try {
+            String voucherCode = request.getParameter("voucherCode").trim();
+            System.out.println("voucherCode: " + voucherCode);
+
+            double basePrice = Double.parseDouble(request.getParameter("basePrice"));
+            System.out.println("basePrice: " + basePrice);
+
+            VoucherDAO voucherDAO = new VoucherDAO();
+            Voucher voucher = voucherDAO.getVoucherByCode(voucherCode);
+
+            // Neu voucher khong hop le
+            if (voucher == null) {
+                System.out.println("Ma khuyen mai khong hop le hoac khong ton tai!");
+                json.put("status", "error");
+
+                // Nguoc lai
+            } else {
+                System.out.println("Lay ma khuyen mai thanh cong.");
+
+                if (basePrice < voucher.getMinOrderValue()) {
+                    System.out.println("Tien don hang khong dat gia tri toi thieu!");
+                    json.put("status", "errorMinOrderValue");
+                    json.put("minOrderValue", voucher.getMinOrderValue());
+                    response.getWriter().write(json.toString());
+                    response.getWriter().flush();
+                    return;
+                }
+
+                // Xet xem ma khuyen mai discount theo % hay la gia tien
+                if (voucher.getDiscountAmount() != 0) {
+                    json.put("discountValue", voucher.getDiscountAmount());
+                } else {
+                    json.put("discountValue", voucher.getDiscountPercentage());                    
+                }
+
+                json.put("voucherId", voucher.getVoucherId());
+                json.put("status", "success");
+            }
+            response.getWriter().write(json.toString());
+            response.getWriter().flush();
+
+        } catch (IOException | JSONException e) {
+            e.printStackTrace(); // Hiện lỗi trong console server
+        }
+
+    }
 
     private void viewCheckout(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {

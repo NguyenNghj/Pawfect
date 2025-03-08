@@ -49,6 +49,34 @@ public class VoucherDAO {
         }
         return voucherList;
     }
+    
+    public Voucher getVoucherByCode(String voucherCode) {
+        String query = "SELECT voucher_id, code, description, discount_percentage, discount_amount, min_order_value, max_discount, start_date, end_date, is_active "
+                + "FROM Voucher WHERE code = ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setString(1, voucherCode);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Voucher(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getInt(4),
+                        rs.getDouble(5),
+                        rs.getDouble(6),
+                        rs.getDouble(7),
+                        rs.getTimestamp(8),
+                        rs.getTimestamp(9),
+                        rs.getBoolean(10)
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null; // Trả về null nếu không tìm thấy voucher
+    }
 
     public Voucher getVoucherById(int voucherId) {
         String query = "SELECT voucher_id, code, description, discount_percentage, discount_amount, min_order_value, max_discount, start_date, end_date, is_active "

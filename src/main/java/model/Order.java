@@ -32,11 +32,12 @@ public class Order {
     private String shippingMethodName;
     private double shippingMethodFee;
     private String customerName;
+    private double discountAmount;
 
     public Order() {
     }
 
-    public Order(int orderId, int customerId, Integer staffId, int paymentMethodId, int shippingMethodId, String name, String phone, String address, String note, double totalAmount, String reasonCancel, boolean requestCancel, String status, Timestamp orderDate, Timestamp finishDate, String staffName, String paymentMethodName, String shippingMethodName, double shippingMethodFee, String customerName) {
+    public Order(int orderId, int customerId, Integer staffId, int paymentMethodId, int shippingMethodId, String name, String phone, String address, String note, double totalAmount, String reasonCancel, boolean requestCancel, String status, Timestamp orderDate, Timestamp finishDate, String staffName, String paymentMethodName, String shippingMethodName, double shippingMethodFee, String customerName, double discountAmount) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.staffId = staffId;
@@ -57,6 +58,7 @@ public class Order {
         this.shippingMethodName = shippingMethodName;
         this.shippingMethodFee = shippingMethodFee;
         this.customerName = customerName;
+        this.discountAmount = discountAmount;
     }
 
     public int getOrderId() {
@@ -221,4 +223,13 @@ public class Order {
         this.customerName = customerName;
     }
 
+    public double getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(double discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
+    
 }

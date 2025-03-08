@@ -78,29 +78,29 @@
                     </div>
                 </div>
 
- <%
-                                    Cookie[] cookies = request.getCookies();
-                                    String staffRole = "";
-                                    String staffName = "";
+                <%
+                    Cookie[] cookies = request.getCookies();
+                    String staffRole = "";
+                    String staffName = "";
 
-                                    if (cookies != null) {
-                                        for (Cookie cookie : cookies) {
-                                            String name = cookie.getName();
-                                            String value = cookie.getValue();
+                    if (cookies != null) {
+                        for (Cookie cookie : cookies) {
+                            String name = cookie.getName();
+                            String value = cookie.getValue();
 
-                                            if ("staffRole".equals(name)) {
-                                                staffRole = value;
-                                            } else if ("staffName".equals(name)) {
-                                                staffName = value;
-                                            }
+                            if ("staffRole".equals(name)) {
+                                staffRole = value;
+                            } else if ("staffName".equals(name)) {
+                                staffName = value;
+                            }
 
-                                            // Nếu đã lấy được cả hai giá trị thì thoát vòng lặp
-                                            if (!staffRole.isEmpty() && !staffName.isEmpty()) {
-                                                break;
-                                            }
-                                        }
-                                    }
-                                %> 
+                            // Nếu đã lấy được cả hai giá trị thì thoát vòng lặp
+                            if (!staffRole.isEmpty() && !staffName.isEmpty()) {
+                                break;
+                            }
+                        }
+                    }
+                %> 
                 <!-- MAIN -->
                 <div class="col" id="main" style="padding: 0 40px;">
                     <div class="row pt-4">
@@ -115,10 +115,10 @@
                                 </button>
                                 <ul class="dropdown-menu ps-2 pe-2 pt-2 pb-2">
                                     <div class="d-grid gap-2">
-                                          <% if ("Admin".equals(staffRole)) { %>
-                                         <li class="profile-img-switch-employee d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
-                                        <i class="fa-solid fa-repeat"></i>
-                                        <a class="dropdown-item" style="padding: 0;" href="admin/dashboard.jsp">Switch to admin</a>
+                                        <% if ("Admin".equals(staffRole)) { %>
+                                        <li class="profile-img-switch-employee d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
+                                            <i class="fa-solid fa-repeat"></i>
+                                            <a class="dropdown-item" style="padding: 0;" href="admin/dashboard.jsp">Switch to admin</a>
                                         </li>
                                         <% }%>
                                         <li class="profile-img-switch-store d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
@@ -166,9 +166,9 @@
                                         </header>
 
                                         <!-- Đơn hàng có trạng thái "Chờ xác nhận" thì mới được huỷ đơn -->
-                                        <div class="text-secondary mb-4">
+                                        <div class="text-secondary">
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <span>Đơn hàng: #${o.orderId + 2500000}</span>
+                                                <span style="margin-left: 33px" >Đơn hàng: #${o.orderId + 2500000}</span>
                                                 <div class="d-flex gap-2">
                                                     <c:if test="${o.status == 'Yêu cầu huỷ...'}">
                                                         <button type="button" class="btn btn-primary btn-cancel"       
@@ -421,7 +421,7 @@
                                     </div>
 
                                     <!-- Package Tracking -->
-                                    <div class="card">
+                                    <div class="card m-4">
                                         <div class="card-body">
                                             <div class="mb-4">
                                                 <div class="text-secondary small">Ngày đặt hàng</div>
@@ -485,7 +485,7 @@
                                     </div>
 
                                     <!-- Order Summary -->
-                                    <div class="card mt-4">
+                                    <div class="card m-4">
                                         <div class="card-header">
                                             <h2 class="h5 mb-0">Giỏ hàng của ${o.customerName}</h2>
                                         </div>
@@ -527,19 +527,46 @@
                                                 <!-- Phí Ship -->
                                                 <div class="d-flex justify-content-between mb-2">
                                                     <div class="text-secondary">Phí vận chuyển</div>
-                                                    <div class="text-success">                                                           
+                                                    <div>                                                           
                                                         <f:formatNumber value="${o.shippingMethodFee}" pattern="#,##0" />đ 
                                                     </div>
                                                 </div>
-                                                <!-- <div class="d-flex justify-content-between mb-2">
-                                                    <div class="text-secondary">Taxes</div>
-                                                    <div>$5.33</div>
-                                                </div> -->
-                                                <div class="d-flex justify-content-between align-items-center border-top pt-3 mt-3">
-                                                    <h5 class="text-primary">TỔNG TIỀN</h5>
-                                                    <div class="h3">
-                                                        <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ                                                          
+                                                <div class="d-flex justify-content-between mb-2">
+                                                    <div class="text-success">Khuyến mãi</div>
+                                                    <div class="text-success">
+                                                        <c:choose>
+                                                            <c:when test="${o.discountAmount != 0}">
+                                                                - <f:formatNumber value="${o.totalAmount - o.discountAmount}" pattern="#,##0" />đ
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                - <f:formatNumber value="0" pattern="#,##0" />đ
+                                                            </c:otherwise>
+                                                        </c:choose>
+
                                                     </div>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-center border-top pt-3 mt-3">
+                                                    <h5 class="text-primary m-0">TỔNG TIỀN</h5>
+
+                                                    <c:choose>
+                                                        <c:when test="${o.discountAmount != 0}">
+                                                            <div class="d-flex align-items-center gap-3">
+                                                                <div class="h5 m-0" style="text-decoration: line-through">
+                                                                    <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
+                                                                </div>
+                                                                <div class="h3 m-0 text-danger">
+                                                                    <f:formatNumber value="${o.discountAmount}" pattern="#,##0" />đ
+                                                                </div>
+                                                            </div>
+
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <div class="h3 m-0">
+                                                                <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
+                                                            </div>
+                                                        </c:otherwise>
+                                                    </c:choose>                                                                                                       
+
                                                 </div>
                                             </div>
                                         </div>
@@ -562,151 +589,151 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
-                                                                 
-
-                                                                    document.getElementById("cancelForm").addEventListener("submit", function (event) {
-                                                                        event.preventDefault(); // Ngăn form gửi đi ngay lập tức
-
-                                                                        var reason = document.getElementById("reason").value;
-
-                                                                        if (reason === "") {
-                                                                            Swal.fire({
-                                                                                icon: "warning",
-                                                                                title: "Lỗi!",
-                                                                                text: "Vui lòng chọn lý do huỷ đơn hàng.",
-                                                                            });
-                                                                        } else {
-                                                                            Swal.fire({
-                                                                                icon: "info",
-                                                                                title: "Đang xử lý...",
-                                                                                text: "Vui lòng chờ trong giây lát.",
-                                                                                timer: 1400,
-                                                                                timerProgressBar: true,
-                                                                                allowOutsideClick: false,
-                                                                                showConfirmButton: false // Ẩn nút OK
-                                                                            }).then(() => {
-
-                                                                                Swal.fire({
-                                                                                    icon: "success",
-                                                                                    title: "Huỷ đơn thành công!",
-                                                                                    text: "Chúng tôi sẽ xử lý đơn huỷ và hoàn tiền nếu bạn đã thanh toán.",
-                                                                                }).then(() => {
-                                                                                    document.getElementById("cancelForm").submit(); // Gửi form sau khi hiển thị thông báo thành công
-                                                                                });
-
-                                                                            });
-                                                                        }
-                                                                    });
 
 
-                                                                    document.getElementById("refuseForm").addEventListener("submit", function (event) {
-                                                                        event.preventDefault(); // Ngăn form gửi đi ngay lập tức
+        document.getElementById("cancelForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Ngăn form gửi đi ngay lập tức
 
-                                                                        var reason = document.getElementById("reason").value;
+            var reason = document.getElementById("reason").value;
 
-                                                                        if (reason === "") {
-                                                                            Swal.fire({
-                                                                                icon: "warning",
-                                                                                title: "Lỗi!",
-                                                                                text: "Vui lòng chọn lý do huỷ đơn hàng.",
-                                                                            });
-                                                                        } else {
-                                                                            Swal.fire({
-                                                                                icon: "info",
-                                                                                title: "Đang xử lý...",
-                                                                                text: "Vui lòng chờ trong giây lát.",
-                                                                                timer: 1400,
-                                                                                timerProgressBar: true,
-                                                                                allowOutsideClick: false,
-                                                                                showConfirmButton: false // Ẩn nút OK
-                                                                            }).then(() => {
+            if (reason === "") {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Lỗi!",
+                    text: "Vui lòng chọn lý do huỷ đơn hàng.",
+                });
+            } else {
+                Swal.fire({
+                    icon: "info",
+                    title: "Đang xử lý...",
+                    text: "Vui lòng chờ trong giây lát.",
+                    timer: 1400,
+                    timerProgressBar: true,
+                    allowOutsideClick: false,
+                    showConfirmButton: false // Ẩn nút OK
+                }).then(() => {
 
-                                                                                Swal.fire({
-                                                                                    icon: "success",
-                                                                                    title: "Từ chối yêu cầu huỷ đơn hàng thành công!",
-                                                                                    text: "Bạn đã từ chối yêu cầu hủy đơn hàng. Vui lòng tiếp tục xử lý đơn hàng theo quy trình. Nếu cần, hãy liên hệ khách hàng để giải thích lý do.",
-                                                                                }).then(() => {
-                                                                                    document.getElementById("refuseForm").submit(); // Gửi form sau khi hiển thị thông báo thành công
-                                                                                });
+                    Swal.fire({
+                        icon: "success",
+                        title: "Huỷ đơn thành công!",
+                        text: "Chúng tôi sẽ xử lý đơn huỷ và hoàn tiền nếu bạn đã thanh toán.",
+                    }).then(() => {
+                        document.getElementById("cancelForm").submit(); // Gửi form sau khi hiển thị thông báo thành công
+                    });
 
-                                                                            });
-                                                                        }
-                                                                    });
-
-
-                                                                    document.getElementById("completeForm").addEventListener("submit", function (event) {
-                                                                        event.preventDefault(); // Ngăn form gửi đi ngay lập tức
-
-                                                                        Swal.fire({
-                                                                            icon: "info",
-                                                                            title: "Đang xử lý...",
-                                                                            text: "Vui lòng chờ trong giây lát.",
-                                                                            timer: 1300,
-                                                                            timerProgressBar: true,
-                                                                            allowOutsideClick: false,
-                                                                            showConfirmButton: false // Ẩn nút OK
-                                                                        }).then(() => {
-                                                                            Swal.fire({
-                                                                                icon: "success",
-                                                                                title: "Xác nhận hoàn tất đơn hàng thành công!",
-                                                                                text: "Đơn hàng của khách sẽ được đánh dấu là hoàn thành.",
-                                                                            }).then(() => {
-                                                                                document.getElementById("completeForm").submit(); // Gửi form sau khi hiển thị thông báo thành công
-                                                                            });
-
-                                                                        });
-
-                                                                    });
+                });
+            }
+        });
 
 
-                                                                    document.getElementById("deliveryForm").addEventListener("submit", function (event) {
-                                                                        event.preventDefault(); // Ngăn form gửi đi ngay lập tức
+        document.getElementById("refuseForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Ngăn form gửi đi ngay lập tức
 
-                                                                        Swal.fire({
-                                                                            icon: "info",
-                                                                            title: "Đang xử lý...",
-                                                                            text: "Vui lòng chờ trong giây lát.",
-                                                                            timer: 1300,
-                                                                            timerProgressBar: true,
-                                                                            allowOutsideClick: false,
-                                                                            showConfirmButton: false // Ẩn nút OK
-                                                                        }).then(() => {
-                                                                            Swal.fire({
-                                                                                icon: "success",
-                                                                                title: "Xác nhận giao hàng thành công!",
-                                                                                text: "Đơn hàng của khách sẽ được phê duyệt và chuyển sang trạng thái chờ giao hàng.",
-                                                                            }).then(() => {
-                                                                                document.getElementById("deliveryForm").submit(); // Gửi form sau khi hiển thị thông báo thành công
-                                                                            });
+            var reason = document.getElementById("reason").value;
 
-                                                                        });
+            if (reason === "") {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Lỗi!",
+                    text: "Vui lòng chọn lý do huỷ đơn hàng.",
+                });
+            } else {
+                Swal.fire({
+                    icon: "info",
+                    title: "Đang xử lý...",
+                    text: "Vui lòng chờ trong giây lát.",
+                    timer: 1400,
+                    timerProgressBar: true,
+                    allowOutsideClick: false,
+                    showConfirmButton: false // Ẩn nút OK
+                }).then(() => {
 
-                                                                    });
+                    Swal.fire({
+                        icon: "success",
+                        title: "Từ chối yêu cầu huỷ đơn hàng thành công!",
+                        text: "Bạn đã từ chối yêu cầu hủy đơn hàng. Vui lòng tiếp tục xử lý đơn hàng theo quy trình. Nếu cần, hãy liên hệ khách hàng để giải thích lý do.",
+                    }).then(() => {
+                        document.getElementById("refuseForm").submit(); // Gửi form sau khi hiển thị thông báo thành công
+                    });
+
+                });
+            }
+        });
 
 
-                                                                    document.getElementById("acceptForm").addEventListener("submit", function (event) {
-                                                                        event.preventDefault(); // Ngăn form gửi đi ngay lập tức
+        document.getElementById("completeForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Ngăn form gửi đi ngay lập tức
 
-                                                                        Swal.fire({
-                                                                            icon: "info",
-                                                                            title: "Đang xử lý...",
-                                                                            text: "Vui lòng chờ trong giây lát.",
-                                                                            timer: 1300,
-                                                                            timerProgressBar: true,
-                                                                            allowOutsideClick: false,
-                                                                            showConfirmButton: false // Ẩn nút OK
-                                                                        }).then(() => {
-                                                                            Swal.fire({
-                                                                                icon: "success",
-                                                                                title: "Xác nhận đơn hàng thành công!",
-                                                                                text: "Đơn hàng của khách sẽ được phê duyệt và chuyển sang trạng thái chờ lấy hàng.",
-                                                                            }).then(() => {
-                                                                                document.getElementById("acceptForm").submit(); // Gửi form sau khi hiển thị thông báo thành công
-                                                                            });
+            Swal.fire({
+                icon: "info",
+                title: "Đang xử lý...",
+                text: "Vui lòng chờ trong giây lát.",
+                timer: 1300,
+                timerProgressBar: true,
+                allowOutsideClick: false,
+                showConfirmButton: false // Ẩn nút OK
+            }).then(() => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Xác nhận hoàn tất đơn hàng thành công!",
+                    text: "Đơn hàng của khách sẽ được đánh dấu là hoàn thành.",
+                }).then(() => {
+                    document.getElementById("completeForm").submit(); // Gửi form sau khi hiển thị thông báo thành công
+                });
 
-                                                                        });
+            });
 
-                                                                    });
+        });
+
+
+        document.getElementById("deliveryForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Ngăn form gửi đi ngay lập tức
+
+            Swal.fire({
+                icon: "info",
+                title: "Đang xử lý...",
+                text: "Vui lòng chờ trong giây lát.",
+                timer: 1300,
+                timerProgressBar: true,
+                allowOutsideClick: false,
+                showConfirmButton: false // Ẩn nút OK
+            }).then(() => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Xác nhận giao hàng thành công!",
+                    text: "Đơn hàng của khách sẽ được phê duyệt và chuyển sang trạng thái chờ giao hàng.",
+                }).then(() => {
+                    document.getElementById("deliveryForm").submit(); // Gửi form sau khi hiển thị thông báo thành công
+                });
+
+            });
+
+        });
+
+
+        document.getElementById("acceptForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Ngăn form gửi đi ngay lập tức
+
+            Swal.fire({
+                icon: "info",
+                title: "Đang xử lý...",
+                text: "Vui lòng chờ trong giây lát.",
+                timer: 1300,
+                timerProgressBar: true,
+                allowOutsideClick: false,
+                showConfirmButton: false // Ẩn nút OK
+            }).then(() => {
+                Swal.fire({
+                    icon: "success",
+                    title: "Xác nhận đơn hàng thành công!",
+                    text: "Đơn hàng của khách sẽ được phê duyệt và chuyển sang trạng thái chờ lấy hàng.",
+                }).then(() => {
+                    document.getElementById("acceptForm").submit(); // Gửi form sau khi hiển thị thông báo thành công
+                });
+
+            });
+
+        });
     </script>
 </body>
 </html>

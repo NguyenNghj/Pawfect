@@ -175,7 +175,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     max-height: 300px;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 12px 20px 0 0;
+    padding: 12px 15px 0 0;
 }
 
 .order-item>div:not(:last-of-type) {
