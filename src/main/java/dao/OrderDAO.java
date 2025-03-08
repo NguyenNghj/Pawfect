@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import model.CartItem;
@@ -41,7 +42,8 @@ public class OrderDAO {
     protected static String Approval_Order = "UPDATE Orders\n"
             + "SET status = ?, \n"
             + "    staff_id = ?,\n"
-            + "    reason_cancel = ?\n"
+            + "    reason_cancel = ?,\n"
+            + "    finished_date = ?\n"
             + "WHERE order_id = ?";
 
     protected static String Request_Cancel_Order = "UPDATE Orders\n"
@@ -174,6 +176,7 @@ public class OrderDAO {
             + "    Orders AS o ON oi.order_id = o.order_id\n"
             + "WHERE\n"
             + "    oi.order_id = ?";
+    
 
     public static List<Order> searchOrder(String search) {
         List<Order> list = new ArrayList<>();
@@ -199,6 +202,7 @@ public class OrderDAO {
                         rs.getBoolean("request_cancel"),
                         rs.getString("status"),
                         rs.getTimestamp("order_date"),
+                        rs.getTimestamp("finished_date"),
                         rs.getString("staff_name"),
                         rs.getString("payment_method_name"),
                         rs.getString("shipping_method_name"),
@@ -224,7 +228,7 @@ public class OrderDAO {
         return list;
     }
 
-    public static boolean approvalOrder(String status, int staffId, String reasonCancel, int orderId) {
+    public static boolean approvalOrder(String status, int staffId, String reasonCancel, Timestamp finishDate, int orderId) {
         boolean update = false;
         try {
             Con = new DBContext().getConnection();
@@ -232,7 +236,8 @@ public class OrderDAO {
             ps.setString(1, status);
             ps.setInt(2, staffId);
             ps.setString(3, reasonCancel);
-            ps.setInt(4, orderId);
+            ps.setTimestamp(4, finishDate);
+            ps.setInt(5, orderId);
             update = ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -295,6 +300,7 @@ public class OrderDAO {
                         rs.getBoolean("request_cancel"),
                         rs.getString("status"),
                         rs.getTimestamp("order_date"),
+                        rs.getTimestamp("finished_date"),
                         rs.getString("staff_name"),
                         rs.getString("payment_method_name"),
                         rs.getString("shipping_method_name"),
@@ -345,6 +351,7 @@ public class OrderDAO {
                         rs.getBoolean("request_cancel"),
                         rs.getString("status"),
                         rs.getTimestamp("order_date"),
+                        rs.getTimestamp("finished_date"),
                         rs.getString("staff_name"),
                         rs.getString("payment_method_name"),
                         rs.getString("shipping_method_name"),
@@ -431,6 +438,7 @@ public class OrderDAO {
                         rs.getBoolean("request_cancel"),
                         rs.getString("status"),
                         rs.getTimestamp("order_date"),
+                        rs.getTimestamp("finished_date"),
                         rs.getString("staff_name"),
                         rs.getString("payment_method_name"),
                         rs.getString("shipping_method_name"),
@@ -479,6 +487,7 @@ public class OrderDAO {
                         rs.getBoolean("request_cancel"),
                         rs.getString("status"),
                         rs.getTimestamp("order_date"),
+                        rs.getTimestamp("finished_date"),
                         rs.getString("staff_name"),
                         rs.getString("payment_method_name"),
                         rs.getString("shipping_method_name"),
@@ -528,6 +537,7 @@ public class OrderDAO {
                         rs.getBoolean("request_cancel"),
                         rs.getString("status"),
                         rs.getTimestamp("order_date"),
+                        rs.getTimestamp("finished_date"),
                         rs.getString("staff_name"),
                         rs.getString("payment_method_name"),
                         rs.getString("shipping_method_name"),
