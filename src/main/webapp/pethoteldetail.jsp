@@ -20,7 +20,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
     </head>
     <body>
-                <ol class="breadcrumb">
+        <ol class="breadcrumb">
             <li><a class="trang-chu" href="/pawfect">Trang chủ</a></li>
             <li><a class="trang-chu" href="/pethotel">Khách sạn thú cưng</a></li>
             <li>Phòng ${room.roomName} dành cho ${room.roomType}</li>
@@ -55,7 +55,7 @@
                     <p class="room-description"><%= room.getDescription()%></p>
                 </div>
                 <div class="button-container">
-                    <a href="customerbooking.jsp?id=<%= room.getRoomId()%>" class="booking-btn" data-status="<%= room.getStatus()%>">Đặt phòng ngay</a>
+                    <a href="booking?id=<%= room.getRoomId()%>" class="booking-btn" data-status="<%= room.getStatus()%>">Đặt phòng ngay</a>
                     <a href="pethotel" class="back-btn">Quay lại</a>
                 </div>
             </div>
@@ -79,7 +79,7 @@
                     <div class="pethotel-weight">
                         Cân nặng: <%= similarRoom.getMinWeight()%> - <%= similarRoom.getMaxWeight()%> kg
                     </div>
-                    <a href="customerbooking.jsp?id=<%= similarRoom.getRoomId()%>" class="booking" data-status="<%= similarRoom.getStatus()%>">Đặt phòng ngay</a>
+                    <a href="booking?id=<%= similarRoom.getRoomId()%>" class="booking" data-status="<%= similarRoom.getStatus()%>">Đặt phòng ngay</a>
                 </div>
 
                 <%

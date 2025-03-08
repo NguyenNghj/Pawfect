@@ -138,4 +138,50 @@ public class PetDAO {
             e.printStackTrace();
         }
     }
+
+    public List<Pet> getPetsByCustomerId(int customerId) {
+        List<Pet> petList = new ArrayList<>();
+        String query = "SELECT * FROM Pets WHERE customer_id = ?";
+
+        try {
+            conn = new DBContext().getConnection();
+            pt = conn.prepareStatement(query);
+            pt.setInt(1, customerId);
+            rs = pt.executeQuery();
+
+            while (rs.next()) {
+                Pet pet = new Pet(
+                        rs.getString("pet_id"),
+                        rs.getString("customer_id"),
+                        rs.getString("pet_name"),
+                        rs.getString("pet_type"),
+                        rs.getString("pet_breed"),
+                        rs.getString("pet_sex"),
+                        rs.getString("pet_weigth"),
+                        rs.getDate("pet_dob"),
+                        rs.getString("pet_status"),
+                        rs.getString("pet_image")
+                );
+                petList.add(pet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Đóng kết nối
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pt != null) {
+                    pt.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return petList;
+    }
 }

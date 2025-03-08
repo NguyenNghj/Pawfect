@@ -196,6 +196,22 @@
         <servlet-name>AddCategoryServlet</servlet-name>
         <servlet-class>controller.AddCategoryServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BookingServlet</servlet-name>
+        <servlet-class>controller.BookingServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BookingHistoryServlet</servlet-name>
+        <servlet-class>controller.BookingHistoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BookingHistoryDetailServlet</servlet-name>
+        <servlet-class>controller.BookingHistoryDetailServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CancelBookingServlet</servlet-name>
+        <servlet-class>controller.CancelBookingServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>PetHotelServlet</servlet-name>
         <url-pattern>/pethotel</url-pattern>
@@ -391,6 +407,22 @@
     <servlet-mapping>
         <servlet-name>AddCategoryServlet</servlet-name>
         <url-pattern>/dashboard/admin/addcategory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookingServlet</servlet-name>
+        <url-pattern>/booking</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookingHistoryServlet</servlet-name>
+        <url-pattern>/bookinghistory</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BookingHistoryDetailServlet</servlet-name>
+        <url-pattern>/bookinghistorydetail</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CancelBookingServlet</servlet-name>
+        <url-pattern>/cancelbooking</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
