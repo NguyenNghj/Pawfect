@@ -1,11 +1,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Lịch sử đặt lịch</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="./css/account.css">
@@ -73,8 +74,8 @@
                                         <thead class="table-primary">
                                             <tr>
                                                 <th>Tên phòng</th>
-                                                <th>Ngày check-in</th>
-                                                <th>Ngày check-out</th>
+                                                <th>Ngày đặt lịch</th>
+                                                <th>Tổng tiền</th>
                                                 <th>Trạng thái</th>
                                                 <th>Chi tiết</th>
                                             </tr>
@@ -83,8 +84,10 @@
                                             <c:forEach var="b" items="${booking}">
                                                 <tr>
                                                     <td>${b.roomName}</td>
-                                                    <td>${b.checkIn}</td>
-                                                    <td>${b.checkOut}</td>
+                                                    <td>
+                                                        <fmt:formatDate value="${b.bookingDate}" pattern="dd/MM/yyyy HH:mm" />
+                                                    </td>
+                                                    <td class="format-price">${b.totalPrice}</td>
                                                     <td>
                                                         <span class="badge bg-${b.status eq 'Đã xác nhận' ? 'success' 
                                                                                 : (b.status eq 'Chờ xác nhận' ? 'warning' 
@@ -197,6 +200,15 @@
 
                     return isValid;
                 }
+            </script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    let priceElements = document.querySelectorAll(".format-price");
+                    priceElements.forEach(element => {
+                        let price = parseFloat(element.innerText);
+                        element.innerText = new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(price);
+                    });
+                });
             </script>
 
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

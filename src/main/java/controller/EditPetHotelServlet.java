@@ -88,6 +88,7 @@ public class EditPetHotelServlet extends HttpServlet {
         double minWeight = Double.parseDouble(request.getParameter("min_weight"));
         double maxWeight = Double.parseDouble(request.getParameter("max_weight"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
+        int availableQuantity = Integer.parseInt(request.getParameter("quantity"));
         double pricePerNight = Double.parseDouble(request.getParameter("price_per_night"));
         String description = request.getParameter("description");
         String status = request.getParameter("status");
@@ -101,10 +102,10 @@ public class EditPetHotelServlet extends HttpServlet {
         room.setMinWeight(minWeight);
         room.setMaxWeight(maxWeight);
         room.setQuantity(quantity);
+        room.setAvailableQuantity(availableQuantity);
         room.setPricePerNight(pricePerNight);
         room.setDescription(description);
         room.setStatus(status);
-        
 
         PetHotelDAO dao = new PetHotelDAO();
         boolean isUpdated = dao.updatePetRoom(room);

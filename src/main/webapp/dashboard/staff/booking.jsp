@@ -7,6 +7,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="dao.PetHotelBookingDAO, model.PetHotelBooking, java.util.List" %>
 <%@ page import="java.text.NumberFormat, java.util.Locale" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.Date" %>
 
 <!DOCTYPE html>
 <html>
@@ -79,29 +81,29 @@
                     </div>
                 </div>
 
- <%
-                                    Cookie[] cookies = request.getCookies();
-                                    String staffRole = "";
-                                    String staffName = "";
+                <%
+                    Cookie[] cookies = request.getCookies();
+                    String staffRole = "";
+                    String staffName = "";
 
-                                    if (cookies != null) {
-                                        for (Cookie cookie : cookies) {
-                                            String name = cookie.getName();
-                                            String value = cookie.getValue();
+                    if (cookies != null) {
+                        for (Cookie cookie : cookies) {
+                            String name = cookie.getName();
+                            String value = cookie.getValue();
 
-                                            if ("staffRole".equals(name)) {
-                                                staffRole = value;
-                                            } else if ("staffName".equals(name)) {
-                                                staffName = value;
-                                            }
+                            if ("staffRole".equals(name)) {
+                                staffRole = value;
+                            } else if ("staffName".equals(name)) {
+                                staffName = value;
+                            }
 
-                                            // Nếu đã lấy được cả hai giá trị thì thoát vòng lặp
-                                            if (!staffRole.isEmpty() && !staffName.isEmpty()) {
-                                                break;
-                                            }
-                                        }
-                                    }
-                                %> 
+                            // Nếu đã lấy được cả hai giá trị thì thoát vòng lặp
+                            if (!staffRole.isEmpty() && !staffName.isEmpty()) {
+                                break;
+                            }
+                        }
+                    }
+                %> 
                 <!-- MAIN -->
                 <div class="col" id="main" style="padding: 0 40px;">
                     <div class="row pt-4">
@@ -116,10 +118,10 @@
                                 </button>
                                 <ul class="dropdown-menu ps-2 pe-2 pt-2 pb-2">
                                     <div class="d-grid gap-2">
-                                          <% if ("Admin".equals(staffRole)) { %>
-                                         <li class="profile-img-switch-employee d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
-                                        <i class="fa-solid fa-repeat"></i>
-                                        <a class="dropdown-item" style="padding: 0;" href="admin/dashboard.jsp">Switch to admin</a>
+                                        <% if ("Admin".equals(staffRole)) { %>
+                                        <li class="profile-img-switch-employee d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
+                                            <i class="fa-solid fa-repeat"></i>
+                                            <a class="dropdown-item" style="padding: 0;" href="dashboard">Switch to admin</a>
                                         </li>
                                         <% }%>
                                         <li class="profile-img-switch-store d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
@@ -201,8 +203,16 @@
                                         <td style="width: 140px; text-align: center; vertical-align: middle;"><%= booking.getCustomerName()%></td>
                                         <td style="width: 140px; text-align: center; vertical-align: middle;"><%= booking.getPetName()%></td>
                                         <td style="width: 140px; text-align: center; vertical-align: middle;"><%= booking.getRoomName()%></td>
-                                        <td style="text-align: center; vertical-align: middle;"><%= booking.getCheckIn()%></td>
-                                        <td style="text-align: center; vertical-align: middle;"><%= booking.getCheckOut()%></td>
+                                        <%
+                                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+                                        %>
+
+                                        <td style="text-align: center; vertical-align: middle;">
+                                            <%= sdf.format(booking.getCheckIn())%>
+                                        </td>
+                                        <td style="text-align: center; vertical-align: middle;">
+                                            <%= sdf.format(booking.getCheckOut())%>
+                                        </td>
                                         <%
                                             NumberFormat formatter = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
                                         %>

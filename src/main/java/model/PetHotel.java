@@ -13,16 +13,32 @@ public class PetHotel {
     private double minWeight;
     private double maxWeight;
     private int quantity;
+    private int availableQuantity; // Thêm số lượng phòng trống
     private double pricePerNight;
-    private String description; // Thêm thuộc tính mô tả
+    private String description;
     private String status;
     private boolean isActive;
 
-    // Constructor
+    // Constructor không có `status` và `isActive`
+    public PetHotel(String roomName, String roomImage, String roomType, double minWeight, double maxWeight, int quantity, int availableQuantity, double pricePerNight, String description) {
+        this.roomName = roomName;
+        this.roomImage = roomImage;
+        this.roomType = roomType;
+        this.minWeight = minWeight;
+        this.maxWeight = maxWeight;
+        this.quantity = quantity;
+        this.availableQuantity = availableQuantity;
+        this.pricePerNight = pricePerNight;
+        this.description = description;
+        this.status = "Còn phòng";
+        this.isActive = true;
+    }
+
     public PetHotel() {
     }
 
-    public PetHotel(int roomId, String roomName, String roomImage, String roomType, double minWeight, double maxWeight, int quantity, double pricePerNight, String description, String status, boolean isActive) {
+    // Constructor đầy đủ
+    public PetHotel(int roomId, String roomName, String roomImage, String roomType, double minWeight, double maxWeight, int quantity, int availableQuantity, double pricePerNight, String description, String status, boolean isActive) {
         this.roomId = roomId;
         this.roomName = roomName;
         this.roomImage = roomImage;
@@ -30,24 +46,11 @@ public class PetHotel {
         this.minWeight = minWeight;
         this.maxWeight = maxWeight;
         this.quantity = quantity;
+        this.availableQuantity = availableQuantity;
         this.pricePerNight = pricePerNight;
         this.description = description;
         this.status = status;
         this.isActive = isActive;
-    }
-
-    // Constructor dùng để thêm phòng mới (Không có status và isActive)
-    public PetHotel(String roomName, String roomImage, String roomType, double minWeight, double maxWeight, int quantity, double pricePerNight, String description) {
-        this.roomName = roomName;
-        this.roomImage = roomImage;
-        this.roomType = roomType;
-        this.minWeight = minWeight;
-        this.maxWeight = maxWeight;
-        this.quantity = quantity;
-        this.pricePerNight = pricePerNight;
-        this.description = description;
-        this.status = "Còn phòng";  // Luôn mặc định khi thêm mới
-        this.isActive = true;  // Luôn mặc định khi thêm mới
     }
 
     // Getters và Setters
@@ -105,6 +108,14 @@ public class PetHotel {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public int getAvailableQuantity() {
+        return availableQuantity;
+    }
+
+    public void setAvailableQuantity(int availableQuantity) {
+        this.availableQuantity = availableQuantity;
     }
 
     public double getPricePerNight() {

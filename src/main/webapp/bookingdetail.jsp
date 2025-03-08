@@ -1,11 +1,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Lịch sử đặt lịch</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="./css/account.css">
@@ -84,55 +85,74 @@
                         }
                     %>
                     <!-- Booking History -->
-                    <div class="container py-4">
-                        <h2 class="mb-4">Chi tiết đặt phòng</h2>
+                    <div class="container py-4" style="max-width: 1000px; margin: auto; background: #ffffff; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); padding: 20px;">
+                        <h2 style="text-align: center; font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px;">Chi tiết đặt phòng</h2>
 
                         <c:if test="${not empty booking}">
-                            <div class="card p-4">
-                                <h5>Thông tin đặt phòng</h5>
-                                <p><strong>Tên phòng:</strong> ${booking.roomName}</p>
-                                <p><strong>Ngày check-in:</strong> ${booking.checkIn}</p>
-                                <p><strong>Ngày check-out:</strong> ${booking.checkOut}</p>
-                                <p><strong>Trạng thái:</strong> 
-                                    <span class="badge bg-${booking.status eq 'Đã xác nhận' ? 'success' : (booking.status eq 'Chờ duyệt' ? 'warning' : 'danger')}">
-                                        ${booking.status}
-                                    </span>
-                                </p>
+                            <div style="display: flex; flex-direction: row; justify-content: space-between; gap: 20px;">
+                                <!-- Cột thông tin khách hàng -->
+                                <div style="flex: 1; background: #f8f9fa; padding: 15px; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);">
+                                    <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #007bff;">Thông tin khách hàng</h5>
+                                    <p><strong>Họ tên:</strong> ${booking.customerName}</p>
+                                    <p><strong>Số điện thoại:</strong> ${customer.phone}</p>
+                                    <p><strong>Email:</strong> ${customer.email}</p>
+                                    <br><h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #007bff;">Nhân viên phụ trách</h5>
+                                    <p>${booking.staffName}</p>
+                                </div>
 
-                                <h5>Thông tin khách hàng</h5>
-                                <p><strong>Họ tên:</strong> ${booking.customerName}</p>
-                                <p><strong>Số điện thoại:</strong> ${customer.phone}</p>
-                                <p><strong>Email:</strong> ${customer.email}</p>
+                                <!-- Cột thông tin đặt phòng -->
+                                <div style="flex: 1; background: #f8f9fa; padding: 15px; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);">
+                                    <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #007bff;">Thông tin đặt phòng</h5>
+                                    <p><strong>Tên phòng:</strong> ${booking.roomName}</p>
+                                    <p><strong>Ngày check-in:</strong> 
+                                        <br><fmt:formatDate value="${booking.checkIn}" pattern="HH:mm - dd/MM/yyyy" />
+                                    </p>
+                                    <p><strong>Ngày check-out:</strong> 
+                                        <br><fmt:formatDate value="${booking.checkOut}" pattern="HH:mm - dd/MM/yyyy" />
+                                    </p>
+                                    <p><strong>Ngày đặt lịch:</strong> 
+                                        <br><fmt:formatDate value="${booking.bookingDate}" pattern="HH:mm - dd/MM/yyyy" />
+                                    </p>
 
-                                <h5>Nhân viên phụ trách</h5>
-                                <p>${booking.staffName}</p>
+                                </div>
 
-                                <h5>Ghi chú</h5>
-                                <p>${booking.note}</p>
+                                <!-- Cột thông tin tổng tiền -->
+                                <div style="flex: 1; background: #f8f9fa; padding: 15px; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);">
+                                    <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #007bff;">Trạng thái</h5> 
+                                        <span style="padding: 6px 12px; border-radius: 5px; font-size: 14px; color: #fff; background-color:
+                                              ${booking.status eq 'Đã duyệt' ? '#28a745' : (booking.status eq 'Chờ xác nhận' ? '#ffc107' : (booking.status eq 'Đã hủy' ? '#dc3545' : '#6c757d'))};">
+                                            ${booking.status}
+                                        </span>
+                                    </p>
+                                    <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #007bff;">Ghi chú</h5>
+                                    <p>${booking.note}</p>
 
-                                <h5>Tổng chi phí</h5>
-                                <p class="text-success format-price">${booking.totalPrice}</p>
-
-                                <div class="d-flex gap-2 mt-3">
-                                    <a href="bookinghistory" class="btn btn-secondary btn-sm">Quay lại</a>
-
-                                    <!-- Nút hủy đơn hàng nếu trạng thái là 'Chờ xác nhận' -->
-                                    <c:if test="${booking.status eq 'Chờ xác nhận'}">
-                                        <form id="cancelForm-${booking.bookingId}" action="cancelbooking" method="post">
-                                            <input type="hidden" name="bookingId" value="${booking.bookingId}">
-                                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmCancel(${booking.bookingId})">
-                                                Hủy đơn hàng
-                                            </button>
-                                        </form>
-
-                                    </c:if>
+                                    <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #007bff;">Tổng chi phí</h5>
+                                    <p class="format-price" style="font-size: 20px; font-weight: bold; color: black;">${booking.totalPrice}</p>
                                 </div>
                             </div>
+
+                            <!-- Nút điều hướng -->
+                            <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
+                                <a href="bookinghistory" style="padding: 10px 15px; border-radius: 5px; font-size: 14px; font-weight: bold; text-decoration: none; text-align: center; background-color: #6c757d; color: white; border: none;">Quay lại</a>
+
+                                <c:if test="${booking.status eq 'Chờ xác nhận'}">
+                                    <form id="cancelForm-${booking.bookingId}" action="cancelbooking" method="post">
+                                        <input type="hidden" name="bookingId" value="${booking.bookingId}">
+                                        <button type="button" style="padding: 10px 15px; border-radius: 5px; font-size: 14px; font-weight: bold; background-color: #dc3545; color: white; border: none;" onclick="confirmCancel(${booking.bookingId})">
+                                            Hủy đơn hàng
+                                        </button>
+                                    </form>
+                                </c:if>
+                            </div>
                         </c:if>
+
                         <c:if test="${empty booking}">
-                            <p class="text-danger">Không tìm thấy thông tin đặt phòng.</p>
+                            <p style="text-align: center; font-size: 16px; font-weight: bold; color: #dc3545;">Không tìm thấy thông tin đặt phòng.</p>
                         </c:if>
                     </div>
+
+
                 </div>
 
                 <!-- Sidebar -->

@@ -139,6 +139,37 @@ public class PetDAO {
         }
     }
 
+    public int countPetsByCustomerId(String customerId) {
+        String query = "SELECT COUNT(*) FROM Pets WHERE customer_id = ?";
+        int count = 0;
+        try {
+            conn = new DBContext().getConnection();
+            pt = conn.prepareStatement(query);
+            pt.setString(1, customerId);
+            rs = pt.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pt != null) {
+                    pt.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return count;
+    }
+
     public List<Pet> getPetsByCustomerId(int customerId) {
         List<Pet> petList = new ArrayList<>();
         String query = "SELECT * FROM Pets WHERE customer_id = ?";

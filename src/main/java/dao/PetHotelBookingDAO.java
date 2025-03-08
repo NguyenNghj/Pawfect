@@ -14,18 +14,19 @@ public class PetHotelBookingDAO {
     // Câu lệnh SQL (Sửa LEFT JOIN để tránh lỗi khi staff_id null)
     protected static final String Get_All_Bookings = "SELECT p.booking_id, p.room_id, r.room_name, p.customer_id, c.full_name AS customer_name, \n"
             + "               p.staff_id, s.full_name AS staff_name, p.pet_id, pet.pet_name, \n"
-            + "               p.check_in, p.check_out, p.total_price, p.note, p.status, p.booking_date \n"
+            + "               p.check_in, p.check_out, p.total_price, p.note, p.status, p.booking_date, p.is_active \n"
             + "        FROM PetHotelBookings p \n"
             + "        JOIN PetHotel r ON p.room_id = r.room_id\n"
             + "        JOIN Customers c ON p.customer_id = c.customer_id\n"
             + "        LEFT JOIN Staffs s ON p.staff_id = s.staff_id\n"
-            + "        JOIN Pets pet ON p.pet_id = pet.pet_id";
-    protected static final String Get_Bookings_By_Customer = Get_All_Bookings + " WHERE p.customer_id = ?";
-
-    protected static final String Get_Booking_By_Id = Get_All_Bookings + " WHERE p.booking_id = ?";
-    protected static final String Approve_Booking = "UPDATE PetHotelBookings SET status = N'Đã duyệt' WHERE booking_id = ?";
-    protected static final String Cancel_Booking = "UPDATE PetHotelBookings SET status = N'Đã hủy' WHERE booking_id = ?";
-    protected static final String Create_Booking = "INSERT INTO PetHotelBookings (room_id, customer_id, pet_id, check_in, check_out, total_price, note, status, booking_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, GETDATE())";
+            + "        JOIN Pets pet ON p.pet_id = pet.pet_id\n"
+            + "        WHERE p.is_active = 1";
+    protected static final String Get_Bookings_By_Customer = Get_All_Bookings + " AND p.customer_id = ?";
+    protected static final String Get_Booking_By_Id = Get_All_Bookings + " AND p.booking_id = ?";
+    protected static final String Approve_Booking = "UPDATE PetHotelBookings SET status = N'Đã duyệt' WHERE booking_id = ? AND is_active = 1";
+    protected static final String Cancel_Booking = "UPDATE PetHotelBookings SET status = N'Đã hủy' WHERE booking_id = ? AND is_active = 1";
+    protected static final String Create_Booking = "INSERT INTO PetHotelBookings (room_id, customer_id, pet_id, check_in, check_out, total_price, note, status, booking_date, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), 1)";
+    protected static final String Delete_Booking = "UPDATE PetHotelBookings SET is_active = 0 WHERE booking_id = ?";
 
     // Lấy danh sách tất cả Booking
     public static List<PetHotelBooking> getAllBookings() {
@@ -51,7 +52,8 @@ public class PetHotelBookingDAO {
                         rs.getBigDecimal("total_price"),
                         rs.getString("note"),
                         rs.getString("status"),
-                        rs.getTimestamp("booking_date")
+                        rs.getTimestamp("booking_date"),
+                        rs.getBoolean("is_active")
                 );
                 list.add(booking);
             }
@@ -89,7 +91,8 @@ public class PetHotelBookingDAO {
                         rs.getBigDecimal("total_price"),
                         rs.getString("note"),
                         rs.getString("status"),
-                        rs.getTimestamp("booking_date")
+                        rs.getTimestamp("booking_date"),
+                        rs.getBoolean("is_active")
                 );
             }
             rs.close();
@@ -186,7 +189,8 @@ public class PetHotelBookingDAO {
                         rs.getBigDecimal("total_price"),
                         rs.getString("note"),
                         rs.getString("status"),
-                        rs.getTimestamp("booking_date")
+                        rs.getTimestamp("booking_date"),
+                        rs.getBoolean("is_active")
                 );
                 list.add(booking);
             }
@@ -198,6 +202,22 @@ public class PetHotelBookingDAO {
             closeConnection();
         }
         return list;
+    }
+
+    public static boolean deleteBooking(int bookingId) {
+        boolean success = false;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Delete_Booking);
+            ps.setInt(1, bookingId);
+            success = ps.executeUpdate() > 0;
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
+        }
+        return success;
     }
 
     // Hàm đóng kết nối

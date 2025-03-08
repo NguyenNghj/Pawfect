@@ -125,10 +125,10 @@
                             <input type="number" name="max_weight" step="0.1" class="form-control" value="<%= room.getMaxWeight()%>" required style="margin-bottom: 10px;">
 
                             <label>Số lượng:</label>
-                            <input type="number" name="quantity" class="form-control" value="<%= room.getQuantity()%>" required style="margin-bottom: 10px;">
+                            <input type="number" name="quantity" class="form-control" value="<%= room.getQuantity()%>" required min="1" style="margin-bottom: 10px;">
 
                             <label>Giá mỗi đêm (VNĐ):</label>
-                            <input type="number" name="price_per_night" step="0.01" class="form-control" value="<%= room.getPricePerNight()%>" required style="margin-bottom: 10px;">
+                            <input type="number" name="price_per_night" step="0.01" class="form-control" value="<%= room.getPricePerNight()%>" required min="1" style="margin-bottom: 10px;">
 
                             <label>Mô tả:</label>
                             <input type="text" name="description" class="form-control" value="<%= room.getDescription()%>" required style="margin-bottom: 10px;">
