@@ -5,21 +5,20 @@
 package controller;
 
 import dao.VoucherDAO;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
+import java.sql.Timestamp;
 import model.Voucher;
 
 /**
  *
  * @author Nguyen Tri Nghi - CE180897
  */
-public class VoucherManagementServlet extends HttpServlet {
+public class AddVoucherServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +37,10 @@ public class VoucherManagementServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet VoucherManagementServlet</title>");
+            out.println("<title>Servlet AddVoucherServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet VoucherManagementServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet AddVoucherServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -59,11 +58,7 @@ public class VoucherManagementServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        VoucherDAO voucherDAO = new VoucherDAO();
-        List<Voucher> vouchers = voucherDAO.getAllVoucher();
-        request.setAttribute("voucherList", vouchers);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard/admin/voucher.jsp");
-        dispatcher.forward(request, response);
+        request.getRequestDispatcher("/dashboard/admin/addvoucher.jsp").forward(request, response);
     }
 
     /**
@@ -77,7 +72,34 @@ public class VoucherManagementServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        request.setCharacterEncoding("UTF-8");
+        String code = request.getParameter("code");
+        String description = request.getParameter("description");
+        int discountPercentage = Integer.parseInt(request.getParameter("discountPercentage"));
+        double discountAmount = Double.parseDouble(request.getParameter("discountAmount"));
+        double minOrderValue = Double.parseDouble(request.getParameter("minOrderValue"));
+        double maxDiscount = Double.parseDouble(request.getParameter("maxDiscount"));
+        Timestamp startDate = Timestamp.valueOf(request.getParameter("startDate").replace("T", " ") + ":00");
+        Timestamp endDate = Timestamp.valueOf(request.getParameter("endDate").replace("T", " ") + ":00");
+        boolean isActive = Boolean.parseBoolean(request.getParameter("active"));
+
+        VoucherDAO voucherDAO = new VoucherDAO();
+
+        // Kiểm tra xem mã giảm giá đã tồn tại chưa
+        if (voucherDAO.isCodeExists(code)) {
+            request.setAttribute("errorMessage", "Mã giảm giá đã tồn tại!");
+            request.getRequestDispatcher("/dashboard/admin/addvoucher.jsp").forward(request, response);
+        } else {
+            Voucher voucher = new Voucher(code, description, discountPercentage, discountAmount, minOrderValue, maxDiscount, startDate, endDate, isActive);
+            boolean insertSuccess = voucherDAO.addVoucher(voucher);
+
+            if (insertSuccess) {
+                response.sendRedirect(request.getContextPath() + "/dashboard/admin/voucher");
+            } else {
+                request.setAttribute("errorMessage", "Thêm voucher thất bại. Vui lòng thử lại!");
+                request.getRequestDispatcher("/dashboard/admin/addvoucher.jsp").forward(request, response);
+            }
+        }
     }
 
     /**

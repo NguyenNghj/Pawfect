@@ -36,6 +36,18 @@ public class Voucher {
         this.active = active;
     }
 
+    public Voucher(String code, String description, int discountPercentage, double discountAmount, double minOrderValue, double maxDiscount, Timestamp startDate, Timestamp endDate, boolean active) {
+        this.code = code;
+        this.description = description;
+        this.discountPercentage = discountPercentage;
+        this.discountAmount = discountAmount;
+        this.minOrderValue = minOrderValue;
+        this.maxDiscount = maxDiscount;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.active = active;
+    }
+
     public int getVoucherId() {
         return voucherId;
     }

@@ -1,7 +1,6 @@
 package dao;
 
 import db.DBContext;
-import java.util.Comparator;
 import model.Product;
 
 /**
@@ -240,68 +239,6 @@ public class ProductDAO {
             e.printStackTrace();
         }
         return false;
-    }
-
-    public List<Product> filterByPrice(List<Product> products, String priceFilter) {
-        List<Product> filteredList = new ArrayList<>();
-        for (Product product : products) {
-            double price = product.getProductPrice();
-            switch (priceFilter) {
-                case "1":
-                    if (price < 100000) {
-                        filteredList.add(product);
-                    }
-                    break;
-                case "2":
-                    if (price >= 100000 && price <= 300000) {
-                        filteredList.add(product);
-                    }
-                    break;
-                case "3":
-                    if (price > 300000) {
-                        filteredList.add(product);
-                    }
-                    break;
-            }
-        }
-        return filteredList;
-    }
-
-    public List<Product> filterByPetType(List<Product> products, String petTypeFilter) {
-        switch (petTypeFilter) {
-            case "1":
-                petTypeFilter = "Chó";
-                break;
-            case "2":
-                petTypeFilter = "Mèo";
-                break;
-        }
-        List<Product> filteredList = new ArrayList<>();
-        for (Product product : products) {
-            String petType = product.getProductPetType();
-            if (petType != null && petType.equalsIgnoreCase(petTypeFilter)) {
-                filteredList.add(product);
-            }
-        }
-        return filteredList;
-    }
-
-    public List<Product> sortProducts(List<Product> products, String sortFilter) {
-        if (sortFilter == null || sortFilter.isEmpty()) {
-            return products;
-        }
-        switch (sortFilter) {
-            case "1":
-                products.sort(Comparator.comparingDouble(Product::getProductPrice));
-                break;
-            case "2":
-                products.sort(Comparator.comparingDouble(Product::getProductPrice).reversed());
-                break;
-            case "3":
-                products.sort(Comparator.comparing(Product::getProductName));
-                break;
-        }
-        return products;
     }
 
 }
