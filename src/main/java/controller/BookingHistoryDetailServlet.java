@@ -4,7 +4,8 @@
  */
 package controller;
 
-import dao.ProfileDAO;
+import dao.CustomersDAO;
+import dao.PetHotelBookingDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,14 +13,14 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.Date;
-import model.User;
+import model.Customers;
+import model.PetHotelBooking;
 
 /**
  *
- * @author LENOVO
+ * @author Nguyen Tien Thanh
  */
-public class ProfileServlet extends HttpServlet {
+public class BookingHistoryDetailServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,10 +39,10 @@ public class ProfileServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ProfileServlet</title>");
+            out.println("<title>Servlet BookingHistoryDetail</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ProfileServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet BookingHistoryDetail at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -58,8 +59,8 @@ public class ProfileServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        String customerId = null;   
+            throws ServletException, IOException {
+        String customerId = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -69,10 +70,34 @@ public class ProfileServlet extends HttpServlet {
                 }
             }
         }
-        ProfileDAO profileDAO = new ProfileDAO();
-        User user = profileDAO.getUser(customerId);
-        request.setAttribute("customer", user);
-        request.getRequestDispatcher("profile.jsp").forward(request, response);
+
+        int id = Integer.parseInt(customerId);
+        // Lấy thông tin khách hàng
+        Customers customer = CustomersDAO.getCustomerById(id);
+        try {
+            // Lấy bookingId từ request
+            int bookingId = Integer.parseInt(request.getParameter("id"));
+
+            // Truy vấn thông tin đặt phòng
+            PetHotelBookingDAO bookingDAO = new PetHotelBookingDAO();
+            PetHotelBooking booking = bookingDAO.getBookingById(bookingId);
+
+            // Kiểm tra nếu booking không tồn tại
+            if (booking == null) {
+                request.setAttribute("errorMessage", "Không tìm thấy thông tin đặt phòng.");
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+                return;
+            }
+
+            // Đưa dữ liệu vào request
+            request.setAttribute("customer", customer);
+            request.setAttribute("booking", booking);
+
+            // Chuyển tiếp đến trang JSP chi tiết đặt phòng
+            request.getRequestDispatcher("bookingdetail.jsp").forward(request, response);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("error.jsp");
+        }
     }
 
     /**
@@ -86,27 +111,7 @@ public class ProfileServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String customerId = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("customerId".equals(cookie.getName())) {
-                    customerId = cookie.getValue();
-                    break;
-                }
-            }
-        }
-        String email = request.getParameter("email");
-        String fullName = request.getParameter("fullName");
-        String birthDateStr = request.getParameter("birthDate");
-        Date birthDate = Date.valueOf(birthDateStr);
-        String gender = request.getParameter("gender");
-        String address = request.getParameter("address");
-        String phoneNumber = request.getParameter("phoneNumber");
-        String password = request.getParameter("password");
-        ProfileDAO profileDAO = new ProfileDAO();
-        profileDAO.editProfile(new User(email, password, fullName, phoneNumber, address, gender, birthDate), customerId);
-        response.sendRedirect(request.getContextPath() + "/profile");
+        processRequest(request, response);
     }
 
     /**

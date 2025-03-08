@@ -46,7 +46,7 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex align-items-center gap-3">
                                     <i class="bi bi-calendar-date fs-4 text-primary"></i>
-                                    <a href="#" class="text-decoration-none text-dark">Lịch sử đặt lịch</a>
+                                    <a href="bookinghistory" class="text-decoration-none text-dark">Lịch sử đặt lịch</a>
                                 </div>
                             </div>
                         </div>

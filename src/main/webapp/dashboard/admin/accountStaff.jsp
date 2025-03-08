@@ -22,27 +22,27 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="../../css/dashboard.css">
         <title>Quản Lí Nhân Viên</title>
-           <style>
-               .main-dashboard-table-header {
-    background-color: #8C6E63; /* Màu nền */
-    padding: 12px 20px; /* Tạo khoảng cách giữa nội dung và viền */
-    border-radius: 8px; /* Bo góc nhẹ */
-    display: flex; /* Căn theo chiều ngang */
-    align-items: center; /* Căn giữa theo chiều dọc */
-    justify-content: center; /* Căn giữa nội dung */
-    gap: 10px; /* Khoảng cách giữa icon và tiêu đề */
-    color: white; /* Màu chữ */
-    font-weight: bold; /* Làm đậm chữ */
-}
+        <style>
+            .main-dashboard-table-header {
+                background-color: #8C6E63; /* Màu nền */
+                padding: 12px 20px; /* Tạo khoảng cách giữa nội dung và viền */
+                border-radius: 8px; /* Bo góc nhẹ */
+                display: flex; /* Căn theo chiều ngang */
+                align-items: center; /* Căn giữa theo chiều dọc */
+                justify-content: center; /* Căn giữa nội dung */
+                gap: 10px; /* Khoảng cách giữa icon và tiêu đề */
+                color: white; /* Màu chữ */
+                font-weight: bold; /* Làm đậm chữ */
+            }
 
-.main-dashboard-table-header i {
-    font-size: 22px; /* Kích thước icon */
-}
+            .main-dashboard-table-header i {
+                font-size: 22px; /* Kích thước icon */
+            }
 
-.main-dashboard-table-header h4 {
-    margin: 0; /* Loại bỏ margin để tránh khoảng cách không cần thiết */
-    font-size: 20px; /* Điều chỉnh kích thước chữ */
-}
+            .main-dashboard-table-header h4 {
+                margin: 0; /* Loại bỏ margin để tránh khoảng cách không cần thiết */
+                font-size: 20px; /* Điều chỉnh kích thước chữ */
+            }
 
             /* Thiết kế cơ bản cho nút */
             .delete-btn {
@@ -66,8 +66,8 @@
             .delete-btn + .delete-btn {
                 margin-left: 10px;
             }
-            
-            
+
+
 
         </style>
     </head>
@@ -77,7 +77,7 @@
 
                 <!-- SIDEBAR -->
                 <jsp:include page="sidebar.jsp"/>
- <%
+                <%
                     Cookie[] cookies = request.getCookies();
                     String staffRole = "";
                     String staffName = "";
@@ -100,12 +100,12 @@
                         }
                     }
                 %>
-             <!-- MAIN -->
+                <!-- MAIN -->
                 <div class="col" id="main" style="padding: 0 40px;">
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Employee Account Management</h1>
+                                <h1>Quản Lý Nhân Viên</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
                                 <span><%= staffName%></span>
@@ -141,8 +141,8 @@
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item" style="color: #6c757d;">Dashboard</li>
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Employee</li>
+                                <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Nhân Viên</li>
                             </ol>
                         </nav>
                     </div>   
@@ -150,10 +150,17 @@
                     <div class="row">
                         <div class="col-3 p-0" style="margin-top: 60px;">
 
-                            <nav class="navbar navbar-light bg-light">
-                                <a href="staffadd" class="btn btn-success">+ Thêm Nhân Viên</a>
+
+                            <nav class="navbar navbar-light d-flex gap-2" style="background-color: #EEEEEE;">
+                                <a href="customers" class="btn btn-primary">Danh Sách Khách Hàng</a>
                             </nav>
 
+
+
+
+                            <nav class="navbar navbar-light" style="background-color: #EEEEEE;">
+                                <a href="staffadd" class="btn btn-success">+ Thêm Nhân Viên</a>
+                            </nav>
 
 
                         </div>        
@@ -163,7 +170,7 @@
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <div class="main-dashboard-table">
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
-                                <i class="fa-solid fa-address-card" style="font-size: 22px;"></i>
+                                 <i class="fa-solid fa-address-card" style="font-size: 22px;"></i>
                                 <h4 class="mb-0">Danh Sách Nhân Viên</h4>
                             </div>
                             <div style="padding: 15px 15px 25px 15px;">
@@ -179,7 +186,7 @@
                                             <th>Địa chỉ</th>
                                             <th>Giới tính</th>
                                             <th>Ngày sinh</th>
-                                             <th>Trạng Thái</th> 
+                                            <th>Trạng Thái</th> 
                                             <th>Hành động</th> <!-- Thêm cột này -->
                                         </tr>
                                     </thead>

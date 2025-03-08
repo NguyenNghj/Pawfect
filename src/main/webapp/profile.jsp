@@ -50,7 +50,7 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex align-items-center gap-3">
                                     <i class="bi bi-calendar-date fs-4 text-primary"></i>
-                                    <a href="#" class="text-decoration-none text-dark">Lịch sử đặt lịch</a>
+                                    <a href="bookinghistory" class="text-decoration-none text-dark">Lịch sử đặt lịch</a>
                                 </div>
                             </div>
                         </div>
@@ -64,19 +64,19 @@
                             </div>
                         </div>
                     </div>
-<% 
-    String message = (String) session.getAttribute("message");
-    String messageType = (String) session.getAttribute("messageType");
-    if (message != null) { 
-%>
-    <div class="alert alert-<%= "success".equals(messageType) ? "success" : "danger" %>">
-        <%= message %>
-    </div>
-<% 
-    session.removeAttribute("message");
-    session.removeAttribute("messageType");
-    } 
-%>
+                    <%
+                        String message = (String) session.getAttribute("message");
+                        String messageType = (String) session.getAttribute("messageType");
+                        if (message != null) {
+                    %>
+                    <div class="alert alert-<%= "success".equals(messageType) ? "success" : "danger"%>">
+                        <%= message%>
+                    </div>
+                    <%
+                            session.removeAttribute("message");
+                            session.removeAttribute("messageType");
+                        }
+                    %>
 
                     <!-- Orders Section -->
                     <div class="card">
@@ -85,9 +85,9 @@
                             <div class="d-grid gap-2 account-info">
                                 <span><span class="account-info-title">Họ tên:</span> ${customer.fullName} / <span class="account-info-title">Giới tính:</span> ${customer.gender}</span>
                                 <span><span class="account-info-title">Ngày sinh:</span> ${customer.birthDate}</span>
-                              <c:if test="${fn:contains(customer.email, '@')}">
-    <span><span class="account-info-title">Email:</span> ${customer.email}</span>
-</c:if>
+                                <c:if test="${fn:contains(customer.email, '@')}">
+                                    <span><span class="account-info-title">Email:</span> ${customer.email}</span>
+                                </c:if>
                                 <span><span class="account-info-title">Điện thoại:</span> ${customer.phoneNumber}</span>
                                 <span><span class="account-info-title">Địa chỉ:</span> ${customer.address}</span>
                             </div>
@@ -131,18 +131,18 @@
                                                         <small id="birthDateError" class="text-danger"></small>
                                                     </div>
                                                     <!-- Email -->
-                                                     <c:if test="${customer.email != null and fn:contains(customer.email, '@')}">
-                                                    <div class="mb-2">
-                                                        <label class="form-label">Email</label>
-                                                        <input type="text" value="${customer.email}" name="email" class="form-control" readonly>
-                                                        
-                                                    </div>
-</c:if>
-                                                     <c:if test="${customer.email != null and fn:contains(customer.email, '@')}">
-                                                    <div class="mb-2">
-                                                        <label for="formGroupExampleInput4" class="form-label">Mật khẩu</label>
-                                                        <input type="password" value="${customer.password}" name="password" class="form-control" id="formGroupExampleInput4"  readonly>
-                                                    </div>
+                                                    <c:if test="${customer.email != null and fn:contains(customer.email, '@')}">
+                                                        <div class="mb-2">
+                                                            <label class="form-label">Email</label>
+                                                            <input type="text" value="${customer.email}" name="email" class="form-control" readonly>
+
+                                                        </div>
+                                                    </c:if>
+                                                    <c:if test="${customer.email != null and fn:contains(customer.email, '@')}">
+                                                        <div class="mb-2">
+                                                            <label for="formGroupExampleInput4" class="form-label">Mật khẩu</label>
+                                                            <input type="password" value="${customer.password}" name="password" class="form-control" id="formGroupExampleInput4"  readonly>
+                                                        </div>
                                                     </c:if>
                                                     <!-- Điện thoại -->
                                                     <div class="mb-2">
@@ -186,12 +186,12 @@
                             <span>Thú cưng của tôi</span>
                         </a>
                         <!-- Đổi mật khẩu -->
-                       <c:if test="${customer.email != null and fn:contains(customer.email, '@')}">
-    <a href="changepassword" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
-        <i class="fa-solid fa-key fa-lg" style="color: #eabd1a;"></i>
-        <span>Đổi mật khẩu</span>
-    </a>
-</c:if>
+                        <c:if test="${customer.email != null and fn:contains(customer.email, '@')}">
+                            <a href="changepassword" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                                <i class="fa-solid fa-key fa-lg" style="color: #eabd1a;"></i>
+                                <span>Đổi mật khẩu</span>
+                            </a>
+                        </c:if>
                         <!-- Đăng xuất -->
                         <a href="logout" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-solid fa-arrow-right-from-bracket fa-lg" style="color: #d01616;"></i>
@@ -208,20 +208,20 @@
                 // Lấy giá trị input
                 let fullName = document.getElementsByName("fullName")[0].value.trim();
                 let birthDate = document.getElementsByName("birthDate")[0].value;
-               
+
                 let password = document.getElementsByName("password")[0].value;
                 let phoneNumber = document.getElementsByName("phoneNumber")[0].value.trim();
                 let address = document.getElementsByName("address")[0].value.trim();
 
                 // Định dạng kiểm tra
-                
+
                 let phonePattern = /^[0-9]{9,}$/;
                 let today = new Date().toISOString().split("T")[0];
 
                 // Xóa thông báo lỗi cũ
                 document.getElementById("fullNameError").innerHTML = "";
                 document.getElementById("birthDateError").innerHTML = "";
-               
+
                 document.getElementById("phoneError").innerHTML = "";
                 document.getElementById("addressError").innerHTML = "";
 
@@ -241,7 +241,7 @@
                 }
 
                 // Kiểm tra Email
-               
+
 
                 // Kiểm tra Số điện thoại
                 if (!phonePattern.test(phoneNumber)) {

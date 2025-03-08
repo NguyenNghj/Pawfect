@@ -41,9 +41,10 @@ public class ViewFinancialStatisticsDAO extends DBContext {
 
     //doanh thu
     public double getTotaMoneyByMonthh(int month) {
-        String sql = "SELECT SUM(total_amount) AS totalRevenue "
-                + "FROM [pawfect].[dbo].[Orders]"
-                + "WHERE MONTH(order_date) = ? AND status = N'Hoàn thành';";
+        String sql = "SELECT SUM(o.total_amount - sm.shipping_fee) AS totalRevenue " +
+                     "FROM Orders o " +
+                     "JOIN ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id " +
+                     "WHERE MONTH(order_date) = ? AND status = N'Hoàn thành'";
 
         try {
             PreparedStatement st = conn.prepareStatement(sql);
@@ -107,13 +108,14 @@ String sql = "SELECT TOP 5 p.product_id, p.product_name, p.product_price, p.prod
      public List<Staff> getTopStaffs() {
         List<Staff> topStaffs = new ArrayList<>();
         String sql = "SELECT TOP 5 s.staff_id, s.full_name, COUNT(o.order_id) AS total_orders, " +
-                 "SUM(oi.quantity) AS total_sold, SUM(oi.quantity *  o.total_amount) AS total_revenue " +
-                 "FROM [pawfect].[dbo].[Orders] o " +
-                 "JOIN [pawfect].[dbo].[OrderItems] oi ON o.order_id = oi.order_id " +
-                 "JOIN [pawfect].[dbo].[Staffs] s ON o.staff_id = s.staff_id " +
-                 "WHERE o.status = N'Hoàn thành' " +
-                 "GROUP BY s.staff_id, s.full_name " +
-                 "ORDER BY total_sold DESC;";
+                     "SUM(oi.quantity) AS total_sold, SUM(o.total_amount - sm.shipping_fee) AS total_revenue " +
+                     "FROM Orders o " +
+                     "JOIN OrderItems oi ON o.order_id = oi.order_id " +
+                     "JOIN Staffs s ON o.staff_id = s.staff_id " +
+                     "JOIN ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id " +
+                     "WHERE o.status = N'Hoàn thành' " +
+                     "GROUP BY s.staff_id, s.full_name " +
+                     "ORDER BY total_sold DESC";
         
         try (Connection conn = new DBContext().getConnection();
          PreparedStatement ps = conn.prepareStatement(sql);
