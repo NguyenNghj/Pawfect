@@ -56,15 +56,15 @@ public class Product {
         this.description = description;
         this.active = active;
     }
-    public Product(int productId, String productName, double productPrice, String productImage, int stock, boolean active) {
-    this.productId = productId;
-    this.productName = productName;
-    this.productPrice = productPrice;
-    this.productImage = productImage;
-    this.stock = stock; // total_sold gán vào stock
-    this.active = active;
-}
 
+    public Product(int productId, String productName, double productPrice, String productImage, int stock, boolean active) {
+        this.productId = productId;
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.productImage = productImage;
+        this.stock = stock; // total_sold gán vào stock
+        this.active = active;
+    }
 
     public int getProductId() {
         return productId;

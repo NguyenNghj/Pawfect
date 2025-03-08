@@ -94,10 +94,10 @@
 
                     <div class="row mt-2">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
-                            <ol class="breadcrumb" style="background: #8C6E63; padding: 10px">
-                                <li class="breadcrumb-item" style="color: #FFE0B2">Dashboard</li>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">Dashboard</li>
                                 <li class="breadcrumb-item"><a href="/dashboard/admin/product">Quản lí sản phẩm</a></li>
-                                <li class="breadcrumb-item active" aria-current="page" style="color: #FFE0B2">${product.productName}</li>
+                                <li class="breadcrumb-item active" aria-current="page">${product.productName}</li>
                             </ol>
                         </nav>
                     </div>   

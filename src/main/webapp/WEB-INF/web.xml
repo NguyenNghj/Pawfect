@@ -216,6 +216,14 @@
         <servlet-name>VoucherManagementServlet</servlet-name>
         <servlet-class>controller.VoucherManagementServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddVoucherServlet</servlet-name>
+        <servlet-class>controller.AddVoucherServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditVoucherServlet</servlet-name>
+        <servlet-class>controller.EditVoucherServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>PetHotelServlet</servlet-name>
         <url-pattern>/pethotel</url-pattern>
@@ -423,6 +431,14 @@
     <servlet-mapping>
         <servlet-name>VoucherManagementServlet</servlet-name>
         <url-pattern>/dashboard/admin/voucher</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddVoucherServlet</servlet-name>
+        <url-pattern>/dashboard/admin/addvoucher</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditVoucherServlet</servlet-name>
+        <url-pattern>/dashboard/admin/editvoucher</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
