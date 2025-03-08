@@ -14,6 +14,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Comparator;
 import java.util.List;
 import model.CartItem;
 import model.Category;
@@ -78,8 +79,11 @@ public class ProductListServlet extends HttpServlet {
         }
 
         // Lọc theo loại thú cưng nếu có pettype
+        // Lọc theo loại thú cưng nếu có pettype
         if (petTypeFilter != null && !petTypeFilter.isEmpty()) {
-            products = productDAO.filterByPetType(products, petTypeFilter);
+            String petTypeName = petTypeFilter.equals("1") ? "Chó" : "Mèo";
+            products.removeIf(product -> product.getProductPetType() == null
+                    || !petTypeName.equalsIgnoreCase(product.getProductPetType()));
         }
 
         String username = null;
@@ -97,21 +101,45 @@ public class ProductListServlet extends HttpServlet {
         if (username != null) {
             int customerId = Integer.parseInt(username);
             List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
-            if (!cartItems.isEmpty()) {
-                for (CartItem cartItem : cartItems) {
-                    totalQuantity += cartItem.getQuantity();
-                }
-            }
+            totalQuantity = cartItems.stream().mapToInt(CartItem::getQuantity).sum();
         }
 
         // Áp dụng bộ lọc giá nếu có
         if (priceFilter != null) {
-            products = productDAO.filterByPrice(products, priceFilter);
+            products.removeIf(product -> {
+                double price = product.getProductPrice();
+                switch (priceFilter) {
+                    case "1":
+                        return price >= 100000;
+                    case "2":
+                        return price < 100000 || price > 300000;
+                    case "3":
+                        return price <= 300000;
+                    default:
+                        break;
+                }
+                return false; // Mặc định không xóa nếu priceFilter không khớp
+            });
         }
 
         // Áp dụng bộ lọc sắp xếp nếu có
         if (sortFilter != null && !sortFilter.isEmpty()) {
-            products = productDAO.sortProducts(products, sortFilter);
+            switch (sortFilter) {
+                case "1":
+                    // Sắp xếp tăng dần theo giá
+                    products.sort(Comparator.comparingDouble(Product::getProductPrice));
+                    break;
+                case "2":
+                    // Sắp xếp giảm dần theo giá
+                    products.sort(Comparator.comparingDouble(Product::getProductPrice).reversed());
+                    break;
+                case "3":
+                    // Sắp xếp tăng dần theo tên sản phẩm
+                    products.sort(Comparator.comparing(Product::getProductName));
+                    break;
+                default:
+                    break;
+            }
         }
 
         // Set danh sách sản phẩm cho request

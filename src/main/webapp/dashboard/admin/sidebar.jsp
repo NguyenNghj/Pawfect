@@ -128,6 +128,7 @@
             const navItems = {
                 "dashboard": "dashboard",
                 "product": "product",
+                "voucher": "voucher",
                 "category": "category",
                 "petroom": "petroom",
                 "profile": "profile",

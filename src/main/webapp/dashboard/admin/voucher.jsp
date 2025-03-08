@@ -104,7 +104,6 @@
                         </div>        
                     </div>
 
-
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <div class="main-dashboard-table">
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
@@ -114,66 +113,68 @@
                             </div>
                             <div style="padding: 15px 15px 25px 15px;">
                                 <table class="table">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Id</th>
-                                                <th scope="col">Hình ảnh</th>
-                                                <th scope="col">Thể loại</th>
-                                                <th scope="col">Tên sản phẩm</th>
-                                                <th scope="col">Dành cho</th>
-                                                <th scope="col">Giá</th>
-                                                <th scope="col">Tồn kho</th>
-                                                <th scope="col">Trạng thái</th>
-                                                <th scope="col">Hành động</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:set var="itemsPerPage" value="10" />
-                                            <c:set var="totalProducts" value="${fn:length(productList)}" />
-                                            <c:set var="totalPages" value="${(totalProducts + itemsPerPage - 1) / itemsPerPage}" />
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Id</th>
+                                            <th scope="col">Mã Voucher</th>
+                                            <th scope="col">Mô tả</th>
+                                            <th scope="col">Giảm giá (%)</th>
+                                            <th scope="col">Số tiền giảm</th>
+                                            <th scope="col">Giá trị đơn tối thiểu</th>
+                                            <th scope="col">Mức giảm tối đa</th>
+                                            <th scope="col">Ngày bắt đầu</th>
+                                            <th scope="col">Ngày kết thúc</th>
+                                            <th scope="col">Trạng thái</th>
+                                            <th scope="col">Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:set var="itemsPerPage" value="10" />
+                                        <c:set var="totalVouchers" value="${fn:length(voucherList)}" />
+                                        <c:set var="totalPages" value="${(totalVouchers + itemsPerPage - 1) / itemsPerPage}" />
 
-                                            <!-- Ensure currentPage is set correctly -->
-                                            <c:set var="currentPage">
-                                                <c:choose>
-                                                    <c:when test="${not empty param.page}">
-                                                        ${param.page}
-                                                    </c:when>
-                                                    <c:otherwise>1</c:otherwise>
-                                                </c:choose>
-                                            </c:set>
+                                        <c:set var="currentPage">
+                                            <c:choose>
+                                                <c:when test="${not empty param.page}">
+                                                    ${param.page}
+                                                </c:when>
+                                                <c:otherwise>1</c:otherwise>
+                                            </c:choose>
+                                        </c:set>
 
-                                            <c:set var="start" value="${(currentPage - 1) * itemsPerPage}" />
-                                            <c:set var="end" value="${start + itemsPerPage}" />
+                                        <c:set var="start" value="${(currentPage - 1) * itemsPerPage}" />
+                                        <c:set var="end" value="${start + itemsPerPage}" />
 
-                                            <c:forEach var="product" items="${productList}" varStatus="loop">
-                                                <c:if test="${loop.index >= start and loop.index < end}">
-                                                    <tr>
-                                                        <th scope="row">${product.productId}</th>
-                                                        <td><img src="/img/products/${product.productImage}" alt="Hình ảnh" width="50"></td>
-                                                        <td>${product.categoryName}</td>
-                                                        <td>${product.productName}</td>
-                                                        <td>${product.productPetType}</td>
-                                                        <td>${product.productPrice}</td>
-                                                        <td>${product.stock}</td>
-                                                        <td>
-                                                            <c:choose>
-                                                                <c:when test="${product.active}">
-                                                                    <span class="text-success">Đang bán</span>
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    <span class="text-danger">Ngừng bán</span>
-                                                                </c:otherwise>
-                                                            </c:choose>
-                                                        </td>
-                                                        <td>
-                                                            <a href="/dashboard/admin/editproduct?productId=${product.productId}" class="btn btn-primary">Chỉnh sửa</a>
-                                                        </td>
-                                                    </tr>
-                                                </c:if>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>                     
+                                        <c:forEach var="voucher" items="${voucherList}" varStatus="loop">
+                                            <c:if test="${loop.index >= start and loop.index < end}">
+                                                <tr>
+                                                    <th scope="row">${voucher.voucherId}</th>
+                                                    <td>${voucher.code}</td>
+                                                    <td>${voucher.description}</td>
+                                                    <td>${voucher.discountPercentage}%</td>
+                                                    <td><fmt:formatNumber value="${voucher.discountAmount}" type="number" maxFractionDigits="0"/></td>
+                                                    <td><fmt:formatNumber value="${voucher.minOrderValue}" type="number" maxFractionDigits="0"/></td>
+                                                    <td><fmt:formatNumber value="${voucher.maxDiscount}" type="number" maxFractionDigits="0"/></td>
+                                                    <td>${voucher.startDate}</td>
+                                                    <td>${voucher.endDate}</td>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${voucher.active}">
+                                                                <span class="text-success">Hoạt động</span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="text-danger">Không hoạt động</span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                    <td>
+                                                        <a href="/dashboard/admin/editvoucher?voucherId=${voucher.voucherId}" class="btn btn-primary">Chỉnh sửa</a>
+                                                    </td>
+                                                </tr>
+                                            </c:if>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div> 

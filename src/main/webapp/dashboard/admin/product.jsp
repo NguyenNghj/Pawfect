@@ -88,7 +88,7 @@
                     <div class="row mt-2">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item" style="color: #6c757d;">Dashboard</li>
+                                <li class="breadcrumb-item">Dashboard</li>
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Product</li>
                             </ol>
