@@ -17,42 +17,42 @@
         <link rel="stylesheet" href="../../css/dashboard.css">
         <title>Quản Lí Khách Hàng</title>
         <style>
-.search-form {
-    max-width: 300px; /* Giới hạn chiều rộng */
-    display: flex;
-    justify-content: start; /* Căn trái */
-    background-color: #D6CBC7; /* Màu nền */
-    padding: 8px; /* Tạo khoảng cách bên trong */
-    border-radius: 5px; /* Bo góc nhẹ */
-}
+            .search-form {
+                max-width: 300px; /* Giới hạn chiều rộng */
+                display: flex;
+                justify-content: start; /* Căn trái */
+                background-color: #D6CBC7; /* Màu nền */
+                padding: 8px; /* Tạo khoảng cách bên trong */
+                border-radius: 5px; /* Bo góc nhẹ */
+            }
 
-.search-input {
-    flex: 1;
-    padding: 6px;
-    font-size: 14px;
-    height: 35px;
-    background-color: white; /* Giữ màu nền input trắng để dễ nhìn */
-    color: black; /* Chữ màu đen */
-    border: 1px solid #aaa; /* Viền nhẹ */
-    border-radius: 5px;
-}
+            .search-input {
+                flex: 1;
+                padding: 6px;
+                font-size: 14px;
+                height: 35px;
+                background-color: white; /* Giữ màu nền input trắng để dễ nhìn */
+                color: black; /* Chữ màu đen */
+                border: 1px solid #aaa; /* Viền nhẹ */
+                border-radius: 5px;
+            }
 
-.search-btn {
-    padding: 6px 10px;
-    font-size: 14px;
-    height: 35px;
-    white-space: nowrap;
-    background-color: #8B7E74; /* Màu nút tối hơn để phân biệt */
-    color: white; /* Chữ trắng trên nút */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-}
+            .search-btn {
+                padding: 6px 10px;
+                font-size: 14px;
+                height: 35px;
+                white-space: nowrap;
+                background-color: #8B7E74; /* Màu nút tối hơn để phân biệt */
+                color: white; /* Chữ trắng trên nút */
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease-in-out;
+            }
 
-.search-btn:hover {
-    background-color: #6F625B; /* Màu tối hơn khi hover */
-}
+            .search-btn:hover {
+                background-color: #6F625B; /* Màu tối hơn khi hover */
+            }
 
             .ban-btn, .unban-btn {
                 display: inline-block;
@@ -288,20 +288,23 @@
                                                 <td><%= customer.getGender()%></td>
                                                 <td><%= customer.getBirthDate()%></td>
                                                 <td>
+                                                    <% if ("admin".equalsIgnoreCase(staffRole)) { %> 
                                                     <% if (customer.isActive()) {%>
                                                     <a href="customersban?id=<%= customer.getCustomerId()%>&action=ban" 
                                                        class="ban-btn"
-                                                       onclick="return confirm('Bạn có chắc muốn cấm khách hàng này?');">
-                                                        Cấm
+                                                       onclick="return confirm('Bạn có chắc muốn cấm khách hàng này?');"> Cấm
                                                     </a>
                                                     <% } else {%>
                                                     <a href="customersban?id=<%= customer.getCustomerId()%>&action=unban" 
                                                        class="unban-btn"
-                                                       onclick="return confirm('Bạn có chắc muốn mở lại khách hàng này?');">
-                                                        Mở
+                                                       onclick="return confirm('Bạn có chắc muốn mở lại khách hàng này?');"> Mở
                                                     </a>
                                                     <% } %>
+                                                    <% } else { %>
+                                                    <span class="text-muted">Không có quyền</span>
+                                                    <% } %>
                                                 </td>
+
 
 
                                             </tr>
