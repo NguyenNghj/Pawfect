@@ -156,9 +156,13 @@
                                                 <c:when test="${o.status == 'Chờ lấy hàng'}"><div class="text-secondary fw-bold">${o.status}</div></c:when>
                                                 <c:when test="${o.status == 'Chờ giao hàng'}"><div class="text-primary fw-bold">${o.status}</div></c:when>
                                                 <c:when test="${o.status == 'Hoàn thành'}"><div class="text-success fw-bold">${o.status}</div></c:when>
-                                                <c:when test="${o.status == 'Yêu cầu huỷ...'}"><div class="text-danger fw-bold">${o.status}</div></c:when>
+                                                <c:when test="${o.status == 'Yêu cầu huỷ...'}"><div class="text-danger fw-bold">Giao hàng thành công</div></c:when>
                                                 <c:otherwise><div class="text-danger fw-bold">${o.status}</div></c:otherwise> 
                                             </c:choose>
+
+                                            <c:if test="${o.status == 'Hoàn thành'}">
+                                                <div>${o.finishDate}</div>
+                                            </c:if>
 
                                             <c:if test="${not empty o.reasonCancel}">
                                                 <div><span class="text-danger" style="font-weight: 500;">Lý do huỷ:</span> ${o.reasonCancel}</div>

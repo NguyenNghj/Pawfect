@@ -26,6 +26,7 @@ public class Order {
     private boolean requestCancel;
     private String status;
     private Timestamp orderDate;
+    private Timestamp finishDate;
     private String staffName;
     private String paymentMethodName;
     private String shippingMethodName;
@@ -35,7 +36,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(int orderId, int customerId, Integer staffId, int paymentMethodId, int shippingMethodId, String name, String phone, String address, String note, double totalAmount, String reasonCancel, boolean requestCancel, String status, Timestamp orderDate, String staffName, String paymentMethodName, String shippingMethodName, double shippingMethodFee, String customerName) {
+    public Order(int orderId, int customerId, Integer staffId, int paymentMethodId, int shippingMethodId, String name, String phone, String address, String note, double totalAmount, String reasonCancel, boolean requestCancel, String status, Timestamp orderDate, Timestamp finishDate, String staffName, String paymentMethodName, String shippingMethodName, double shippingMethodFee, String customerName) {
         this.orderId = orderId;
         this.customerId = customerId;
         this.staffId = staffId;
@@ -50,6 +51,7 @@ public class Order {
         this.requestCancel = requestCancel;
         this.status = status;
         this.orderDate = orderDate;
+        this.finishDate = finishDate;
         this.staffName = staffName;
         this.paymentMethodName = paymentMethodName;
         this.shippingMethodName = shippingMethodName;
@@ -170,6 +172,15 @@ public class Order {
         this.orderDate = orderDate;
     }
 
+    public String getFinishDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        return sdf.format(finishDate);
+    }
+
+    public void setFinishDate(Timestamp finishDate) {
+        this.finishDate = finishDate;
+    }
+
     public String getStaffName() {
         return staffName;
     }
@@ -210,7 +221,4 @@ public class Order {
         this.customerName = customerName;
     }
 
-    
-   
-      
 }

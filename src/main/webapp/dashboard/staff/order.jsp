@@ -252,7 +252,7 @@
                                                                     data-order-id="${o.orderId}"
                                                                     data-update-status="Đã huỷ"
                                                                     data-reason-cancel="${o.reasonCancel}"
-                                                                    onclick="huyDon(event)"
+                                                                    onclick="approve(event)"
                                                                     >
                                                                 Chấp nhận
                                                             </button>
@@ -261,7 +261,7 @@
                                                                     data-order-id="${o.orderId}"
                                                                     data-update-status="Chờ lấy hàng"
                                                                     data-reason-cancel="${o.reasonCancel}"
-                                                                    onclick="huyDon(event)"
+                                                                    onclick="approve(event)"
                                                                     >
                                                                 Từ chối
                                                             </button>                                                       
@@ -271,7 +271,7 @@
                                                                     data-bs-toggle="modal" data-bs-target="#acceptModal"
                                                                     data-order-id="${o.orderId}"
                                                                     data-update-status="Chờ lấy hàng"
-                                                                    onclick="huyDon(event)"
+                                                                    onclick="approve(event)"
                                                                     >
                                                                 Xác nhận
                                                             </button>
@@ -281,7 +281,7 @@
                                                                     data-bs-toggle="modal" data-bs-target="#deliveryModal"
                                                                     data-order-id="${o.orderId}"
                                                                     data-update-status="Chờ giao hàng"
-                                                                    onclick="huyDon(event)"
+                                                                    onclick="approve(event)"
                                                                     >
                                                                 Giao hàng
                                                             </button>
@@ -291,7 +291,7 @@
                                                                     data-bs-toggle="modal" data-bs-target="#completeModal"
                                                                     data-order-id="${o.orderId}"
                                                                     data-update-status="Hoàn thành"
-                                                                    onclick="huyDon(event)"
+                                                                    onclick="approve(event)"
                                                                     >
                                                                 Hoàn thành
                                                             </button>
@@ -302,7 +302,7 @@
                                                                     data-bs-toggle="modal" data-bs-target="#cancelModal"
                                                                     data-order-id="${o.orderId}"
                                                                     data-update-status="Đã huỷ"
-                                                                    onclick="huyDon(event)"
+                                                                    onclick="approve(event)"
                                                                     >
                                                                 Huỷ đơn
                                                             </button>
@@ -568,7 +568,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
 
-                            function huyDon(event) {
+                            function approve(event) {
                                 let button = event.currentTarget; // Lấy nút được nhấn
                                 let orderId = button.getAttribute("data-order-id");
                                 let updateStatus = button.getAttribute("data-update-status");
