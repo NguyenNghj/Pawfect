@@ -31,12 +31,14 @@ public class OrderDAO {
             + "    pm.name AS payment_method_name,\n"
             + "    sm.name AS shipping_method_name,\n"
             + "    sm.shipping_fee AS shipping_method_fee,\n"
-            + "    c.full_name AS customer_name\n"
+            + "    c.full_name AS customer_name,\n"
+            + "	do.discount_amount\n"
             + "FROM Orders o\n"
             + "LEFT JOIN Customers c ON o.customer_id = c.customer_id\n"
             + "LEFT JOIN Staffs s ON o.staff_id = s.staff_id\n"
             + "LEFT JOIN PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
             + "LEFT JOIN ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
+            + "LEFT JOIN DiscountOrders do ON o.order_id = do.order_id\n"
             + "WHERE c.full_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ?";
 
     protected static String Approval_Order = "UPDATE Orders\n"
@@ -62,103 +64,84 @@ public class OrderDAO {
 
     protected static String Create_Order_Item = "INSERT INTO OrderItems (order_id, product_id, quantity) VALUES (?, ?, ?)";
 
-    protected static String Get_Order_By_CustomerId_Vs_Status = "SELECT\n"
-            + "    o.*,\n"
-            + "    s.full_name AS staff_name,\n"
-            + "    pm.name AS payment_method_name,  -- Lấy tên phương thức thanh toán\n"
-            + "    sm.name AS shipping_method_name,   -- Lấy tên phương thức giao hàng\n"
-            + "	sm.shipping_fee AS shipping_method_fee,\n"
-            + "	c.full_name AS customer_name\n"
-            + "FROM\n"
-            + "    Orders o\n"
-            + "LEFT JOIN\n"
-            + "	Customers c ON o.customer_id = c.customer_id\n"
-            + "LEFT JOIN\n"
-            + "    Staffs s ON o.staff_id = s.staff_id\n"
-            + "LEFT JOIN  -- Nối với bảng PaymentMethods\n"
-            + "    PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
-            + "LEFT JOIN  -- Nối với bảng ShippingMethods\n"
-            + "    ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
-            + "WHERE\n"
-            + "    o.customer_id = ? AND o.status = ?";
+    protected static String Get_Order_By_CustomerId_Vs_Status = "SELECT \n"
+            + "    o.*, \n"
+            + "    s.full_name AS staff_name, \n"
+            + "    pm.name AS payment_method_name, \n"
+            + "    sm.name AS shipping_method_name, \n"
+            + "    sm.shipping_fee AS shipping_method_fee, \n"
+            + "    c.full_name AS customer_name, \n"
+            + "    do.discount_amount\n"
+            + "FROM Orders o\n"
+            + "LEFT JOIN Customers c ON o.customer_id = c.customer_id\n"
+            + "LEFT JOIN Staffs s ON o.staff_id = s.staff_id\n"
+            + "LEFT JOIN PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
+            + "LEFT JOIN ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
+            + "LEFT JOIN DiscountOrders do ON o.order_id = do.order_id\n"
+            + "WHERE o.customer_id = ? AND o.status = ?";
 
-    protected static String Get_All_Order_By_Status = "SELECT\n"
-            + "    o.*,\n"
-            + "    s.full_name AS staff_name,\n"
-            + "    pm.name AS payment_method_name,  -- Lấy tên phương thức thanh toán\n"
-            + "    sm.name AS shipping_method_name,   -- Lấy tên phương thức giao hàng\n"
-            + "	sm.shipping_fee AS shipping_method_fee,\n"
-            + "	c.full_name AS customer_name\n"
-            + "FROM\n"
-            + "    Orders o\n"
-            + "LEFT JOIN\n"
-            + "	Customers c ON o.customer_id = c.customer_id\n"
-            + "LEFT JOIN\n"
-            + "    Staffs s ON o.staff_id = s.staff_id\n"
-            + "LEFT JOIN  -- Nối với bảng PaymentMethods\n"
-            + "    PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
-            + "LEFT JOIN  -- Nối với bảng ShippingMethods\n"
-            + "    ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
-            + "WHERE\n"
-            + "    o.status = ?";
+    protected static String Get_All_Order_By_Status = "SELECT \n"
+            + "    o.*, \n"
+            + "    s.full_name AS staff_name, \n"
+            + "    pm.name AS payment_method_name, \n"
+            + "    sm.name AS shipping_method_name, \n"
+            + "    sm.shipping_fee AS shipping_method_fee, \n"
+            + "    c.full_name AS customer_name,\n"
+            + "	do.discount_amount\n"
+            + "FROM Orders o\n"
+            + "LEFT JOIN Customers c ON o.customer_id = c.customer_id\n"
+            + "LEFT JOIN Staffs s ON o.staff_id = s.staff_id\n"
+            + "LEFT JOIN PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
+            + "LEFT JOIN ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
+            + "LEFT JOIN DiscountOrders do ON o.order_id = do.order_id\n"
+            + "WHERE o.status = ?";
 
-    protected static String Get_All_Order = "SELECT\n"
-            + "    o.*,\n"
-            + "    s.full_name AS staff_name,\n"
-            + "    pm.name AS payment_method_name,  -- Lấy tên phương thức thanh toán\n"
-            + "    sm.name AS shipping_method_name,   -- Lấy tên phương thức giao hàng\n"
-            + "	sm.shipping_fee AS shipping_method_fee,\n"
-            + "	c.full_name AS customer_name\n"
-            + "FROM\n"
-            + "    Orders o\n"
-            + "LEFT JOIN\n"
-            + "	Customers c ON o.customer_id = c.customer_id\n"
-            + "LEFT JOIN\n"
-            + "    Staffs s ON o.staff_id = s.staff_id\n"
-            + "LEFT JOIN  -- Nối với bảng PaymentMethods\n"
-            + "    PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
-            + "LEFT JOIN  -- Nối với bảng ShippingMethods\n"
-            + "    ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id";
+    protected static String Get_All_Order = "SELECT \n"
+            + "    o.*, \n"
+            + "    s.full_name AS staff_name, \n"
+            + "    pm.name AS payment_method_name, \n"
+            + "    sm.name AS shipping_method_name, \n"
+            + "    sm.shipping_fee AS shipping_method_fee, \n"
+            + "    c.full_name AS customer_name,\n"
+            + "	do.discount_amount\n"
+            + "FROM Orders o\n"
+            + "LEFT JOIN Customers c ON o.customer_id = c.customer_id\n"
+            + "LEFT JOIN Staffs s ON o.staff_id = s.staff_id\n"
+            + "LEFT JOIN PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
+            + "LEFT JOIN ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
+            + "LEFT JOIN DiscountOrders do ON o.order_id = do.order_id";
 
-    protected static String Get_Order_By_CustomerId = "SELECT\n"
-            + "    o.*,\n"
-            + "    s.full_name AS staff_name,\n"
-            + "    pm.name AS payment_method_name,  -- Lấy tên phương thức thanh toán\n"
-            + "    sm.name AS shipping_method_name,   -- Lấy tên phương thức giao hàng\n"
-            + "	sm.shipping_fee AS shipping_method_fee,\n"
-            + "	c.full_name AS customer_name\n"
-            + "FROM\n"
-            + "    Orders o\n"
-            + "LEFT JOIN\n"
-            + "	Customers c ON o.customer_id = c.customer_id\n"
-            + "LEFT JOIN\n"
-            + "    Staffs s ON o.staff_id = s.staff_id\n"
-            + "LEFT JOIN  -- Nối với bảng PaymentMethods\n"
-            + "    PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
-            + "LEFT JOIN  -- Nối với bảng ShippingMethods\n"
-            + "    ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
-            + "WHERE\n"
-            + "    o.customer_id = ?";
+    protected static String Get_Order_By_CustomerId = "SELECT \n"
+            + "    o.*, \n"
+            + "    s.full_name AS staff_name, \n"
+            + "    pm.name AS payment_method_name, \n"
+            + "    sm.name AS shipping_method_name, \n"
+            + "    sm.shipping_fee AS shipping_method_fee, \n"
+            + "    c.full_name AS customer_name,\n"
+            + "	do.discount_amount\n"
+            + "FROM Orders o\n"
+            + "LEFT JOIN Customers c ON o.customer_id = c.customer_id\n"
+            + "LEFT JOIN Staffs s ON o.staff_id = s.staff_id\n"
+            + "LEFT JOIN PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
+            + "LEFT JOIN ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
+            + "LEFT JOIN DiscountOrders do ON o.order_id = do.order_id\n"
+            + "WHERE o.customer_id = ?";
 
-    protected static String Get_Order_By_OrderId = "SELECT\n"
-            + "    o.*,\n"
-            + "    s.full_name AS staff_name,\n"
-            + "    pm.name AS payment_method_name,  -- Lấy tên phương thức thanh toán\n"
-            + "    sm.name AS shipping_method_name,   -- Lấy tên phương thức giao hàng\n"
-            + "	sm.shipping_fee AS shipping_method_fee,\n"
-            + "	c.full_name AS customer_name\n"
-            + "FROM\n"
-            + "    Orders o\n"
-            + "LEFT JOIN\n"
-            + "	Customers c ON o.customer_id = c.customer_id\n"
-            + "LEFT JOIN\n"
-            + "    Staffs s ON o.staff_id = s.staff_id\n"
-            + "LEFT JOIN  -- Nối với bảng PaymentMethods\n"
-            + "    PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
-            + "LEFT JOIN  -- Nối với bảng ShippingMethods\n"
-            + "    ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
-            + "WHERE\n"
-            + "    o.order_id = ?";
+    protected static String Get_Order_By_OrderId = "SELECT \n"
+            + "    o.*, \n"
+            + "    s.full_name AS staff_name, \n"
+            + "    pm.name AS payment_method_name, \n"
+            + "    sm.name AS shipping_method_name, \n"
+            + "    sm.shipping_fee AS shipping_method_fee, \n"
+            + "    c.full_name AS customer_name,\n"
+            + "	do.discount_amount\n"
+            + "FROM Orders o\n"
+            + "LEFT JOIN Customers c ON o.customer_id = c.customer_id\n"
+            + "LEFT JOIN Staffs s ON o.staff_id = s.staff_id\n"
+            + "LEFT JOIN PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
+            + "LEFT JOIN ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
+            + "LEFT JOIN DiscountOrders do ON o.order_id = do.order_id\n"
+            + "WHERE o.order_id = ?";
 
     protected static String Get_OrderItems_By_OrderId = "SELECT\n"
             + "    oi.orderItem_id,\n"
@@ -176,7 +159,6 @@ public class OrderDAO {
             + "    Orders AS o ON oi.order_id = o.order_id\n"
             + "WHERE\n"
             + "    oi.order_id = ?";
-    
 
     public static List<Order> searchOrder(String search) {
         List<Order> list = new ArrayList<>();
@@ -207,7 +189,8 @@ public class OrderDAO {
                         rs.getString("payment_method_name"),
                         rs.getString("shipping_method_name"),
                         rs.getDouble("shipping_method_fee"),
-                        rs.getString("customer_name")
+                        rs.getString("customer_name"),
+                        rs.getDouble("discount_amount")
                 );
                 list.add(o);
             }
@@ -305,7 +288,8 @@ public class OrderDAO {
                         rs.getString("payment_method_name"),
                         rs.getString("shipping_method_name"),
                         rs.getDouble("shipping_method_fee"),
-                        rs.getString("customer_name")
+                        rs.getString("customer_name"),
+                        rs.getDouble("discount_amount")
                 );
                 list.add(o);
             }
@@ -356,7 +340,8 @@ public class OrderDAO {
                         rs.getString("payment_method_name"),
                         rs.getString("shipping_method_name"),
                         rs.getDouble("shipping_method_fee"),
-                        rs.getString("customer_name")
+                        rs.getString("customer_name"),
+                        rs.getDouble("discount_amount")
                 );
                 list.add(o);
             }
@@ -443,7 +428,8 @@ public class OrderDAO {
                         rs.getString("payment_method_name"),
                         rs.getString("shipping_method_name"),
                         rs.getDouble("shipping_method_fee"),
-                        rs.getString("customer_name")
+                        rs.getString("customer_name"),
+                        rs.getDouble("discount_amount")
                 );
                 list.add(o);
             }
@@ -492,7 +478,8 @@ public class OrderDAO {
                         rs.getString("payment_method_name"),
                         rs.getString("shipping_method_name"),
                         rs.getDouble("shipping_method_fee"),
-                        rs.getString("customer_name")
+                        rs.getString("customer_name"),
+                        rs.getDouble("discount_amount")
                 );
                 list.add(o);
             }
@@ -542,7 +529,8 @@ public class OrderDAO {
                         rs.getString("payment_method_name"),
                         rs.getString("shipping_method_name"),
                         rs.getDouble("shipping_method_fee"),
-                        rs.getString("customer_name")
+                        rs.getString("customer_name"),
+                        rs.getDouble("discount_amount")
                 );
                 list.add(o);
             }

@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.DiscountOrderDAO;
 import dao.OrderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,6 +19,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import model.DiscountOrder;
 import model.Order;
 import model.OrderItem;
 import util.Email;
@@ -70,7 +72,7 @@ public class OrderManagementServlet extends HttpServlet {
         try {
             switch (action) {
                 case "view":
-                    viewOrderHistory(request, response);
+                    viewOrderList(request, response);
                     break;
                 case "viewdetail":
                     viewOrderDetail(request, response);
@@ -143,11 +145,11 @@ public class OrderManagementServlet extends HttpServlet {
                 // Con lai
             } else {
                 // Neu duyet hoan thanh don hang thi add thoi gian hoan thanh don
-                if(updateStatus.equals("Hoàn thành")){
+                if (updateStatus.equals("Hoàn thành")) {
                     update = OrderDAO.approvalOrder(updateStatus, intStaffId, null, Timestamp.from(Instant.now()), orderId);
                 } else {
                     update = OrderDAO.approvalOrder(updateStatus, intStaffId, null, null, orderId);
-                }               
+                }
             }
 
             if (update) {
@@ -215,7 +217,7 @@ public class OrderManagementServlet extends HttpServlet {
 
     private void viewOrderDetail(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-//        int customerId = Integer.parseInt(request.getParameter("customerId"));
+
         int orderId = Integer.parseInt(request.getParameter("orderId"));
 
         List<OrderItem> orderitems = OrderDAO.getOrderItemsByOrderId(orderId);
@@ -232,7 +234,7 @@ public class OrderManagementServlet extends HttpServlet {
 
     }
 
-    private void viewOrderHistory(HttpServletRequest request, HttpServletResponse response)
+    private void viewOrderList(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         List<Order> orders = null;
         try {

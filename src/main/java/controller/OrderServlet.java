@@ -5,6 +5,7 @@
 package controller;
 
 import dao.CartDAO;
+import dao.DiscountOrderDAO;
 import dao.OrderDAO;
 import dao.ProductDAO;
 import dao.ProfileDAO;
@@ -20,6 +21,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import model.DiscountOrder;
 import model.Order;
 import model.OrderItem;
 import model.Product;
@@ -99,7 +101,8 @@ public class OrderServlet extends HttpServlet {
 
     private void submitOrder(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        int customerId = 1;
+        String customerIdStr = getCustomerIdFromCookies(request);
+        int customerId = Integer.parseInt(customerIdStr);
 
         JSONObject json = new JSONObject();
         response.setContentType("application/json");
@@ -113,6 +116,8 @@ public class OrderServlet extends HttpServlet {
             String shippingMethod = request.getParameter("shippingMethod");
             String paymentMethod = request.getParameter("paymentMethod");
             double totalCartPrice = Double.parseDouble(request.getParameter("totalPrice"));
+            double salePrice = Double.parseDouble(request.getParameter("salePrice"));
+            int voucherId = Integer.parseInt(request.getParameter("voucherId"));
 //            double shippingCost = Double.parseDouble(request.getParameter("shippingCost"));
 
             String status = "";
@@ -134,18 +139,27 @@ public class OrderServlet extends HttpServlet {
             }
 
             int orderId = 0;
-            orderId = OrderDAO.insertOrder(customerId, paymentMethod_id, shippingMethod_id, name, phone, address, note, totalCartPrice, status);
+            orderId = OrderDAO.insertOrder(customerId, paymentMethod_id, shippingMethod_id, name, phone, address, note, totalCartPrice + salePrice, status);
             if (orderId != 0) {
                 HttpSession session = request.getSession();
                 session.setAttribute("orderId", orderId);
                 System.out.println("Them don hang thanh cong.");
-                
-                
-                
+
+                if (voucherId != 0) {
+                    DiscountOrderDAO discountOrderDAO = new DiscountOrderDAO();
+                    DiscountOrder discountOrder = new DiscountOrder(orderId, voucherId, totalCartPrice);
+                    boolean check = discountOrderDAO.addDiscountOrder(discountOrder);
+                    if(check){
+                        System.out.println("Them DiscountOrder thanh cong.");
+                    } else {
+                        System.out.println("Them DiscountOrder that bai!");
+                    }
+                }
+
                 boolean remove = CartDAO.removeCart(customerId);
 
                 ProductDAO productDAO = new ProductDAO();
-                
+
                 List<OrderItem> orderitems = OrderDAO.getOrderItemsByOrderId(orderId);
                 double basicPrice = 0;
                 for (OrderItem orderitem : orderitems) {
@@ -281,16 +295,8 @@ public class OrderServlet extends HttpServlet {
     private void viewOrderDetail(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
 
-        String customerId = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("customerId".equals(cookie.getName())) {
-                    customerId = cookie.getValue();
-                    break;
-                }
-            }
-        }
+        String customerId = getCustomerIdFromCookies(request);
+
         ProfileDAO profileDAO = new ProfileDAO();
         User user = profileDAO.getUser(customerId);
         request.setAttribute("customer", user);
@@ -315,16 +321,8 @@ public class OrderServlet extends HttpServlet {
             throws SQLException, IOException, ServletException {
         List<Order> orders = null;
 
-        String customerId = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("customerId".equals(cookie.getName())) {
-                    customerId = cookie.getValue();
-                    break;
-                }
-            }
-        }
+        String customerId = getCustomerIdFromCookies(request);
+
         ProfileDAO profileDAO = new ProfileDAO();
         User user = profileDAO.getUser(customerId);
         request.setAttribute("customer", user);
@@ -363,6 +361,18 @@ public class OrderServlet extends HttpServlet {
             System.out.println(e);
         }
 
+    }
+
+    public static String getCustomerIdFromCookies(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("customerId".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 
     /**

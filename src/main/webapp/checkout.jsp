@@ -169,6 +169,15 @@
 
                         <!-- Price & other Cost of Order -->
                         <div class="price-and-cost d-grid gap-2">
+                            <div class="d-flex justify-content-between mb-3">
+                                <div class="col-sm-9">
+                                    <input id="voucher-code" type="search" class="form-control" style="height: 45px;" placeholder="Nhập mã giảm giá">                                   
+                                </div>
+                                <button id="voucher" class="btn btn-primary" type="button"
+                                        style="--bs-btn-padding-y: .45rem; --bs-btn-padding-x: .9rem; --bs-btn-font-size: .95rem;">
+                                    Áp dụng
+                                </button>
+                            </div>
                             <div class="d-flex justify-content-between">
                                 <span>Tạm tính</span>
                                 <span id="base-price" data-price="${totalCartPrice}">
@@ -178,7 +187,11 @@
                             <div class="d-flex justify-content-between">
                                 <span>Phí vận chuyển</span>
                                 <span id="shipping-cost-value">40.000đ</span>
-                            </div>         
+                            </div>   
+                            <div class="d-flex justify-content-between">
+                                <span>Khuyến mãi</span>
+                                <span id="sale-cost">0đ</span>
+                            </div> 
                         </div>
 
                         <!-- Total Price of Order -->
@@ -270,132 +283,79 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-                                            $('#submit-btn').click(function () { // Khi người dùng nhấp vào nút submit
-                                                // 1. Lấy dữ liệu
-                                                const email = $('#email').val().trim();
-                                                const name = $('#name').val().trim();
-                                                const phone = $('#phone').val().trim();
-                                                const address = $('#address').val().trim();
-                                                const note = $('#comment').val().trim();
+            let voucherId;
+                                            $('#voucher').click(function () {                                                                                            
+
+                                                const voucherCode = $('#voucher-code').val().trim();
+                                                let saleCost = document.getElementById('sale-cost');
+                                                // Lay gia tien tam tinh (chua bao gom phi van chuyen)
+                                                let basePriceString = $('#base-price').data("price");
+                                                // Chuyen basePriceString sang kieu so
+                                                let basePrice = parseFloat(basePriceString);
                                                 const totalPrice = parseFloat($('#total-price-value').text().replace(/[.,đ]/g, ''));
                                                 const shippingCost = parseFloat($('#shipping-cost-value').text().replace(/[.,đ]/g, ''));
-                                                // **Lấy giá trị của radio button được chọn
-                                                const shippingMethod = $('input[name="shipping-method"]:checked').attr('id');
-                                                const paymentMethod = $('input[name="payment-method"]:checked').attr('id');
 
-                                                console.log("Gui du lieu email: " + email);
-                                                console.log("Gui du lieu name: " + name);
-                                                console.log("Gui du lieu phone: " + phone);
-                                                console.log("Gui du lieu address: " + address);
-                                                console.log("Gui du lieu note: " + note);
-                                                console.log("Gui du lieu totalPrice: " + totalPrice);
-                                                console.log("Gui du lieu shippingCost: " + shippingCost);
-                                                console.log("Gui du lieu shippingMethod: " + shippingMethod);
-                                                console.log("Gui du lieu paymentMethod " + paymentMethod);
+                                                console.log("Gui du lieu voucherCode: " + voucherCode);
+                                                console.log("Gui du lieu saleCost: " + saleCost);
 
-                                                let isValid = true;
-
-                                                // Kiểm tra email
-                                                if (email === "") {
+                                                // Kiểm tra voucher
+                                                if (voucherCode === "") {
                                                     Swal.fire({
-                                                        position: "top",
                                                         icon: "warning",
-                                                        title: "Email không được để trống.",
+                                                        title: "Bạn đang để trống mã giảm giá!",
                                                         showConfirmButton: false,
                                                         width: 350,
-                                                        timer: 2500
+                                                        timer: 2000
                                                     });
-                                                    isValid = false;
-                                                    return;
-                                                } else if (!isValidEmail(email)) {
-                                                    Swal.fire({
-                                                        position: "top",
-                                                        icon: "warning",
-                                                        title: "Email không đúng định dạng.",
-                                                        showConfirmButton: false,
-                                                        width: 350,
-                                                        timer: 2500
-                                                    });
-                                                    isValid = false;
                                                     return;
                                                 }
 
-                                                // Kiểm tra họ và tên (ví dụ: không được để trống)
-                                                if (name === "") {
-                                                    Swal.fire({
-                                                        position: "top",
-                                                        icon: "warning",
-                                                        title: "Họ và tên không được để trống.",
-                                                        showConfirmButton: false,
-                                                        width: 350,
-                                                        timer: 2500
-                                                    });
-                                                    isValid = false;
-                                                    return;
-                                                }
-
-                                                // Kiểm tra số điện thoại
-                                                if (phone === "") {
-                                                    Swal.fire({
-                                                        position: "top",
-                                                        icon: "warning",
-                                                        title: "Số điện thoại không được để trống.",
-                                                        showConfirmButton: false,
-                                                        width: 350,
-                                                        timer: 2500
-                                                    });
-                                                    isValid = false;
-                                                    return;
-                                                } else if (!isValidPhone(phone)) {
-                                                    Swal.fire({
-                                                        position: "top",
-                                                        icon: "warning",
-                                                        title: "Số điện thoại không đúng định dạng.",
-                                                        showConfirmButton: false,
-                                                        width: 350,
-                                                        timer: 2500
-                                                    });
-                                                    isValid = false;
-                                                    return;
-                                                }
-
-                                                // Kiểm tra địa chỉ (ví dụ: không được để trống)
-                                                if (address === "") {
-                                                    Swal.fire({
-                                                        position: "top",
-                                                        icon: "warning",
-                                                        title: "Địa chỉ không được để trống.",
-                                                        showConfirmButton: false,
-                                                        width: 350,
-                                                        timer: 2500
-                                                    });
-                                                    isValid = false;
-                                                    return;
-                                                }
-
-                                                // 3. Gọi AJAX
+                                                // Gọi AJAX
                                                 $.ajax({
-                                                    url: 'order',
+                                                    url: 'checkout',
                                                     type: 'POST',
                                                     data: {
-                                                        action: "order",
-                                                        name: name,
-                                                        email: email,
-                                                        address: address,
-                                                        note: note,
-                                                        phone: phone,
-                                                        totalPrice: totalPrice,
-                                                        shippingCost: shippingCost,
-                                                        shippingMethod: shippingMethod,
-                                                        paymentMethod: paymentMethod
+                                                        action: "voucher",
+                                                        basePrice: basePrice,
+                                                        voucherCode: voucherCode
                                                     },
                                                     dataType: "json",
                                                     success: function (response) {
                                                         if (response.status === "success") {
-                                                            console.log("Đã gửi dữ liệu thành công, đợi chuyển hướng từ server...");
-                                                            window.location.href = "checkoutsuccess.jsp";
+                                                            $("#voucher-code").val("");
+                                                            voucherId = response.voucherId;
+
+                                                            console.log("Áp mã khuyễn mãi thành công.");
+                                                            Swal.fire({
+                                                                icon: "success",
+                                                                title: "Áp mã thành công.",
+                                                                showConfirmButton: false,
+                                                                width: 350,
+                                                                timer: 2000
+                                                            });
+                                                            saleCost.textContent = "-" + formatCurrency(response.discountValue);
+
+                                                            let shippingCost = document.querySelector('input[name="shipping-method"]:checked').value;
+                                                            console.log("Chi phí vận chuyển:", shippingCost);
+
+                                                            // Cập nhật tổng giá
+                                                            updateTotalPrice(parseFloat(shippingCost));   
+
+                                                        } else if (response.status === "errorMinOrderValue") {
+                                                            console.log("Không đủ điều kiện áp mã! Đơn hàng tối thiểu: " + formatCurrency(response.minOrderValue));
+
+                                                            Swal.fire({
+                                                                title: "Không đủ điều kiện sử dụng mã!",
+                                                                text: "Đơn hàng tối thiểu " + formatCurrency(response.minOrderValue),
+                                                                icon: "error"
+                                                            });
                                                         } else {
-                                                            console.log("Lỗi đặt đơn hàng!");
+                                                            console.log("Lỗi áp mã khuyến mãi!");
+                                                            Swal.fire({
+                                                                title: "Mã không hợp lệ!",
+                                                                icon: "error",
+                                                                width: 350,
+                                                            });
                                                         }
 
                                                     },
@@ -407,68 +367,223 @@
                                                     }
                                                 });
                                             });
+        </script>
 
-                                            function isValidEmail(email) {
-                                                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                                                return emailRegex.test(email);
-                                            }
+        <script>
+            $('#submit-btn').click(function () { // Khi người dùng nhấp vào nút submit
+                // 1. Lấy dữ liệu
+                const email = $('#email').val().trim();
+                const name = $('#name').val().trim();
+                const phone = $('#phone').val().trim();
+                const address = $('#address').val().trim();
+                const note = $('#comment').val().trim();
+                const totalPrice = parseFloat($('#total-price-value').text().replace(/[.,đ]/g, ''));
+                const shippingCost = parseFloat($('#shipping-cost-value').text().replace(/[.,đ]/g, ''));
+                const salePrice = parseFloat($('#sale-cost').text().replace(/[-,.,đ]/g, ''));
+                if(salePrice === 0){
+                    voucherId = 0;
+                }
+                // **Lấy giá trị của radio button được chọn
+                const shippingMethod = $('input[name="shipping-method"]:checked').attr('id');
+                const paymentMethod = $('input[name="payment-method"]:checked').attr('id');
 
-                                            function isValidPhone(phone) {
-                                                // Biểu thức chính quy kiểm tra số điện thoại (ví dụ: 10-11 số)
-                                                const phoneRegex = /^\d{10,11}$/; // Hoặc biểu thức phức tạp hơn tùy theo yêu cầu
-                                                return phoneRegex.test(phone);
-                                            }
+                console.log("Gui du lieu email: " + email);
+                console.log("Gui du lieu name: " + name);
+                console.log("Gui du lieu phone: " + phone);
+                console.log("Gui du lieu address: " + address);
+                console.log("Gui du lieu note: " + note);
+                console.log("Gui du lieu totalPrice: " + totalPrice);
+                console.log("Gui du lieu shippingCost: " + shippingCost);
+                console.log("Gui du lieu shippingMethod: " + shippingMethod);
+                console.log("Gui du lieu paymentMethod: " + paymentMethod);
+                console.log("Gui du lieu salePrice: " + salePrice);
 
-                                            // Gọi handleShippingChange() khi trang web được tải
-                                            window.addEventListener('DOMContentLoaded', (event) => {
-                                                handleShippingChange();
-                                            });
+                let isValid = true;
 
-                                            // Hàm này sẽ được gọi khi một radio button được chọn.
-                                            // Hàm này sẽ cho biết thông tin về phương thức vận chuyển đã chọn cùng với giá tiền
-                                            function handleShippingChange() {
-                                                // Neu phuong thuc van chuyen nao duoc chon thi se lay id cua input tuong ung
-                                                let selectedMethod = document.querySelector('input[name="shipping-method"]:checked').id;
-                                                console.log("Đã chọn phương thức có ID:", selectedMethod);
+                // Kiểm tra email
+                if (email === "") {
+                    Swal.fire({
+                        position: "top",
+                        icon: "warning",
+                        title: "Email không được để trống.",
+                        showConfirmButton: false,
+                        width: 350,
+                        timer: 2500
+                    });
+                    isValid = false;
+                    return;
+                } else if (!isValidEmail(email)) {
+                    Swal.fire({
+                        position: "top",
+                        icon: "warning",
+                        title: "Email không đúng định dạng.",
+                        showConfirmButton: false,
+                        width: 350,
+                        timer: 2500
+                    });
+                    isValid = false;
+                    return;
+                }
 
-                                                // Neu phuong thuc van chuyen nao duoc chon thi se lay value cua input tuong ung
-                                                let shippingCost = document.querySelector('input[name="shipping-method"]:checked').value;
-                                                console.log("Chi phí vận chuyển:", shippingCost);
+                // Kiểm tra họ và tên (ví dụ: không được để trống)
+                if (name === "") {
+                    Swal.fire({
+                        position: "top",
+                        icon: "warning",
+                        title: "Họ và tên không được để trống.",
+                        showConfirmButton: false,
+                        width: 350,
+                        timer: 2500
+                    });
+                    isValid = false;
+                    return;
+                }
 
-                                                // Sử dụng shippingCost ở đây, ví dụ: cập nhật tổng giá
-                                                updateTotalPrice(parseFloat(shippingCost)); // Chuyển thành số nguyên                             
-                                            }
+                // Kiểm tra số điện thoại
+                if (phone === "") {
+                    Swal.fire({
+                        position: "top",
+                        icon: "warning",
+                        title: "Số điện thoại không được để trống.",
+                        showConfirmButton: false,
+                        width: 350,
+                        timer: 2500
+                    });
+                    isValid = false;
+                    return;
+                } else if (!isValidPhone(phone)) {
+                    Swal.fire({
+                        position: "top",
+                        icon: "warning",
+                        title: "Số điện thoại không đúng định dạng.",
+                        showConfirmButton: false,
+                        width: 350,
+                        timer: 2500
+                    });
+                    isValid = false;
+                    return;
+                }
 
-                                            function updateTotalPrice(shippingCost) {
-                                                // Lay gia tien tam tinh (chua bao gom phi van chuyen)
-                                                let basePriceString = $('#base-price').data("price");
-                                                // Chuyen basePriceString sang kieu so
-                                                let basePrice = parseFloat(basePriceString);
-                                                console.log("Base price: " + basePrice);
-                                                // Tinh tong gia tien cuoi cung
-                                                let totalPrice = basePrice + shippingCost;
-                                                console.log("Total price: " + totalPrice);
-                                                console.log(``);
+                // Kiểm tra địa chỉ (ví dụ: không được để trống)
+                if (address === "") {
+                    Swal.fire({
+                        position: "top",
+                        icon: "warning",
+                        title: "Địa chỉ không được để trống.",
+                        showConfirmButton: false,
+                        width: 350,
+                        timer: 2500
+                    });
+                    isValid = false;
+                    return;
+                }
 
-                                                // 'totalPriceElement' se tro toi thanh phan co id 'total-price-value'
-                                                let shippingCostElement = document.getElementById('shipping-cost-value');
-                                                // Thay noi dung 'shippingCost' vao bien 'shippingCostElement' da co toi id tuong ung
-                                                shippingCostElement.textContent = formatCurrency(shippingCost);
+                // 3. Gọi AJAX
+                $.ajax({
+                    url: 'order',
+                    type: 'POST',
+                    data: {
+                        action: "order",
+                        name: name,
+                        email: email,
+                        address: address,
+                        note: note,
+                        phone: phone,
+                        totalPrice: totalPrice,
+                        shippingCost: shippingCost,
+                        shippingMethod: shippingMethod,
+                        paymentMethod: paymentMethod,
+                        salePrice: salePrice,
+                        voucherId: voucherId
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.status === "success") {
+                            console.log("Đã gửi dữ liệu thành công, đợi chuyển hướng từ server...");
+                            window.location.href = "checkoutsuccess.jsp";
+                        } else {
+                            console.log("Lỗi đặt đơn hàng!");
+                        }
 
-                                                // 'totalPriceElement' se tro toi thanh phan co id 'total-price-value'
-                                                let totalPriceElement = document.getElementById('total-price-value');
-                                                // Thay noi dung 'totalPrice' vao bien 'totalPriceElement' da co toi id tuong ung
-                                                totalPriceElement.textContent = formatCurrency(totalPrice);
+                    },
+                    error: function (xhr, status, error) {
+                        // Xử lý lỗi
+                        console.error("Lỗi khi gọi servlet:", status, error);
+                        console.error("Response Text:", xhr.responseText);
+                        alert("Có lỗi xảy ra. Vui lòng thử lại sau.");
+                    }
+                });
+            });
 
-                                            }
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
 
-                                            // Ham format lai gia tien
-                                            function formatCurrency(amount) {
-                                                return amount.toLocaleString('vi-VN', {
-                                                    style: 'currency',
-                                                    currency: 'VND'
-                                                }).replace(/\s/g, '').replace('₫', 'đ').replace(/\./g, ',');
-                                            }
+            function isValidPhone(phone) {
+                // Biểu thức chính quy kiểm tra số điện thoại (ví dụ: 10-11 số)
+                const phoneRegex = /^\d{10,11}$/; // Hoặc biểu thức phức tạp hơn tùy theo yêu cầu
+                return phoneRegex.test(phone);
+            }
+
+            // Gọi handleShippingChange() khi trang web được tải
+            window.addEventListener('DOMContentLoaded', (event) => {
+                handleShippingChange();
+            });
+        </script>
+
+        <script>
+            // Hàm này sẽ được gọi khi một radio button được chọn.
+            // Hàm này sẽ cho biết thông tin về phương thức vận chuyển đã chọn cùng với giá tiền
+            function handleShippingChange() {
+                // Neu phuong thuc van chuyen nao duoc chon thi se lay id cua input tuong ung
+                let selectedMethod = document.querySelector('input[name="shipping-method"]:checked').id;
+                console.log("Đã chọn phương thức có ID:", selectedMethod);
+
+                // Neu phuong thuc van chuyen nao duoc chon thi se lay value cua input tuong ung
+                let shippingCost = document.querySelector('input[name="shipping-method"]:checked').value;
+                console.log("Chi phí vận chuyển:", shippingCost);
+
+                // Sử dụng shippingCost ở đây, ví dụ: cập nhật tổng giá
+                updateTotalPrice(parseFloat(shippingCost)); // Chuyển thành số nguyên                             
+            }
+
+
+            function updateTotalPrice(shippingCost) {
+                // Lay gia tien tam tinh (chua bao gom phi van chuyen)
+                let basePriceString = $('#base-price').data("price");
+                // Chuyen basePriceString sang kieu so
+                let basePrice = parseFloat(basePriceString);
+                console.log("Base price: " + basePrice);
+
+                // Lấy tiền sale
+                let salePrice = parseFloat($('#sale-cost').text().replace(/[-,.,đ]/g, ''));
+
+                // Tinh tong gia tien cuoi cung
+                let totalPrice = basePrice + shippingCost - salePrice;
+                console.log("Total price: " + totalPrice);
+                console.log(``);
+
+                // 'totalPriceElement' se tro toi thanh phan co id 'total-price-value'
+                let shippingCostElement = document.getElementById('shipping-cost-value');
+                // Thay noi dung 'shippingCost' vao bien 'shippingCostElement' da co toi id tuong ung
+                shippingCostElement.textContent = formatCurrency(shippingCost);
+
+                // 'totalPriceElement' se tro toi thanh phan co id 'total-price-value'
+                let totalPriceElement = document.getElementById('total-price-value');
+                // Thay noi dung 'totalPrice' vao bien 'totalPriceElement' da co toi id tuong ung
+                totalPriceElement.textContent = formatCurrency(totalPrice);
+
+            }
+
+
+            // Ham format lai gia tien
+            function formatCurrency(amount) {
+                return amount.toLocaleString('vi-VN', {
+                    style: 'currency',
+                    currency: 'VND'
+                }).replace(/\s/g, '').replace('₫', 'đ').replace(/\./g, ',');
+            }
         </script>
     </body>
 </html>
