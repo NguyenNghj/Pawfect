@@ -1,0 +1,188 @@
+* {
+    font-family: 'Baloo 2', sans-serif !important;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #F4F4F4;
+}
+.breadcrumb {
+    background-color: #ffffff;
+    list-style: none;
+    display: flex;
+    gap: 10px;
+    padding: 15px 0 15px 50px;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.breadcrumb li::after {
+    content: " \/ ";
+}
+
+.breadcrumb li:last-child::after {
+    content: "";
+}
+
+.trang-chu {
+    color: #D3A376;
+    text-decoration: none;
+}
+h3 {
+    text-align: center;
+    font-weight: bold;
+    color: #8c6e63;
+    font-size: 36px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+/* CONTAINER CHÍNH */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 950px;
+    width: 100%;
+    margin: 20px auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border: 1px solid #ddd;
+    gap: 30px; /* Khoảng cách giữa các phần */
+}
+
+/* THÔNG TIN KHÁCH HÀNG */
+.info-container {
+    flex: 1;
+    text-align: center;
+}
+
+h2 {
+    font-size: 27px;
+    color: #8c6e63;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.room-image {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* BOX THÔNG TIN */
+.info-box {
+    background: #faf5f0;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    max-width: 400px;
+    margin: 15px auto;
+    text-align: left;
+}
+
+.info-box h3 {
+    color: #8c6e63;
+    font-size: 22px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.info-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.info-list li {
+    font-size: 18px;
+    color: #333;
+    padding: 6px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.info-list li:last-child {
+    border-bottom: none;
+}
+
+/* FORM ĐẶT PHÒNG */
+.form-container {
+    flex: 1;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+label {
+    font-weight: bold;
+    color: #8c6e63;
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #d3a376;
+    box-shadow: 0 0 5px rgba(211, 163, 118, 0.5);
+    outline: none;
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    background: #8c6e63;
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    text-transform: uppercase;
+    margin-top: 10px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Tăng độ đổ bóng */
+    transform: translateY(-2px); /* Nhấc nút lên nhẹ */
+}
+
+
+/* TEXTAREA */
+textarea {
+    min-height: 80px;
+    max-height: 200px;
+    resize: vertical;
+    font-size: 16px;
+}
+
+/* ĐÁP ỨNG MOBILE */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .info-container, .form-container {
+        width: 100%;
+    }
+}
+
