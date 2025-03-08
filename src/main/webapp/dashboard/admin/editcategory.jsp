@@ -28,7 +28,7 @@
 
                 <!-- SIDEBAR -->
                 <jsp:include page="sidebar.jsp"/>
- <%
+                <%
                     Cookie[] cookies = request.getCookies();
                     String staffRole = "";
                     String staffName = "";
@@ -121,20 +121,47 @@
                             <div class="mb-3">
                                 <label for="editCategoryStatus">Trạng thái</label>
                                 <select class="form-select" name="isActive">
-                                    <option value="true" ${category.active ? 'selected' : ''}>Hoạt động</option>
-                                    <option value="false" ${!category.active ? 'selected' : ''}>Không hoạt động</option>
+                                    <option value="true" ${category.active ? 'selected' : ''}>Đang bán</option>
+                                    <option value="false" ${!category.active ? 'selected' : ''}>Ngừng bán</option>
                                 </select>
                             </div>
 
                             <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
                             <a href="<c:url value='/dashboard/admin/category'/>" class="btn btn-secondary">Trở về</a>
                         </form>
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const selectStatus = document.querySelector("select[name='isActive']");
+                                const form = document.getElementById("editCategoryForm");
+
+                                selectStatus.addEventListener("change", function (event) {
+                                    if (event.target.value === "false") {
+                                        Swal.fire({
+                                            title: "Xác nhận!",
+                                            text: "Bạn có chắc chắn muốn ngừng bán thể loại này không? Tất cả sản phẩm của thể loại này sẽ ngừng bán",
+                                            icon: "warning",
+                                            showCancelButton: true,
+                                            confirmButtonColor: "#d33",
+                                            cancelButtonColor: "#3085d6",
+                                            confirmButtonText: "Có, tôi chắc chắn!",
+                                            cancelButtonText: "Hủy",
+                                        }).then((result) => {
+                                            if (!result.isConfirmed) {
+                                                // Nếu người dùng hủy, đặt lại giá trị ban đầu
+                                                event.target.value = "true";
+                                            }
+                                        });
+                                    }
+                                });
+                            });
+                        </script>
                     </div>
                 </div>
             </div>
         </div>
 
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
