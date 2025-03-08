@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <filter>
+        <filter-name>DashboardFillter</filter-name>
+        <filter-class>Fillter.DashboardFillter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>DashboardFillter</filter-name>
+        <url-pattern>/dashboard/*</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>ShopControl</servlet-name>
         <servlet-class>controller.ShopControl</servlet-class>
@@ -212,6 +220,26 @@
         <servlet-name>CancelBookingServlet</servlet-name>
         <servlet-class>controller.CancelBookingServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>VerifyServlet</servlet-name>
+        <servlet-class>controller.VerifyServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StaffAddServlet</servlet-name>
+        <servlet-class>controller.StaffAddServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VoucherManagementServlet</servlet-name>
+        <servlet-class>controller.VoucherManagementServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddVoucherServlet</servlet-name>
+        <servlet-class>controller.AddVoucherServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditVoucherServlet</servlet-name>
+        <servlet-class>controller.EditVoucherServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>PetHotelServlet</servlet-name>
         <url-pattern>/pethotel</url-pattern>
@@ -423,6 +451,26 @@
     <servlet-mapping>
         <servlet-name>CancelBookingServlet</servlet-name>
         <url-pattern>/cancelbooking</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VerifyServlet</servlet-name>
+        <url-pattern>/verify</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StaffAddServlet</servlet-name>
+        <url-pattern>/dashboard/admin/staffadd</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VoucherManagementServlet</servlet-name>
+        <url-pattern>/dashboard/admin/voucher</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddVoucherServlet</servlet-name>
+        <url-pattern>/dashboard/admin/addvoucher</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditVoucherServlet</servlet-name>
+        <url-pattern>/dashboard/admin/editvoucher</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

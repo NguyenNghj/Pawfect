@@ -15,7 +15,154 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="../../css/dashboard.css">
-        <title>JSP Page</title>
+        <title>Quản Lí Khách Hàng</title>
+        <style>
+            .search-form {
+                max-width: 300px; /* Giới hạn chiều rộng */
+                display: flex;
+                justify-content: start; /* Căn trái */
+                background-color: #D6CBC7; /* Màu nền */
+                padding: 8px; /* Tạo khoảng cách bên trong */
+                border-radius: 5px; /* Bo góc nhẹ */
+            }
+
+            .search-input {
+                flex: 1;
+                padding: 6px;
+                font-size: 14px;
+                height: 35px;
+                background-color: white; /* Giữ màu nền input trắng để dễ nhìn */
+                color: black; /* Chữ màu đen */
+                border: 1px solid #aaa; /* Viền nhẹ */
+                border-radius: 5px;
+            }
+
+            .search-btn {
+                padding: 6px 10px;
+                font-size: 14px;
+                height: 35px;
+                white-space: nowrap;
+                background-color: #8B7E74; /* Màu nút tối hơn để phân biệt */
+                color: white; /* Chữ trắng trên nút */
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease-in-out;
+            }
+
+            .search-btn:hover {
+                background-color: #6F625B; /* Màu tối hơn khi hover */
+            }
+
+            .ban-btn, .unban-btn {
+                display: inline-block;
+                width: 80px; /* Đảm bảo cả hai nút có cùng chiều rộng */
+                text-align: center;
+                color: white;
+                padding: 8px 0;
+                font-size: 14px;
+                font-weight: bold;
+                text-decoration: none;
+                border-radius: 5px;
+                border: none;
+                cursor: pointer;
+            }
+
+            .ban-btn {
+                background-color: red;
+            }
+
+            .unban-btn {
+                background-color: green;
+            }
+
+            .ban-btn:hover {
+                background-color: darkred;
+            }
+
+            .unban-btn:hover {
+                background-color: darkgreen;
+            }
+
+            /* Thiết lập chung cho bảng */
+            .table {
+                width: 100%;
+                border-collapse: collapse;
+                background-color: white;
+            }
+
+            /* Căn trái toàn bộ nội dung trong bảng */
+            .table th,
+            .table td {
+                text-align: left !important;
+                padding: 10px;
+                vertical-align: middle;
+            }
+            /* Định dạng tiêu đề bảng */
+            .main-dashboard-table-header {
+                background-color: #007BFF;
+                color: white;
+                border-top-left-radius: 6px;
+                border-top-right-radius: 6px;
+                text-align: left;
+                padding: 12px 15px;
+            }
+
+            /* Màu nền và kiểu chữ cho tiêu đề */
+            .main-dashboard-table-header {
+                background-color: #007BFF;
+                color: white;
+                font-weight: bold;
+                padding: 12px;
+                text-align: center;
+                border-top-left-radius: 6px;
+                border-top-right-radius: 6px;
+            }
+
+            /* Gạch ngang ngăn cách từng khách hàng */
+            .table tbody tr {
+                border-bottom: 1px solid #ddd;
+            }
+
+            /* Định dạng hàng tiêu đề */
+            .table thead {
+                background-color: #007BFF;
+                color: white;
+            }
+
+            /* Tạo hover cho hàng */
+            .table tbody tr:hover {
+                background-color: #f5f5f5;
+            }
+
+            /* CSS cho nút "Cấm" */
+            .ban-btn {
+                background-color: red;
+                color: white;
+                padding: 6px 12px;
+                border-radius: 4px;
+                text-decoration: none;
+                font-weight: bold;
+                transition: 0.3s;
+            }
+
+            /* Hiệu ứng hover cho nút "Cấm" */
+            .ban-btn:hover {
+                background-color: darkred;
+            }
+            .main-dashboard-table-header {
+                background-color: #8C6E63; /* Màu nền */
+                padding: 10px 20px; /* Tạo khoảng cách giữa nội dung và viền */
+                border-radius: 8px; /* Bo góc nhẹ */
+                display: flex; /* Đảm bảo các phần tử căn chỉnh theo hàng ngang */
+                align-items: center; /* Căn giữa theo chiều dọc */
+                gap: 10px; /* Khoảng cách giữa icon và tiêu đề */
+            }
+
+
+
+
+        </style>
     </head>
     <body>
         <div class="container-fluid">
@@ -24,7 +171,7 @@
                 <!-- SIDEBAR -->
                 <jsp:include page="sidebar.jsp"/>
 
- <%
+                <%
                     Cookie[] cookies = request.getCookies();
                     String staffRole = "";
                     String staffName = "";
@@ -95,74 +242,6 @@
                     </div>   
 
 
-                    <style>
-                        /* Thiết lập chung cho bảng */
-                        .table {
-                            width: 100%;
-                            border-collapse: collapse;
-                            background-color: white;
-                        }
-
-                        /* Căn trái toàn bộ nội dung trong bảng */
-                        .table th,
-                        .table td {
-                            text-align: left !important;
-                            padding: 10px;
-                            vertical-align: middle;
-                        }
-                        /* Định dạng tiêu đề bảng */
-                        .main-dashboard-table-header {
-                            background-color: #007BFF;
-                            color: white;
-                            border-top-left-radius: 6px;
-                            border-top-right-radius: 6px;
-                            text-align: left;
-                            padding: 12px 15px;
-                        }
-
-                        /* Màu nền và kiểu chữ cho tiêu đề */
-                        .main-dashboard-table-header {
-                            background-color: #007BFF;
-                            color: white;
-                            font-weight: bold;
-                            padding: 12px;
-                            text-align: center;
-                            border-top-left-radius: 6px;
-                            border-top-right-radius: 6px;
-                        }
-
-                        /* Gạch ngang ngăn cách từng khách hàng */
-                        .table tbody tr {
-                            border-bottom: 1px solid #ddd;
-                        }
-
-                        /* Định dạng hàng tiêu đề */
-                        .table thead {
-                            background-color: #007BFF;
-                            color: white;
-                        }
-
-                        /* Tạo hover cho hàng */
-                        .table tbody tr:hover {
-                            background-color: #f5f5f5;
-                        }
-
-                        /* CSS cho nút "Cấm" */
-                        .ban-btn {
-                            background-color: red;
-                            color: white;
-                            padding: 6px 12px;
-                            border-radius: 4px;
-                            text-decoration: none;
-                            font-weight: bold;
-                            transition: 0.3s;
-                        }
-
-                        /* Hiệu ứng hover cho nút "Cấm" */
-                        .ban-btn:hover {
-                            background-color: darkred;
-                        }
-                    </style>
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <div class="main-dashboard-table">
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header">                                                 
@@ -178,55 +257,7 @@
                                         <button type="submit" class="btn btn-primary search-btn">Tìm Kiếm</button>
                                     </form>
 
-                                    <style>
-                                        .search-form {
-                                            max-width: 300px; /* Giới hạn chiều rộng */
-                                            display: flex;
-                                            justify-content: start; /* Căn trái */
-                                        }
-                                        .search-input {
-                                            flex: 1;
-                                            padding: 6px;
-                                            font-size: 14px;
-                                            height: 35px;
-                                        }
-                                        .search-btn {
-                                            padding: 6px 10px;
-                                            font-size: 14px;
-                                            height: 35px;
-                                            white-space: nowrap;
-                                        }
-                                        .ban-btn, .unban-btn {
-                                            display: inline-block;
-                                            width: 80px; /* Đảm bảo cả hai nút có cùng chiều rộng */
-                                            text-align: center;
-                                            color: white;
-                                            padding: 8px 0;
-                                            font-size: 14px;
-                                            font-weight: bold;
-                                            text-decoration: none;
-                                            border-radius: 5px;
-                                            border: none;
-                                            cursor: pointer;
-                                        }
 
-                                        .ban-btn {
-                                            background-color: red;
-                                        }
-
-                                        .unban-btn {
-                                            background-color: green;
-                                        }
-
-                                        .ban-btn:hover {
-                                            background-color: darkred;
-                                        }
-
-                                        .unban-btn:hover {
-                                            background-color: darkgreen;
-                                        }
-
-                                    </style>
 
                                     <table class="table">
 
@@ -257,20 +288,23 @@
                                                 <td><%= customer.getGender()%></td>
                                                 <td><%= customer.getBirthDate()%></td>
                                                 <td>
+                                                    <% if ("admin".equalsIgnoreCase(staffRole)) { %> 
                                                     <% if (customer.isActive()) {%>
                                                     <a href="customersban?id=<%= customer.getCustomerId()%>&action=ban" 
                                                        class="ban-btn"
-                                                       onclick="return confirm('Bạn có chắc muốn cấm khách hàng này?');">
-                                                        Cấm
+                                                       onclick="return confirm('Bạn có chắc muốn cấm khách hàng này?');"> Cấm
                                                     </a>
                                                     <% } else {%>
                                                     <a href="customersban?id=<%= customer.getCustomerId()%>&action=unban" 
                                                        class="unban-btn"
-                                                       onclick="return confirm('Bạn có chắc muốn mở lại khách hàng này?');">
-                                                        Mở
+                                                       onclick="return confirm('Bạn có chắc muốn mở lại khách hàng này?');"> Mở
                                                     </a>
                                                     <% } %>
+                                                    <% } else { %>
+                                                    <span class="text-muted">Không có quyền</span>
+                                                    <% } %>
                                                 </td>
+
 
 
                                             </tr>

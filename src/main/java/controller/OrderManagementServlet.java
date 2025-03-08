@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -79,6 +81,9 @@ public class OrderManagementServlet extends HttpServlet {
                 case "approval":
                     approvalOrder(request, response);
                     break;
+                case "search":
+                    searchOrder(request, response);
+                    break;
                 default:
                     // listNhanVien(request, response);
                     break;
@@ -86,6 +91,20 @@ public class OrderManagementServlet extends HttpServlet {
         } catch (ServletException | IOException | SQLException e) {
             throw new ServletException(e);
         }
+    }
+
+    private void searchOrder(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        String status = request.getParameter("status");
+        String searchContent = request.getParameter("searchContent").trim();
+
+        System.out.println("searchContent: " + searchContent);
+
+        List<Order> orders = OrderDAO.searchOrder(searchContent);
+
+        request.setAttribute("orderStatus", status);
+        request.setAttribute("orders", orders);
+        request.getRequestDispatcher("/dashboard/staff/order.jsp").forward(request, response);
     }
 
     private void approvalOrder(HttpServletRequest request, HttpServletResponse response)
@@ -109,21 +128,28 @@ public class OrderManagementServlet extends HttpServlet {
             System.out.println("intStaffId: " + intStaffId);
             int orderId = Integer.parseInt(request.getParameter("orderId"));
             System.out.println("orderId: " + orderId);
-            String updateStatus = request.getParameter("updateStatus");
+            String updateStatus = request.getParameter("updateStatus").trim();
             String statusType = request.getParameter("statusType");
             String actionBack = request.getParameter("actionBack");
             String reasonCancel = request.getParameter("reasonCancel");
             System.out.println("reasonCancel: " + reasonCancel);
-            
+
             System.out.println("updateStatus: " + updateStatus);
 
             boolean update = false;
-            if(reasonCancel != null){
-                update = OrderDAO.approvalOrder(updateStatus, intStaffId, reasonCancel, orderId);
+            // Truong hop neu huy don hang
+            if (reasonCancel != null) {
+                update = OrderDAO.approvalOrder(updateStatus, intStaffId, reasonCancel, null, orderId);
+                // Con lai
             } else {
-                update = OrderDAO.approvalOrder(updateStatus, intStaffId, null, orderId);
+                // Neu duyet hoan thanh don hang thi add thoi gian hoan thanh don
+                if(updateStatus.equals("Hoàn thành")){
+                    update = OrderDAO.approvalOrder(updateStatus, intStaffId, null, Timestamp.from(Instant.now()), orderId);
+                } else {
+                    update = OrderDAO.approvalOrder(updateStatus, intStaffId, null, null, orderId);
+                }               
             }
-                  
+
             if (update) {
                 System.out.println("Cap nhat trang thai don hang thanh cong.");
 
@@ -210,7 +236,6 @@ public class OrderManagementServlet extends HttpServlet {
             throws SQLException, IOException, ServletException {
         List<Order> orders = null;
         try {
-            int customerId = 1;
             String status = request.getParameter("status");
 
             switch (status) {

@@ -7,122 +7,223 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : LENOVO
 */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+:root {
+    --primary-color: #8C6E63;
+    --primary-hover: #D3A376;
+    --light-bg: #f0f5ff;
 }
 
 body {
+    font-family: 'Baloo 2', sans-serif;
+    background-color: var(--light-bg);
+    height: 100vh;
+}
+body {
+    font-family: 'Baloo 2', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background: url('imge.jpg') no-repeat;
+    height: 100vh;
+    background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6KYofPjHBJzD0wDz_YLzcTZySiyqzSWXRRw&s') no-repeat center center/cover;
 }
- 
-.wrapper {
-    width: 420px;
-    background: rgba(140, 110, 99, 0.7); /* Màu nâu với độ trong suốt */
-    border: 2px solid White;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 0 10px #8C6E63;
-    color: black;
-    border-radius: 10px;
-    padding: 30px 40px;
+.login-container {
+    height: 100vh;
+    max-width: 1400px;
+    margin: 0 auto;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
 }
 
-.wrapper h1 {
-    font-size: 36px;
-    text-align: center;
-    color: #FFF2DF;
+.illustration-side {
+    background-color: #e8f0fe;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
 }
 
-.wrapper .input-box {
-    position: relative;
+.illustration-side img {
+    max-width: 100%;
+    height: auto;
+}
+
+.form-side {
+    background-color: white;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-form {
+    max-width: 400px;
+    margin: 0 auto;
     width: 100%;
+}
+
+.form-control {
     height: 50px;
-    margin: 30px 0;
+    border-radius: 8px;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.25rem #FFF2DF;
+    border-color: #bac8f3;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    height: 50px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.btn-google {
+    background-color: white;
+    border: 1px solid #ced4da;
+    color: #5f6368;
+    height: 50px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-google:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+}
+
+.google-icon {
+    margin-right: 10px;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+    color: #6c757d;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.divider::before {
+    margin-right: 1rem;
+}
+
+.divider::after {
+    margin-left: 1rem;
+}
+
+.language-selector {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.language-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: all 0.3s;
+}
+
+.language-btn:hover {
+    opacity: 0.8;
+}
+
+.language-btn.active {
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+.flag {
+    width: 24px;
+    height: 16px;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.footer-text {
+    font-size: 0.75rem;
+    color: #6c757d;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.powered-by {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    display: flex;
+    align-items: center;
+    color: #6c757d;
+    font-size: 0.8rem;
+}
+
+.powered-by img {
+    margin-left: 0.5rem;
+    height: 20px;
+}
+
+
+@media (max-width: 767.98px) {
+    .illustration-side {
+        display: none;
+    }
+
+    .form-side {
+        padding: 2rem 1.5rem;
+    }
+}
+.input-box {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    position: relative;
 }
 
 .input-box input {
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    outline: none;
-    border: none;
-    border: 2px solid #FFF2DF;
-    border-radius: 40px;
+    width: 100%; /* Đảm bảo input không vượt quá kích thước của container */
+    padding: 10px 40px 10px 15px; /* Điều chỉnh padding để vừa với icon */
+    border: 1px solid #ccc;
+    border-radius: 8px;
     font-size: 16px;
-    color: #FFF2DF;
-    padding: 20px 45px 20px 20px;
-}
-
-.input-box input::placeholder {
-    color: #FFF2DF;
+    outline: none;
+    box-sizing: border-box;
 }
 
 .input-box i {
     position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
+    right: 15px;
     font-size: 20px;
-}
-
-.wrapper .forget-password {
-    display: flex;
-    justify-content: space-between;
-    font-size: 14.5px;
-    margin: 15px 0 15px;
-}
-
-.forget-password label input {
-    accent-color: white;
-    margin-right: 3px;
-}
-
-.forget-password a {
-    color: #FFF2DF;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.forget-password a:hover {
-    text-decoration: underline;
-}
-
-.wrapper .btn {
-    width: 100%;
-    height: 45px;
-    background: #FFF2DF;
-    border: none;
-    outline: none;
-    border-radius: 40px;
-    box-shadow: 0 0 10px black;
-    cursor: pointer;
-    font-size: 16px;
     color: gray;
-    font-weight: 600;
 }
-
-.wrapper .register-link {
-    font-size: 14.5px;
-    text-align: center;
-    margin: 20px 0 15px;
-}
-
-.register-link p a {
-    color: #FFF2DF;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.register-link p a:hover {
-    text-decoration: underline;
-}
-
-.icon {
- color: #FFF2DF;
+.title {
+    font-size: 32px; /* Tăng kích thước chữ */
+    font-weight: bold; /* In đậm */
+    text-align: center; /* Căn giữa */
+    margin-bottom: 15px; /* Thêm khoảng cách bên dưới */
 }

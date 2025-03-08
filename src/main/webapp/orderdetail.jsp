@@ -21,7 +21,7 @@
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb p-3" style="background-color: white; border-radius: 5px;">
-                    <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Tài khoản</li>
                 </ol>
             </nav>
@@ -35,25 +35,30 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex align-items-center gap-3">
                                     <i class="bi bi-clipboard-check fs-4 text-primary"></i>
-                                    <a href="#" class="text-decoration-none" style="color: black;">Lịch sử đơn hàng</a>
+                                    <a href="#" class="text-decoration-none text-dark">Lịch sử đơn hàng</a>
                                 </div>
                             </div>
+
                         </div>
                         <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <i class="bi bi-calendar-date fs-4 text-primary"></i>
-                                    <a href="#" class="text-decoration-none">Lịch sử đặt lịch</a>
+                            <a href="#" class="text-decoration-none">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex align-items-center gap-3">
+                                        <i class="bi bi-calendar-date fs-4 text-primary"></i>
+                                        <span >Lịch sử đặt lịch</span>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>                      
                         </div>
                         <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <i class="bi bi-person-circle fs-4"></i>
-                                    <span>Xin chào, <span class="text-primary">[tên khách hàng]</span></span>
+                            <a href="profile" class="text-decoration-none">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex align-items-center gap-3">
+                                        <i class="bi bi-person-circle fs-4"></i>
+                                        <span>Xin chào, <span class="text-primary">${customer.fullName}</span></span>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
 
@@ -151,9 +156,13 @@
                                                 <c:when test="${o.status == 'Chờ lấy hàng'}"><div class="text-secondary fw-bold">${o.status}</div></c:when>
                                                 <c:when test="${o.status == 'Chờ giao hàng'}"><div class="text-primary fw-bold">${o.status}</div></c:when>
                                                 <c:when test="${o.status == 'Hoàn thành'}"><div class="text-success fw-bold">${o.status}</div></c:when>
-                                                <c:when test="${o.status == 'Yêu cầu huỷ...'}"><div class="text-danger fw-bold">${o.status}</div></c:when>
+                                                <c:when test="${o.status == 'Yêu cầu huỷ...'}"><div class="text-danger fw-bold">Giao hàng thành công</div></c:when>
                                                 <c:otherwise><div class="text-danger fw-bold">${o.status}</div></c:otherwise> 
                                             </c:choose>
+
+                                            <c:if test="${o.status == 'Hoàn thành'}">
+                                                <div>${o.finishDate}</div>
+                                            </c:if>
 
                                             <c:if test="${not empty o.reasonCancel}">
                                                 <div><span class="text-danger" style="font-weight: 500;">Lý do huỷ:</span> ${o.reasonCancel}</div>

@@ -33,14 +33,17 @@
 
                         <!-- Lịch sử đơn hàng -->
                         <div class="col-md-4">
-                            <div class="card h-100">
+                            <a href="order?&action=view&status=tc#" class="text-decoration-none">
+                                <div class="card h-100">
                                 <div class="card-body d-flex align-items-center gap-3">
                                     <i class="bi bi-clipboard-check fs-4 text-primary"></i>
-                                    <a href="#" class="text-decoration-none text-dark">
+                                    <span class="text-decoration-none text-dark">
                                         Lịch sử đơn hàng
-                                    </a>
+                                    </span>
                                 </div>
                             </div>
+                            </a>
+                            
                         </div>
                         <!-- Lịch sử đật lịch -->
                         <div class="col-md-4">
@@ -56,7 +59,7 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex align-items-center gap-3">
                                     <i class="bi bi-person-circle fs-4"></i>
-                                    <span>Xin chào, <span class="text-primary">[${customer.fullName}]</span></span>
+                                    <span>Xin chào, <span class="text-primary">${customer.fullName}</span></span>
                                 </div>
                             </div>
                         </div>

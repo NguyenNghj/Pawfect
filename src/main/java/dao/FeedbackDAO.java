@@ -21,8 +21,8 @@ public class FeedbackDAO {
 
     protected static Connection Con = null;
 
-    protected static String Add_Feedback = "INSERT INTO Feedbacks (customer_id, product_id, rating, comment) VALUES\n"
-            + "(?, ?, ?, ?)";
+    protected static String Add_Feedback = "INSERT INTO Feedbacks (customer_id, product_id, rating, comment, image_path) VALUES\n"
+            + "(?, ?, ?, ?, ?)";
 
     protected static String Get_Product_Feedback_By_ProductId = "SELECT\n"
             + "    f.feedback_id,\n"
@@ -35,6 +35,7 @@ public class FeedbackDAO {
             + "    f.rating,\n"
             + "    f.comment,\n"
             + "    f.reply,\n"
+            + "    f.image_path,\n"
             + "    f.feedback_date,\n"
             + "    f.is_visible\n"
             + "FROM\n"
@@ -58,6 +59,56 @@ public class FeedbackDAO {
     protected static String Is_Visible_Feedback = "UPDATE Feedbacks\n"
             + "SET is_visible = CASE WHEN is_visible = 1 THEN 0 ELSE 1 END\n"
             + "WHERE feedback_id = ?";
+    
+    protected static String Get_Product_Feedback_By_ProductId_Vs_Image = "SELECT\n"
+            + "    f.feedback_id,\n"
+            + "    f.customer_id,\n"
+            + "    f.staff_id,\n"
+            + "    f.product_id,\n"
+            + "    c.full_name AS customer_name,\n"
+            + "    s.full_name AS staff_name,\n"
+            + "    p.product_name,\n"
+            + "    f.rating,\n"
+            + "    f.comment,\n"
+            + "    f.reply,\n"
+            + "    f.image_path,\n"
+            + "    f.feedback_date,\n"
+            + "    f.is_visible\n"
+            + "FROM\n"
+            + "    Feedbacks f\n"
+            + "JOIN\n"
+            + "    Customers c ON f.customer_id = c.customer_id\n"
+            + "LEFT JOIN\n"
+            + "    Staffs s ON f.staff_id = s.staff_id\n"
+            + "JOIN\n"
+            + "    Products p ON f.product_id = p.product_id\n"
+            + "WHERE\n"
+            + "    f.image_path IS NOT NULL AND f.product_id = ?";
+
+    protected static String Get_Product_Feedback_By_ProductId_Vs_Rating = "SELECT\n"
+            + "    f.feedback_id,\n"
+            + "    f.customer_id,\n"
+            + "    f.staff_id,\n"
+            + "    f.product_id,\n"
+            + "    c.full_name AS customer_name,\n"
+            + "    s.full_name AS staff_name,\n"
+            + "    p.product_name,\n"
+            + "    f.rating,\n"
+            + "    f.comment,\n"
+            + "    f.reply,\n"
+            + "    f.image_path,\n"
+            + "    f.feedback_date,\n"
+            + "    f.is_visible\n"
+            + "FROM\n"
+            + "    Feedbacks f\n"
+            + "JOIN\n"
+            + "    Customers c ON f.customer_id = c.customer_id\n"
+            + "LEFT JOIN\n"
+            + "    Staffs s ON f.staff_id = s.staff_id\n"
+            + "JOIN\n"
+            + "    Products p ON f.product_id = p.product_id\n"
+            + "WHERE\n"
+            + "    f.rating = ? AND f.product_id = ?";
 
     protected static String Get_Product_Feedback_By_Rating = "SELECT\n"
             + "    f.feedback_id,\n"
@@ -70,6 +121,7 @@ public class FeedbackDAO {
             + "    f.rating,\n"
             + "    f.comment,\n"
             + "    f.reply,\n"
+            + "    f.image_path,\n"
             + "    f.feedback_date,\n"
             + "    f.is_visible\n"
             + "FROM\n"
@@ -94,6 +146,7 @@ public class FeedbackDAO {
             + "    f.rating,\n"
             + "    f.comment,\n"
             + "    f.reply,\n"
+            + "    f.image_path,\n"
             + "    f.feedback_date,\n"
             + "    f.is_visible\n"
             + "FROM\n"
@@ -106,7 +159,94 @@ public class FeedbackDAO {
             + "    Products p ON f.product_id = p.product_id";
     
     
-    public static boolean addFeedback(int customerId, int productId, int rating, String comment) {
+    public static List<Feedback> getProductFeedbackByProductIdVsImage(int productId) {
+        List<Feedback> list = new ArrayList<>();
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Get_Product_Feedback_By_ProductId_Vs_Image);
+            ps.setInt(1, productId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Feedback o = new Feedback(
+                        rs.getInt("feedback_id"),
+                        rs.getInt("customer_id"),
+                        rs.getInt("staff_id"),
+                        rs.getInt("product_id"),
+                        rs.getString("customer_name"),
+                        rs.getString("staff_name"),
+                        rs.getString("product_name"),
+                        rs.getInt("rating"),
+                        rs.getString("comment"),
+                        rs.getString("reply"),
+                        rs.getString("image_path"),
+                        rs.getTimestamp("feedback_date"),
+                        rs.getBoolean("is_visible")
+                );
+                list.add(o);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return list;
+    }
+
+    public static List<Feedback> getProductFeedbackByRatingVsProductId(int rating, int productId) {
+        List<Feedback> list = new ArrayList<>();
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Get_Product_Feedback_By_ProductId_Vs_Rating);
+            ps.setInt(1, rating);
+            ps.setInt(2, productId);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Feedback o = new Feedback(
+                        rs.getInt("feedback_id"),
+                        rs.getInt("customer_id"),
+                        rs.getInt("staff_id"),
+                        rs.getInt("product_id"),
+                        rs.getString("customer_name"),
+                        rs.getString("staff_name"),
+                        rs.getString("product_name"),
+                        rs.getInt("rating"),
+                        rs.getString("comment"),
+                        rs.getString("reply"),
+                        rs.getString("image_path"),
+                        rs.getTimestamp("feedback_date"),
+                        rs.getBoolean("is_visible")
+                );
+                list.add(o);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return list;
+    }
+
+    public static boolean addFeedback(int customerId, int productId, int rating, String comment, String image_path) {
         boolean rs = false;
         try {
             Con = new DBContext().getConnection();
@@ -115,6 +255,7 @@ public class FeedbackDAO {
             ps.setInt(2, productId);
             ps.setInt(3, rating);
             ps.setString(4, comment);
+            ps.setString(5, image_path);
             rs = ps.executeUpdate() > 0;
             ps.close();
         } catch (SQLException e) {
@@ -152,6 +293,7 @@ public class FeedbackDAO {
                         rs.getInt("rating"),
                         rs.getString("comment"),
                         rs.getString("reply"),
+                        rs.getString("image_path"),
                         rs.getTimestamp("feedback_date"),
                         rs.getBoolean("is_visible")
                 );
@@ -222,6 +364,7 @@ public class FeedbackDAO {
                         rs.getInt("rating"),
                         rs.getString("comment"),
                         rs.getString("reply"),
+                        rs.getString("image_path"),
                         rs.getTimestamp("feedback_date"),
                         rs.getBoolean("is_visible")
                 );
@@ -263,6 +406,7 @@ public class FeedbackDAO {
                         rs.getInt("rating"),
                         rs.getString("comment"),
                         rs.getString("reply"),
+                        rs.getString("image_path"),
                         rs.getTimestamp("feedback_date"),
                         rs.getBoolean("is_visible")
                 );

@@ -25,7 +25,7 @@
 
                 <!-- SIDEBAR -->
                 <jsp:include page="sidebar.jsp"/>
-  <%
+                <%
                     Cookie[] cookies = request.getCookies();
                     String staffRole = "";
                     String staffName = "";
@@ -88,22 +88,30 @@
                     <div class="row mt-2">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item" style="color: #6c757d;">Dashboard</li>
+                                <li class="breadcrumb-item">Dashboard</li>
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Product</li>
                             </ol>
                         </nav>
                     </div>   
 
-                    <div class="row">
-                        <div class="col-3 p-0" style="margin-top: 60px;">
-                            <a href="/dashboard/admin/addproduct" type="button" class="btn btn-success">
-                                <i class="fa-solid fa-plus"></i>
-                                Thêm sản phẩm
-                            </a>
-                        </div>        
-                    </div>
 
+                    <div class="row d-flex align-items-center" style="margin-top: 30px;">
+                        <!-- Button Thêm Sản Phẩm -->
+                        <div class="col-md-6">
+                            <a href="/dashboard/admin/addproduct" class="btn btn-success">
+                                <i class="fa-solid fa-plus"></i> Thêm sản phẩm
+                            </a>
+                        </div>
+
+                        <!-- Form Tìm Kiếm -->
+                        <div class="col-md-6">
+                            <form action="product" method="get" class="d-flex">
+                                <label for="inputName" class="col-sm-2 col-form-label">Tìm kiếm:</label>
+                                <input name="search" type="search" class="form-control" id="inputName" placeholder="Tên sản phẩm...">
+                            </form>
+                        </div>
+                    </div>
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <div class="main-dashboard-table">
@@ -124,38 +132,96 @@
                                             <th scope="col">Giá</th>
                                             <th scope="col">Tồn kho</th>
                                             <th scope="col">Trạng thái</th>
+                                            <th scope="col">Hành động</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach var="product" items="${products}">
-                                            <tr>
-                                                <th scope="row">${product.productId}</th>
-                                                <td><img src="/img/products/${product.productImage}" alt="Hình ảnh" width="50"></td>
-                                                <td>${product.categoryName}</td>
-                                                <td>${product.productName}</td>
-                                                <td>${product.productPetType}</td>
-                                                <td>${product.productPrice}</td>
-                                                <td>${product.stock}</td>
-                                                <td>
-                                                    <c:choose>
-                                                        <c:when test="${product.active}">
-                                                            <span class="text-success">Đang bán</span>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <span class="text-danger">Ngừng bán</span>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </td>
-                                                <td>
-                                                    <a href="/dashboard/admin/editproduct?productId=${product.productId}" class="btn btn-primary">Chỉnh sửa</a>
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
+                                        <c:set var="itemsPerPage" value="10" />
+                                        <c:set var="totalProducts" value="${fn:length(productList)}" />
+                                        <c:set var="totalPages" value="${(totalProducts + itemsPerPage - 1) / itemsPerPage}" />
+
+                                        <!-- Ensure currentPage is set correctly -->
+                                        <c:set var="currentPage">
+                                            <c:choose>
+                                                <c:when test="${not empty param.page}">
+                                                    ${param.page}
+                                                </c:when>
+                                                <c:otherwise>1</c:otherwise>
+                                            </c:choose>
+                                        </c:set>
+
+                                        <c:set var="start" value="${(currentPage - 1) * itemsPerPage}" />
+                                        <c:set var="end" value="${start + itemsPerPage}" />
+
+                                        <c:choose>
+                                            <c:when test="${empty productList}">
+                                                <tr>
+                                                    <td colspan="9" style="text-align: center; font-size: 20px;">Không tìm thấy sản phẩm</td>
+                                                </tr>                           
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:forEach var="product" items="${productList}" varStatus="loop">
+                                                    <c:if test="${loop.index >= start and loop.index < end}">
+                                                        <tr>
+                                                            <th scope="row">${product.productId}</th>
+                                                            <td><img src="/img/products/${product.productImage}" alt="Hình ảnh" width="50"></td>
+                                                            <td>${product.categoryName}</td>
+                                                            <td>${product.productName}</td>
+                                                            <td>${product.productPetType}</td>
+                                                            <td>${product.productPrice}</td>
+                                                            <td>${product.stock}</td>
+                                                            <td>
+                                                                <c:choose>
+                                                                    <c:when test="${product.active}">
+                                                                        <span class="text-success">Đang bán</span>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <span class="text-danger">Ngừng bán</span>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </td>
+                                                            <td>
+                                                                <a href="/dashboard/admin/editproduct?productId=${product.productId}" class="btn btn-primary">Chỉnh sửa</a>
+                                                            </td>
+                                                        </tr>
+                                                    </c:if>
+                                                </c:forEach>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </tbody>
-                                </table>
+                                </table>                     
                             </div>
                         </div>
-                    </div>          
+                    </div> 
+                    <c:if test="${totalPages > 1}">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <!-- Nút Previous -->
+                                <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                    <a class="page-link" href="javascript:updatePage(${currentPage - 1})">Previous</a>
+                                </li>
+
+                                <!-- Hiển thị số trang -->
+                                <c:forEach var="i" begin="1" end="${totalPages}">
+                                    <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                        <a class="page-link" href="javascript:updatePage(${i})">${i}</a>
+                                    </li>
+                                </c:forEach>
+
+                                <!-- Nút Next -->
+                                <li class="page-item ${currentPage >= totalPages -1  ? 'disabled' : ''}">
+                                    <a class="page-link" href="javascript:updatePage(${currentPage + 1})">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </c:if>
+                    <script>
+                        function updatePage(page) {
+                            let urlParams = new URLSearchParams(window.location.search);
+                            urlParams.set('page', page); // Cập nhật số trang
+                            window.location.search = urlParams.toString();
+                        }
+                    </script>
                 </div>
             </div>
         </div>  

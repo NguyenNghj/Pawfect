@@ -154,52 +154,66 @@
                         <c:set var="start" value="${(currentPage - 1) * itemsPerPage}" />
                         <c:set var="end" value="${start + itemsPerPage}" />
 
-                        <c:forEach var="product" items="${products}" varStatus="loop">
-                            <c:if test="${loop.index >= start && loop.index < end}">
-                                <div class="col-md-4 col-6 mb-4 product-card">
-                                    <div class="product-image">
-                                        <img src="${product.productImage}" alt="${product.productName}">
-                                    </div>
-                                    <div class="product-info">
-                                        <a class="product-name" href="product?id=${product.productId}">${product.productName}</a>
-                                        <p class="product-price">
-                                            <fmt:formatNumber value="${product.productPrice}" pattern="#,##0" />đ
-                                        </p>
-                                        <a href="#">
-                                            <button class="add-to-cart" data-product-id="${product.productId}" data-product-name="${product.productName}">
-                                                <i class="cart-icon"></i>
-                                            </button>
-                                        </a>
-                                    </div>
-                                </div>
-                            </c:if>
-                        </c:forEach>
+                        <c:choose>
+                            <c:when test="${empty products}">
+                                <p style = "display: flex; justify-content: center; font-size: 20px;" >Không tìm thấy sản phẩm</p>                               
+                            </c:when>
+                            <c:otherwise>
+                                <c:forEach var="product" items="${products}" varStatus="loop">
+                                    <c:if test="${loop.index >= start && loop.index < end}">
+                                        <div class="col-md-4 col-6 mb-4 product-card">
+                                            <div class="product-image">
+                                                <img src="${product.productImage}" alt="${product.productName}">
+                                            </div>
+                                            <div class="product-info">
+                                                <a class="product-name" href="product?id=${product.productId}&rating=tc">${product.productName}</a>
+                                                <p class="product-price">
+                                                    <fmt:formatNumber value="${product.productPrice}" pattern="#,##0" />đ
+                                                </p>
+                                                <a href="#">
+                                                    <button class="add-to-cart" data-product-id="${product.productId}" data-product-name="${product.productName}">
+                                                        <i class="cart-icon"></i>
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </c:if>
+                                </c:forEach>
 
-                        <!-- PHÂN TRANG -->
-                        <c:if test="${totalPages > 1}">
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination">
-                                    <c:set var="queryParams" value="category=${param.category}&sort=${param.sort}" />
+                                <!-- PHÂN TRANG -->
+                                <c:if test="${totalPages > 1}">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination">
 
-                                    <!-- Nút Previous -->
-                                    <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                                        <a class="page-link" href="?${queryParams}&page=${currentPage - 1}">Previous</a>
-                                    </li>
+                                            <!-- Nút Previous -->
+                                            <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                                <a class="page-link" href="javascript:updatePage(${currentPage - 1})">Previous</a>
+                                            </li>
 
-                                    <!-- Hiển thị số trang -->
-                                    <c:forEach var="i" begin="1" end="${totalPages}">
-                                        <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                            <a class="page-link" href="?${queryParams}&page=${i}">${i}</a>
-                                        </li>
-                                    </c:forEach>
+                                            <!-- Hiển thị số trang -->
+                                            <c:forEach var="i" begin="1" end="${totalPages}">
+                                                <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                                    <a class="page-link" href="javascript:updatePage(${i})">${i}</a>
+                                                </li>
+                                            </c:forEach>
 
-                                    <!-- Nút Next -->
-                                    <li class="page-item ${currentPage >= (totalPages-1) ? 'disabled' : ''}">
-                                        <a class="page-link" href="?${queryParams}&page=${currentPage + 1}">Next</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </c:if>
+                                            <!-- Nút Next -->
+                                            <li class="page-item ${currentPage >= totalPages-1 ? 'disabled' : ''}">
+                                                <a class="page-link" href="javascript:updatePage(${currentPage + 1})">Next</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </c:if>
+                            </c:otherwise>
+                        </c:choose>
+
+                        <script>
+                            function updatePage(page) {
+                                let urlParams = new URLSearchParams(window.location.search);
+                                urlParams.set('page', page); // Cập nhật số trang
+                                window.location.search = urlParams.toString();
+                            }
+                        </script>
                     </div>
                 </div>
             </div>
@@ -235,11 +249,11 @@
         <script>
 
             $('.add-to-cart').click(function (event) {
-                
+
                 // Hàm lấy giá trị cookie theo tên
                 function getCookie(name) {
                     event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
-                    
+
                     let cookies = document.cookie.split("; ");
                     for (let i = 0; i < cookies.length; i++) {
                         let cookie = cookies[i].split("=");
@@ -249,10 +263,10 @@
                     }
                     return null;
                 }
-                
+
                 // Kiểm tra xem cookie có tồn tại không (ví dụ: 'cartItems')
                 let customerCookie = getCookie("customerId");
-                
+
                 if (!customerCookie) {
                     Swal.fire({
                         icon: "warning",
@@ -260,14 +274,15 @@
                         text: "Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng."
                     });
                     return;
-                }                              
+                }
 
-                var productId = $(this).data('product-id');
+                let stock = $(this).data('product-stock');
+                let productId = $(this).data('product-id');
                 console.log("productId:", productId);
-                var productName = $(this).data('product-name');
+                let productName = $(this).data('product-name');
                 console.log("productName:", productName);
-                var action = "add";
-                var customerId = customerCookie; // ID của khách hàng (cần lấy từ session hoặc cookie)
+                let action = "add";
+                let customerId = customerCookie; // ID của khách hàng (cần lấy từ session hoặc cookie)
 
                 $.ajax({
                     url: "cart",
@@ -276,7 +291,8 @@
                         action: action,
                         productId: productId,
                         customerId: customerId,
-                        quantity: "1"
+                        quantity: "1",
+                        stock: stock
                     },
                     dataType: "json",
                     success: function (response) {
@@ -298,7 +314,16 @@
                             });
                         } else {
                             console.error("Lỗi thêm vào giỏ hàng:", response.message);
-                            alert("Lỗi: " + response.message);
+                            // Kiểm tra nếu lỗi là do vượt tồn kho
+                            if (response.message === "Vượt quá tồn kho") {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Số lượng vượt quá tồn kho! Giỏ hàng hiện tại " + response.quantityFromCart,
+                                    text: "Chỉ còn " + response.stock + " sản phẩm trong kho."
+                                });
+                            } else {
+                                alert("Lỗi: " + response.message);
+                            }
                         }
                     },
                     error: function (error) {
@@ -308,5 +333,7 @@
                 });
             });
         </script>
+
     </body>
 </html>
+

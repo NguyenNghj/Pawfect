@@ -49,7 +49,7 @@
                             </a>
                         </nav>                  
                         <nav class="navbar bg-body-tertiary">
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="feedback.jsp" >
+                            <a class="navbar-brand d-flex align-items-center gap-3" href="feedbackmanagement?&action=view&status=0" >
                                 <i class="fa-solid fa-comment fa-lg"></i>
                                 <span>Product Feedbacks</span>
                             </a>
@@ -218,7 +218,7 @@
                                 <span><b>Điện thoại:</b> ${staff.phone}</span>
                                 <span><b>Địa chỉ:</b> ${staff.address}</span>
                                 <span><b>Giới tính:</b> ${staff.gender}</span>
-                                <span><b>Sinh nhật:</b> ${staff.birthdate}</span>
+                                <span><b>Sinh nhật:</b> ${staff.birthDate}</span>
                             </div>
                             <div>
                                 <button type="button" class="btn btn-success d-flex align-items-center gap-2"
@@ -266,7 +266,7 @@
                                                     </div>
 
                                                     <div class="form-floating mb-3">
-                                                        <input type="date" class="form-control" name="birthdate" value="${staff.birthdate}">
+                                                        <input type="date" class="form-control" name="birthdate" value="${staff.birthDate}">
                                                         <label>Birthday</label>
                                                         <span id="birthdateError" class="text-danger"></span>
                                                     </div>

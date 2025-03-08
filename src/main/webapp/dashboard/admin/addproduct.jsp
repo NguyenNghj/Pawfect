@@ -31,7 +31,7 @@
 
                 <!-- SIDEBAR -->
                 <jsp:include page="sidebar.jsp"/>
- <%
+                <%
                     Cookie[] cookies = request.getCookies();
                     String staffRole = "";
                     String staffName = "";
@@ -94,12 +94,12 @@
                     <div class="row mt-2">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item" style="color: #6c757d;">Dashboard</li>
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Product</li>
+                                <li class="breadcrumb-item">Dashboard</li>
+                                <li class="breadcrumb-item"><a href="/dashboard/admin/product">Quản lý mã giảm giá</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Thêm sản phẩm mới</li>
                             </ol>
                         </nav>
-                    </div>   
+                    </div>    
 
                     <!--                    <div class="row">
                                             <div class="col-3 p-0" style="margin-top: 60px;">
