@@ -35,7 +35,7 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex align-items-center gap-3">
                                     <i class="bi bi-clipboard-check fs-4 text-primary"></i>
-                                    <a href="#" class="text-decoration-none text-dark">Lịch sử đơn hàng</a>
+                                    <a href="order?&action=view&status=tc" class="text-decoration-none text-dark">Lịch sử đơn hàng</a>
                                 </div>
                             </div>
 
@@ -254,19 +254,44 @@
                                             <!-- Phí Ship -->
                                             <div class="d-flex justify-content-between mb-2">
                                                 <div class="text-secondary">Phí vận chuyển</div>
-                                                <div class="text-success">
+                                                <div>
                                                     <f:formatNumber value="${o.shippingMethodFee}" pattern="#,##0" />đ                                                  
                                                 </div>
                                             </div>
-                                            <!-- <div class="d-flex justify-content-between mb-2">
-                                                <div class="text-secondary">Taxes</div>
-                                                <div>$5.33</div>
-                                            </div> -->
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <div class="text-success">Khuyến mãi</div>
+                                                <div class="text-success">
+                                                    <c:choose>
+                                                        <c:when test="${o.discountAmount != 0}">
+                                                            - <f:formatNumber value="${o.totalAmount - o.discountAmount}" pattern="#,##0" />đ
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            - <f:formatNumber value="0" pattern="#,##0" />đ
+                                                        </c:otherwise>
+                                                    </c:choose>
+
+                                                </div>
+                                            </div>
                                             <div class="d-flex justify-content-between align-items-center border-top pt-3 mt-3">
                                                 <h5 class="text-primary">TỔNG TIỀN</h5>
-                                                <div class="h3">
-                                                    <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ                                                   
-                                                </div>
+                                                <c:choose>
+                                                    <c:when test="${o.discountAmount != 0}">
+                                                        <div class="d-flex align-items-center gap-3">
+                                                            <div class="h5 m-0" style="text-decoration: line-through">
+                                                                <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
+                                                            </div>
+                                                            <div class="h3 m-0 text-danger">
+                                                                <f:formatNumber value="${o.discountAmount}" pattern="#,##0" />đ
+                                                            </div>
+                                                        </div>
+
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <div class="h3 m-0">
+                                                            <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
+                                                        </div>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </div>
                                         </div>
                                     </div>
@@ -280,15 +305,15 @@
                 <!-- Sidebar -->
                 <div class="col-md-4">
                     <div class="list-group account-action">
-                        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                        <a href="profile" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-regular fa-user fa-lg" style="color: #0062ad;"></i>
                             <span>Thông tin cá nhân</span>
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                        <a href="viewpet" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-solid fa-paw fa-lg" style="color: #8C6E63;"></i>
                             <span>Thú cưng của tôi</span>
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                        <a href="changepassword" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-solid fa-key fa-lg" style="color: #eabd1a;"></i>
                             <span>Đổi mật khẩu</span>
                         </a>

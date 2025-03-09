@@ -209,6 +209,9 @@ public class CartServlet extends HttpServlet {
                 }
                 json.put("totalQuantity", totalQuantity);
 
+                double newTotalCartPrice = CartDAO.getTotalCartByCustomerId(customerId);
+                json.put("totalCartPrice", newTotalCartPrice);
+
                 response.getWriter().write(json.toString());
 
                 System.out.println("Xoa san pham ra gio hang thanh cong!");
