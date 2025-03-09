@@ -218,3 +218,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
         padding: 2rem 1.5rem;
       }
     }
+    .title {
+    font-size: 32px; /* Tăng kích thước chữ */
+    font-weight: bold; /* In đậm */
+    text-align: center; /* Căn giữa */
+    margin-bottom: 15px; /* Thêm khoảng cách bên dưới */
+}

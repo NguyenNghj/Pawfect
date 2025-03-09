@@ -13,14 +13,17 @@
 <body>
     <div class="wrapper">
         <% if (request.getAttribute("success") != null) { %>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Hiển thị popup
-        alert("<%= request.getAttribute("success") %>");
-
-        // Chuyển trang sau 3 giây
-        setTimeout(() => {
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công!',
+            text: "<%= request.getAttribute("success") %>",
+            showConfirmButton: false,
+            timer: 2000
+        }).then(() => {
             window.location.href = "login.jsp";
-        }, 2000);
+        });
     </script>
 <% } %>
         <form action="verify" method="post">

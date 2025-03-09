@@ -24,7 +24,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6KYofPjHBJzD0wDz_YLzcTZySiyqzSWXRRw&s') no-repeat center center/cover;
+    background: url('img/login/img.png') no-repeat center center/cover;
 }
 .login-container {
     height: 100vh;

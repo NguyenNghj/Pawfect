@@ -98,7 +98,7 @@ public class ProfileDAO {
 
     public void editProfile(User user, String customerId) {
         String query = "UPDATE Customers \n"
-                + "SET email = ?,\n"
+                + "SET "
                 + "    full_name = ?,\n"
                 + "    phone = ?,\n"
                 + "    address = ?,\n"
@@ -108,13 +108,13 @@ public class ProfileDAO {
         try {
             conn = new DBContext().getConnection();
             pt = conn.prepareStatement(query);
-            pt.setString(1, user.getEmail());
-            pt.setString(2, user.getFullName());
-            pt.setString(3, user.getPhoneNumber());
-            pt.setString(4, user.getAddress());
-            pt.setString(5, user.getGender());
-            pt.setDate(6, user.getBirthDate());
-            pt.setString(7, customerId);
+         
+            pt.setString(1, user.getFullName());
+            pt.setString(2, user.getPhoneNumber());
+            pt.setString(3, user.getAddress());
+            pt.setString(4, user.getGender());
+            pt.setDate(5, user.getBirthDate());
+            pt.setString(6, customerId);
             pt.executeUpdate();
         } catch (SQLException e) {
 

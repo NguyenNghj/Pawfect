@@ -82,15 +82,34 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title mb-4">Thông tin tài khoản</h5>
-                            <div class="d-grid gap-2 account-info">
-                                <span><span class="account-info-title">Họ tên:</span> ${customer.fullName} / <span class="account-info-title">Giới tính:</span> ${customer.gender}</span>
-                                <span><span class="account-info-title">Ngày sinh:</span> ${customer.birthDate}</span>
-                                <c:if test="${fn:contains(customer.email, '@')}">
-                                    <span><span class="account-info-title">Email:</span> ${customer.email}</span>
-                                </c:if>
-                                <span><span class="account-info-title">Điện thoại:</span> ${customer.phoneNumber}</span>
-                                <span><span class="account-info-title">Địa chỉ:</span> ${customer.address}</span>
-                            </div>
+                           <div class="d-grid gap-2 account-info">
+    <span>
+        <span class="account-info-title">Họ tên:</span> 
+        ${empty customer.fullName ? 'Chưa có thông tin' : customer.fullName} / 
+        <span class="account-info-title">Giới tính:</span> 
+        ${empty customer.gender ? 'Chưa có thông tin' : customer.gender}
+    </span>
+    <span>
+        <span class="account-info-title">Ngày sinh:</span> 
+        ${empty customer.birthDate ? 'Chưa có thông tin' : customer.birthDate}
+    </span>
+    <c:choose>
+        <c:when test="${not empty customer.email and fn:contains(customer.email, '@')}">
+            <span><span class="account-info-title">Email:</span> ${customer.email}</span>
+        </c:when>
+        <c:otherwise>
+            <span><span class="account-info-title">Email:</span> Chưa có thông tin</span>
+        </c:otherwise>
+    </c:choose>
+    <span>
+        <span class="account-info-title">Điện thoại:</span> 
+        ${empty customer.phoneNumber ? 'Chưa có thông tin' : customer.phoneNumber}
+    </span>
+    <span>
+        <span class="account-info-title">Địa chỉ:</span> 
+        ${empty customer.address ? 'Chưa có thông tin' : customer.address}
+    </span>
+</div>
                             <div class="mt-3">
                                 <button type="button" class="btn btn-success" 
                                         data-bs-toggle="modal" data-bs-target="#exampleModal"
@@ -138,12 +157,7 @@
 
                                                         </div>
                                                     </c:if>
-                                                    <c:if test="${customer.email != null and fn:contains(customer.email, '@')}">
-                                                        <div class="mb-2">
-                                                            <label for="formGroupExampleInput4" class="form-label">Mật khẩu</label>
-                                                            <input type="password" value="${customer.password}" name="password" class="form-control" id="formGroupExampleInput4"  readonly>
-                                                        </div>
-                                                    </c:if>
+                                                    
                                                     <!-- Điện thoại -->
                                                     <div class="mb-2">
                                                         <label class="form-label">Điện thoại</label>

@@ -25,16 +25,14 @@
     <div class="row g-0 register-container">
       <!-- Illustration Side -->
       <div class="col-md-6 illustration-side">
-    <a href="login">
-        <img src="img/login/login.png" 
+        <img src="img/login/img.png" 
              alt="E-commerce illustration" class="img-fluid">
-    </a>
 </div>
       
       <!-- Form Side -->
       <div class="col-md-6 form-side position-relative">
         <div class="register-form">
-     <h1 class="h4 mb-2 text-center" style="font-weight: bold;">Pawfect - Đăng ký</h1>
+     <h1 class="h4 mb-2 text-center title" style="font-weight: bold;">Pawfect - Đăng ký</h1>
         
           <form action="register" method="POST"class="needs-validation" novalidate>
             <!-- Họ tên -->
@@ -51,7 +49,7 @@
             <!-- Email -->
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
-              <input type="email" name="email" class="form-control" id="email" placeholder="nhập email của bạn" required>
+              <input type="email" name="email" class="form-control" id="email" placeholder="Nhập email của bạn" required>
               <div class="invalid-feedback">
                 Vui lòng nhập email hợp lệ.
               </div>
@@ -60,7 +58,7 @@
             <!-- Số điện thoại -->
             <div class="mb-3">
               <label for="phone" class="form-label">Số điện thoại</label>
-              <input type="tel" class="form-control" name="phoneNumber" id="phone" placeholder="nhập số điện thoại của bạn" required>
+              <input type="tel" class="form-control" name="phoneNumber" id="phone" placeholder="Nhập số điện thoại của bạn" required>
               <div class="invalid-feedback">
                 Vui lòng nhập số điện thoại.
               </div>
@@ -71,7 +69,7 @@
               <label for="password" class="form-label">Mật khẩu</label>
               <input type="password" class="form-control" name="password" id="password" placeholder="Nhập mật khẩu" required>
               <i class="bi bi-eye-slash password-toggle" id="togglePassword"></i>
-              <div class="form-text">Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và số.</div>
+              <div class="form-text">Mật khẩu phải có ít nhất 6 ký tự.</div>
               <div class="invalid-feedback">
                 Vui lòng nhập mật khẩu.
               </div>

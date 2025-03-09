@@ -112,9 +112,9 @@ public class ChangePasswordServlet extends HttpServlet {
         ChangePasswordDAO fw = new ChangePasswordDAO();
         if (fw.checkPassword(hashedOldPassword, customerId)) {
             fw.changePassword(hashedNewPassword, customerId);
-            request.getSession().setAttribute("message", "Mật khẩu đã được thay đổi thành công!");
+            request.getSession().setAttribute("message", "Mật khẩu đã được thay đổi thành công! Vui lòng đăng nhập lại.");
             request.getSession().setAttribute("messageType", "success");
-            response.sendRedirect(request.getContextPath() + "/profile");
+            response.sendRedirect(request.getContextPath() + "/changepassword");
         } else {
             request.getSession().setAttribute("message", "Mật khẩu cũ không đúng. Vui lòng thử lại!");
             request.getSession().setAttribute("messageType", "error");
