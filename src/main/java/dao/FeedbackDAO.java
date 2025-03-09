@@ -20,6 +20,8 @@ import model.Feedback;
 public class FeedbackDAO {
 
     protected static Connection Con = null;
+    
+    protected static String Delete_Feedback = "DELETE FROM Feedbacks WHERE feedback_id = ?";
 
     protected static String Add_Feedback = "INSERT INTO Feedbacks (customer_id, product_id, rating, comment, image_path) VALUES\n"
             + "(?, ?, ?, ?, ?)";
@@ -157,6 +159,30 @@ public class FeedbackDAO {
             + "    Staffs s ON f.staff_id = s.staff_id\n"
             + "JOIN\n"
             + "    Products p ON f.product_id = p.product_id";
+    
+    
+    public static boolean deleteFeedback(int feedbackId) {
+        boolean rs = false;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Delete_Feedback);
+            ps.setInt(1, feedbackId);
+            rs = ps.executeUpdate() > 0;
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return rs;
+    }
     
     
     public static List<Feedback> getProductFeedbackByProductIdVsImage(int productId) {

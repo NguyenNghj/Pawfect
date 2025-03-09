@@ -122,7 +122,14 @@ public class CheckoutServlet extends HttpServlet {
                 if (voucher.getDiscountAmount() != 0) {
                     json.put("discountValue", voucher.getDiscountAmount());
                 } else {
-                    json.put("discountValue", voucher.getDiscountPercentage());                    
+                    double salePrice = basePrice * (voucher.getDiscountPercentage() / 100.0);
+                    System.out.println("salePrice: " + salePrice);
+                    // Neu so tien giam vuot qua quy dinh thi lay so tien giam toi da
+                    if (salePrice > voucher.getMaxDiscount()) {
+                        json.put("discountValue", voucher.getMaxDiscount());
+                    } else {
+                        json.put("discountValue", salePrice);
+                    }
                 }
 
                 json.put("voucherId", voucher.getVoucherId());

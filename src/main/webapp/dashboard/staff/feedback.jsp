@@ -186,11 +186,12 @@
                                             <tr>
                                                 <th scope="col" style="width: 5%;">Id</th>
                                                 <th scope="col" style="width: 17%;">Sản phẩm</th>
-                                                <th scope="col" style="width: 15%;">Khách hàng</th>
+                                                <th scope="col" style="width: 13%;">Khách hàng</th>
                                                 <th scope="col" style="width: 11%;">Đánh giá</th>
-                                                <th scope="col">Nhận xét</th>        
+                                                <th scope="col">Nhận xét</th>     
+                                                <th scope="col" style="width: 8%;">Phản hồi</th>  
                                                 <th scope="col" style="width: 9%;">Trạng thái</th>
-                                                <th scope="col" style="width: 14%;">Hành động</th>
+                                                <th scope="col" style="width: 17%;">Hành động</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -213,6 +214,10 @@
                                                     </c:forEach>    
                                                 </td>
                                                 <td>${f.comment}</td>
+                                                <td>
+                                                    <c:if test="${not empty f.reply}"><i class="fa-solid fa-check fa-xl" style="color: #02a704;"></i></c:if>
+                                                    <c:if test="${empty f.reply}"><i class="fa-solid fa-xmark fa-xl" style="color: #c12b06;"></i></c:if>
+                                                </td>
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${f.isVisible == true}">
@@ -239,7 +244,7 @@
                                                     </button>
                                                     <c:choose>
                                                         <c:when test="${f.isVisible == true}">
-                                                            <button type="button" class="btn btn-danger hideButton1"
+                                                            <button type="button" class="btn btn-secondary hideButton1"
                                                                     data-feedback-id="${f.feedbackId}"
                                                                     data-customer-name="${f.customerName}"
                                                                     data-status="${param.status}"
@@ -256,7 +261,13 @@
                                                                 Hiện
                                                             </button>
                                                         </c:otherwise>
-                                                    </c:choose>                                                   
+                                                    </c:choose>
+                                                    <button type="button" class="btn btn-danger hideButton3"
+                                                            data-feedback-id="${f.feedbackId}"
+                                                            data-status="${param.status}"
+                                                            >
+                                                        Xoá
+                                                    </button>
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -520,6 +531,40 @@
                                 }).then(() => {
                                     // Chuyển trang sau khi thông báo hoàn tất
                                     window.location.href = "feedbackmanagement?action=isVisible&feedbackId=" + feedbackId + "&status=" + status;
+                                });
+                            }
+                        });
+                    });
+                });
+
+
+                document.querySelectorAll(".hideButton3").forEach(button => {
+                    button.addEventListener("click", function () {
+                        let feedbackId = this.getAttribute("data-feedback-id");
+                        let status = this.getAttribute("data-status");
+
+                        // Kiểm tra xem có lấy đúng feedbackId không
+                        console.log("Feedback ID:", feedbackId);
+                        console.log("Status:", status);
+
+                        Swal.fire({
+                            title: "Xác nhận xoá đánh giá?",
+                            text: "Bạn có chắc muốn xoá đánh giá #" + feedbackId,
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Đồng ý!",
+                            cancelButtonText: "Huỷ!"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                Swal.fire({
+                                    title: "Đã xoá!",
+                                    text: "Đánh giá #" + feedbackId + " đã bị xoá khỏi hệ thống.",
+                                    icon: "success"
+                                }).then(() => {
+                                    // Chuyển trang sau khi thông báo hoàn tất
+                                    window.location.href = "feedbackmanagement?action=delete&feedbackId=" + feedbackId + "&status=" + status;
                                 });
                             }
                         });
