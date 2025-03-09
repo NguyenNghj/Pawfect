@@ -85,8 +85,8 @@ public class FeedbackManagementServlet extends HttpServlet {
                 case "feedback":
                     feedbackProduct(request, response);
                     break;
-                default:
-                    // listNhanVien(request, response);
+                case "delete":
+                    deleteFeedback(request, response);
                     break;
             }
         } catch (ServletException | IOException | SQLException e) {
@@ -210,6 +210,24 @@ public class FeedbackManagementServlet extends HttpServlet {
             }
         } catch (ServletException | IOException | NumberFormatException e) {
             System.err.println("Lỗi xử lý đánh giá: " + e.getMessage());
+        }
+
+    }
+    
+    private void deleteFeedback(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+
+        int feedbackId = Integer.parseInt(request.getParameter("feedbackId"));
+        System.out.println("FeedbackId: " + feedbackId);
+        String status = request.getParameter("status");
+        System.out.println("Status: " + status);
+
+        boolean delete = FeedbackDAO.deleteFeedback(feedbackId);
+        if (delete) {
+            System.out.println("Xoa danh gia thanh cong.");
+            response.sendRedirect("feedbackmanagement?action=view" + "&status=" + status);
+        } else {
+            System.out.println("Xoa danh gia that bai!!");
         }
 
     }
