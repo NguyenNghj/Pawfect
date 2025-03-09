@@ -122,6 +122,23 @@ h2 {
     margin-bottom: 12px;
 }
 
+.btn-add-pet {
+    display: inline-block;
+    background-color: #ff6600; /* Màu cam nổi bật */
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-add-pet:hover {
+    background-color: #cc5500; /* Màu cam đậm khi hover */
+}
 label {
     font-weight: bold;
     color: #8c6e63;

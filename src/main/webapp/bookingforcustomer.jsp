@@ -94,12 +94,29 @@
 
                     <div class="form-group">
                         <label for="petId">Chọn Thú Cưng:</label>
-                        <select name="petId" id="petId" required>
-                            <c:forEach var="pet" items="${petList}">
-                                <option value="${pet.petId}">${pet.petname}</option>
-                            </c:forEach>
-                        </select>
+                        <c:choose>
+                            <c:when test="${empty petList}">
+                                <p style="color: red;">Bạn chưa có thú cưng. Vui lòng thêm thú cưng trước khi đặt phòng!</p>
+                                <a href="viewpet" 
+                                   style="display:inline-block; background:#ff6600; color:#fff; padding:10px 10px;
+                                   font-size:14px; font-weight:bold; text-decoration:none; border-radius:6px;
+                                   transition:0.3s; white-space:nowrap; max-width:110px; text-align:left;"
+                                   onmouseover="this.style.background = '#cc5500'"
+                                   onmouseout="this.style.background = '#ff6600'">
+                                    ➕ Thêm Pet
+                                </a>
+
+                            </c:when>
+                            <c:otherwise>
+                                <select name="petId" id="petId" required>
+                                    <c:forEach var="pet" items="${petList}">
+                                        <option value="${pet.petId}">${pet.petname}</option>
+                                    </c:forEach>
+                                </select>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
+
 
                     <div class="form-group">
                         <label for="note">Ghi chú:</label>

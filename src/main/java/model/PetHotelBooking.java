@@ -20,6 +20,7 @@ public class PetHotelBooking {
     private String note;
     private String status;
     private Timestamp bookingDate;
+    private boolean isActive;
 
     public PetHotelBooking() {
     }
@@ -27,7 +28,7 @@ public class PetHotelBooking {
     public PetHotelBooking(int bookingId, int roomId, String roomName, int customerId, String customerName,
             Integer staffId, String staffName, int petId, String petName,
             Timestamp checkIn, Timestamp checkOut, BigDecimal totalPrice,
-            String note, String status, Timestamp bookingDate) {
+            String note, String status, Timestamp bookingDate, boolean isActive) {
         this.bookingId = bookingId;
         this.roomId = roomId;
         this.roomName = roomName;
@@ -43,6 +44,7 @@ public class PetHotelBooking {
         this.note = note;
         this.status = status;
         this.bookingDate = bookingDate;
+        this.isActive = isActive;
     }
 
     // Getters và Setters
@@ -88,7 +90,7 @@ public class PetHotelBooking {
 
     public Integer getStaffId() {
         return staffId;
-    } // Có thể null
+    }
 
     public void setStaffId(Integer staffId) {
         this.staffId = staffId;
@@ -164,5 +166,13 @@ public class PetHotelBooking {
 
     public void setBookingDate(Timestamp bookingDate) {
         this.bookingDate = bookingDate;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
     }
 }

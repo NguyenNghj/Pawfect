@@ -50,6 +50,7 @@
                     <p class="room-type">Dành cho <%= room.getRoomType()%></p>
                     <p class="room-price">Giá: <%= NumberFormat.getInstance(new Locale("vi", "VN")).format(room.getPricePerNight())%> đ/đêm</p>
                     <p class="room-weight">Cân nặng phù hợp: <%= room.getMinWeight()%> - <%= room.getMaxWeight()%> kg</p>
+                    <p class="room-quantity">Số lượng phòng trống: <%= room.getAvailableQuantity()%>/<%= room.getQuantity()%> phòng</p>
                     <p class="room-status">Trạng thái: <%= room.getStatus()%></p>
                     <hr class="divider"> 
                     <p class="room-description"><%= room.getDescription()%></p>

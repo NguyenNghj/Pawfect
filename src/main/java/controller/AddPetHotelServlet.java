@@ -80,11 +80,12 @@ public class AddPetHotelServlet extends HttpServlet {
         double minWeight = Double.parseDouble(request.getParameter("minWeight"));
         double maxWeight = Double.parseDouble(request.getParameter("maxWeight"));
         int quantity = Integer.parseInt(request.getParameter("quantity"));
+        int availableQuantity = Integer.parseInt(request.getParameter("quantity"));
         double pricePerNight = Double.parseDouble(request.getParameter("pricePerNight"));
         String description = request.getParameter("description");
 
         // Tạo object PetRoom mà KHÔNG yêu cầu status và isActive
-        PetHotel room = new PetHotel(roomName, roomImage, roomType, minWeight, maxWeight, quantity, pricePerNight, description);
+        PetHotel room = new PetHotel(roomName, roomImage, roomType, minWeight, maxWeight, quantity, availableQuantity, pricePerNight, description);
 
         PetHotelDAO roomDAO = new PetHotelDAO();
         if (roomDAO.addRoom(room)) {

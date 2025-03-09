@@ -25,7 +25,7 @@
                 <!-- SIDEBAR -->
                 <jsp:include page="sidebar.jsp"/>
 
- <%
+                <%
                     Cookie[] cookies = request.getCookies();
                     String staffRole = "";
                     String staffName = "";
@@ -117,10 +117,11 @@
                             <input type="number" name="maxWeight" step="0.1" class="form-control" required style="margin-bottom: 10px;">
 
                             <label>Số lượng:</label>
-                            <input type="number" name="quantity" class="form-control" required style="margin-bottom: 10px;">
+                            <input type="number" name="quantity" class="form-control" required min="1" style="margin-bottom: 10px;">
+
 
                             <label>Giá mỗi đêm (VNĐ):</label>
-                            <input type="number" name="pricePerNight" step="0.01" class="form-control" required style="margin-bottom: 10px;">
+                            <input type="number" name="pricePerNight" step="0.01" class="form-control" required min="1" style="margin-bottom: 10px;">
                             <label>Mô tả:</label>
                             <input type="text" name="description" class="form-control" required style="margin-bottom: 10px;">
 
