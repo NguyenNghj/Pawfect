@@ -40,7 +40,7 @@
                                     </div>
                                 </div>
                             </a>
-                            
+
                         </div>
                         <div class="col-md-4">
                             <div class="card h-100">
@@ -128,7 +128,14 @@
                                                         </div>
                                                         <div class="col-auto text-end">
                                                             <h5 class="mb-3">
-                                                                <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ                                               
+                                                                <c:choose>
+                                                                    <c:when test="${o.discountAmount != 0}">
+                                                                        <f:formatNumber value="${o.discountAmount}" pattern="#,##0" />đ
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
+                                                                    </c:otherwise>
+                                                                </c:choose>                                               
                                                             </h5>
 
                                                             <%--<c:choose>--%>
