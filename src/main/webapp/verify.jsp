@@ -12,6 +12,17 @@
 </head>
 <body>
     <div class="wrapper">
+        <% if (request.getAttribute("success") != null) { %>
+    <script>
+        // Hiển thị popup
+        alert("<%= request.getAttribute("success") %>");
+
+        // Chuyển trang sau 3 giây
+        setTimeout(() => {
+            window.location.href = "login.jsp";
+        }, 2000);
+    </script>
+<% } %>
         <form action="verify" method="post">
             <h1>Xác nhận tài khoản</h1>
 

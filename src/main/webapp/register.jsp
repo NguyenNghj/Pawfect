@@ -6,139 +6,208 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
- <html>
+<html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pawfect - Đăng ký</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./css/register.css">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
 </head>
-
 <body>
-    <div class="wrapper">
-        <form action="register" method="POST" onsubmit="return validateForm()">
-
-            <h1>Đăng ký</h1>
-<% if (request.getAttribute("error") != null) { %>
+  <div class="container-fluid p-0">
+    <div class="row g-0 register-container">
+      <!-- Illustration Side -->
+      <div class="col-md-6 illustration-side">
+    <a href="login">
+        <img src="img/login/login.png" 
+             alt="E-commerce illustration" class="img-fluid">
+    </a>
+</div>
+      
+      <!-- Form Side -->
+      <div class="col-md-6 form-side position-relative">
+        <div class="register-form">
+     <h1 class="h4 mb-2 text-center" style="font-weight: bold;">Pawfect - Đăng ký</h1>
+        
+          <form action="register" method="POST"class="needs-validation" novalidate>
+            <!-- Họ tên -->
+            <div class="mb-3">
+              <label for="fullName" class="form-label">Họ tên</label>
+              <input type="text" name="fullName"class="form-control" id="fullName" placeholder="Nhập họ tên đầy đủ" required>
+              <div class="invalid-feedback">
+                Vui lòng nhập họ tên.
+              </div>
+            </div>
+            <% if (request.getAttribute("error") != null) { %>
     <p style="color: black;"><%= request.getAttribute("error") %></p>
 <% } %>
-
-            <div class="input-box">  
-                <p>Nhập họ và tên của bạn:</p>         
-                <input type="text" placeholder="Enter name" name="fullName" id="fullName">
-                <span id="fullNameError" class="error"></span>
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" name="email" class="form-control" id="email" placeholder="nhập email của bạn" required>
+              <div class="invalid-feedback">
+                Vui lòng nhập email hợp lệ.
+              </div>
             </div>
-
-            <div class="input-box">
-                <p>Email:</p>  
-                <input type="email" placeholder="Enter email" name="email" id="email">
-                <span id="emailError" class="error"></span>
+            
+            <!-- Số điện thoại -->
+            <div class="mb-3">
+              <label for="phone" class="form-label">Số điện thoại</label>
+              <input type="tel" class="form-control" name="phoneNumber" id="phone" placeholder="nhập số điện thoại của bạn" required>
+              <div class="invalid-feedback">
+                Vui lòng nhập số điện thoại.
+              </div>
             </div>
-
-            <div class="input-box">
-                <p>Số điện thoại:</p>
-                <input type="tel" placeholder="Enter phone number" name="phoneNumber" id="phoneNumber">
-                <span id="phoneError" class="error"></span>
+            
+            <!-- Mật khẩu -->
+            <div class="mb-3 position-relative">
+              <label for="password" class="form-label">Mật khẩu</label>
+              <input type="password" class="form-control" name="password" id="password" placeholder="Nhập mật khẩu" required>
+              <i class="bi bi-eye-slash password-toggle" id="togglePassword"></i>
+              <div class="form-text">Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và số.</div>
+              <div class="invalid-feedback">
+                Vui lòng nhập mật khẩu.
+              </div>
             </div>
-
-            <div class="input-box">
-                <p>Nhập mật khẩu:</p>  
-                <input type="password" placeholder="Enter password" name="password" id="password">
-                <span id="passwordError" class="error"></span>
+            
+            <!-- Nhập lại mật khẩu -->
+            <div class="mb-3 position-relative">
+              <label for="confirmPassword" class="form-label">Nhập lại mật khẩu</label>
+              <input type="password" class="form-control" id="confirmPassword" placeholder="Nhập lại mật khẩu" required>
+              <i class="bi bi-eye-slash password-toggle" id="toggleConfirmPassword"></i>
+              <div class="invalid-feedback">
+                Mật khẩu không khớp.
+              </div>
             </div>
-
-            <div class="input-box">
-                <p>Nhập lại mật khẩu:</p>  
-                <input type="password" placeholder="Enter password" name="confirmPassword" id="confirmPassword">
-                <span id="confirmPasswordError" class="error"></span>
+            
+            <!-- Ngày tháng năm sinh -->
+            <div class="mb-3">
+              <label for="birthdate" class="form-label">Ngày tháng năm sinh</label>
+              <input type="date" class="form-control" name="birthDate" id="birthdate" required>
+              <div class="invalid-feedback">
+                Vui lòng chọn ngày sinh.
+              </div>
             </div>
-
-            <div class="input-box">
-                <p>Nhập ngày tháng năm sinh:</p>  
-                <input type="date" name="birthDate" id="birthDate">             
-                <span id="birthDateError" class="error"></span>
+            
+            <!-- Địa chỉ -->
+            <div class="mb-3">
+              <label for="address" class="form-label">Địa chỉ</label>
+              <textarea class="form-control" id="address" name="address" rows="3" placeholder="Nhập địa chỉ đầy đủ" required></textarea>
+              <div class="invalid-feedback">
+                Vui lòng nhập địa chỉ.
+              </div>
             </div>
-
-            <div class="input-box">
-                <p>Địa chỉ:</p>  
-                <input type="text" placeholder="Enter address" name="address" id="address">
-                <span id="addressError" class="error"></span>
+            
+            <!-- Giới tính -->
+            <div class="mb-4">
+              <label class="form-label">Giới tính</label>
+              <div class="d-flex gap-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="gender" id="male" value="Nam" checked>
+                  <label class="form-check-label" for="male">
+                    Nam
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="gender" id="female" value="Nữ">
+                  <label class="form-check-label" for="female">
+                    Nữ
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="gender" id="other" value="Khác">
+                  <label class="form-check-label" for="other">
+                    Khác
+                  </label>
+                </div>
+              </div>
             </div>
-
-            <div class="gender">
-                <p>Giới tính:</p>
-                <input type="radio" id="male" name="gender" value="Nam">
-                <label for="male">Nam</label>
-                <input type="radio" id="female" name="gender" value="Nữ">
-                <label for="female">Nữ</label>
-                <input type="radio" id="other" name="gender" value="Khác">
-                <label for="other">Khác</label>
-                <span id="genderError" class="error"></span>
-            </div>
-
-            <button type="submit" class="btn">Đăng ký</button>
-        </form>
+            
+    
+            <button type="submit" class="btn btn-primary w-100 mb-3">Đăng ký</button>
+          </form>
+          <div class="login-link">
+            Đã có tài khoản? <a href="login" class="text-decoration-none" style="color: var(--primary-color);">Đăng nhập</a>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <script>
-        function validateForm() {
-            let isValid = true;
-let name =document.getElementById("fullName").value;
-            let email = document.getElementById("email").value;
-            let password = document.getElementById("password").value;
-            let confirmPassword = document.getElementById("confirmPassword").value;
-            let phoneNumber = document.getElementById("phoneNumber").value;
-            let birthDate = document.getElementById("birthDate").value;
-            let gender = document.querySelector('input[name="gender"]:checked');
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <!-- Custom JavaScript -->
+  <script>
+   document.addEventListener("DOMContentLoaded", function () {
+    "use strict";
 
-            let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            let phonePattern = /^[0-9]{10,11}$/;
- document.getElementById("fullNameError").innerHTML = "";
-            document.getElementById("emailError").innerHTML = "";
-            document.getElementById("passwordError").innerHTML = "";
-            document.getElementById("confirmPasswordError").innerHTML = "";
-            document.getElementById("phoneError").innerHTML = "";
-            document.getElementById("birthDateError").innerHTML = "";
-            document.getElementById("genderError").innerHTML = "";
-if (!name) {
-                document.getElementById("fullNameError").innerHTML = "Vui lòng điền họ và tên";
-                isValid = false;
-            }
-            if (!emailPattern.test(email)) {
-                document.getElementById("emailError").innerHTML = "Email không hợp lệ!";
-                isValid = false;
+    // Lấy tất cả các form cần kiểm tra
+    var forms = document.querySelectorAll(".needs-validation");
+
+    // Lặp qua từng form và thêm sự kiện submit
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener("submit", function (event) {
+            // Kiểm tra xem form có hợp lệ không
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
             }
 
-            if (password.length < 6) {
-                document.getElementById("passwordError").innerHTML = "Mật khẩu phải có ít nhất 6 ký tự!";
-                isValid = false;
+            // Kiểm tra mật khẩu có khớp không
+            const password = document.getElementById("password");
+            const confirmPassword = document.getElementById("confirmPassword");
+
+            if (password.value !== confirmPassword.value) {
+                confirmPassword.setCustomValidity("Mật khẩu không khớp");
+            } else {
+                confirmPassword.setCustomValidity("");
             }
 
-            if (password !== confirmPassword) {
-                document.getElementById("confirmPasswordError").innerHTML = "Mật khẩu nhập lại không khớp!";
-                isValid = false;
-            }
+            form.classList.add("was-validated");
+        }, false);
+    });
 
-            if (!phonePattern.test(phoneNumber)) {
-                document.getElementById("phoneError").innerHTML = "Số điện thoại không hợp lệ!";
-                isValid = false;
-            }
+    // Kiểm tra mật khẩu có khớp khi nhập
+    document.getElementById("confirmPassword").addEventListener("input", function () {
+        const password = document.getElementById("password").value;
+        const confirmPassword = this.value;
 
-            if (!birthDate) {
-                document.getElementById("birthDateError").innerHTML = "Vui lòng chọn ngày sinh!";
-                isValid = false;
-            }
-
-            if (!gender) {
-                document.getElementById("genderError").innerHTML = "Vui lòng chọn giới tính!";
-                isValid = false;
-            }
-
-            return isValid;
+        if (password !== confirmPassword) {
+            this.setCustomValidity("Mật khẩu không khớp");
+        } else {
+            this.setCustomValidity("");
         }
-    </script>
+        this.reportValidity();
+    });
 
+    // Bật/tắt hiển thị mật khẩu
+    document.getElementById("togglePassword")?.addEventListener("click", function () {
+        togglePasswordVisibility("password", this);
+    });
+
+    document.getElementById("toggleConfirmPassword")?.addEventListener("click", function () {
+        togglePasswordVisibility("confirmPassword", this);
+    });
+
+    function togglePasswordVisibility(inputId, toggleIcon) {
+        const inputField = document.getElementById(inputId);
+        if (!inputField) return;
+
+        const type = inputField.getAttribute("type") === "password" ? "text" : "password";
+        inputField.setAttribute("type", type);
+        toggleIcon.classList.toggle("bi-eye");
+        toggleIcon.classList.toggle("bi-eye-slash");
+    }
+});
+
+  </script>
 </body>
 </html>
