@@ -92,8 +92,9 @@ public class VerifyServlet extends HttpServlet {
             } catch (NoSuchAlgorithmException ex) {
                 Logger.getLogger(VerifyServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            session.invalidate();
-            response.sendRedirect("login.jsp");
+           request.setAttribute("success", "Đăng ký thành công! Đang chuyển hướng về trang đăng nhập");
+session.invalidate();
+request.getRequestDispatcher("verify.jsp").forward(request, response);
         } else {
             request.setAttribute("error", "Mã xác nhận không đúng!");
             request.getRequestDispatcher("verify.jsp").forward(request, response);

@@ -35,9 +35,12 @@
     <body>
         <div class="container-fluid p-0">
             <div class="row g-0 login-container">
-                <div class="col-md-6 illustration-side">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6KYofPjHBJzD0wDz_YLzcTZySiyqzSWXRRw&s" alt="E-commerce illustration" class="img-fluid">
-                </div>
+                 <div class="col-md-6 illustration-side">
+    <a href="register">
+        <img src="img/login/register.png" 
+             alt="E-commerce illustration" class="img-fluid">
+    </a>
+</div>
                 <div class="col-md-6 form-side position-relative">
                     <div class="login-form">
                         <h1 class="title">Pawfect - Đăng nhập</h1>
