@@ -119,7 +119,7 @@ public class PetDAO {
     }
 
     public void addPet(String customerId, String petName, String petType, String petBreed, String petSex, String petWeight, Date petDob, String petImage) {
-        String sql = "INSERT INTO Pets (customer_id,pet_name, pet_type, pet_breed, pet_sex, pet_weigth, pet_dob, pet_image, pet_status) VALUES (?,?, ?, ?, ?, ?, ?, ?, 'Health')";
+        String sql = "INSERT INTO Pets (customer_id,pet_name, pet_type, pet_breed, pet_sex, pet_weigth, pet_dob, pet_image, pet_status) VALUES (?,?, ?, ?, ?, ?, ?, ?, 'non-booking')";
 
         try {
             conn = new DBContext().getConnection();

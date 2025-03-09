@@ -36,10 +36,10 @@
         <div class="container-fluid p-0">
             <div class="row g-0 login-container">
                  <div class="col-md-6 illustration-side">
-    <a href="register">
-        <img src="img/login/register.png" 
+ 
+        <img src="img/login/img.png" 
              alt="E-commerce illustration" class="img-fluid">
-    </a>
+  
 </div>
                 <div class="col-md-6 form-side position-relative">
                     <div class="login-form">

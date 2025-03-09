@@ -47,13 +47,30 @@
         <form action="forgetpassword" method="POST" onsubmit="return validateEmail()">
             <h1>Quên Mật Khẩu</h1>
             
-            <% if (request.getAttribute("message") != null) { %>
-                <p style="color:green; text-align: center;"><%= request.getAttribute("message") %></p>
-            <% } %>
+           <% if (request.getAttribute("message") != null) { %>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Thành công!',
+            text: "<%= request.getAttribute("message") %>",
+            showConfirmButton: false,
+            timer: 2000
+        });
+    </script>
+<% } %>
 
-            <% if (request.getAttribute("error") != null) { %>
-                <p style="color:red; text-align: center;"><%= request.getAttribute("error") %></p>
-            <% } %>
+<% if (request.getAttribute("error") != null) { %>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: "<%= request.getAttribute("error") %>",
+            confirmButtonText: 'OK'
+        });
+    </script>
+<% } %>
             
             <div class="input-box">
                 <input type="email" id="email" name="email" placeholder="Nhập email của bạn" required>

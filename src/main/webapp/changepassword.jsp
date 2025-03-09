@@ -72,9 +72,20 @@
                                     String messageType = (String) session.getAttribute("messageType");
                                     if (message != null) {
                                 %>
-                                <div class="alert alert-<%= "success".equals(messageType) ? "success" : "danger"%>">
-                                    <%= message%>
-                                </div>
+                                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                                <script>
+                        Swal.fire({
+                            icon: '<%= "success".equals(messageType) ? "success" : "error"%>',
+                            title: '<%= "success".equals(messageType) ? "Thành công!" : "Lỗi!"%>',
+                            text: "<%= message%>",
+                            showConfirmButton: <%= "success".equals(messageType) ? "false" : "true"%>,
+                            timer: <%= "success".equals(messageType) ? "2000" : "null"%>
+                        }).then(() => {
+                                    <% if ("success".equals(messageType)) { %>
+                            window.location.href = "logout"; 
+                                    <% } %>
+                        });
+                                </script>
                                 <%
                                         session.removeAttribute("message");
                                         session.removeAttribute("messageType");

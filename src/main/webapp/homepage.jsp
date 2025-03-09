@@ -26,7 +26,26 @@
     </head>
 
     <body>
-
+<%
+    String message = (String) session.getAttribute("message");
+    String messageType = (String) session.getAttribute("messageType");
+    if (message != null) {
+%>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            position: "top-end",
+            icon: '<%= "success".equals(messageType) ? "success" : "error" %>',
+            title: "<%= message %>",
+            showConfirmButton: false,
+            timer: 1000
+        });
+    </script>
+<%
+        session.removeAttribute("message");
+        session.removeAttribute("messageType");
+    }
+%>
         <div class="container info">
             <div class="row">
                 <div class="col-sm-8 left-info">
