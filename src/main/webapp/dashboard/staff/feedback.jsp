@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -152,7 +153,16 @@
                         </nav>
                     </div>   
 
-                    <div class="row" style="margin-top: 60px; margin-bottom: 50px;">
+                    <form action="feedbackmanagement?&action=search&status=${param.status}" method="post">
+                        <div class="row" style="background-color: white; padding: 16px; border-radius: 5px; margin-top: 30px; margin-bottom: 20px">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Tìm kiếm theo tên:</label>
+                            <div class="col-sm-4">
+                                <input name="searchContent" type="search" class="form-control" id="inputEmail3" placeholder="Sản phẩm hoặc khách hàng">
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="row" style="margin-bottom: 50px;">
                         <div class="main-dashboard-table">
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
                                  style="background-color: #007BFF; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
@@ -196,80 +206,99 @@
                                         </thead>
                                         <tbody>
 
-                                        <c:forEach items="${feedbacks}" var="f">
-                                            <tr>
-                                                <th scope="row">#${f.feedbackId}</th>
-                                                <td>${f.productName}</td>
-                                                <td>${f.customerName}</td>
-                                                <td>
-                                                    <c:forEach var="i" begin="1" end="5">
+                                        <c:set var="itemsPerPage" value="10" />
+                                        <c:set var="totalFeedbacks" value="${fn:length(feedbacks)}" />
+                                        <c:set var="totalPages" value="${(totalFeedbacks + itemsPerPage - 1) / itemsPerPage}"/>
+
+                                        <!-- Ensure currentPage is set correctly -->
+                                        <c:set var="currentPage">
+                                            <c:choose>
+                                                <c:when test="${not empty param.page}">
+                                                    ${param.page}
+                                                </c:when>
+                                                <c:otherwise>1</c:otherwise>
+                                            </c:choose>
+                                        </c:set>
+
+                                        <c:set var="start" value="${(currentPage - 1) * itemsPerPage}" />
+                                        <c:set var="end" value="${start + itemsPerPage}" />
+
+                                        <c:forEach items="${feedbacks}" var="f" varStatus="loop">
+                                            <c:if test="${loop.index >= start and loop.index < end}">
+                                                <tr>
+                                                    <th scope="row">#${f.feedbackId}</th>
+                                                    <td>${f.productName}</td>
+                                                    <td>${f.customerName}</td>
+                                                    <td>
+                                                        <c:forEach var="i" begin="1" end="5">
+                                                            <c:choose>
+                                                                <c:when test="${i <= f.rating}">
+                                                                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <i class="fa-regular fa-star" style="color: #FFD43B;"></i>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </c:forEach>    
+                                                    </td>
+                                                    <td>${f.comment}</td>
+                                                    <td>
+                                                        <c:if test="${not empty f.reply}"><i class="fa-solid fa-check fa-xl" style="color: #02a704;"></i></c:if>
+                                                        <c:if test="${empty f.reply}"><i class="fa-solid fa-xmark fa-xl" style="color: #c12b06;"></i></c:if>
+                                                        </td>
+                                                        <td>
                                                         <c:choose>
-                                                            <c:when test="${i <= f.rating}">
-                                                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                            <c:when test="${f.isVisible == true}">
+                                                                <span class="text-success fw-bold">Hiện</span>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <i class="fa-regular fa-star" style="color: #FFD43B;"></i>
+                                                                <span class="text-danger fw-bold">Ẩn</span>
+                                                            </c:otherwise>
+                                                        </c:choose>                                                   
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-primary open-modal"
+                                                                data-bs-toggle="modal" data-bs-target="#feedbackModal"
+                                                                data-feedback-id="${f.feedbackId}"
+                                                                data-product-name="${f.productName}"
+                                                                data-customer-name="${f.customerName}"
+                                                                data-rating="${f.rating}"
+                                                                data-comment="${f.comment}"
+                                                                data-reply="${f.reply}"
+                                                                data-status="${param.status}"
+                                                                data-img="${f.imagePath}"
+                                                                >
+                                                            Chi tiết
+                                                        </button>
+                                                        <c:choose>
+                                                            <c:when test="${f.isVisible == true}">
+                                                                <button type="button" class="btn btn-secondary hideButton1"
+                                                                        data-feedback-id="${f.feedbackId}"
+                                                                        data-customer-name="${f.customerName}"
+                                                                        data-status="${param.status}"
+                                                                        >
+                                                                    Ẩn
+                                                                </button>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <button type="button" class="btn btn-success hideButton2"
+                                                                        data-feedback-id="${f.feedbackId}"
+                                                                        data-customer-name="${f.customerName}"
+                                                                        data-status="${param.status}"
+                                                                        >
+                                                                    Hiện
+                                                                </button>
                                                             </c:otherwise>
                                                         </c:choose>
-                                                    </c:forEach>    
-                                                </td>
-                                                <td>${f.comment}</td>
-                                                <td>
-                                                    <c:if test="${not empty f.reply}"><i class="fa-solid fa-check fa-xl" style="color: #02a704;"></i></c:if>
-                                                    <c:if test="${empty f.reply}"><i class="fa-solid fa-xmark fa-xl" style="color: #c12b06;"></i></c:if>
-                                                </td>
-                                                <td>
-                                                    <c:choose>
-                                                        <c:when test="${f.isVisible == true}">
-                                                            <span class="text-success fw-bold">Hiện</span>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <span class="text-danger fw-bold">Ẩn</span>
-                                                        </c:otherwise>
-                                                    </c:choose>                                                   
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="btn btn-primary open-modal"
-                                                            data-bs-toggle="modal" data-bs-target="#feedbackModal"
-                                                            data-feedback-id="${f.feedbackId}"
-                                                            data-product-name="${f.productName}"
-                                                            data-customer-name="${f.customerName}"
-                                                            data-rating="${f.rating}"
-                                                            data-comment="${f.comment}"
-                                                            data-reply="${f.reply}"
-                                                            data-status="${param.status}"
-                                                            data-img="${f.imagePath}"
-                                                            >
-                                                        Chi tiết
-                                                    </button>
-                                                    <c:choose>
-                                                        <c:when test="${f.isVisible == true}">
-                                                            <button type="button" class="btn btn-secondary hideButton1"
-                                                                    data-feedback-id="${f.feedbackId}"
-                                                                    data-customer-name="${f.customerName}"
-                                                                    data-status="${param.status}"
-                                                                    >
-                                                                Ẩn
-                                                            </button>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <button type="button" class="btn btn-success hideButton2"
-                                                                    data-feedback-id="${f.feedbackId}"
-                                                                    data-customer-name="${f.customerName}"
-                                                                    data-status="${param.status}"
-                                                                    >
-                                                                Hiện
-                                                            </button>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                    <button type="button" class="btn btn-danger hideButton3"
-                                                            data-feedback-id="${f.feedbackId}"
-                                                            data-status="${param.status}"
-                                                            >
-                                                        Xoá
-                                                    </button>
-                                                </td>
-                                            </tr>
+                                                        <button type="button" class="btn btn-danger hideButton3"
+                                                                data-feedback-id="${f.feedbackId}"
+                                                                data-status="${param.status}"
+                                                                >
+                                                            Xoá
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </c:if>
                                         </c:forEach>
 
                                     </tbody>
@@ -349,6 +378,36 @@
                                 </c:if>
                             </div>
                         </div>
+
+                        <c:if test="${totalPages >= 1}">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    <!-- Nút Previous -->
+                                    <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                        <a class="page-link" href="javascript:updatePage(${currentPage - 1})">Previous</a>
+                                    </li>
+
+                                    <!-- Hiển thị số trang -->
+                                    <c:forEach var="i" begin="1" end="${totalPages}">
+                                        <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                            <a class="page-link" href="javascript:updatePage(${i})">${i}</a>
+                                        </li>
+                                    </c:forEach>
+
+                                    <!-- Nút Next -->
+                                    <li class="page-item ${currentPage >= Math.floor(totalPages) ? 'disabled' : ''}">
+                                        <a class="page-link" href="javascript:updatePage(${currentPage + 1})">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </c:if>
+                        <script>
+                            function updatePage(page) {
+                                let urlParams = new URLSearchParams(window.location.search);
+                                urlParams.set('page', page); // Cập nhật số trang
+                                window.location.search = urlParams.toString();
+                            }
+                        </script>
                     </div>          
 
                 </div>
@@ -362,215 +421,215 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
+                            document.addEventListener("DOMContentLoaded", function () {
 
 
-                // Bắt sự kiện khi nhấn nút Lưu
-                document.getElementById("confirm-btn").addEventListener("click", function (event) {
-                    event.preventDefault(); // Ngăn form gửi ngay lập tức
+                                // Bắt sự kiện khi nhấn nút Lưu
+                                document.getElementById("confirm-btn").addEventListener("click", function (event) {
+                                    event.preventDefault(); // Ngăn form gửi ngay lập tức
 
-                    // Lấy nội dung phản hồi của nhân viên
-                    let replyContent = document.getElementById("fb-reply").value.trim();
+                                    // Lấy nội dung phản hồi của nhân viên
+                                    let replyContent = document.getElementById("fb-reply").value.trim();
 
-                    // Kiểm tra nếu ô phản hồi trống
-                    if (replyContent === "") {
-                        Swal.fire({
-                            title: "Phản hồi không được để trống!",
-                            text: "Vui lòng nhập phản hồi trước khi lưu.",
-                            icon: "error"
-                        });
-                        return; // Dừng thực thi nếu ô phản hồi trống
-                    }
+                                    // Kiểm tra nếu ô phản hồi trống
+                                    if (replyContent === "") {
+                                        Swal.fire({
+                                            title: "Phản hồi không được để trống!",
+                                            text: "Vui lòng nhập phản hồi trước khi lưu.",
+                                            icon: "error"
+                                        });
+                                        return; // Dừng thực thi nếu ô phản hồi trống
+                                    }
 
-                    // Nếu hợp lệ, hiển thị xác nhận
-                    Swal.fire({
-                        title: "Xác nhận lưu?",
-                        text: "Bạn có chắc chắn muốn lưu phản hồi này?",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#3085d6",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Đồng ý!",
-                        cancelButtonText: "Hủy!"
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Hiển thị alert thành công
-                            Swal.fire({
-                                title: "Thành công!",
-                                text: "Phản hồi đã được lưu.",
-                                icon: "success",
-                                timer: 1500,
-                                showConfirmButton: false
-                            }).then(() => {
-                                // Gửi form sau khi hiện alert xong
-                                document.getElementById("feedbackForm").submit();
+                                    // Nếu hợp lệ, hiển thị xác nhận
+                                    Swal.fire({
+                                        title: "Xác nhận lưu?",
+                                        text: "Bạn có chắc chắn muốn lưu phản hồi này?",
+                                        icon: "warning",
+                                        showCancelButton: true,
+                                        confirmButtonColor: "#3085d6",
+                                        cancelButtonColor: "#d33",
+                                        confirmButtonText: "Đồng ý!",
+                                        cancelButtonText: "Hủy!"
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            // Hiển thị alert thành công
+                                            Swal.fire({
+                                                title: "Thành công!",
+                                                text: "Phản hồi đã được lưu.",
+                                                icon: "success",
+                                                timer: 1500,
+                                                showConfirmButton: false
+                                            }).then(() => {
+                                                // Gửi form sau khi hiện alert xong
+                                                document.getElementById("feedbackForm").submit();
+                                            });
+                                        }
+                                    });
+                                });
+
+
+
+                                // Lắng nghe sự kiện click trên các nút mở modal
+                                document.querySelectorAll(".open-modal").forEach(button => {
+                                    button.addEventListener("click", function () {
+                                        // Lấy dữ liệu từ thuộc tính data-*
+                                        let feedbackId = this.getAttribute("data-feedback-id");
+                                        let productName = this.getAttribute("data-product-name");
+                                        let customerName = this.getAttribute("data-customer-name");
+                                        let rating = this.getAttribute("data-rating");
+                                        let comment = this.getAttribute("data-comment");
+                                        let reply = this.getAttribute("data-reply");
+                                        let status = this.getAttribute("data-status");
+                                        let imagePath = this.getAttribute("data-img");
+                                        let imageContainer = document.getElementById("feedback-image-container");
+                                        let imageTag = document.getElementById("feedback-image");
+
+                                        if (imagePath) {
+                                            imageTag.src = imagePath;
+                                            imageContainer.style.display = "block"; // Hiện ảnh nếu có
+                                        } else {
+                                            imageContainer.style.display = "none"; // Ẩn nếu không có ảnh
+                                        }
+
+                                        console.log(feedbackId);
+                                        console.log(productName);
+                                        console.log(customerName);
+                                        console.log(rating);
+                                        console.log(comment);
+                                        console.log(reply);
+
+                                        // Gán dữ liệu vào modal
+                                        document.getElementById("product-name").value = productName;
+                                        document.getElementById("customer-name").value = customerName;
+                                        document.getElementById("fb-rating").value = rating;
+                                        document.getElementById("fb-comment").value = comment;
+                                        document.getElementById("fb-reply").value = reply || ""; // Nếu null thì hiển thị chuỗi rỗng
+                                        // Cập nhật tiêu đề modal
+                                        document.getElementById("feedbackModalLabel").textContent = "Phản hồi #" + feedbackId;
+                                        document.getElementById("feedback-id").value = feedbackId;
+                                        document.getElementById("status").value = status;
+
+                                    });
+                                });
+
+
+                                // Xóa dữ liệu khi modal đóng
+                                let feedbackModal = document.getElementById("feedbackModal");
+                                feedbackModal.addEventListener("hidden.bs.modal", function () {
+                                    document.getElementById("product-name").value = "";
+                                    document.getElementById("customer-name").value = "";
+                                    document.getElementById("fb-rating").value = "";
+                                    document.getElementById("fb-comment").value = "";
+                                    document.getElementById("fb-reply").value = "";
+                                });
+
+
+                                document.querySelectorAll(".hideButton1").forEach(button => {
+                                    button.addEventListener("click", function () {
+                                        let feedbackId = this.getAttribute("data-feedback-id");
+                                        let customerName = this.getAttribute("data-customer-name");
+                                        let status = this.getAttribute("data-status");
+
+                                        // Kiểm tra xem có lấy đúng feedbackId không
+                                        console.log("Feedback ID:", feedbackId);
+                                        console.log("Customer Name:", customerName);
+                                        console.log("Status:", status);
+
+                                        Swal.fire({
+                                            title: "Xác nhận ẩn đánh giá?",
+                                            text: "Bạn có chắc muốn ẩn đánh giá của khách hàng " + customerName + "?",
+                                            icon: "warning",
+                                            showCancelButton: true,
+                                            confirmButtonColor: "#3085d6",
+                                            cancelButtonColor: "#d33",
+                                            confirmButtonText: "Đồng ý!",
+                                            cancelButtonText: "Huỷ!"
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                Swal.fire({
+                                                    title: "Đã ẩn!",
+                                                    text: "Đánh giá của khách hàng đã bị ẩn.",
+                                                    icon: "success"
+                                                }).then(() => {
+                                                    // Chuyển trang sau khi thông báo hoàn tất
+                                                    window.location.href = "feedbackmanagement?action=isVisible&feedbackId=" + feedbackId + "&status=" + status;
+                                                });
+                                            }
+                                        });
+                                    });
+                                });
+
+
+                                document.querySelectorAll(".hideButton2").forEach(button => {
+                                    button.addEventListener("click", function () {
+                                        let feedbackId = this.getAttribute("data-feedback-id");
+                                        let customerName = this.getAttribute("data-customer-name");
+                                        let status = this.getAttribute("data-status");
+
+                                        // Kiểm tra xem có lấy đúng feedbackId không
+                                        console.log("Feedback ID:", feedbackId);
+                                        console.log("Customer Name:", customerName);
+                                        console.log("Status:", status);
+
+                                        Swal.fire({
+                                            title: "Xác nhận hiện đánh giá?",
+                                            text: "Bạn có chắc muốn hiện đánh giá của khách hàng " + customerName + "?",
+                                            icon: "warning",
+                                            showCancelButton: true,
+                                            confirmButtonColor: "#3085d6",
+                                            cancelButtonColor: "#d33",
+                                            confirmButtonText: "Đồng ý!",
+                                            cancelButtonText: "Huỷ!"
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                Swal.fire({
+                                                    title: "Đã hiện!",
+                                                    text: "Đánh giá của khách hàng đã hiện.",
+                                                    icon: "success"
+                                                }).then(() => {
+                                                    // Chuyển trang sau khi thông báo hoàn tất
+                                                    window.location.href = "feedbackmanagement?action=isVisible&feedbackId=" + feedbackId + "&status=" + status;
+                                                });
+                                            }
+                                        });
+                                    });
+                                });
+
+
+                                document.querySelectorAll(".hideButton3").forEach(button => {
+                                    button.addEventListener("click", function () {
+                                        let feedbackId = this.getAttribute("data-feedback-id");
+                                        let status = this.getAttribute("data-status");
+
+                                        // Kiểm tra xem có lấy đúng feedbackId không
+                                        console.log("Feedback ID:", feedbackId);
+                                        console.log("Status:", status);
+
+                                        Swal.fire({
+                                            title: "Xác nhận xoá đánh giá?",
+                                            text: "Bạn có chắc muốn xoá đánh giá #" + feedbackId,
+                                            icon: "warning",
+                                            showCancelButton: true,
+                                            confirmButtonColor: "#3085d6",
+                                            cancelButtonColor: "#d33",
+                                            confirmButtonText: "Đồng ý!",
+                                            cancelButtonText: "Huỷ!"
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                Swal.fire({
+                                                    title: "Đã xoá!",
+                                                    text: "Đánh giá #" + feedbackId + " đã bị xoá khỏi hệ thống.",
+                                                    icon: "success"
+                                                }).then(() => {
+                                                    // Chuyển trang sau khi thông báo hoàn tất
+                                                    window.location.href = "feedbackmanagement?action=delete&feedbackId=" + feedbackId + "&status=" + status;
+                                                });
+                                            }
+                                        });
+                                    });
+                                });
                             });
-                        }
-                    });
-                });
-
-
-
-                // Lắng nghe sự kiện click trên các nút mở modal
-                document.querySelectorAll(".open-modal").forEach(button => {
-                    button.addEventListener("click", function () {
-                        // Lấy dữ liệu từ thuộc tính data-*
-                        let feedbackId = this.getAttribute("data-feedback-id");
-                        let productName = this.getAttribute("data-product-name");
-                        let customerName = this.getAttribute("data-customer-name");
-                        let rating = this.getAttribute("data-rating");
-                        let comment = this.getAttribute("data-comment");
-                        let reply = this.getAttribute("data-reply");
-                        let status = this.getAttribute("data-status");
-                        let imagePath = this.getAttribute("data-img");
-                        let imageContainer = document.getElementById("feedback-image-container");
-                        let imageTag = document.getElementById("feedback-image");
-
-                        if (imagePath) {
-                            imageTag.src = imagePath;
-                            imageContainer.style.display = "block"; // Hiện ảnh nếu có
-                        } else {
-                            imageContainer.style.display = "none"; // Ẩn nếu không có ảnh
-                        }
-
-                        console.log(feedbackId);
-                        console.log(productName);
-                        console.log(customerName);
-                        console.log(rating);
-                        console.log(comment);
-                        console.log(reply);
-
-                        // Gán dữ liệu vào modal
-                        document.getElementById("product-name").value = productName;
-                        document.getElementById("customer-name").value = customerName;
-                        document.getElementById("fb-rating").value = rating;
-                        document.getElementById("fb-comment").value = comment;
-                        document.getElementById("fb-reply").value = reply || ""; // Nếu null thì hiển thị chuỗi rỗng
-                        // Cập nhật tiêu đề modal
-                        document.getElementById("feedbackModalLabel").textContent = "Phản hồi #" + feedbackId;
-                        document.getElementById("feedback-id").value = feedbackId;
-                        document.getElementById("status").value = status;
-
-                    });
-                });
-
-
-                // Xóa dữ liệu khi modal đóng
-                let feedbackModal = document.getElementById("feedbackModal");
-                feedbackModal.addEventListener("hidden.bs.modal", function () {
-                    document.getElementById("product-name").value = "";
-                    document.getElementById("customer-name").value = "";
-                    document.getElementById("fb-rating").value = "";
-                    document.getElementById("fb-comment").value = "";
-                    document.getElementById("fb-reply").value = "";
-                });
-
-
-                document.querySelectorAll(".hideButton1").forEach(button => {
-                    button.addEventListener("click", function () {
-                        let feedbackId = this.getAttribute("data-feedback-id");
-                        let customerName = this.getAttribute("data-customer-name");
-                        let status = this.getAttribute("data-status");
-
-                        // Kiểm tra xem có lấy đúng feedbackId không
-                        console.log("Feedback ID:", feedbackId);
-                        console.log("Customer Name:", customerName);
-                        console.log("Status:", status);
-
-                        Swal.fire({
-                            title: "Xác nhận ẩn đánh giá?",
-                            text: "Bạn có chắc muốn ẩn đánh giá của khách hàng " + customerName + "?",
-                            icon: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "#3085d6",
-                            cancelButtonColor: "#d33",
-                            confirmButtonText: "Đồng ý!",
-                            cancelButtonText: "Huỷ!"
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                Swal.fire({
-                                    title: "Đã ẩn!",
-                                    text: "Đánh giá của khách hàng đã bị ẩn.",
-                                    icon: "success"
-                                }).then(() => {
-                                    // Chuyển trang sau khi thông báo hoàn tất
-                                    window.location.href = "feedbackmanagement?action=isVisible&feedbackId=" + feedbackId + "&status=" + status;
-                                });
-                            }
-                        });
-                    });
-                });
-
-
-                document.querySelectorAll(".hideButton2").forEach(button => {
-                    button.addEventListener("click", function () {
-                        let feedbackId = this.getAttribute("data-feedback-id");
-                        let customerName = this.getAttribute("data-customer-name");
-                        let status = this.getAttribute("data-status");
-
-                        // Kiểm tra xem có lấy đúng feedbackId không
-                        console.log("Feedback ID:", feedbackId);
-                        console.log("Customer Name:", customerName);
-                        console.log("Status:", status);
-
-                        Swal.fire({
-                            title: "Xác nhận hiện đánh giá?",
-                            text: "Bạn có chắc muốn hiện đánh giá của khách hàng " + customerName + "?",
-                            icon: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "#3085d6",
-                            cancelButtonColor: "#d33",
-                            confirmButtonText: "Đồng ý!",
-                            cancelButtonText: "Huỷ!"
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                Swal.fire({
-                                    title: "Đã hiện!",
-                                    text: "Đánh giá của khách hàng đã hiện.",
-                                    icon: "success"
-                                }).then(() => {
-                                    // Chuyển trang sau khi thông báo hoàn tất
-                                    window.location.href = "feedbackmanagement?action=isVisible&feedbackId=" + feedbackId + "&status=" + status;
-                                });
-                            }
-                        });
-                    });
-                });
-
-
-                document.querySelectorAll(".hideButton3").forEach(button => {
-                    button.addEventListener("click", function () {
-                        let feedbackId = this.getAttribute("data-feedback-id");
-                        let status = this.getAttribute("data-status");
-
-                        // Kiểm tra xem có lấy đúng feedbackId không
-                        console.log("Feedback ID:", feedbackId);
-                        console.log("Status:", status);
-
-                        Swal.fire({
-                            title: "Xác nhận xoá đánh giá?",
-                            text: "Bạn có chắc muốn xoá đánh giá #" + feedbackId,
-                            icon: "warning",
-                            showCancelButton: true,
-                            confirmButtonColor: "#3085d6",
-                            cancelButtonColor: "#d33",
-                            confirmButtonText: "Đồng ý!",
-                            cancelButtonText: "Huỷ!"
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                Swal.fire({
-                                    title: "Đã xoá!",
-                                    text: "Đánh giá #" + feedbackId + " đã bị xoá khỏi hệ thống.",
-                                    icon: "success"
-                                }).then(() => {
-                                    // Chuyển trang sau khi thông báo hoàn tất
-                                    window.location.href = "feedbackmanagement?action=delete&feedbackId=" + feedbackId + "&status=" + status;
-                                });
-                            }
-                        });
-                    });
-                });
-            });
         </script>
     </body>
 </html>

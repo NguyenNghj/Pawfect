@@ -25,6 +25,14 @@ public class OrderDAO {
 
     protected static Connection Con = null;
 
+    protected static String Get_Last_Complete_Order = "SELECT TOP 1 oi.order_id\n"
+            + "FROM Orders o\n"
+            + "JOIN OrderItems oi ON o.order_id = oi.order_id\n"
+            + "WHERE o.customer_id = ?\n"
+            + "AND oi.product_id = ?\n"
+            + "AND o.status = N'Hoàn thành'\n"
+            + "ORDER BY o.order_date DESC;";
+
     protected static String Search_Order = "SELECT \n"
             + "    o.*,\n"
             + "    s.full_name AS staff_name,\n"
@@ -159,6 +167,26 @@ public class OrderDAO {
             + "    Orders AS o ON oi.order_id = o.order_id\n"
             + "WHERE\n"
             + "    oi.order_id = ?";
+
+    public static int getLastCompleteOrder(int customerId, int productId) {
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Get_Last_Complete_Order);
+            ps.setInt(1, customerId);
+            ps.setInt(2, productId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int orderId = rs.getInt("order_id");
+                System.out.println("Order ID gần nhất: " + orderId);
+                return orderId;
+            } else {
+                System.out.println("Không tìm thấy đơn hàng nào.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     public static List<Order> searchOrder(String search) {
         List<Order> list = new ArrayList<>();

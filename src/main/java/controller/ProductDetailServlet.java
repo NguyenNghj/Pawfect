@@ -6,6 +6,7 @@ package controller;
 
 import dao.CartDAO;
 import dao.FeedbackDAO;
+import dao.OrderDAO;
 import dao.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -80,30 +81,46 @@ public class ProductDetailServlet extends HttpServlet {
 //            return;
 //        }
 
-        String username = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("customerId".equals(cookie.getName())) {
-                    username = cookie.getValue();
-                    break;
-                }
-            }
+        // Lấy customerId từ Cookie
+        String username = getCookieValue(request, "customerId");
+        if (username == null) {
+            System.out.println("Không tìm thấy customerId!");
+            return;
         }
 
         int totalQuantity = 0;
-        if (username != null) {
-            int customerId = Integer.parseInt(username);
+        int customerId = Integer.parseInt(username);
 
-            List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
-            if (!cartItems.isEmpty()) {
-                for (CartItem cartItem : cartItems) {
-                    totalQuantity += cartItem.getQuantity();
-                }
+        List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+        if (!cartItems.isEmpty()) {
+            for (CartItem cartItem : cartItems) {
+                totalQuantity += cartItem.getQuantity();
             }
         }
+
         // Set tong so luong san pham trong gio hang
         request.setAttribute("totalQuantity", totalQuantity);
+
+        // Lay orderId don hang da hoan thanh gan nhat co san pham do
+        int orderId = OrderDAO.getLastCompleteOrder(customerId, productId);
+        // Neu lay duoc -> Du dieu kien da mua roi moi duoc feedback
+        if(orderId != 0){
+            request.setAttribute("orderExist", true);
+            // Kiem tra khach hang da feedback san pham trong don hang do hay chua        
+            int countOfFeedback = FeedbackDAO.checkOrderFeedback(customerId, productId, orderId);
+            System.out.println("countOfFeedback: " + countOfFeedback);
+            
+            // Neu kq tra ve > 0 thi da feedback roi -> Ko cho feedback nua
+            if(countOfFeedback > 0){
+                request.setAttribute("feedbackExist", true);
+                // Nguoc lai neu = 0 thi cho feedback
+            } else {
+                request.setAttribute("feedbackExist", false);
+            }                
+        } else {
+            System.out.println("Khach hang chua mua san pham nay!");
+            request.setAttribute("orderExist", false);
+        }
 
         // Lay option loc feedback cua khach hang chon
         String option = request.getParameter("rating");
@@ -219,5 +236,18 @@ public class ProductDetailServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    // Hàm lấy giá trị Cookie theo tên
+    private String getCookieValue(HttpServletRequest request, String name) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (name.equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+    }
 
 }

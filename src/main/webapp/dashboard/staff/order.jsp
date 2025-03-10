@@ -155,7 +155,7 @@
                         <div class="row" style="background-color: white; padding: 16px; border-radius: 5px; margin-top: 30px; margin-bottom: 20px">
                             <label for="inputEmail3" class="col-sm-2 col-form-label">Tìm kiếm theo tên:</label>
                             <div class="col-sm-4">
-                                <input name="searchContent" type="search" class="form-control" id="inputEmail3" placeholder="Tên khách hàng">
+                                <input name="searchContent" type="search" class="form-control" id="inputEmail3" placeholder="Khách hàng">
                             </div>
                         </div>
                     </form>
@@ -414,7 +414,7 @@
                                                     <input type="hidden" name="updateStatus" class="modalUpdateStatus">
                                                     <input type="hidden" name="actionBack" value="view">
                                                     <input type="hidden" name="statusType" value="${param.status}">
-                                                    <!-- <input type="hidden" name="reasonCancel"> -->
+                                                    <input type="hidden" name="reasonCancel"> 
 
                                                 </div>
                                                 <div class="modal-footer">
@@ -446,7 +446,7 @@
                                                     <input type="hidden" name="updateStatus" class="modalUpdateStatus">
                                                     <input type="hidden" name="actionBack" value="view">
                                                     <input type="hidden" name="statusType" value="${param.status}">
-                                                    <!-- <input type="hidden" name="reasonCancel"> -->
+                                                     <input type="hidden" name="reasonCancel"> 
 
                                                 </div>
                                                 <div class="modal-footer">
@@ -478,7 +478,7 @@
                                                     <input type="hidden" name="updateStatus" class="modalUpdateStatus">
                                                     <input type="hidden" name="actionBack" value="view">
                                                     <input type="hidden" name="statusType" value="${param.status}">
-                                                    <!-- <input type="hidden" name="reasonCancel"> -->
+                                                    <input type="hidden" name="reasonCancel"> 
 
                                                 </div>
                                                 <div class="modal-footer">
@@ -512,7 +512,7 @@
                                                     <input type="hidden" name="confirmCancel" class="modalUpdateStatus">
                                                     <input type="hidden" name="actionBack" value="view">
                                                     <input type="hidden" name="statusType" value="${param.status}">
-                                                    <!-- <input type="hidden" name="reasonCancel"> -->
+                                                    <input type="hidden" name="reasonCancel"> 
 
                                                 </div>
                                                 <div class="modal-footer">
@@ -535,7 +535,7 @@
 
                             </div>
                         </div>
-                        <c:if test="${totalPages > 1}">
+                        <c:if test="${totalPages >= 1}">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination">
                                     <!-- Nút Previous -->

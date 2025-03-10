@@ -118,13 +118,16 @@
 
                                     </div>
                                     <div class="rating-count">(${totalFeedback} đánh giá)</div>
-                                    <div class="mt-3">
-                                        <button class="btn btn-primary"
-                                                data-bs-toggle="modal" data-bs-target="#feedbackModal"                   
-                                                >
-                                            Gửi đánh giá của bạn
-                                        </button>
-                                    </div>
+                                    <c:if test="${orderExist == true && feedbackExist == false}">
+                                        <div class="mt-3">
+                                            <button class="btn btn-primary"
+                                                    data-bs-toggle="modal" data-bs-target="#feedbackModal"                   
+                                                    >
+                                                Gửi đánh giá của bạn
+                                            </button>
+                                        </div>
+                                    </c:if>
+
                                 </div>
 
                                 <!-- Modal -->

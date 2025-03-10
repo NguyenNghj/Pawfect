@@ -5,6 +5,7 @@
 package controller;
 
 import dao.FeedbackDAO;
+import dao.OrderDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -88,6 +89,9 @@ public class FeedbackManagementServlet extends HttpServlet {
                 case "delete":
                     deleteFeedback(request, response);
                     break;
+                case "search":
+                    searchFeedback(request, response);
+                    break;
             }
         } catch (ServletException | IOException | SQLException e) {
             throw new ServletException(e);
@@ -154,6 +158,21 @@ public class FeedbackManagementServlet extends HttpServlet {
         System.out.println("File uploaded: " + imagePath);
         return imagePath;
     }
+    
+    private void searchFeedback(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        String status = request.getParameter("status");
+        String searchContent = request.getParameter("searchContent").trim();
+
+        System.out.println("searchContent: " + searchContent);
+
+        List<Feedback> feedbacks = FeedbackDAO.searchOrder(searchContent);
+
+        request.setAttribute("feedbackStatus", status);
+        request.setAttribute("feedbacks", feedbacks);
+        request.getRequestDispatcher("/dashboard/staff/feedback.jsp").forward(request, response);
+    }
+    
 
     private void feedbackProduct(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
@@ -181,9 +200,12 @@ public class FeedbackManagementServlet extends HttpServlet {
             // Xử lý file ảnh (nếu có)
             Part filePart = request.getPart("feedbackImage");
             String imagePath = handleFileUpload(request, filePart);
+            
+            // Lay orderId don hang da hoan thanh gan nhat co san pham do
+            int orderId = OrderDAO.getLastCompleteOrder(intCustomerId, formatProductId);
 
             // Xử lý đánh giá (giả sử cập nhật thành công)
-            boolean update = FeedbackDAO.addFeedback(intCustomerId, formatProductId, formatRating, comment, imagePath);
+            boolean update = FeedbackDAO.addFeedback(intCustomerId, formatProductId, orderId, formatRating, comment, imagePath);
             if (update) {
                 System.out.println("Đánh giá thành công.");
                 response.setContentType("text/html");
@@ -193,10 +215,10 @@ public class FeedbackManagementServlet extends HttpServlet {
                 out.println("<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>");
                 out.println("<script>");
                 out.println("Swal.fire({");
-                out.println("  title: 'Đang chuyển hướng!',");
+                out.println("  title: 'Cảm ơn bạn đã đánh giá.',");
                 out.println("  text: 'Vui lòng đợi giây lát!',");
                 out.println("  icon: 'success',");
-                out.println("  timer: 1500,"); // Hiển thị trong 2 giây
+                out.println("  timer: 1500,"); // Hiển thị trong 1.5 giây
                 out.println("  timerProgressBar: true,"); // Thanh tiến trình
                 out.println("  showConfirmButton: false"); // Ẩn nút OK
                 out.println("}).then(() => {");
