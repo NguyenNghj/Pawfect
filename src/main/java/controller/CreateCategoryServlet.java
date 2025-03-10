@@ -17,7 +17,7 @@ import model.Category;
  *
  * @author Nguyen Tri Nghi - CE180897
  */
-public class AddCategoryServlet extends HttpServlet {
+public class CreateCategoryServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -57,7 +57,7 @@ public class AddCategoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/dashboard/admin/addcategory.jsp").forward(request, response);
+        request.getRequestDispatcher("/dashboard/admin/createcategory.jsp").forward(request, response);
     }
 
     /**
@@ -71,19 +71,36 @@ public class AddCategoryServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        CategoryDAO categoryDAO = new CategoryDAO();
-        String categoryName = request.getParameter("categoryName");
-        boolean isActive = Boolean.parseBoolean(request.getParameter("isActive"));
-        Category category = new Category(categoryName, isActive);
+        try {
+            // Đọc dữ liệu từ request
+            String categoryName = request.getParameter("categoryName");
 
-        boolean isCreated = categoryDAO.addCategory(category);
+            // Kiểm tra nếu categoryName bị null hoặc rỗng
+            if (categoryName == null || categoryName.trim().isEmpty()) {
+                request.setAttribute("errorMessage", "Tên danh mục không được để trống!");
+                request.getRequestDispatcher("/dashboard/admin/createcategory.jsp").forward(request, response);
+                return;
+            }
 
-        if (isCreated) {
-            // Redirect to the category list page or success page
-            response.sendRedirect("/dashboard/admin/category");
-        } else {
-            // Show an error message or redirect back to the form
-            response.getWriter().write("Error creating category");
+            boolean isActive = Boolean.parseBoolean(request.getParameter("isActive"));
+
+            // Tạo đối tượng Category
+            Category category = new Category(categoryName.trim(), isActive);
+
+            // Gọi DAO để thêm danh mục
+            CategoryDAO categoryDAO = new CategoryDAO();
+            boolean isCreated = categoryDAO.createCategory(category);
+
+            if (isCreated) {
+                response.sendRedirect(request.getContextPath() + "/dashboard/admin/category");
+            } else {
+                throw new Exception();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Tạo danh mục thất bại!");
+            request.getRequestDispatcher("/dashboard/admin/createcategory").forward(request, response);
         }
     }
 

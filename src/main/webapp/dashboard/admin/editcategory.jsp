@@ -156,6 +156,20 @@
                                 });
                             });
                         </script>
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                var errorMessage = "<c:out value='${errorMessage}' />";
+                                if (errorMessage && errorMessage.trim() !== "") {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Lỗi!",
+                                        text: errorMessage,
+                                        confirmButtonText: "OK"
+                                    });
+                                }
+                            });
+                        </script>
                     </div>
                 </div>
             </div>

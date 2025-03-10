@@ -58,11 +58,45 @@ public class EditVoucherServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int voucherId = Integer.parseInt(request.getParameter("voucherId"));
-        VoucherDAO voucherDAO = new VoucherDAO();
-        Voucher voucher = voucherDAO.getVoucherById(voucherId);
-        request.setAttribute("voucher", voucher);
-        request.getRequestDispatcher("/dashboard/admin/editvoucher.jsp").forward(request, response);
+        try {
+            // Lấy voucherId từ request và kiểm tra hợp lệ
+            String voucherIdParam = request.getParameter("voucherId");
+            if (voucherIdParam == null || voucherIdParam.trim().isEmpty()) {
+                throw new IllegalArgumentException("Mã giảm giá không được để trống.");
+            }
+
+            int voucherId = Integer.parseInt(voucherIdParam);
+            VoucherDAO voucherDAO = new VoucherDAO();
+            Voucher voucher = voucherDAO.getVoucherById(voucherId);
+
+            if (voucher == null) {
+                throw new NullPointerException("Không tìm thấy mã giảm giá với ID: " + voucherId);
+            }
+
+            request.setAttribute("voucher", voucher);
+            request.getRequestDispatcher("/dashboard/admin/editvoucher.jsp").forward(request, response);
+
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Id mã giảm giá không hợp lệ!");
+            request.getRequestDispatcher("/dashboard/admin/voucher").forward(request, response);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Không tìm thấy mã giảm giá!");
+            request.getRequestDispatcher("/dashboard/admin/voucher").forward(request, response);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", e.getMessage());
+            request.getRequestDispatcher("/dashboard/admin/voucher").forward(request, response);
+        } catch (IOException | ServletException e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
+            request.getRequestDispatcher("/dashboard/admin/voucher").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Lỗi không xác định: " + e.getMessage());
+            request.getRequestDispatcher("/dashboard/admin/voucher").forward(request, response);
+        }
     }
 
     /**
@@ -78,16 +112,34 @@ public class EditVoucherServlet extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         try {
-            int voucherId = Integer.parseInt(request.getParameter("voucherId"));
+            // Kiểm tra dữ liệu đầu vào
+            String voucherIdParam = request.getParameter("voucherId");
             String code = request.getParameter("code");
             String description = request.getParameter("description");
-            int discountPercentage = Integer.parseInt(request.getParameter("discountPercentage"));
-            double discountAmount = Double.parseDouble(request.getParameter("discountAmount"));
-            double minOrderValue = Double.parseDouble(request.getParameter("minOrderValue"));
-            double maxDiscount = Double.parseDouble(request.getParameter("maxDiscount"));
-            Timestamp startDate = Timestamp.valueOf(request.getParameter("startDate").replace("T", " ") + ":00");
-            Timestamp endDate = Timestamp.valueOf(request.getParameter("endDate").replace("T", " ") + ":00");
-            boolean isActive = Boolean.parseBoolean(request.getParameter("active"));
+            String discountPercentageParam = request.getParameter("discountPercentage");
+            String discountAmountParam = request.getParameter("discountAmount");
+            String minOrderValueParam = request.getParameter("minOrderValue");
+            String maxDiscountParam = request.getParameter("maxDiscount");
+            String startDateParam = request.getParameter("startDate");
+            String endDateParam = request.getParameter("endDate");
+            String isActiveParam = request.getParameter("active");
+
+            if (voucherIdParam == null || discountPercentageParam == null || discountAmountParam == null
+                    || minOrderValueParam == null || maxDiscountParam == null || startDateParam == null || endDateParam == null) {
+                throw new IllegalArgumentException("Một số trường dữ liệu bị thiếu.");
+            }
+
+            int voucherId = Integer.parseInt(voucherIdParam);
+            int discountPercentage = Integer.parseInt(discountPercentageParam);
+            double discountAmount = Double.parseDouble(discountAmountParam);
+            double minOrderValue = Double.parseDouble(minOrderValueParam);
+            double maxDiscount = Double.parseDouble(maxDiscountParam);
+
+            // Xử lý định dạng ngày tháng từ input (yyyy-MM-ddTHH:mm)
+            Timestamp startDate = Timestamp.valueOf(startDateParam.replace("T", " ") + ":00");
+            Timestamp endDate = Timestamp.valueOf(endDateParam.replace("T", " ") + ":00");
+
+            boolean isActive = Boolean.parseBoolean(isActiveParam);
 
             VoucherDAO voucherDAO = new VoucherDAO();
 
@@ -107,17 +159,27 @@ public class EditVoucherServlet extends HttpServlet {
             } else {
                 request.setAttribute("errorMessage", "Cập nhật thất bại. Vui lòng thử lại!");
                 request.setAttribute("voucher", voucher);
-                request.getRequestDispatcher("/dashboard/admin/editvoucher.jsp").forward(request, response);
+                request.getRequestDispatcher("/dashboard/admin/voucher").forward(request, response);
             }
         } catch (NumberFormatException e) {
+            e.printStackTrace(); // Log lỗi nếu cần
             request.setAttribute("errorMessage", "Dữ liệu nhập vào không hợp lệ. Vui lòng kiểm tra lại!");
-            request.getRequestDispatcher("/dashboard/admin/editvoucher.jsp").forward(request, response);
+            request.getRequestDispatcher("/dashboard/admin/voucher").forward(request, response);
+
         } catch (IllegalArgumentException e) {
-            request.setAttribute("errorMessage", "Định dạng ngày không hợp lệ!");
-            request.getRequestDispatcher("/dashboard/admin/editvoucher.jsp").forward(request, response);
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Lỗi dữ liệu: " + e.getMessage());
+            request.getRequestDispatcher("/dashboard/admin/voucher").forward(request, response);
+
+        } catch (IOException | ServletException e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Lỗi hệ thống trong quá trình xử lý.");
+            request.getRequestDispatcher("/dashboard/admin/voucher").forward(request, response);
+
         } catch (Exception e) {
-            request.setAttribute("errorMessage", "Đã xảy ra lỗi. Vui lòng thử lại sau!");
-            request.getRequestDispatcher("/dashboard/admin/editvoucher.jsp").forward(request, response);
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Đã xảy ra lỗi không xác định.");
+            request.getRequestDispatcher("/dashboard/admin/voucher").forward(request, response);
         }
     }
 

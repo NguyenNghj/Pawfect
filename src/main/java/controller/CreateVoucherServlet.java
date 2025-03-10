@@ -18,7 +18,7 @@ import model.Voucher;
  *
  * @author Nguyen Tri Nghi - CE180897
  */
-public class AddVoucherServlet extends HttpServlet {
+public class CreateVoucherServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -58,7 +58,7 @@ public class AddVoucherServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("/dashboard/admin/addvoucher.jsp").forward(request, response);
+        request.getRequestDispatcher("/dashboard/admin/createvoucher.jsp").forward(request, response);
     }
 
     /**
@@ -72,33 +72,49 @@ public class AddVoucherServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-        String code = request.getParameter("code");
-        String description = request.getParameter("description");
-        int discountPercentage = Integer.parseInt(request.getParameter("discountPercentage"));
-        double discountAmount = Double.parseDouble(request.getParameter("discountAmount"));
-        double minOrderValue = Double.parseDouble(request.getParameter("minOrderValue"));
-        double maxDiscount = Double.parseDouble(request.getParameter("maxDiscount"));
-        Timestamp startDate = Timestamp.valueOf(request.getParameter("startDate").replace("T", " ") + ":00");
-        Timestamp endDate = Timestamp.valueOf(request.getParameter("endDate").replace("T", " ") + ":00");
-        boolean isActive = Boolean.parseBoolean(request.getParameter("active"));
+        try {
+            request.setCharacterEncoding("UTF-8");
 
-        VoucherDAO voucherDAO = new VoucherDAO();
+            // Nhận dữ liệu từ form
+            String code = request.getParameter("code");
+            String description = request.getParameter("description");
+            int discountPercentage = Integer.parseInt(request.getParameter("discountPercentage"));
+            double discountAmount = Double.parseDouble(request.getParameter("discountAmount"));
+            double minOrderValue = Double.parseDouble(request.getParameter("minOrderValue"));
+            double maxDiscount = Double.parseDouble(request.getParameter("maxDiscount"));
+            Timestamp startDate = Timestamp.valueOf(request.getParameter("startDate").replace("T", " ") + ":00");
+            Timestamp endDate = Timestamp.valueOf(request.getParameter("endDate").replace("T", " ") + ":00");
+            boolean isActive = Boolean.parseBoolean(request.getParameter("active"));
 
-        // Kiểm tra xem mã giảm giá đã tồn tại chưa
-        if (voucherDAO.isCodeExists(code)) {
-            request.setAttribute("errorMessage", "Mã giảm giá đã tồn tại!");
-            request.getRequestDispatcher("/dashboard/admin/addvoucher.jsp").forward(request, response);
-        } else {
+            VoucherDAO voucherDAO = new VoucherDAO();
+
+            // Kiểm tra xem mã giảm giá đã tồn tại chưa
+            if (voucherDAO.isCodeExists(code)) {
+                request.setAttribute("errorMessage", "Mã giảm giá đã tồn tại!");
+                request.getRequestDispatcher("/dashboard/admin/createvoucher.jsp").forward(request, response);
+                return;
+            }
+
+            // Tạo đối tượng Voucher
             Voucher voucher = new Voucher(code, description, discountPercentage, discountAmount, minOrderValue, maxDiscount, startDate, endDate, isActive);
-            boolean insertSuccess = voucherDAO.addVoucher(voucher);
+            boolean insertSuccess = voucherDAO.createVoucher(voucher);
 
             if (insertSuccess) {
                 response.sendRedirect(request.getContextPath() + "/dashboard/admin/voucher");
             } else {
-                request.setAttribute("errorMessage", "Thêm voucher thất bại. Vui lòng thử lại!");
-                request.getRequestDispatcher("/dashboard/admin/addvoucher.jsp").forward(request, response);
+                throw new Exception();
             }
+
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorMessage", "Dữ liệu nhập vào không hợp lệ!");
+            request.getRequestDispatcher("/dashboard/admin/createvoucher").forward(request, response);
+        } catch (IllegalArgumentException e) {
+            request.setAttribute("errorMessage", "Định dạng ngày không hợp lệ!");
+            request.getRequestDispatcher("/dashboard/admin/createvoucher").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace(); // Debug, nên thay bằng logger trong dự án lớn
+            request.setAttribute("errorMessage", "Tạo mã giảm giá thất bại!");
+            request.getRequestDispatcher("/dashboard/admin/createvoucher").forward(request, response);
         }
     }
 

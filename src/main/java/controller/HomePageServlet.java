@@ -65,46 +65,53 @@ public class HomePageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDAO productDAO = new ProductDAO();
-        String categoryName = request.getParameter("category");
-        List<Product> products;
-        products = productDAO.getAllActiveProducts();
+        try {
+            ProductDAO productDAO = new ProductDAO();
+            // Lấy danh sách sản phẩm
+            List<Product> products = productDAO.getAllActiveProducts();
+            request.setAttribute("products", products);
 
-        List<Feedback> feedbacks = FeedbackDAO.getAllProductFeedback();
-        Collections.shuffle(feedbacks);
-        request.setAttribute("feedbacks", feedbacks);
-        
-        
-        // Kiem tra cookie de lay tong sl san pham trong gio hang
-        String username = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("customerId".equals(cookie.getName())) {
-                    username = cookie.getValue();
-                    break;
+            // Lấy danh sách feedback và xáo trộn nếu có
+            List<Feedback> feedbacks = FeedbackDAO.getAllProductFeedback();
+            if (feedbacks != null && !feedbacks.isEmpty()) {
+                Collections.shuffle(feedbacks);
+                request.setAttribute("feedbacks", feedbacks);
+            }
+
+            // Kiểm tra cookie để lấy tổng số lượng sản phẩm trong giỏ hàng
+            String username = null;
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("customerId".equals(cookie.getName())) {
+                        username = cookie.getValue();
+                        break;
+                    }
                 }
             }
-        }
 
-        int totalQuantity = 0;
-        if (username != null) {
-            int customerId = Integer.parseInt(username);
-
-            List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
-            if (!cartItems.isEmpty()) {
-                for (CartItem cartItem : cartItems) {
-                    totalQuantity += cartItem.getQuantity();
+            int totalQuantity = 0;
+            if (username != null) {
+                try {
+                    int customerId = Integer.parseInt(username);
+                    List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+                    totalQuantity = cartItems.stream().mapToInt(CartItem::getQuantity).sum();
+                } catch (NumberFormatException e) {
+                    request.setAttribute("errorMessage", "Dữ liệu khách hàng không hợp lệ.");
                 }
             }
-        }
-        // Set tong so luong san pham trong gio hang
-        request.setAttribute("totalQuantity", totalQuantity);
-        
 
-        request.setAttribute("products", products);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("homepage.jsp");
-        dispatcher.forward(request, response);
+            // Set tổng số lượng sản phẩm trong giỏ hàng
+            request.setAttribute("totalQuantity", totalQuantity);
+
+            // Forward đến trang homepage
+            RequestDispatcher dispatcher = request.getRequestDispatcher("homepage.jsp");
+            dispatcher.forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Đã xảy ra lỗi hệ thống.");
+            request.getRequestDispatcher("/pawfect").forward(request, response);
+        }
     }
 
     /**

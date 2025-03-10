@@ -153,8 +153,8 @@
         <servlet-class>controller.FeedbackManagementServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AddProductServlet</servlet-name>
-        <servlet-class>controller.AddProductServlet</servlet-class>
+        <servlet-name>CreateProductServlet</servlet-name>
+        <servlet-class>controller.CreateProductServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>AddPetServlet</servlet-name>
@@ -201,8 +201,8 @@
         <servlet-class>controller.EditCategoryServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AddCategoryServlet</servlet-name>
-        <servlet-class>controller.AddCategoryServlet</servlet-class>
+        <servlet-name>CreateCategoryServlet</servlet-name>
+        <servlet-class>controller.CreateCategoryServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>BookingServlet</servlet-name>
@@ -233,8 +233,8 @@
         <servlet-class>controller.VoucherManagementServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>AddVoucherServlet</servlet-name>
-        <servlet-class>controller.AddVoucherServlet</servlet-class>
+        <servlet-name>CreateVoucherServlet</servlet-name>
+        <servlet-class>controller.CreateVoucherServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>EditVoucherServlet</servlet-name>
@@ -385,8 +385,8 @@
         <url-pattern>/dashboard/staff/feedbackmanagement</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AddProductServlet</servlet-name>
-        <url-pattern>/dashboard/admin/addproduct</url-pattern>
+        <servlet-name>CreateProductServlet</servlet-name>
+        <url-pattern>/dashboard/admin/createproduct</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddPetServlet</servlet-name>
@@ -433,8 +433,8 @@
         <url-pattern>/dashboard/admin/editcategory</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AddCategoryServlet</servlet-name>
-        <url-pattern>/dashboard/admin/addcategory</url-pattern>
+        <servlet-name>CreateCategoryServlet</servlet-name>
+        <url-pattern>/dashboard/admin/createcategory</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>BookingServlet</servlet-name>
@@ -465,8 +465,8 @@
         <url-pattern>/dashboard/admin/voucher</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AddVoucherServlet</servlet-name>
-        <url-pattern>/dashboard/admin/addvoucher</url-pattern>
+        <servlet-name>CreateVoucherServlet</servlet-name>
+        <url-pattern>/dashboard/admin/createvoucher</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EditVoucherServlet</servlet-name>

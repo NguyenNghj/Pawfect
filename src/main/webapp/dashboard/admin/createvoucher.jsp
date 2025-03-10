@@ -106,7 +106,7 @@
 
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
-                        <form id="addVoucherForm" action="/dashboard/admin/addvoucher" method="post">
+                        <form id="addVoucherForm" action="/dashboard/admin/createvoucher" method="post">
 
                             <div class="mb-3">
                                 <label for="voucherCode" class="form-label">Mã giảm giá</label>
