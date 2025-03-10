@@ -56,7 +56,7 @@
                                             <!-- Item Images -->
                                             <div class="col-auto">
                                                 <div class="item-images">
-                                                    <img src="${c.productImage}" alt="">
+                                                    <img src="./img/products/${c.productImage}" alt="">
                                                 </div>
                                             </div>
 
