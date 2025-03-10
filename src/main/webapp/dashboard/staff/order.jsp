@@ -332,7 +332,7 @@
                                                 <h1 class="modal-title fs-5" id="cancel2ModalLabel">Chấp nhận huỷ đơn hàng theo yêu cầu</h1>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <form id="cancelForm" action="ordermanagement?action=approval" method="post">
+                                            <form id="cancelForm" action="ordermanagement?action=cancel" method="post">
                                                 <div class="modal-body">                           
                                                     <div class="mb-3">
                                                         <div class="mb-2" style="text-align: justify;">
@@ -346,7 +346,7 @@
                                                     <input type="hidden" name="updateStatus" class="modalUpdateStatus">
                                                     <input type="hidden" name="actionBack" value="view">
                                                     <input type="hidden" name="statusType" value="${param.status}">
-                                                    <!-- <input type="hidden" name="reasonCancel"> -->
+                                                    <input type="hidden" name="reasonCancel"> 
 
                                                 </div>
                                                 <div class="modal-footer">
@@ -382,7 +382,7 @@
                                                     <input type="hidden" name="updateStatus" class="modalUpdateStatus">
                                                     <input type="hidden" name="actionBack" value="view">
                                                     <input type="hidden" name="statusType" value="${param.status}">
-                                                    <!-- <input type="hidden" name="reasonCancel" value="refuse"> -->
+                                                    <input type="hidden" name="reasonCancel" value="refuse"> 
 
                                                 </div>
                                                 <div class="modal-footer">
@@ -446,7 +446,7 @@
                                                     <input type="hidden" name="updateStatus" class="modalUpdateStatus">
                                                     <input type="hidden" name="actionBack" value="view">
                                                     <input type="hidden" name="statusType" value="${param.status}">
-                                                     <input type="hidden" name="reasonCancel"> 
+                                                    <input type="hidden" name="reasonCancel"> 
 
                                                 </div>
                                                 <div class="modal-footer">
@@ -509,7 +509,7 @@
                                                     </div>
 
                                                     <input type="hidden" name="orderId" class="modalOrderId">
-                                                    <input type="hidden" name="confirmCancel" class="modalUpdateStatus">
+                                                    <input type="hidden" name="updateStatus" class="modalUpdateStatus">
                                                     <input type="hidden" name="actionBack" value="view">
                                                     <input type="hidden" name="statusType" value="${param.status}">
                                                     <input type="hidden" name="reasonCancel"> 
@@ -607,35 +607,26 @@
                             document.getElementById("refuseForm").addEventListener("submit", function (event) {
                                 event.preventDefault(); // Ngăn form gửi đi ngay lập tức
 
-                                var reason = document.getElementById("reason").value;
+                                Swal.fire({
+                                    icon: "info",
+                                    title: "Đang xử lý...",
+                                    text: "Vui lòng chờ trong giây lát.",
+                                    timer: 1400,
+                                    timerProgressBar: true,
+                                    allowOutsideClick: false,
+                                    showConfirmButton: false // Ẩn nút OK
+                                }).then(() => {
 
-                                if (reason === "") {
                                     Swal.fire({
-                                        icon: "warning",
-                                        title: "Lỗi!",
-                                        text: "Vui lòng chọn lý do huỷ đơn hàng.",
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        icon: "info",
-                                        title: "Đang xử lý...",
-                                        text: "Vui lòng chờ trong giây lát.",
-                                        timer: 1400,
-                                        timerProgressBar: true,
-                                        allowOutsideClick: false,
-                                        showConfirmButton: false // Ẩn nút OK
+                                        icon: "success",
+                                        title: "Từ chối yêu cầu huỷ đơn hàng thành công!",
+                                        text: "Bạn đã từ chối yêu cầu hủy đơn hàng. Vui lòng tiếp tục xử lý đơn hàng theo quy trình. Nếu cần, hãy liên hệ khách hàng để giải thích lý do."
                                     }).then(() => {
-
-                                        Swal.fire({
-                                            icon: "success",
-                                            title: "Từ chối yêu cầu huỷ đơn hàng thành công!",
-                                            text: "Bạn đã từ chối yêu cầu hủy đơn hàng. Vui lòng tiếp tục xử lý đơn hàng theo quy trình. Nếu cần, hãy liên hệ khách hàng để giải thích lý do.",
-                                        }).then(() => {
-                                            document.getElementById("refuseForm").submit(); // Gửi form sau khi hiển thị thông báo thành công
-                                        });
-
+                                        document.getElementById("refuseForm").submit(); // Gửi form sau khi hiển thị thông báo thành công
                                     });
-                                }
+
+                                });
+
                             });
 
 
@@ -664,7 +655,7 @@
                                         Swal.fire({
                                             icon: "success",
                                             title: "Huỷ đơn thành công!",
-                                            text: "Chúng tôi sẽ xử lý đơn huỷ và hoàn tiền nếu bạn đã thanh toán.",
+                                            text: "Chúng tôi sẽ xử lý đơn huỷ và hoàn tiền nếu bạn đã thanh toán."
                                         }).then(() => {
                                             document.getElementById("cancelForm").submit(); // Gửi form sau khi hiển thị thông báo thành công
                                         });

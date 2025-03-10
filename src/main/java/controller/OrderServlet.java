@@ -188,6 +188,7 @@ public class OrderServlet extends HttpServlet {
 
             int orderId = 0;
             orderId = OrderDAO.insertOrder(customerId, paymentMethod_id, shippingMethod_id, name, phone, address, note, totalCartPrice + salePrice, status);
+            // Tao don hang thanh cong
             if (orderId != 0) {
                 HttpSession session = request.getSession();
                 session.setAttribute("orderId", orderId);
@@ -218,7 +219,7 @@ public class OrderServlet extends HttpServlet {
                 }
                 List<Order> orders = OrderDAO.getOrderByOrderId(orderId);
 
-                // Su dung cho email
+                // Gui data qua email sau khi dat hang
                 request.setAttribute("basicPrice", basicPrice);
                 request.setAttribute("orderitems", orderitems);
                 request.setAttribute("orders", orders);

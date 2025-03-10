@@ -712,7 +712,7 @@
                                                                                                                                             <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
                                                                                                                                                 <tr>
                                                                                                                                                     <td class="pc-w620-spacing-0-16-20-0" valign="top" style="padding: 0px 20px 0px 0px;">
-                                                                                                                                                        <img src="${oi.productImage}" class="pc-w620-width-64 pc-w620-height-64 pc-w620-width-64-min" width="100" height="104" alt="" style="display: block; outline: 0; line-height: 100%; -ms-interpolation-mode: bicubic; width: 100px; height: 104px; border: 0;" />
+                                                                                                                                                        <img src="./img/products/${oi.productImage}" class="pc-w620-width-64 pc-w620-height-64 pc-w620-width-64-min" width="100" height="104" alt="" style="display: block; outline: 0; line-height: 100%; -ms-interpolation-mode: bicubic; width: 100px; height: 104px; border: 0;" />
                                                                                                                                                     </td>
                                                                                                                                                 </tr>
                                                                                                                                             </table>
@@ -877,6 +877,46 @@
                                                                                                     </table>
                                                                                                 </td>
                                                                                             </tr>
+                                                                                            <tr>
+                                                                                                <td align="left" valign="middle" style="padding: 16px 0px 16px 16px;">
+                                                                                                    <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                                                                                                        <tr>
+                                                                                                            <td valign="top" align="left">
+                                                                                                                <div class="pc-font-alt" style="text-decoration: none;">
+                                                                                                                    <div style="font-size: 16px;line-height: 23.8px;text-align:left;text-align-last:left;color:#001942;font-weight:400;font-style:normal;">
+                                                                                                                        <div><span style="font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 17px; line-height: 140%; letter-spacing: -0.03em;" class="pc-w620-font-size-16px pc-w620-line-height-26px">Khuyến mãi</span>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                    </table>
+                                                                                                </td>
+                                                                                                <td align="right" valign="middle" style="padding: 16px 16px 16px 16px;">
+                                                                                                    <table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+                                                                                                        <tr>
+                                                                                                            <td valign="top" align="right">
+                                                                                                                <div class="pc-font-alt" style="text-decoration: none;">
+                                                                                                                    <div style="font-size: 16px;line-height: 20px;text-align:right;text-align-last:right;color:#001942;font-weight:400;font-style:normal;">
+                                                                                                                        <div>
+                                                                                                                            <span style="font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 17px; line-height: 140%; letter-spacing: -0.03em;" class="pc-w620-font-size-16px pc-w620-line-height-20px">
+                                                                                                                                <c:choose>
+                                                                                                                                    <c:when test="${o.discountAmount != 0}">
+                                                                                                                                        - <f:formatNumber value="${o.totalAmount - o.discountAmount}" pattern="#,##0" />đ
+                                                                                                                                    </c:when>
+                                                                                                                                    <c:otherwise>
+                                                                                                                                        - <f:formatNumber value="0" pattern="#,##0" />đ
+                                                                                                                                    </c:otherwise>
+                                                                                                                                </c:choose>
+                                                                                                                            </span>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                    </table>
+                                                                                                </td>
+                                                                                            </tr>
                                                                                         </tbody>
                                                                                     </table>
                                                                                 </td>
@@ -914,8 +954,31 @@
                                                                                                             <td valign="top" align="right">
                                                                                                                 <div class="pc-font-alt" style="text-decoration: none;">
                                                                                                                     <div style="font-size: 16px;line-height: 20px;text-align:right;text-align-last:right;color:#001942;font-weight:600;font-style:normal;">
-                                                                                                                        <div><span style="font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 17px; line-height: 140%; letter-spacing: -0.03em;" class="pc-w620-font-size-16px pc-w620-line-height-20px"><f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ</span>
-                                                                                                                        </div>
+
+                                                                                                                        <c:choose>
+                                                                                                                            <c:when test="${o.discountAmount != 0}">
+                                                                                                                                <div style="display: flex; align-items: center; gap: 15px;">
+                                                                                                                                    <div>
+                                                                                                                                        <span style="font-size: 16px !important; text-decoration: line-through; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 17px; line-height: 140%; letter-spacing: -0.03em;" class="pc-w620-font-size-16px pc-w620-line-height-20px">
+                                                                                                                                            <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
+                                                                                                                                        </span>
+                                                                                                                                    </div>
+                                                                                                                                    <div>
+                                                                                                                                        <span style="font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 17px; line-height: 140%; letter-spacing: -0.03em;" class="pc-w620-font-size-16px pc-w620-line-height-20px">
+                                                                                                                                            <f:formatNumber value="${o.discountAmount}" pattern="#,##0" />đ
+                                                                                                                                        </span>
+                                                                                                                                    </div>
+                                                                                                                                </div>
+                                                                                                                            </c:when>
+                                                                                                                            <c:otherwise>
+                                                                                                                                <div>
+                                                                                                                                    <span style="font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 17px; line-height: 140%; letter-spacing: -0.03em;" class="pc-w620-font-size-16px pc-w620-line-height-20px">
+                                                                                                                                        <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
+                                                                                                                                    </span>
+                                                                                                                                </div>
+                                                                                                                            </c:otherwise>
+                                                                                                                        </c:choose>
+
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </td>
