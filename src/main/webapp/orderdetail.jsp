@@ -164,7 +164,7 @@
                                                 <div>${o.finishDate}</div>
                                             </c:if>
 
-                                            <c:if test="${not empty o.reasonCancel}">
+                                            <c:if test="${not empty o.reasonCancel && o.status == 'Đã huỷ'}">
                                                 <div><span class="text-danger" style="font-weight: 500;">Lý do huỷ:</span> ${o.reasonCancel}</div>
                                             </c:if>
 

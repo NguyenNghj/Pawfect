@@ -209,7 +209,6 @@
                                                     <c:if test="${o.status == 'Chờ xác nhận' || o.status == 'Chờ lấy hàng'}">                                                      
                                                         <button class="btn btn-danger btn-sm btn-cancel"
                                                                 data-bs-toggle="modal" data-bs-target="#cancelModal"
-                                                                data-type="cancel"
                                                                 style="padding: 8px 18px;"
                                                                 >
                                                             <span id="cancelType" style="font-size: 16px;">Huỷ đơn</span>
@@ -226,7 +225,7 @@
                                                             <h1 class="modal-title fs-5" id="cancel2ModalLabel">Chấp nhận huỷ đơn hàng theo yêu cầu</h1>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
-                                                        <form id="cancelForm" action="ordermanagement?action=approval" method="post">
+                                                        <form id="cancelForm" action="ordermanagement?action=cancel" method="post">
                                                             <div class="modal-body">                           
                                                                 <div class="mb-3">
                                                                     <div class="mb-2" style="text-align: justify;">
@@ -240,7 +239,7 @@
                                                                 <input type="hidden" name="updateStatus" value="Đã huỷ">
                                                                 <input type="hidden" name="actionBack" value="viewdetail">
                                                                 <input type="hidden" name="statusType" value="${param.status}">
-                                                                <!-- <input type="hidden" name="reasonCancel"> -->
+                                                                <input type="hidden" name="reasonCancel"> 
 
                                                             </div>
                                                             <div class="modal-footer">
@@ -407,7 +406,7 @@
                                                             <input type="hidden" name="updateStatus" value="Đã huỷ">
                                                             <input type="hidden" name="actionBack" value="viewdetail">
                                                             <input type="hidden" name="statusType" value="${param.status}">
-                                                            <!--<input type="hidden" name="reasonCancel">-->
+                                                            <input type="hidden" name="reasonCancel">
 
                                                         </div>
                                                         <div class="modal-footer">
@@ -441,7 +440,7 @@
                                                 <c:if test="${o.status == 'Hoàn thành'}">
                                                     <div>${o.finishDate}</div>
                                                 </c:if>
-                                                <c:if test="${not empty o.reasonCancel}">
+                                                <c:if test="${not empty o.reasonCancel && o.status == 'Đã huỷ'}">
                                                     <div><span class="text-danger" style="font-weight: 500;">Lý do huỷ:</span> ${o.reasonCancel}</div>
                                                 </c:if>
                                             </div>
@@ -629,15 +628,6 @@
         document.getElementById("refuseForm").addEventListener("submit", function (event) {
             event.preventDefault(); // Ngăn form gửi đi ngay lập tức
 
-            var reason = document.getElementById("reason").value;
-
-            if (reason === "") {
-                Swal.fire({
-                    icon: "warning",
-                    title: "Lỗi!",
-                    text: "Vui lòng chọn lý do huỷ đơn hàng.",
-                });
-            } else {
                 Swal.fire({
                     icon: "info",
                     title: "Đang xử lý...",
@@ -651,13 +641,13 @@
                     Swal.fire({
                         icon: "success",
                         title: "Từ chối yêu cầu huỷ đơn hàng thành công!",
-                        text: "Bạn đã từ chối yêu cầu hủy đơn hàng. Vui lòng tiếp tục xử lý đơn hàng theo quy trình. Nếu cần, hãy liên hệ khách hàng để giải thích lý do.",
+                        text: "Bạn đã từ chối yêu cầu hủy đơn hàng. Vui lòng tiếp tục xử lý đơn hàng theo quy trình. Nếu cần, hãy liên hệ khách hàng để giải thích lý do."
                     }).then(() => {
                         document.getElementById("refuseForm").submit(); // Gửi form sau khi hiển thị thông báo thành công
                     });
 
                 });
-            }
+            
         });
 
 

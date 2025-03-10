@@ -4,8 +4,8 @@
  */
 package controller;
 
-import dao.DiscountOrderDAO;
 import dao.OrderDAO;
+import dao.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -22,6 +22,7 @@ import java.util.concurrent.Executors;
 import model.DiscountOrder;
 import model.Order;
 import model.OrderItem;
+import model.Product;
 import util.Email;
 
 /**
@@ -95,6 +96,18 @@ public class OrderManagementServlet extends HttpServlet {
         }
     }
 
+    private String getCookieValue(HttpServletRequest request, String cookieName) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookieName.equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null; // Trả về null nếu không tìm thấy cookie
+    }
+
     private void searchOrder(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         String status = request.getParameter("status");
@@ -112,17 +125,7 @@ public class OrderManagementServlet extends HttpServlet {
     private void approvalOrder(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
 
-        String staffId = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("staffId".equals(cookie.getName())) {
-                    staffId = cookie.getValue();
-                    break;
-                }
-            }
-        }
-
+        String staffId = getCookieValue(request, "staffId");
         System.out.println("StaffId: " + staffId);
 
         try {
@@ -134,23 +137,17 @@ public class OrderManagementServlet extends HttpServlet {
             String statusType = request.getParameter("statusType");
             String actionBack = request.getParameter("actionBack");
             String reasonCancel = request.getParameter("reasonCancel").trim();
-            System.out.println("reasonCancel: " + reasonCancel);
+//            System.out.println("reasonCancel: " + reasonCancel);
 
             System.out.println("updateStatus: " + updateStatus);
 
             boolean update = false;
-            // Truong hop neu huy don hang
-            if (reasonCancel != null && !reasonCancel.equals("")) {
-                update = OrderDAO.approvalOrder(updateStatus, intStaffId, reasonCancel, null, orderId);
-                System.out.println("Truong hop neu huy don hang!");
-                // Con lai
+
+            // Neu duyet hoan thanh don hang thi add thoi gian hoan thanh don
+            if (updateStatus.equals("Hoàn thành")) {
+                update = OrderDAO.approvalOrder(updateStatus, intStaffId, null, Timestamp.from(Instant.now()), orderId);
             } else {
-                // Neu duyet hoan thanh don hang thi add thoi gian hoan thanh don
-                if (updateStatus.equals("Hoàn thành")) {
-                    update = OrderDAO.approvalOrder(updateStatus, intStaffId, null, Timestamp.from(Instant.now()), orderId);
-                } else {
-                    update = OrderDAO.approvalOrder(updateStatus, intStaffId, null, null, orderId);
-                }
+                update = OrderDAO.approvalOrder(updateStatus, intStaffId, null, null, orderId);
             }
 
             if (update) {
@@ -173,17 +170,29 @@ public class OrderManagementServlet extends HttpServlet {
 
     private void cancelOrder(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
+        String staffId = getCookieValue(request, "staffId");
+        System.out.println("StaffId: " + staffId);
 
         try {
+            int intStaffId = Integer.parseInt(staffId);
             int orderId = Integer.parseInt(request.getParameter("orderId"));
-            String confirmCancel = request.getParameter("confirmCancel");
+            String updateStatus = request.getParameter("updateStatus");
             String statusType = request.getParameter("statusType");
             String actionBack = request.getParameter("actionBack");
             String reasonCancel = request.getParameter("reasonCancel");
 
-            boolean cancel = OrderDAO.cancelOrder(confirmCancel, reasonCancel, orderId);
+            boolean cancel = OrderDAO.approvalOrder(updateStatus, intStaffId, reasonCancel, null, orderId);
+
             if (cancel) {
                 System.out.println("Huy don hang thanh cong.");
+                ProductDAO productDAO = new ProductDAO();
+
+                List<OrderItem> orderitems = OrderDAO.getOrderItemsByOrderId(orderId);
+                for (OrderItem orderitem : orderitems) {
+                    Product product = productDAO.getProductById(orderitem.getProductId());
+                    product.setStock(product.getStock() + orderitem.getQuantity());
+                    productDAO.updateProduct(product);
+                }
 
                 List<Order> orders = OrderDAO.getOrderByOrderId(orderId);
                 String customerName = orders.get(0).getCustomerName();
