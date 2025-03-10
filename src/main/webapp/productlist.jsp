@@ -171,7 +171,9 @@
                                                     <fmt:formatNumber value="${product.productPrice}" pattern="#,##0" />đ
                                                 </p>
                                                 <a href="#">
-                                                    <button class="add-to-cart" data-product-id="${product.productId}" data-product-name="${product.productName}">
+                                                    <button class="add-to-cart" data-product-id="${product.productId}"
+                                                            data-product-name="${product.productName}"
+                                                            data-product-stock="${product.stock}">
                                                         <i class="cart-icon"></i>
                                                     </button>
                                                 </a>

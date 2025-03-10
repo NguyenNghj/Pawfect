@@ -407,7 +407,7 @@
                                                             <input type="hidden" name="updateStatus" value="Đã huỷ">
                                                             <input type="hidden" name="actionBack" value="viewdetail">
                                                             <input type="hidden" name="statusType" value="${param.status}">
-                                                            <input type="hidden" name="reasonCancel">
+                                                            <!--<input type="hidden" name="reasonCancel">-->
 
                                                         </div>
                                                         <div class="modal-footer">

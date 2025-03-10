@@ -133,15 +133,16 @@ public class OrderManagementServlet extends HttpServlet {
             String updateStatus = request.getParameter("updateStatus").trim();
             String statusType = request.getParameter("statusType");
             String actionBack = request.getParameter("actionBack");
-            String reasonCancel = request.getParameter("reasonCancel");
+            String reasonCancel = request.getParameter("reasonCancel").trim();
             System.out.println("reasonCancel: " + reasonCancel);
 
             System.out.println("updateStatus: " + updateStatus);
 
             boolean update = false;
             // Truong hop neu huy don hang
-            if (reasonCancel != null) {
+            if (reasonCancel != null && !reasonCancel.equals("")) {
                 update = OrderDAO.approvalOrder(updateStatus, intStaffId, reasonCancel, null, orderId);
+                System.out.println("Truong hop neu huy don hang!");
                 // Con lai
             } else {
                 // Neu duyet hoan thanh don hang thi add thoi gian hoan thanh don
