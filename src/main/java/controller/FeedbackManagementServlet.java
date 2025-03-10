@@ -287,7 +287,6 @@ public class FeedbackManagementServlet extends HttpServlet {
             throws SQLException, IOException, ServletException {
         List<Feedback> feedbacks = null;
         try {
-            // int customerId = 1;
             int status = Integer.parseInt(request.getParameter("status"));
 
             if (status != 0) {
