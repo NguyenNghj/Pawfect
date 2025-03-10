@@ -66,97 +66,73 @@ public class ProductDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String productIdParam = request.getParameter("id");
+        try {
+            String productIdParam = request.getParameter("id");
 //        if (productIdParam == null || productIdParam.isEmpty()) {
 //            response.sendRedirect("productlist.jsp"); // Chuyển hướng nếu không có ID
 //            return;
 //        }
 
-        int productId = Integer.parseInt(productIdParam);
-        ProductDAO productDAO = new ProductDAO();
-        Product product = productDAO.getProductById(productId);
+            int productId = Integer.parseInt(productIdParam);
+            ProductDAO productDAO = new ProductDAO();
+            Product product = productDAO.getProductById(productId);
 //
 //        if (product == null) {
 //            response.sendRedirect("sanpham"); // Chuyển hướng nếu sản phẩm không tồn tại
 //            return;
 //        }
 
-        // Lấy customerId từ Cookie
-        String username = getCookieValue(request, "customerId");
-        if (username == null) {
-            System.out.println("Không tìm thấy customerId!");
-            return;
-        }
-
-        int totalQuantity = 0;
-        int customerId = Integer.parseInt(username);
-
-        List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
-        if (!cartItems.isEmpty()) {
-            for (CartItem cartItem : cartItems) {
-                totalQuantity += cartItem.getQuantity();
+            // Lấy customerId từ Cookie
+            String username = getCookieValue(request, "customerId");
+            if (username == null) {
+                System.out.println("Không tìm thấy customerId!");
+                return;
             }
-        }
 
-        // Set tong so luong san pham trong gio hang
-        request.setAttribute("totalQuantity", totalQuantity);
+            int totalQuantity = 0;
+            int customerId = Integer.parseInt(username);
 
-        // Lay orderId don hang da hoan thanh gan nhat co san pham do
-        int orderId = OrderDAO.getLastCompleteOrder(customerId, productId);
-        // Neu lay duoc -> Du dieu kien da mua roi moi duoc feedback
-        if(orderId != 0){
-            request.setAttribute("orderExist", true);
-            // Kiem tra khach hang da feedback san pham trong don hang do hay chua        
-            int countOfFeedback = FeedbackDAO.checkOrderFeedback(customerId, productId, orderId);
-            System.out.println("countOfFeedback: " + countOfFeedback);
-            
-            // Neu kq tra ve > 0 thi da feedback roi -> Ko cho feedback nua
-            if(countOfFeedback > 0){
-                request.setAttribute("feedbackExist", true);
-                // Nguoc lai neu = 0 thi cho feedback
+            List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+            if (!cartItems.isEmpty()) {
+                for (CartItem cartItem : cartItems) {
+                    totalQuantity += cartItem.getQuantity();
+                }
+            }
+
+            // Set tong so luong san pham trong gio hang
+            request.setAttribute("totalQuantity", totalQuantity);
+
+            // Lay orderId don hang da hoan thanh gan nhat co san pham do
+            int orderId = OrderDAO.getLastCompleteOrder(customerId, productId);
+            // Neu lay duoc -> Du dieu kien da mua roi moi duoc feedback
+            if (orderId != 0) {
+                request.setAttribute("orderExist", true);
+                // Kiem tra khach hang da feedback san pham trong don hang do hay chua        
+                int countOfFeedback = FeedbackDAO.checkOrderFeedback(customerId, productId, orderId);
+                System.out.println("countOfFeedback: " + countOfFeedback);
+
+                // Neu kq tra ve > 0 thi da feedback roi -> Ko cho feedback nua
+                if (countOfFeedback > 0) {
+                    request.setAttribute("feedbackExist", true);
+                    // Nguoc lai neu = 0 thi cho feedback
+                } else {
+                    request.setAttribute("feedbackExist", false);
+                }
             } else {
-                request.setAttribute("feedbackExist", false);
-            }                
-        } else {
-            System.out.println("Khach hang chua mua san pham nay!");
-            request.setAttribute("orderExist", false);
-        }
+                System.out.println("Khach hang chua mua san pham nay!");
+                request.setAttribute("orderExist", false);
+            }
 
-        // Lay option loc feedback cua khach hang chon
-        String option = request.getParameter("rating");
-        // Dung de in ra list danh gia kem dieu kien (1s, 2s,...)
-        List<Feedback> feedbacks = null;
-        // Dung de tinh tong so danh gia, va tinh trung binh tong sao cua 1 san pham
-        List<Feedback> overviewFeedback = FeedbackDAO.getProductFeedbackByProductId(productId);
-        switch (option) {
-            case "tc":
-                feedbacks = FeedbackDAO.getProductFeedbackByProductId(productId);
-                break;
-            case "1s":
-                feedbacks = FeedbackDAO.getProductFeedbackByRatingVsProductId(1, productId);
-                break;
-            case "2s":
-                feedbacks = FeedbackDAO.getProductFeedbackByRatingVsProductId(2, productId);
-                break;
-            case "3s":
-                feedbacks = FeedbackDAO.getProductFeedbackByRatingVsProductId(3, productId);
-                break;
-            case "4s":
-                feedbacks = FeedbackDAO.getProductFeedbackByRatingVsProductId(4, productId);
-                break;
-            case "5s":
-                feedbacks = FeedbackDAO.getProductFeedbackByRatingVsProductId(5, productId);
-                break;
-            default:
-                feedbacks = FeedbackDAO.getProductFeedbackByProductIdVsImage(productId);
-        }
-
-            // Lấy option lọc đánh giá của khách hàng
+            // Lay option loc feedback cua khach hang chon
             String option = request.getParameter("rating");
-            List<Feedback> feedbacks;
+            // Dung de in ra list danh gia kem dieu kien (1s, 2s,...)
+            List<Feedback> feedbacks = null;
+            // Dung de tinh tong so danh gia, va tinh trung binh tong sao cua 1 san pham
             List<Feedback> overviewFeedback = FeedbackDAO.getProductFeedbackByProductId(productId);
-
             switch (option) {
+                case "tc":
+                    feedbacks = FeedbackDAO.getProductFeedbackByProductId(productId);
+                    break;
                 case "1s":
                     feedbacks = FeedbackDAO.getProductFeedbackByRatingVsProductId(1, productId);
                     break;
@@ -171,9 +147,6 @@ public class ProductDetailServlet extends HttpServlet {
                     break;
                 case "5s":
                     feedbacks = FeedbackDAO.getProductFeedbackByRatingVsProductId(5, productId);
-                    break;
-                case "tc":
-                    feedbacks = overviewFeedback;
                     break;
                 default:
                     feedbacks = FeedbackDAO.getProductFeedbackByProductIdVsImage(productId);

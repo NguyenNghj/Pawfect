@@ -496,7 +496,7 @@
                                                         <!-- <div class="text-secondary small mb-2">PACKAGE 1 OF 2</div> -->
                                                         <div class="d-flex">
                                                             <div class="position-relative">
-                                                                <img src="${oi.productImage}" alt="Product" class="rounded me-3" width="80" height="80">
+                                                                <img src="../../img/products/${oi.productImage}" alt="Product" class="rounded me-3" width="80" height="80">
                                                                 <span class="position-absolute top-0 translate-middle badge rounded-pill bg-danger" style="left: 75%;">
                                                                     ${oi.quantity}
                                                                     <span class="visually-hidden">unread messages</span>

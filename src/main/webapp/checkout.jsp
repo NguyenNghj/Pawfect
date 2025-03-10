@@ -144,7 +144,7 @@
                                 <!-- Each Item -->
                                 <div class="d-flex align-items-center">
                                     <div class="col-auto me-3 position-relative">
-                                        <img src="${c.productImage}" alt="">
+                                        <img src="./img/products/${c.productImage}" alt="">
                                         <span class="position-absolute top-0 translate-middle badge rounded-pill bg-danger" style="left: 90%;">
                                             ${c.quantity}
                                             <span class="visually-hidden">unread messages</span>
@@ -152,14 +152,14 @@
                                     </div>
                                     <div class="col p-0">
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <span style="max-width: 280px;">${c.productName}</span>
+                                            <span style="max-width: 230px;">${c.productName}</span>
                                             <span>
-                                                <f:formatNumber value="${c.getSubtotal()}" pattern="#,##0" />đ                                              
+                                                <b><f:formatNumber value="${c.getSubtotal()}" pattern="#,##0" />đ</b>                                          
                                             </span>
                                         </div>
                                         <div>
                                             <span>
-                                                <f:formatNumber value="${c.productPrice}" pattern="#,##0" />đ                                             
+                                                <b><f:formatNumber value="${c.productPrice}" pattern="#,##0" />đ</b>                                          
                                             </span>
                                         </div>
                                     </div>               
