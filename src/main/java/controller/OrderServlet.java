@@ -21,6 +21,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import model.DiscountOrder;
 import model.Order;
 import model.OrderItem;
@@ -99,6 +101,22 @@ public class OrderServlet extends HttpServlet {
         }
     }
 
+    // Phương thức kiểm tra email hợp lệ
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    // Phương thức kiểm tra số điện thoại hợp lệ (10-11 chữ số)
+    private boolean isValidPhone(String phone) {
+        String phoneRegex = "^\\d{10,11}$"; // Chỉ chấp nhận số và có độ dài từ 10-11 chữ số
+        Pattern pattern = Pattern.compile(phoneRegex);
+        Matcher matcher = pattern.matcher(phone);
+        return matcher.matches();
+    }
+
     private void submitOrder(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         String customerIdStr = getCustomerIdFromCookies(request);
@@ -108,17 +126,47 @@ public class OrderServlet extends HttpServlet {
         response.setContentType("application/json");
 
         try {
-            String name = request.getParameter("name");
-            String email = request.getParameter("email");
-            String address = request.getParameter("address");
-            String note = request.getParameter("note");
-            String phone = request.getParameter("phone");
+            String name = request.getParameter("name").trim();
+            String email = request.getParameter("email").trim();
+            String address = request.getParameter("address").trim();
+            String note = request.getParameter("note").trim();
+            String phone = request.getParameter("phone").trim();
             String shippingMethod = request.getParameter("shippingMethod");
             String paymentMethod = request.getParameter("paymentMethod");
             double totalCartPrice = Double.parseDouble(request.getParameter("totalPrice"));
             double salePrice = Double.parseDouble(request.getParameter("salePrice"));
             int voucherId = Integer.parseInt(request.getParameter("voucherId"));
 //            double shippingCost = Double.parseDouble(request.getParameter("shippingCost"));
+
+            try {
+                if (email == null || email.isEmpty()) {
+                    throw new IllegalArgumentException("error-data-email-empty");
+                }
+                if (!isValidEmail(email)) {
+                    throw new IllegalArgumentException("error-data-email-valid");
+                }
+
+                if (name == null || name.isEmpty()) {
+                    throw new IllegalArgumentException("error-data-name-empty");
+                }
+
+                if (phone == null || phone.isEmpty()) {
+                    throw new IllegalArgumentException("error-data-phone-empty");
+                }
+                if (!isValidPhone(phone)) {
+                    throw new IllegalArgumentException("error-data-phone-valid");
+                }
+
+                if (address == null || address.isEmpty()) {
+                    throw new IllegalArgumentException("error-data-address-empty");
+                }
+
+            } catch (IllegalArgumentException e) {
+                System.out.println("Loi du lieu dau vao: " + e.getMessage());
+                json.put("status", e.getMessage());
+                response.getWriter().write(json.toString());
+                return;
+            }
 
             String status = "";
             int shippingMethod_id = 0;
@@ -149,7 +197,7 @@ public class OrderServlet extends HttpServlet {
                     DiscountOrderDAO discountOrderDAO = new DiscountOrderDAO();
                     DiscountOrder discountOrder = new DiscountOrder(orderId, voucherId, totalCartPrice);
                     boolean check = discountOrderDAO.addDiscountOrder(discountOrder);
-                    if(check){
+                    if (check) {
                         System.out.println("Them DiscountOrder thanh cong.");
                     } else {
                         System.out.println("Them DiscountOrder that bai!");

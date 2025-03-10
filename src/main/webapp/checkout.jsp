@@ -283,8 +283,8 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-            let voucherId;
-                                            $('#voucher').click(function () {                                                                                            
+                                            let voucherId;
+                                            $('#voucher').click(function () {
 
                                                 const voucherCode = $('#voucher-code').val().trim();
                                                 let saleCost = document.getElementById('sale-cost');
@@ -339,7 +339,7 @@
                                                             console.log("Chi phí vận chuyển:", shippingCost);
 
                                                             // Cập nhật tổng giá
-                                                            updateTotalPrice(parseFloat(shippingCost));   
+                                                            updateTotalPrice(parseFloat(shippingCost));
 
                                                         } else if (response.status === "errorMinOrderValue") {
                                                             console.log("Không đủ điều kiện áp mã! Đơn hàng tối thiểu: " + formatCurrency(response.minOrderValue));
@@ -380,7 +380,7 @@
                 const totalPrice = parseFloat($('#total-price-value').text().replace(/[.,đ]/g, ''));
                 const shippingCost = parseFloat($('#shipping-cost-value').text().replace(/[.,đ]/g, ''));
                 const salePrice = parseFloat($('#sale-cost').text().replace(/[-,.,đ]/g, ''));
-                if(salePrice === 0){
+                if (salePrice === 0) {
                     voucherId = 0;
                 }
                 // **Lấy giá trị của radio button được chọn
@@ -398,85 +398,6 @@
                 console.log("Gui du lieu paymentMethod: " + paymentMethod);
                 console.log("Gui du lieu salePrice: " + salePrice);
 
-                let isValid = true;
-
-                // Kiểm tra email
-                if (email === "") {
-                    Swal.fire({
-                        position: "top",
-                        icon: "warning",
-                        title: "Email không được để trống.",
-                        showConfirmButton: false,
-                        width: 350,
-                        timer: 2500
-                    });
-                    isValid = false;
-                    return;
-                } else if (!isValidEmail(email)) {
-                    Swal.fire({
-                        position: "top",
-                        icon: "warning",
-                        title: "Email không đúng định dạng.",
-                        showConfirmButton: false,
-                        width: 350,
-                        timer: 2500
-                    });
-                    isValid = false;
-                    return;
-                }
-
-                // Kiểm tra họ và tên (ví dụ: không được để trống)
-                if (name === "") {
-                    Swal.fire({
-                        position: "top",
-                        icon: "warning",
-                        title: "Họ và tên không được để trống.",
-                        showConfirmButton: false,
-                        width: 350,
-                        timer: 2500
-                    });
-                    isValid = false;
-                    return;
-                }
-
-                // Kiểm tra số điện thoại
-                if (phone === "") {
-                    Swal.fire({
-                        position: "top",
-                        icon: "warning",
-                        title: "Số điện thoại không được để trống.",
-                        showConfirmButton: false,
-                        width: 350,
-                        timer: 2500
-                    });
-                    isValid = false;
-                    return;
-                } else if (!isValidPhone(phone)) {
-                    Swal.fire({
-                        position: "top",
-                        icon: "warning",
-                        title: "Số điện thoại không đúng định dạng.",
-                        showConfirmButton: false,
-                        width: 350,
-                        timer: 2500
-                    });
-                    isValid = false;
-                    return;
-                }
-
-                // Kiểm tra địa chỉ (ví dụ: không được để trống)
-                if (address === "") {
-                    Swal.fire({
-                        position: "top",
-                        icon: "warning",
-                        title: "Địa chỉ không được để trống.",
-                        showConfirmButton: false,
-                        width: 350,
-                        timer: 2500
-                    });
-                    isValid = false;
-                    return;
-                }
 
                 // 3. Gọi AJAX
                 $.ajax({
@@ -501,6 +422,60 @@
                         if (response.status === "success") {
                             console.log("Đã gửi dữ liệu thành công, đợi chuyển hướng từ server...");
                             window.location.href = "checkoutsuccess.jsp";
+                        } else if (response.status === "error-data-email-empty") {
+                            Swal.fire({
+                                position: "top",
+                                icon: "warning",
+                                title: "Email không được để trống.",
+                                showConfirmButton: false,
+                                width: 350,
+                                timer: 2500
+                            });
+                        } else if (response.status === "error-data-email-valid") {
+                            Swal.fire({
+                                position: "top",
+                                icon: "warning",
+                                title: "Email không đúng định dạng.",
+                                showConfirmButton: false,
+                                width: 350,
+                                timer: 2500
+                            });
+                        } else if (response.status === "error-data-name-empty") {
+                            Swal.fire({
+                                position: "top",
+                                icon: "warning",
+                                title: "Họ và tên không được để trống.",
+                                showConfirmButton: false,
+                                width: 350,
+                                timer: 2500
+                            });
+                        } else if (response.status === "error-data-phone-empty") {
+                            Swal.fire({
+                                position: "top",
+                                icon: "warning",
+                                title: "Số điện thoại không được để trống.",
+                                showConfirmButton: false,
+                                width: 350,
+                                timer: 2500
+                            });
+                        } else if (response.status === "error-data-phone-valid") {
+                            Swal.fire({
+                                position: "top",
+                                icon: "warning",
+                                title: "Số điện thoại không đúng định dạng.",
+                                showConfirmButton: false,
+                                width: 350,
+                                timer: 2500
+                            });
+                        } else if (response.status === "error-data-address-empty") {
+                            Swal.fire({
+                                position: "top",
+                                icon: "warning",
+                                title: "Địa chỉ không được để trống.",
+                                showConfirmButton: false,
+                                width: 350,
+                                timer: 2500
+                            });
                         } else {
                             console.log("Lỗi đặt đơn hàng!");
                         }
