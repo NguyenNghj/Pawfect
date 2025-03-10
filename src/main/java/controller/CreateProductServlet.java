@@ -78,7 +78,6 @@ public class CreateProductServlet extends HttpServlet {
             request.setAttribute("errorMessage", "Đã xảy ra lỗi khi tải danh mục sản phẩm.");
             request.getRequestDispatcher("/dashboard/admin/createproduct.jsp").forward(request, response);
         }
-
     }
 
     /**
