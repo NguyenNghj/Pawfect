@@ -241,7 +241,9 @@ public class PetHotelDAO {
     }
 
     public static void updateRoomStatus(int roomId) {
-        String query = "UPDATE PetHotel SET status = CASE WHEN available_quantity = 0 THEN N'Hết phòng' ELSE N'Còn phòng' END WHERE room_id = ?";
+        String query = "UPDATE PetHotel SET status = CASE "
+                + "WHEN available_quantity = 0 THEN N'Hết phòng' "
+                + "ELSE N'Còn phòng' END WHERE room_id = ?";
         try {
             Con = new DBContext().getConnection();
             PreparedStatement ps = Con.prepareStatement(query);
@@ -253,6 +255,46 @@ public class PetHotelDAO {
         } finally {
             closeConnection();
         }
+    }
+    
+    public static boolean decreaseAvailableQuantity(int roomId) {
+        String query = "UPDATE PetHotel SET available_quantity = available_quantity - 1 WHERE room_id = ? AND available_quantity > 0";
+        boolean success = false;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(query);
+            ps.setInt(1, roomId);
+            success = ps.executeUpdate() > 0;
+            ps.close();
+            if (success) {
+                updateRoomStatus(roomId); // Cập nhật trạng thái phòng
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
+        }
+        return success;
+    }
+
+    public static boolean increaseAvailableQuantity(int roomId) {
+        String query = "UPDATE PetHotel SET available_quantity = available_quantity + 1 WHERE room_id = ? AND available_quantity < quantity";
+        boolean success = false;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(query);
+            ps.setInt(1, roomId);
+            success = ps.executeUpdate() > 0;
+            ps.close();
+            if (success) {
+                updateRoomStatus(roomId); // Cập nhật trạng thái phòng
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
+        }
+        return success;
     }
 
     // Hàm đóng kết nối

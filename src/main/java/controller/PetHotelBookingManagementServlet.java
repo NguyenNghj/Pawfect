@@ -5,6 +5,7 @@
 package controller;
 
 import dao.PetHotelBookingDAO;
+import dao.PetHotelDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -85,22 +86,31 @@ public class PetHotelBookingManagementServlet extends HttpServlet {
         if (action != null && bookingId != null) {
             try {
                 int bookingID = Integer.parseInt(bookingId);
+                PetHotelBooking booking = bookingDAO.getBookingById(bookingID);
 
-                switch (action) {
-                    case "approve":
-                        bookingDAO.updateBookingStatus(bookingID, "Đã duyệt");
-                        break;
-                    case "cancel":
-                        bookingDAO.updateBookingStatus(bookingID, "Đã hủy");
-                        break;
-                    case "checkin":
-                        bookingDAO.updateBookingStatus(bookingID, "Đã nhận phòng");
-                        break;
-                    case "checkout":
-                        bookingDAO.updateBookingStatus(bookingID, "Đã trả phòng");
-                        break;
-                    default:
-                        break;
+                if (booking != null) {
+                    int roomId = booking.getRoomId();
+
+                    switch (action) {
+                        case "approve":
+                            if (PetHotelDAO.decreaseAvailableQuantity(roomId)) {
+                                bookingDAO.updateBookingStatus(bookingID, "Đã duyệt");
+                            }
+                            break;
+                        case "cancel":
+                            bookingDAO.updateBookingStatus(bookingID, "Đã hủy");
+                            break;
+                        case "checkin":
+                            bookingDAO.updateBookingStatus(bookingID, "Đã nhận phòng");
+                            break;
+                        case "checkout":
+                            if (PetHotelDAO.increaseAvailableQuantity(roomId)) {
+                                bookingDAO.updateBookingStatus(bookingID, "Đã trả phòng");
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                 }
             } catch (NumberFormatException e) {
                 e.printStackTrace();
