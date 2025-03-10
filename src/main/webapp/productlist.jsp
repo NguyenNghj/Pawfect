@@ -163,7 +163,7 @@
                                     <c:if test="${loop.index >= start && loop.index < end}">
                                         <div class="col-md-4 col-6 mb-4 product-card">
                                             <div class="product-image">
-                                                <img src="${product.productImage}" alt="${product.productName}">
+                                                <img src="/img/products/${product.productImage}" alt="${product.productName}">
                                             </div>
                                             <div class="product-info">
                                                 <a class="product-name" href="product?id=${product.productId}&rating=tc">${product.productName}</a>

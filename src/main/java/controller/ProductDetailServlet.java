@@ -151,66 +151,97 @@ public class ProductDetailServlet extends HttpServlet {
                 feedbacks = FeedbackDAO.getProductFeedbackByProductIdVsImage(productId);
         }
 
-        // Cac bien de luu tong so cac option loc cua feedback (1 sao co bao nhieu feedback,...)
-        int totalFeedback = 0;
-        int oneStar = 0;
-        int twoStar = 0;
-        int threeStar = 0;
-        int fourStar = 0;
-        int fiveStar = 0;
-        int haveImg = 0;
+            // Lấy option lọc đánh giá của khách hàng
+            String option = request.getParameter("rating");
+            List<Feedback> feedbacks;
+            List<Feedback> overviewFeedback = FeedbackDAO.getProductFeedbackByProductId(productId);
 
-        double totalStar = 0, averageStar = 0;
-        for (Feedback feedback : overviewFeedback) {
-            totalFeedback += 1;
-            totalStar += feedback.getRating();
-
-            if (feedback.getImagePath() != null) {
-                haveImg += 1;
-            }
-
-            switch (feedback.getRating()) {
-                case 1:
-                    oneStar += 1;
+            switch (option) {
+                case "1s":
+                    feedbacks = FeedbackDAO.getProductFeedbackByRatingVsProductId(1, productId);
                     break;
-                case 2:
-                    twoStar += 1;
+                case "2s":
+                    feedbacks = FeedbackDAO.getProductFeedbackByRatingVsProductId(2, productId);
                     break;
-                case 3:
-                    threeStar += 1;
+                case "3s":
+                    feedbacks = FeedbackDAO.getProductFeedbackByRatingVsProductId(3, productId);
                     break;
-                case 4:
-                    fourStar += 1;
+                case "4s":
+                    feedbacks = FeedbackDAO.getProductFeedbackByRatingVsProductId(4, productId);
+                    break;
+                case "5s":
+                    feedbacks = FeedbackDAO.getProductFeedbackByRatingVsProductId(5, productId);
+                    break;
+                case "tc":
+                    feedbacks = overviewFeedback;
                     break;
                 default:
-                    fiveStar += 1;
-                    break;
+                    feedbacks = FeedbackDAO.getProductFeedbackByProductIdVsImage(productId);
             }
-        }
-        request.setAttribute("oneStar", oneStar);
-        request.setAttribute("twoStar", twoStar);
-        request.setAttribute("threeStar", threeStar);
-        request.setAttribute("fourStar", fourStar);
-        request.setAttribute("fiveStar", fiveStar);
-        request.setAttribute("haveImg", haveImg);
 
-        System.out.println("totalFeedback: " + totalFeedback);
-        System.out.println("averageStar: " + averageStar);
+            // Thống kê đánh giá sao
+            int totalFeedback = 0, oneStar = 0, twoStar = 0, threeStar = 0, fourStar = 0, fiveStar = 0, haveImg = 0;
+            double totalStar = 0, averageStar = 0;
 
-        averageStar = totalStar / (double) totalFeedback;
-        request.setAttribute("feedbacks", feedbacks);
-        request.setAttribute("totalFeedback", totalFeedback);
-        if (averageStar >= 1) {
+            for (Feedback feedback : overviewFeedback) {
+                totalFeedback++;
+                totalStar += feedback.getRating();
+                if (feedback.getImagePath() != null) {
+                    haveImg++;
+                }
+                switch (feedback.getRating()) {
+                    case 1:
+                        oneStar += 1;
+                        break;
+                    case 2:
+                        twoStar += 1;
+                        break;
+                    case 3:
+                        threeStar += 1;
+                        break;
+                    case 4:
+                        fourStar += 1;
+                        break;
+                    default:
+                        fiveStar += 1;
+                        break;
+                }
+            }
+
+            if (totalFeedback > 0) {
+                averageStar = totalStar / totalFeedback;
+            }
+
+            // Gán thuộc tính cho request để gửi sang JSP
+            request.setAttribute("feedbacks", feedbacks);
+            request.setAttribute("totalFeedback", totalFeedback);
             request.setAttribute("averageStar", averageStar);
-        } else {
-            request.setAttribute("averageStar", (int) averageStar);
-        }
+            request.setAttribute("oneStar", oneStar);
+            request.setAttribute("twoStar", twoStar);
+            request.setAttribute("threeStar", threeStar);
+            request.setAttribute("fourStar", fourStar);
+            request.setAttribute("fiveStar", fiveStar);
+            request.setAttribute("haveImg", haveImg);
 
-        // Gửi dữ liệu sản phẩm sang trang JSP
-        List<Product> productList = productDAO.getAllActiveProductsByCategoryName(product.getCategoryName());
-        request.setAttribute("product", product);
-        request.setAttribute("productList", productList);
-        request.getRequestDispatcher("productdetail.jsp").forward(request, response);
+            // Lấy danh sách sản phẩm cùng danh mục
+            List<Product> productList = productDAO.getAllActiveProductsByCategoryName(product.getCategoryName());
+            request.setAttribute("product", product);
+            request.setAttribute("productList", productList);
+
+            // Chuyển hướng đến trang chi tiết sản phẩm
+            request.getRequestDispatcher("productdetail.jsp").forward(request, response);
+
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorMessage", "ID sản phẩm hoặc ID khách hàng không hợp lệ!");
+            request.getRequestDispatcher("/products").forward(request, response);
+        } catch (NullPointerException e) {
+            request.setAttribute("errorMessage", "Dữ liệu không hợp lệ hoặc sản phẩm không tồn tại.");
+            request.getRequestDispatcher("/products").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Đã xảy ra lỗi trong quá trình xử lý.");
+            request.getRequestDispatcher("/products").forward(request, response);
+        }
     }
 
     /**

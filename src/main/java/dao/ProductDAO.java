@@ -79,6 +79,7 @@ public class ProductDAO {
         }
         return productList;
     }
+
     public List<Product> getAllActiveProductsByCategoryName(String categoryName) {
         List<Product> productList = new ArrayList<>();
         String query = "SELECT p.product_id, p.category_id, c.category_name, p.product_name, p.product_petType, "
