@@ -100,7 +100,7 @@ public class CategoryDAO {
         return isActive;
     }
 
-    public boolean addCategory(Category category) {
+    public boolean createCategory(Category category) {
         String query = "INSERT INTO Category (category_name, is_active) VALUES (?, ?)";
         try {
             conn = new DBContext().getConnection();

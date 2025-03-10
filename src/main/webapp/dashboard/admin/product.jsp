@@ -99,8 +99,8 @@
                     <div class="row d-flex align-items-center" style="margin-top: 30px;">
                         <!-- Button Thêm Sản Phẩm -->
                         <div class="col-md-6">
-                            <a href="/dashboard/admin/addproduct" class="btn btn-success">
-                                <i class="fa-solid fa-plus"></i> Thêm sản phẩm
+                            <a href="/dashboard/admin/createproduct" class="btn btn-success">
+                                <i class="fa-solid fa-plus"></i> Tạo sản phẩm
                             </a>
                         </div>
 
@@ -215,6 +215,21 @@
                             </ul>
                         </nav>
                     </c:if>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            var errorMessage = "<c:out value='${errorMessage}' />";
+                            if (errorMessage && errorMessage.trim() !== "") {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Lỗi!",
+                                    text: errorMessage,
+                                    confirmButtonText: "OK"
+                                });
+                            }
+                        });
+                    </script>
+
                     <script>
                         function updatePage(page) {
                             let urlParams = new URLSearchParams(window.location.search);
@@ -225,7 +240,7 @@
                 </div>
             </div>
         </div>  
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>

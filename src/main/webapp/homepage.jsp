@@ -26,26 +26,26 @@
     </head>
 
     <body>
-<%
-    String message = (String) session.getAttribute("message");
-    String messageType = (String) session.getAttribute("messageType");
-    if (message != null) {
-%>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        Swal.fire({
-            position: "top-end",
-            icon: '<%= "success".equals(messageType) ? "success" : "error" %>',
-            title: "<%= message %>",
-            showConfirmButton: false,
-            timer: 1000
-        });
-    </script>
-<%
-        session.removeAttribute("message");
-        session.removeAttribute("messageType");
-    }
-%>
+        <%
+            String message = (String) session.getAttribute("message");
+            String messageType = (String) session.getAttribute("messageType");
+            if (message != null) {
+        %>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                position: "top-end",
+                icon: '<%= "success".equals(messageType) ? "success" : "error"%>',
+                title: "<%= message%>",
+                showConfirmButton: false,
+                timer: 1000
+            });
+        </script>
+        <%
+                session.removeAttribute("message");
+                session.removeAttribute("messageType");
+            }
+        %>
         <div class="container info">
             <div class="row">
                 <div class="col-sm-8 left-info">
@@ -350,6 +350,19 @@
         crossorigin="anonymous"></script> 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var errorMessage = "<c:out value='${errorMessage}' />";
+                if (errorMessage && errorMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi!",
+                        text: errorMessage,
+                        confirmButtonText: "OK"
+                    });
+                }
+            });
+        </script>
+        <script>
 
             $('.add-to-cart').click(function (event) {
 
@@ -427,7 +440,7 @@
                 });
             });
         </script>
-        
+
         <%@include file="./components/footer.jsp" %>
     </body>
 

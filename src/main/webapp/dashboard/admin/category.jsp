@@ -97,9 +97,9 @@
 
                     <div class="row">
                         <div class="col-3 p-0" style="margin-top: 60px;">
-                            <a href="/dashboard/admin/addcategory" type="button" class="btn btn-success">
+                            <a href="/dashboard/admin/createcategory" type="button" class="btn btn-success">
                                 <i class="fa-solid fa-plus"></i>
-                                Thêm sản phẩm
+                                Tạo danh mục
                             </a>
                         </div>        
                     </div>
@@ -147,11 +147,24 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>  
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var errorMessage = "<c:out value='${errorMessage}' />";
+                if (errorMessage && errorMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi!",
+                        text: errorMessage,
+                        confirmButtonText: "OK"
+                    });
+                }
+            });
+        </script>
 
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>

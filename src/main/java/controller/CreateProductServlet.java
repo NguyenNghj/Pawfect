@@ -25,7 +25,7 @@ import model.Product;
  * @author Nguyen Tri Nghi - CE180897
  */
 @MultipartConfig
-public class AddProductServlet extends HttpServlet {
+public class CreateProductServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -65,10 +65,20 @@ public class AddProductServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        CategoryDAO categoryDAO = new CategoryDAO();
-        List<Category> categories = categoryDAO.getAllCategories();
-        request.setAttribute("categories", categories);
-        request.getRequestDispatcher("/dashboard/admin/addproduct.jsp").forward(request, response);
+        try {
+            CategoryDAO categoryDAO = new CategoryDAO();
+            List<Category> categories = categoryDAO.getAllCategories();
+
+            request.setAttribute("categories", categories);
+            request.getRequestDispatcher("/dashboard/admin/createproduct.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace(); // Ghi log lỗi để debug (nên thay bằng Logger trong hệ thống lớn)
+
+            // Thông báo lỗi để hiển thị trên giao diện
+            request.setAttribute("errorMessage", "Đã xảy ra lỗi khi tải danh mục sản phẩm.");
+            request.getRequestDispatcher("/dashboard/admin/createproduct.jsp").forward(request, response);
+        }
+
     }
 
     /**
@@ -84,7 +94,6 @@ public class AddProductServlet extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
-
         try {
             // Nhận dữ liệu từ form
             String productName = request.getParameter("productName");
@@ -117,16 +126,23 @@ public class AddProductServlet extends HttpServlet {
                     productPrice, fileName, stock, description, productActive);
 
             ProductDAO productDAO = new ProductDAO();
-            boolean createSuccess = productDAO.addProduct(product);
+            boolean createSuccess = productDAO.createProduct(product);
 
             if (createSuccess) {
-                response.sendRedirect("/dashboard/admin/product?success=1");
+                response.sendRedirect("/dashboard/admin/product");
             } else {
-                response.sendRedirect("/dashboard/admin/createproduct?error=1");
+                throw new Exception();
             }
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorMessage", "Dữ liệu số không hợp lệ! Vui lòng kiểm tra lại.");
+            request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
+        } catch (IOException | ServletException e) {
+            request.setAttribute("errorMessage", "Lỗi hệ thống khi xử lý tệp ảnh.");
+            request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("/dashboard/admin/createproduct?error=2");
+            request.setAttribute("errorMessage", "Tạo sản phẩm thất bại!");
+            request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
         }
     }
 

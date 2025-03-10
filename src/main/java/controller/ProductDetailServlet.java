@@ -147,8 +147,8 @@ public class ProductDetailServlet extends HttpServlet {
         for (Feedback feedback : overviewFeedback) {
             totalFeedback += 1;
             totalStar += feedback.getRating();
-            
-            if(feedback.getImagePath() != null){
+
+            if (feedback.getImagePath() != null) {
                 haveImg += 1;
             }
 
@@ -174,9 +174,9 @@ public class ProductDetailServlet extends HttpServlet {
         request.setAttribute("twoStar", twoStar);
         request.setAttribute("threeStar", threeStar);
         request.setAttribute("fourStar", fourStar);
-        request.setAttribute("fiveStar", fiveStar); 
+        request.setAttribute("fiveStar", fiveStar);
         request.setAttribute("haveImg", haveImg);
-        
+
         System.out.println("totalFeedback: " + totalFeedback);
         System.out.println("averageStar: " + averageStar);
 

@@ -214,6 +214,7 @@
                                 window.location.search = urlParams.toString();
                             }
                         </script>
+
                     </div>
                 </div>
             </div>
@@ -241,6 +242,20 @@
                 document.querySelectorAll(".nut-loc, .category-item").forEach(button => {
                     button.addEventListener("click", saveScrollPosition);
                 });
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var errorMessage = "<c:out value='${errorMessage}' />";
+                if (errorMessage && errorMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi!",
+                        text: errorMessage,
+                        confirmButtonText: "OK"
+                    });
+                }
             });
         </script>
 

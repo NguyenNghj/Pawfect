@@ -60,11 +60,41 @@ public class EditCategoryServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int categoryId = Integer.parseInt(request.getParameter("categoryId"));
         CategoryDAO categoryDAO = new CategoryDAO();
-        Category category = categoryDAO.getCategoryById(categoryId);
-        request.setAttribute("category", category);
-        request.getRequestDispatcher("/dashboard/admin/editcategory.jsp").forward(request, response);
+
+        try {
+            // Lấy tham số categoryId từ request
+            String categoryIdStr = request.getParameter("categoryId");
+
+            // Kiểm tra nếu categoryId bị thiếu hoặc rỗng
+            if (categoryIdStr == null || categoryIdStr.trim().isEmpty()) {
+                request.setAttribute("errorMessage", "Thiếu ID danh mục.");
+                request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
+                return;
+            }
+
+            int categoryId = Integer.parseInt(categoryIdStr.trim());
+
+            // Lấy thông tin danh mục từ database
+            Category category = categoryDAO.getCategoryById(categoryId);
+            if (category == null) {
+                request.setAttribute("errorMessage", "Không tìm thấy danh mục có ID: " + categoryId);
+                request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
+                return;
+            }
+
+            // Nếu tìm thấy danh mục, chuyển sang trang chỉnh sửa
+            request.setAttribute("category", category);
+            request.getRequestDispatcher("/dashboard/admin/editcategory.jsp").forward(request, response);
+
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorMessage", "ID danh mục không hợp lệ. Vui lòng nhập số nguyên.");
+            request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Đã xảy ra lỗi không xác định: " + e.getMessage());
+            request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
+        }
     }
 
     /**
@@ -80,36 +110,47 @@ public class EditCategoryServlet extends HttpServlet {
             throws ServletException, IOException {
         CategoryDAO categoryDAO = new CategoryDAO();
         ProductDAO productDAO = new ProductDAO();
-
         try {
+            // Lấy dữ liệu từ request
             String categoryIdStr = request.getParameter("categoryId");
             String categoryName = request.getParameter("categoryName");
             String activeStr = request.getParameter("isActive");
 
-            if (categoryIdStr == null || categoryName == null || activeStr == null) {
-                request.setAttribute("error", "Dữ liệu đầu vào không hợp lệ.");
-                request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
-                return;
+            // Kiểm tra dữ liệu đầu vào
+            if (categoryIdStr == null || categoryIdStr.isEmpty()
+                    || categoryName == null || categoryName.trim().isEmpty()
+                    || activeStr == null) {
+                throw new IllegalArgumentException("Dữ liệu không hợp lệ.");
             }
 
+            // Chuyển đổi dữ liệu
             int categoryId = Integer.parseInt(categoryIdStr);
             boolean active = Boolean.parseBoolean(activeStr);
 
-            // Cập nhật thể loại
+            // Cập nhật danh mục
             boolean updateSuccess = categoryDAO.updateCategory(categoryId, categoryName, active);
 
+            // Nếu danh mục bị vô hiệu hóa, cập nhật trạng thái sản phẩm
             if (updateSuccess && !active) {
-                // Nếu danh mục bị vô hiệu hóa, cập nhật trạng thái sản phẩm
                 productDAO.updateProductInactiveByCategory(categoryId);
             }
 
-            response.sendRedirect("/dashboard/admin/category");
+            // Chuyển hướng về trang danh mục sau khi cập nhật thành công
+            response.sendRedirect(request.getContextPath() + "/dashboard/admin/category");
+
         } catch (NumberFormatException e) {
-            request.setAttribute("error", "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại.");
+            // Lỗi khi chuyển đổi categoryId sang số
+            request.setAttribute("errorMessage", "ID danh mục không hợp lệ.");
+            request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
+
+        } catch (IllegalArgumentException e) {
+            // Lỗi do dữ liệu đầu vào không hợp lệ
+            request.setAttribute("errorMessage", "Lỗi dữ liệu: " + e.getMessage());
             request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("error.jsp");
+            request.setAttribute("errorMessage", "Lỗi không xác định: " + e.getMessage());
+            request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
         }
     }
 

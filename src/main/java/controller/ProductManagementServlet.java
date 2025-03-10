@@ -61,20 +61,50 @@ public class ProductManagementServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDAO productDAO = new ProductDAO();
-        CategoryDAO categoryDAO = new CategoryDAO();
-        String keyword = request.getParameter("search");
-        List<Product> products;
-        if (keyword != null) {
-            products = productDAO.searchProducts(keyword);
-        } else {
-            products = productDAO.getAllProducts();
+        try {
+            ProductDAO productDAO = new ProductDAO();
+            CategoryDAO categoryDAO = new CategoryDAO();
+
+            String keyword = request.getParameter("search");
+            List<Product> products;
+
+            if (keyword != null && !keyword.trim().isEmpty()) {
+                products = productDAO.searchProducts(keyword);
+            } else {
+                products = productDAO.getAllProducts();
+            }
+
+            List<Category> categoryList = categoryDAO.getAllCategories();
+
+            request.setAttribute("categories", categoryList);
+            request.setAttribute("productList", products);
+
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard/admin/product.jsp");
+            dispatcher.forward(request, response);
+        } catch (NullPointerException e) {
+            e.printStackTrace(); // Ghi log lỗi NullPointerException
+            request.setAttribute("errorMessage", "Lỗi dữ liệu không hợp lệ hoặc thiếu: " + e.getMessage());
+            RequestDispatcher errorDispatcher = request.getRequestDispatcher("/dashboard/admin/product.jsp");
+            errorDispatcher.forward(request, response);
+
+        } catch (IOException e) {
+            e.printStackTrace(); // Ghi log lỗi IO
+            request.setAttribute("errorMessage", "Lỗi vào/ra khi xử lý request: " + e.getMessage());
+            RequestDispatcher errorDispatcher = request.getRequestDispatcher("/dashboard/admin/product.jsp");
+            errorDispatcher.forward(request, response);
+
+        } catch (ServletException e) {
+            e.printStackTrace(); // Ghi log lỗi Servlet
+            request.setAttribute("errorMessage", "Lỗi Servlet khi xử lý request: " + e.getMessage());
+            RequestDispatcher errorDispatcher = request.getRequestDispatcher("/dashboard/admin/product.jsp");
+            errorDispatcher.forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace(); // Ghi log lỗi không xác định
+            request.setAttribute("errorMessage", "Lỗi không xác định: " + e.getMessage());
+            RequestDispatcher errorDispatcher = request.getRequestDispatcher("/dashboard/admin/product.jsp");
+            errorDispatcher.forward(request, response);
         }
-        List<Category> categoryList = categoryDAO.getAllCategories();
-        request.setAttribute("categories", categoryList);
-        request.setAttribute("productList", products);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard/admin/product.jsp");
-        dispatcher.forward(request, response);
     }
 
     /**

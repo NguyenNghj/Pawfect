@@ -52,105 +52,61 @@ public class ProductListServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ProductDAO productDAO = new ProductDAO();
-        CategoryDAO categoryDAO = new CategoryDAO();
+        try {
+            ProductDAO productDAO = new ProductDAO();
+            CategoryDAO categoryDAO = new CategoryDAO();
 
-        // Lấy danh sách danh mục
-        List<Category> categories = categoryDAO.getAllCategories();
-        request.setAttribute("categories", categories);
+            // Lấy danh sách danh mục
+            List<Category> categories = categoryDAO.getAllCategories();
+            request.setAttribute("categories", categories);
 
-        // Lấy các tham số từ request
-        String searchKeyword = request.getParameter("search");
-        String categoryName = request.getParameter("category");
-        String priceFilter = request.getParameter("price");
-        String sortFilter = request.getParameter("sort");
-        String petTypeFilter = request.getParameter("pettype");
+            // Lấy các tham số từ request
+            String searchKeyword = request.getParameter("search");
+            String categoryName = request.getParameter("category");
+            String priceFilter = request.getParameter("price");
+            String sortFilter = request.getParameter("sort");
+            String petTypeFilter = request.getParameter("pettype");
 
-        List<Product> products;
+            // Lấy danh sách sản phẩm theo bộ lọc
+            List<Product> products = productDAO.getAllActiveProducts(searchKeyword, categoryName, petTypeFilter, priceFilter, sortFilter);
 
-        // Nếu có từ khóa tìm kiếm, thực hiện tìm kiếm
-        if (searchKeyword != null) {
-            products = productDAO.searchActiveProducts(searchKeyword);
-        } else if (categoryName != null) {
-            // Nếu không tìm kiếm thì lọc theo danh mục
-            products = productDAO.getAllActiveProductsByCategoryName(categoryName);
-        } else {
-            products = productDAO.getAllActiveProducts();
-        }
-
-        // Lọc theo loại thú cưng nếu có pettype
-        // Lọc theo loại thú cưng nếu có pettype
-        if (petTypeFilter != null && !petTypeFilter.isEmpty()) {
-            String petTypeName = petTypeFilter.equals("1") ? "Chó" : "Mèo";
-            products.removeIf(product -> product.getProductPetType() == null
-                    || !petTypeName.equalsIgnoreCase(product.getProductPetType()));
-        }
-
-        String username = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("customerId".equals(cookie.getName())) {
-                    username = cookie.getValue();
-                    break;
-                }
-            }
-        }
-
-        int totalQuantity = 0;
-        if (username != null) {
-            int customerId = Integer.parseInt(username);
-            List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
-            totalQuantity = cartItems.stream().mapToInt(CartItem::getQuantity).sum();
-        }
-
-        // Áp dụng bộ lọc giá nếu có
-        if (priceFilter != null) {
-            products.removeIf(product -> {
-                double price = product.getProductPrice();
-                switch (priceFilter) {
-                    case "1":
-                        return price >= 100000;
-                    case "2":
-                        return price < 100000 || price > 300000;
-                    case "3":
-                        return price <= 300000;
-                    default:
+            // Lấy thông tin người dùng từ cookie
+            String username = null;
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("customerId".equals(cookie.getName())) {
+                        username = cookie.getValue();
                         break;
+                    }
                 }
-                return false; // Mặc định không xóa nếu priceFilter không khớp
-            });
-        }
-
-        // Áp dụng bộ lọc sắp xếp nếu có
-        if (sortFilter != null && !sortFilter.isEmpty()) {
-            switch (sortFilter) {
-                case "1":
-                    // Sắp xếp tăng dần theo giá
-                    products.sort(Comparator.comparingDouble(Product::getProductPrice));
-                    break;
-                case "2":
-                    // Sắp xếp giảm dần theo giá
-                    products.sort(Comparator.comparingDouble(Product::getProductPrice).reversed());
-                    break;
-                case "3":
-                    // Sắp xếp tăng dần theo tên sản phẩm
-                    products.sort(Comparator.comparing(Product::getProductName));
-                    break;
-                default:
-                    break;
             }
+
+            int totalQuantity = 0;
+            if (username != null) {
+                try {
+                    int customerId = Integer.parseInt(username);
+                    List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+                    totalQuantity = cartItems.stream().mapToInt(CartItem::getQuantity).sum();
+                } catch (NumberFormatException e) {
+                    request.setAttribute("errorMessage", "Dữ liệu khách hàng không hợp lệ.");
+                }
+            }
+
+            // Set danh sách sản phẩm và tổng số lượng giỏ hàng vào request
+            request.setAttribute("products", products);
+            request.setAttribute("totalQuantity", totalQuantity);
+
+            // Forward request đến trang JSP
+            RequestDispatcher dispatcher = request.getRequestDispatcher("productlist.jsp");
+            dispatcher.forward(request, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Đã xảy ra lỗi hệ thống.");
+            request.getRequestDispatcher("/products").forward(request, response);
         }
 
-        // Set danh sách sản phẩm cho request
-        request.setAttribute("products", products);
-
-        // Set tổng số lượng sản phẩm trong giỏ hàng
-        request.setAttribute("totalQuantity", totalQuantity);
-
-        // Forward request đến trang JSP
-        RequestDispatcher dispatcher = request.getRequestDispatcher("productlist.jsp");
-        dispatcher.forward(request, response);
     }
 
     /**

@@ -106,7 +106,7 @@ public class VoucherDAO {
         return null; // Trả về null nếu không tìm thấy voucher
     }
 
-    public boolean addVoucher(Voucher voucher) {
+    public boolean createVoucher(Voucher voucher) {
         String query = "INSERT INTO Voucher (code, description, discount_percentage, discount_amount, min_order_value, max_discount, start_date, end_date, is_active) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
