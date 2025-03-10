@@ -92,6 +92,7 @@ body {
 
 
 .product-ten {
+    text-transform: uppercase;
     font-weight: bold;
     color: #3E2522;
 }
@@ -287,6 +288,11 @@ body {
     text-transform: uppercase;
     padding: 0 10px  0 10px;
     text-decoration: none;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Giới hạn số dòng hiển thị */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .product-name:hover {

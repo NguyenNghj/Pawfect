@@ -195,7 +195,7 @@
                         <div class="col-lg-3 col-md-4 col-sm-6 col-12">
                             <div class="product-card">
                                 <div class="product-image">
-                                    <img src="${product.productImage}" alt="${product.productName}">
+                                    <img src="/img/products/${product.productImage}" alt="${product.productName}">
                                 </div>
                                 <div class="product-info">
                                     <a class="product-name" href="product?id=${product.productId}&rating=tc">${product.productName}</a>
