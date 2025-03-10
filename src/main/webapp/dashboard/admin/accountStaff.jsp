@@ -68,6 +68,40 @@
             }
 
 
+.table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+.edit-btn, .delete-btn {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 5px;
+    text-align: center;
+    min-width: 60px;
+}
+
+.edit-btn {
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+}
+
+.edit-btn:hover {
+    background-color: #0056b3;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+    text-decoration: none;
+}
+
+.delete-btn:hover {
+    background-color: #a71d2a;
+}
+
+
+
 
         </style>
     </head>
@@ -155,6 +189,7 @@
                                 <a href="customers" class="btn btn-primary">Danh Sách Khách Hàng</a>
                             </nav>
 
+                          
 
 
 
@@ -208,12 +243,15 @@
                                             <td><%= staff.getBirthDate()%></td>
                                             <td><%= staff.isActive() ? "Hoạt động" : "Đã nghỉ"%></td>
                                             <td>
+                                                <a href="editstaff?staffId=<%= staff.getStaffId()%>" 
+                                                   class="edit-btn">
+                                                    Sửa
+                                                </a> |
                                                 <a href="staffdelete?id=<%= staff.getStaffId()%>&action=delete" 
                                                    class="delete-btn"
-                                                   onclick="return confirm('Bạn có chắc muốn cấm khách hàng này?');">
-                                                    xóa
+                                                   onclick="return confirm('Bạn có chắc muốn xóa nhân viên này?');">
+                                                    Xóa
                                                 </a>
-
                                             </td>
                                         </tr>
                                         <%
@@ -227,6 +265,7 @@
                                             }
                                         %>
                                     </tbody>
+
                                 </table>
                             </div>
                         </div>
