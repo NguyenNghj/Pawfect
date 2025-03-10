@@ -105,30 +105,15 @@ public class PetHotelBookingDAO {
         return null;
     }
 
-    // Cập nhật trạng thái Booking
-    public static boolean approveBooking(int bookingId) {
+// Hàm cập nhật trạng thái booking
+    public static boolean updateBookingStatus(int bookingId, String status) {
         boolean success = false;
         try {
             Con = new DBContext().getConnection();
-            PreparedStatement ps = Con.prepareStatement(Approve_Booking);
-            ps.setInt(1, bookingId);
-            success = ps.executeUpdate() > 0;
-            ps.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeConnection();
-        }
-        return success;
-    }
+            PreparedStatement ps = Con.prepareStatement("UPDATE PetHotelBookings SET status = ? WHERE booking_id = ?");
+            ps.setString(1, status);
+            ps.setInt(2, bookingId);
 
-    // Hủy Booking
-    public static boolean cancelBooking(int bookingId) {
-        boolean success = false;
-        try {
-            Con = new DBContext().getConnection();
-            PreparedStatement ps = Con.prepareStatement(Cancel_Booking);
-            ps.setInt(1, bookingId);
             success = ps.executeUpdate() > 0;
             ps.close();
         } catch (SQLException e) {

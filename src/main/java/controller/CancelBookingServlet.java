@@ -78,7 +78,7 @@ public class CancelBookingServlet extends HttpServlet {
                 
                 // Gọi DAO để cập nhật trạng thái booking thành "Đã hủy"
                 PetHotelBookingDAO bookingDAO = new PetHotelBookingDAO();
-                boolean success = bookingDAO.cancelBooking(bookingId);
+                boolean success = bookingDAO.updateBookingStatus(bookingId, "Đã hủy");
                 
                 HttpSession session = request.getSession();
                 if (success) {

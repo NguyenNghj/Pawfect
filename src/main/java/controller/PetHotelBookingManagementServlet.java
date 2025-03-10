@@ -82,18 +82,33 @@ public class PetHotelBookingManagementServlet extends HttpServlet {
         String bookingId = request.getParameter("bookingId");
         String filter = request.getParameter("filter"); // Lấy trạng thái lọc
 
-        if (bookingId != null && action != null) {
-            PetHotelBookingDAO bookingDAO = new PetHotelBookingDAO();
+        if (action != null && bookingId != null) {
+            try {
+                int bookingID = Integer.parseInt(bookingId);
 
-            if ("approve".equals(action)) {
-                bookingDAO.approveBooking(Integer.parseInt(bookingId));
-            } else if ("cancel".equals(action)) {
-                bookingDAO.cancelBooking(Integer.parseInt(bookingId));
+                switch (action) {
+                    case "approve":
+                        bookingDAO.updateBookingStatus(bookingID, "Đã duyệt");
+                        break;
+                    case "cancel":
+                        bookingDAO.updateBookingStatus(bookingID, "Đã hủy");
+                        break;
+                    case "checkin":
+                        bookingDAO.updateBookingStatus(bookingID, "Đã nhận phòng");
+                        break;
+                    case "checkout":
+                        bookingDAO.updateBookingStatus(bookingID, "Đã trả phòng");
+                        break;
+                    default:
+                        break;
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
             }
         }
 
-        // Mã hóa filter trước khi redirect
-        String encodedFilter = URLEncoder.encode(filter, StandardCharsets.UTF_8.toString());
+        // Giữ trạng thái filter khi redirect
+        String encodedFilter = (filter != null) ? URLEncoder.encode(filter, StandardCharsets.UTF_8.toString()) : "";
         response.sendRedirect("pethotelbooking?filter=" + encodedFilter);
     }
 
