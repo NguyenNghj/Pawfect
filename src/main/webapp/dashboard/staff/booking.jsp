@@ -154,19 +154,27 @@
                     </div>   
 
                     <div class="d-flex gap-2 mb-3 p-2 rounded shadow-sm">
-                        <button class="btn btn-outline-primary filter-btn" data-status="all" 
-                                style="font-weight: bold; border-width: 2px;">
+                        <button class="btn btn-outline-primary filter-btn" data-status="all" style="font-weight: bold; border-width: 2px;">
                             Tất cả
                         </button>
-                        <button class="btn btn-outline-success filter-btn" data-status="Đã duyệt" 
-                                style="font-weight: bold; border-width: 2px;">
+                        <button class="btn btn-outline-success filter-btn" data-status="Đã duyệt" style="font-weight: bold; border-width: 2px;">
                             Đã duyệt
                         </button>
-                        <button class="btn btn-outline-warning filter-btn" data-status="Chờ xác nhận" 
-                                style="font-weight: bold; border-width: 2px;">
+                        <button class="btn btn-outline-warning filter-btn" data-status="Chờ xác nhận" style="font-weight: bold; border-width: 2px;">
                             Chờ xác nhận
                         </button>
+                        <button class="btn btn-outline-danger filter-btn" data-status="Đã hủy" style="font-weight: bold; border-width: 2px;">
+                            Đã hủy
+                        </button>
+                        <button class="btn btn-outline-info filter-btn" data-status="Đã nhận phòng" style="font-weight: bold; border-width: 2px;">
+                            Đã nhận phòng
+                        </button>
+                        <button class="btn btn-outline-secondary filter-btn" data-status="Đã trả phòng" style="font-weight: bold; border-width: 2px;">
+                            Đã trả phòng
+                        </button>
                     </div>
+
+
 
 
 
@@ -196,57 +204,77 @@
                                 <tbody id="bookingTable">
                                     <%
                                         List<PetHotelBooking> bookings = PetHotelBookingDAO.getAllBookings();
-                                        int index = 1;
+                                        if (bookings.isEmpty()) {
+                                    %>
+                                    <tr>
+                                        <td colspan="8" style="text-align: center; font-weight: bold; color: black; padding: 15px;">
+                                            Chưa có yêu cầu đặt phòng nào.
+                                        </td>
+                                    </tr>
+                                    <%
+                                    } else {
+                                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+                                        NumberFormat formatter = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
                                         for (PetHotelBooking booking : bookings) {
                                     %>
                                     <tr class="booking-row" data-status="<%= booking.getStatus()%>">
                                         <td style="width: 140px; text-align: center; vertical-align: middle;"><%= booking.getCustomerName()%></td>
                                         <td style="width: 140px; text-align: center; vertical-align: middle;"><%= booking.getPetName()%></td>
                                         <td style="width: 140px; text-align: center; vertical-align: middle;"><%= booking.getRoomName()%></td>
-                                        <%
-                                            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
-                                        %>
-
-                                        <td style="text-align: center; vertical-align: middle;">
-                                            <%= sdf.format(booking.getCheckIn())%>
-                                        </td>
-                                        <td style="text-align: center; vertical-align: middle;">
-                                            <%= sdf.format(booking.getCheckOut())%>
-                                        </td>
-                                        <%
-                                            NumberFormat formatter = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
-                                        %>
+                                        <td style="text-align: center; vertical-align: middle;"><%= sdf.format(booking.getCheckIn())%></td>
+                                        <td style="text-align: center; vertical-align: middle;"><%= sdf.format(booking.getCheckOut())%></td>
                                         <td style="width: 140px; text-align: center; vertical-align: middle;"><%= formatter.format(booking.getTotalPrice())%></td>
                                         <td style="width: 135px; text-align: center; vertical-align: middle;">
-                                            <span style="font-weight: bold; padding: 5px; color: <%= booking.getStatus().equals("Đã duyệt") ? "green" : "Orange"%>;">
+                                            <span style="font-weight: bold; padding: 5px; color:
+                                                  <%= booking.getStatus().equals("Đã duyệt") ? "green"
+                                                          : booking.getStatus().equals("Đã hủy") ? "red"
+                                                          : booking.getStatus().equals("Đã nhận phòng") ? "blue"
+                                                          : booking.getStatus().equals("Đã trả phòng") ? "secondary"
+                                                          : "orange"%>;">
                                                 <%= booking.getStatus()%>
                                             </span>
                                         </td>
                                         <td style="width: 120px; text-align: center; vertical-align: middle;">
                                             <% if ("Chờ xác nhận".equals(booking.getStatus())) {%>
-                                            <form action="pethotelbooking" method="post" style="display:inline;">
+                                            <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
                                                 <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
-                                                <input type="hidden" name="filter" id="currentFilter" value="">
-                                                <button type="submit" name="action" value="approve" class="btn btn-sm btn-primary"
-                                                        onclick="setFilterBeforeSubmit(this)">
+                                                <input type="hidden" name="action" value="approve">
+                                                <button type="button" class="btn btn-sm btn-primary" data-action="approve" onclick="confirmAction(this)">
                                                     Duyệt
                                                 </button>
                                             </form>
-
-                                            <form action="pethotelbooking" method="post" style="display:inline;">
+                                            <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
                                                 <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
-                                                <input type="hidden" name="filter" id="currentFilter" value="">
-                                                <button type="submit" name="action" value="cancel" class="btn btn-sm btn-danger"
-                                                        onclick="setFilterBeforeSubmit(this)">
+                                                <input type="hidden" name="action" value="cancel">
+                                                <button type="button" class="btn btn-sm btn-danger" data-action="cancel" onclick="confirmAction(this)">
                                                     Hủy
+                                                </button>
+                                            </form>
+                                            <% } else if ("Đã duyệt".equals(booking.getStatus())) {%>
+                                            <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
+                                                <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
+                                                <input type="hidden" name="action" value="checkin">
+                                                <button type="button" class="btn btn-sm btn-info" data-action="checkin" onclick="confirmAction(this)">
+                                                    Check-in
+                                                </button>
+                                            </form>
+                                            <% } else if ("Đã nhận phòng".equals(booking.getStatus())) {%>
+                                            <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
+                                                <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
+                                                <input type="hidden" name="action" value="checkout">
+                                                <button type="button" class="btn btn-sm btn-secondary" data-action="checkout" onclick="confirmAction(this)">
+                                                    Check-out
                                                 </button>
                                             </form>
                                             <% } %>
                                         </td>
-
                                     </tr>
-                                    <% }%>
+                                    <%
+                                            }
+                                        }
+                                    %>
                                 </tbody>
+
                             </table>
                         </div>
                     </div>
@@ -307,7 +335,35 @@
             button.closest("form").querySelector("#currentFilter").value = urlParams.get("filter") || "all";
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmAction(button) {
+            let action = button.getAttribute("data-action");
+            let messages = {
+                "approve": {title: "Xác nhận duyệt", text: "Bạn có chắc chắn muốn duyệt đặt phòng này?", color: "#3085d6"},
+                "cancel": {title: "Xác nhận hủy", text: "Bạn có chắc chắn muốn hủy đặt phòng này?", color: "#d33"},
+                "checkin": {title: "Xác nhận Check-in", text: "Khách đã đến nhận phòng?", color: "#28a745"},
+                "checkout": {title: "Xác nhận Check-out", text: "Khách đã trả phòng?", color: "#ffc107"}
+            };
 
+            let msg = messages[action];
+
+            Swal.fire({
+                title: msg.title,
+                text: msg.text,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: msg.color,
+                cancelButtonColor: "#6c757d",
+                confirmButtonText: "Xác nhận",
+                cancelButtonText: "Hủy"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    button.closest("form").submit(); // Gửi form nếu người dùng xác nhận
+                }
+            });
+        }
+    </script>
     <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>

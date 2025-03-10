@@ -68,6 +68,29 @@
                     <div class="card">
                         <div class="card-body">
                             <h2 class="h4 mb-3">Lịch sử đặt phòng</h2>
+
+                            <!-- Bộ lọc trạng thái -->
+                            <div class="d-flex gap-2 mb-3 p-2 rounded shadow-sm">
+                                <button class="btn btn-outline-primary filter-btn active" data-status="all">
+                                    Tất cả
+                                </button>
+                                <button class="btn btn-outline-success filter-btn" data-status="Đã duyệt">
+                                    Đã duyệt
+                                </button>
+                                <button class="btn btn-outline-warning filter-btn" data-status="Chờ xác nhận">
+                                    Chờ xác nhận
+                                </button>
+                                <button class="btn btn-outline-danger filter-btn" data-status="Đã hủy">
+                                    Đã hủy
+                                </button>
+                                <button class="btn btn-outline-info filter-btn" data-status="Đã nhận phòng">
+                                    Đã nhận phòng
+                                </button>
+                                <button class="btn btn-outline-secondary filter-btn" data-status="Đã trả phòng">
+                                    Đã trả phòng
+                                </button>
+                            </div>
+
                             <c:choose>
                                 <c:when test="${not empty booking}">
                                     <table class="table table-striped table-bordered">
@@ -80,21 +103,22 @@
                                                 <th>Chi tiết</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="booking-table">
                                             <c:forEach var="b" items="${booking}">
-                                                <tr>
+                                                <tr class="booking-row" data-status="${b.status}">
                                                     <td>${b.roomName}</td>
                                                     <td>
                                                         <fmt:formatDate value="${b.bookingDate}" pattern="dd/MM/yyyy HH:mm" />
                                                     </td>
                                                     <td class="format-price">${b.totalPrice}</td>
                                                     <td>
-                                                        <span class="badge bg-${b.status eq 'Đã xác nhận' ? 'success' 
+                                                        <span class="badge bg-${b.status eq 'Đã duyệt' ? 'success' 
                                                                                 : (b.status eq 'Chờ xác nhận' ? 'warning' 
-                                                                                : (b.status eq 'Đã hủy' ? 'danger' : 'success'))}">
+                                                                                : (b.status eq 'Đã hủy' ? 'danger' 
+                                                                                : (b.status eq 'Đã nhận phòng' ? 'info' 
+                                                                                : (b.status eq 'Đã trả phòng' ? 'secondary' : 'secondary'))))}">
                                                                   ${b.status}
                                                               </span>
-
                                                         </td>
                                                         <td>
                                                             <a href="bookinghistorydetail?id=${b.bookingId}" class="btn btn-primary btn-sm">
@@ -207,6 +231,31 @@
                     priceElements.forEach(element => {
                         let price = parseFloat(element.innerText);
                         element.innerText = new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(price);
+                    });
+                });
+            </script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const filterButtons = document.querySelectorAll(".filter-btn");
+                    const rows = document.querySelectorAll(".booking-row");
+
+                    filterButtons.forEach(button => {
+                        button.addEventListener("click", function () {
+                            // Loại bỏ lớp active khỏi tất cả nút
+                            filterButtons.forEach(btn => btn.classList.remove("active"));
+                            this.classList.add("active");
+
+                            const filterStatus = this.getAttribute("data-status");
+
+                            rows.forEach(row => {
+                                const rowStatus = row.getAttribute("data-status");
+                                if (filterStatus === "all" || rowStatus === filterStatus) {
+                                    row.style.display = "";
+                                } else {
+                                    row.style.display = "none";
+                                }
+                            });
+                        });
                     });
                 });
             </script>
