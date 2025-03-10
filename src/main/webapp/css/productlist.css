@@ -70,6 +70,7 @@ h2 {
     text-align: center;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
     transition: background 0.3s, transform 0.2s;
+    border: 2px solid #FFF2DF;
 }
 
 .nut-loc:hover {
@@ -131,6 +132,11 @@ h2 {
     text-transform: uppercase;
     padding: 0 10px  0 10px;
     text-decoration: none;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Giới hạn số dòng hiển thị */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .product-name:hover {
