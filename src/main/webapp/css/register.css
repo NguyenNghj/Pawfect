@@ -16,6 +16,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
       font-family: 'Roboto', sans-serif;
       background-color: var(--light-bg);
       min-height: 100vh;
+        
     }
     
     .register-container {
@@ -25,16 +26,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
       box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
     }
     
-    .illustration-side {
-      background-color: #e8f0fe;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      position: sticky;
-      top: 0;
-      height: 100vh;
-    }
+.illustration-side {
+    background-color: #e8f0fe;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
     
     .illustration-side img {
       max-width: 100%;
