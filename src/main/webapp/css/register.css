@@ -6,216 +6,216 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Created on : Feb 19, 2025, 8:37:16 PM
     Author     : LENOVO
 */
- :root {
-      --primary-color: #8C6E63;
-      --primary-hover: #3a5ecc;
-      --light-bg: #f0f5ff;
-    }
-    
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-color: var(--light-bg);
-      min-height: 100vh;
-        
-    }
-    
-    .register-container {
-      min-height: 100vh;
-      max-width: 1400px;
-      margin: 0 auto;
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
-    }
-    
+:root {
+    --primary-color: #8C6E63;
+    --primary-hover: #D3A376;
+    --light-bg: #f0f5ff;
+}
+
+body {
+    font-family: 'Baloo 2', sans-serif;
+    background-color: var(--light-bg);
+    min-height: 100vh;
+
+}
+
+.register-container {
+    min-height: 100vh;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+}
+
 .illustration-side {
-    background-color: #e8f0fe;
+    background: url(../img/login/anhcho.jpg) no-repeat center center;
+    background-size: cover;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-    
-    .illustration-side img {
-      max-width: 100%;
-      height: auto;
-    }
-    
-    .form-side {
-      background-color: white;
-      padding: 3rem 2rem;
-    }
-    
-    .register-form {
-      max-width: 500px;
-      margin: 0 auto;
-      width: 100%;
-    }
-    
-    .form-control, .form-select {
-      height: 50px;
-      border-radius: 8px;
-      font-size: 1rem;
-      border: 1px solid #ced4da;
-    }
-    
-    .form-control:focus, .form-select:focus {
-      box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.25);
-      border-color: #bac8f3;
-    }
-    
-    .btn-primary {
-      background-color: var(--primary-color);
-      border-color: var(--primary-color);
-      height: 50px;
-      border-radius: 8px;
-      font-weight: 500;
-      transition: all 0.3s;
-      
-    }
-    
-    .btn-primary:hover {
-      background-color: var(--primary-hover);
-      border-color: var(--primary-hover);
-      transform: translateY(-2px);
-    }
-    
-    .btn-google {
-      background-color: white;
-      border: 1px solid #ced4da;
-      color: #5f6368;
-      height: 50px;
-      border-radius: 8px;
-      font-weight: 500;
-      transition: all 0.3s;
-    }
-    
-    .btn-google:hover {
-      background-color: #f8f9fa;
-      transform: translateY(-2px);
-    }
-    
-    .google-icon {
-      margin-right: 10px;
-    }
-    
-    .divider {
-      display: flex;
-      align-items: center;
-      text-align: center;
-      margin: 1.5rem 0;
-      color: #6c757d;
-    }
-    
-    .divider::before,
-    .divider::after {
-      content: '';
-      flex: 1;
-      border-bottom: 1px solid #dee2e6;
-    }
-    
-    .divider::before {
-      margin-right: 1rem;
-    }
-    
-    .divider::after {
-      margin-left: 1rem;
-    }
-    
-    .language-selector {
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-    
-    .language-btn {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0.5rem;
-      transition: all 0.3s;
-    }
-    
-    .language-btn:hover {
-      opacity: 0.8;
-    }
-    
-    .language-btn.active {
-      font-weight: 500;
-      color: var(--primary-color);
-    }
-    
-    .flag {
-      width: 24px;
-      height: 16px;
-      border-radius: 2px;
-      overflow: hidden;
-    }
-    
-    .footer-text {
-      font-size: 0.75rem;
-      color: #6c757d;
-      text-align: center;
-      margin-top: 2rem;
-    }
-    
-    .powered-by {
-      position: absolute;
-      top: 1rem;
-      right: 1.5rem;
-      display: flex;
-      align-items: center;
-      color: #6c757d;
-      font-size: 0.8rem;
-    }
-    
-    .powered-by img {
-      margin-left: 0.5rem;
-      height: 20px;
-    }
-    
-    .brand-name {
-      font-size: 1.75rem;
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-      color: #333;
-    }
-    
-    .form-label {
-      font-weight: 500;
-      margin-bottom: 0.5rem;
-      color: #495057;
-    }
-    
-    .password-toggle {
-      position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      color: #6c757d;
-    }
-    
-    .form-text {
-      font-size: 0.8rem;
-    }
-    
-    .login-link {
-      text-align: center;
-      margin-top: 1.5rem;
-    }
-    
-    @media (max-width: 767.98px) {
-      .illustration-side {
+
+.illustration-side img {
+    max-width: 100%;
+    height: auto;
+}
+
+.form-side {
+    background-color: white;
+    padding: 3rem 2rem;
+}
+
+.register-form {
+    max-width: 500px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.form-control, .form-select {
+    height: 50px;
+    border-radius: 8px;
+    font-size: 1rem;
+    border: 1px solid #ced4da;
+}
+
+.form-control:focus, .form-select:focus {
+    box-shadow: 0 0 0 0.25rem rgba(78, 115, 223, 0.25);
+    border-color: #bac8f3;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    height: 50px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s;
+
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+.btn-google {
+    background-color: white;
+    border: 1px solid #ced4da;
+    color: #5f6368;
+    height: 50px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-google:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+}
+
+.google-icon {
+    margin-right: 10px;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 1.5rem 0;
+    color: #6c757d;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.divider::before {
+    margin-right: 1rem;
+}
+
+.divider::after {
+    margin-left: 1rem;
+}
+
+.language-selector {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.language-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: all 0.3s;
+}
+
+.language-btn:hover {
+    opacity: 0.8;
+}
+
+.language-btn.active {
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+.flag {
+    width: 24px;
+    height: 16px;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.footer-text {
+    font-size: 0.75rem;
+    color: #6c757d;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.powered-by {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    display: flex;
+    align-items: center;
+    color: #6c757d;
+    font-size: 0.8rem;
+}
+
+.powered-by img {
+    margin-left: 0.5rem;
+    height: 20px;
+}
+
+.brand-name {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #495057;
+    font-weight: bold;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #6c757d;
+}
+
+.form-text {
+    font-size: 0.8rem;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 767.98px) {
+    .illustration-side {
         display: none;
-      }
-      
-      .form-side {
-        padding: 2rem 1.5rem;
-      }
     }
-    .title {
+
+    .form-side {
+        padding: 2rem 1.5rem;
+    }
+}
+.title {
     font-size: 32px; /* Tăng kích thước chữ */
     font-weight: bold; /* In đậm */
     text-align: center; /* Căn giữa */

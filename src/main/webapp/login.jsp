@@ -33,16 +33,18 @@
         </script>
     </head>
     <body>
-      
+
         <div class="container-fluid p-0">
             <div class="row g-0 login-container">
+
                 <div class="col-md-6 illustration-side">
 
-                    <img src="img/login/img.png" 
-                         alt="E-commerce illustration" class="img-container">
+                    <!--                    <img src="img/login/anhcho.jpg" 
+                                             alt="anhcho">-->
 
                 </div>
-                <div class="col-md-6 form-side position-relative">
+
+                <div class="col-md-6 form-side">
                     <div class="login-form">
                         <h1 class="title">Pawfect - Đăng nhập</h1>
                         <p style="text-align: center;">Xin chào, vui lòng nhập thông tin đăng nhập</p>
@@ -81,7 +83,6 @@
 
                         <div class="divider">Hoặc</div>
                         <a href="register" class="btn btn-primary w-100 mb-3" style="align-content: center">Đăng ký tài khoản</a>
-                         <a href="pawfect" >Trang chủ</a>
                     </div>
                 </div>
             </div>
