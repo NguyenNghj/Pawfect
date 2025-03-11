@@ -68,12 +68,11 @@
                         <div class="card-body">
                             <h5 class="card-title mb-4">Thú cưng của bạn</h5>
                             <div>
-                                <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#editPetModal" 
-                                        style="padding: 8px 18px;"
-                                        >
-                                    <span style="font-size: 16px;">Thêm thú cưng</span>
-                                </button>
-
+                                <a href="createpet" style="text-decoration: none;">
+                                    <button style="background-color: #8C6E63; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 16px; cursor: pointer;">
+                                        Thêm thú cưng
+                                    </button>
+                                </a>
                             </div>   
                             <!-- Order Tabs -->
                             <ul class="nav nav-tabs mb-4">
@@ -116,7 +115,12 @@
                                                                 <img class="rounded" src="/img/pet/${pro.petImg != null ? pro.petImg : 'default.jpg'}" 
                                                                      alt="" width="90" height="90">
                                                                 <div class="d-grid gap-1">
-                                                                    <h6 style="font-size: 18px;">${pro.petStatus}</h6>
+                                                                    <h6 style="font-size: 18px;">
+                                                                        <c:choose>
+                                                                            <c:when test="${pro.petStatus == 'booking'}">Đã đặt lịch</c:when>
+                                                                            <c:otherwise>Chưa đặt lịch</c:otherwise>
+                                                                        </c:choose>
+                                                                    </h6>
                                                                     <span class="text-secondary">Tên: ${pro.petname}</span>
                                                                     <span class="text-secondary">Loại: ${pro.petType}</span>                                                       
                                                                 </div>

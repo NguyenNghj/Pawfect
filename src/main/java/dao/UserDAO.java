@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import model.Account;
 import model.AccountStaff;
 import model.GoogleAccount;
+import model.User;
 
 /**
  *
@@ -95,12 +96,18 @@ public class UserDAO {
         return isValid;
     }
 
-    public void insertGoogleAcc(GoogleAccount googleUser) {
-        String sql = "  INSERT INTO Customers (email,password) VALUES (?,'GG');";
+    public void insertGoogleAcc(User user) {
+        String sql = "INSERT INTO Customers (email, password, full_name, phone, address, gender, birth_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
             conn = new DBContext().getConnection();
             pt = conn.prepareStatement(sql);
-            pt.setString(1, googleUser.getId());
+            pt.setString(1, user.getEmail());
+            pt.setString(2, user.getPassword());
+            pt.setString(3, user.getFullName());
+            pt.setString(4, user.getPhoneNumber());
+            pt.setString(5, user.getAddress());
+            pt.setString(6, user.getGender());
+            pt.setDate(7, user.getBirthDate());
             pt.executeUpdate();
         } catch (SQLException e) {
 

@@ -5,8 +5,16 @@
         <filter-class>Fillter.DashboardFillter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>DashboardFillter</filter-name>
+        <filter-name>CustomerFillter</filter-name>
         <url-pattern>/dashboard/*</url-pattern>
+    </filter-mapping>
+     <filter>
+        <filter-name>CustomerFillter</filter-name>
+        <filter-class>Fillter.CustomerFillter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CustomerFillter</filter-name>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>ShopControl</servlet-name>
@@ -244,6 +252,10 @@
         <servlet-name>EditStaffServlet</servlet-name>
         <servlet-class>controller.EditStaffServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RegisterGoogle</servlet-name>
+        <servlet-class>controller.RegisterGoogle</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>PetHotelServlet</servlet-name>
         <url-pattern>/pethotel</url-pattern>
@@ -394,7 +406,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddPetServlet</servlet-name>
-        <url-pattern>/addpet</url-pattern>
+        <url-pattern>/createpet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>LogoutStaffServlet</servlet-name>
@@ -479,6 +491,10 @@
     <servlet-mapping>
         <servlet-name>EditStaffServlet</servlet-name>
         <url-pattern>/dashboard/admin/editstaff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegisterGoogle</servlet-name>
+        <url-pattern>/registergoogle</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

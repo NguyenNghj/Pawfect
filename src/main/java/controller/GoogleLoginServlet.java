@@ -13,6 +13,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.GoogleAccount;
 
 /**
@@ -44,14 +45,17 @@ public class GoogleLoginServlet extends HttpServlet {
             Cookie customerId = new Cookie("customerId", customer);
             customerId.setMaxAge(60 * 60 * 24 * 1);
             response.addCookie(customerId);
-            response.sendRedirect("/products");
+            response.sendRedirect("/pawfect");
         } else {
-            userDAO.insertGoogleAcc(acc);
-            String customer = userDAO.getCustomerId(acc.getId());
-            Cookie customerId = new Cookie("customerId", customer);
-            customerId.setMaxAge(60 * 60 * 24 * 1);
-            response.addCookie(customerId);
-            response.sendRedirect("/products");
+             HttpSession session = request.getSession();
+    session.setAttribute("ggId", acc.getId());
+    response.sendRedirect("/registergoogle");
+//            userDAO.insertGoogleAcc(acc);
+//            String customer = userDAO.getCustomerId(acc.getId());
+//            Cookie customerId = new Cookie("customerId", customer);
+//            customerId.setMaxAge(60 * 60 * 24 * 1);
+//            response.addCookie(customerId);
+//            response.sendRedirect("/products");
 
         }
     }
