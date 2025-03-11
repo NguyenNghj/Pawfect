@@ -65,7 +65,7 @@
                                                 <!-- Info & Price of item -->
                                                 <div class="row gap-1">
                                                     <div class="item-info d-flex justify-content-between">
-                                                        <a href="#">${c.productName}</a>
+                                                        <a href="product?id=${c.productId}&rating=tc">${c.productName}</a>
                                                         <span id="subtotal-${c.productId}" class="total-price-item">
                                                             <f:formatNumber value="${c.getSubtotal()}" pattern="#,##0" />đ                                                       
                                                         </span>

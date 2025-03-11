@@ -76,9 +76,6 @@ public class CartServlet extends HttpServlet {
                 case "add":
                     addToCart(request, response);
                     break;
-//                case "count":
-//                    countQuantityFromCart(request, response);
-//                    break;
                 default:
 //                    listNhanVien(request, response);
                     break;
@@ -152,6 +149,7 @@ public class CartServlet extends HttpServlet {
     private void getCart(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
 
+        // Check nguoi dung dang nhap moi cho vo gio hang
         String username = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {

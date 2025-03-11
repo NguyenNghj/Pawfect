@@ -33,26 +33,28 @@
 
                         <!-- Lịch sử đơn hàng -->
                         <div class="col-md-4">
-                            <a href="order?&action=view&status=tc#" class="text-decoration-none">
+                            <a href="order?&action=view&status=tc" class="text-decoration-none">
                                 <div class="card h-100">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <i class="bi bi-clipboard-check fs-4 text-primary"></i>
-                                    <span class="text-decoration-none text-dark">
-                                        Lịch sử đơn hàng
-                                    </span>
+                                    <div class="card-body d-flex align-items-center gap-3">
+                                        <i class="bi bi-clipboard-check fs-4 text-primary"></i>
+                                        <span class="text-dark">
+                                            Lịch sử đơn hàng
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
                             </a>
-                            
+
                         </div>
                         <!-- Lịch sử đật lịch -->
                         <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <i class="bi bi-calendar-date fs-4 text-primary"></i>
-                                    <a href="bookinghistory" class="text-decoration-none text-dark">Lịch sử đặt lịch</a>
+                            <a href="bookinghistory" class="text-decoration-none">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex align-items-center gap-3">
+                                        <i class="bi bi-calendar-date fs-4 text-primary"></i>
+                                        <span class="text-dark">Lịch sử đặt lịch</span>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                         <!-- Xin chào khách hàng -->
                         <div class="col-md-4">
@@ -82,34 +84,34 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title mb-4">Thông tin tài khoản</h5>
-                           <div class="d-grid gap-2 account-info">
-    <span>
-        <span class="account-info-title">Họ tên:</span> 
-        ${empty customer.fullName ? 'Chưa có thông tin' : customer.fullName} / 
-        <span class="account-info-title">Giới tính:</span> 
-        ${empty customer.gender ? 'Chưa có thông tin' : customer.gender}
-    </span>
-    <span>
-        <span class="account-info-title">Ngày sinh:</span> 
-        ${empty customer.birthDate ? 'Chưa có thông tin' : customer.birthDate}
-    </span>
-    <c:choose>
-        <c:when test="${not empty customer.email and fn:contains(customer.email, '@')}">
-            <span><span class="account-info-title">Email:</span> ${customer.email}</span>
-        </c:when>
-        <c:otherwise>
-            <span><span class="account-info-title">Email:</span> Chưa có thông tin</span>
-        </c:otherwise>
-    </c:choose>
-    <span>
-        <span class="account-info-title">Điện thoại:</span> 
-        ${empty customer.phoneNumber ? 'Chưa có thông tin' : customer.phoneNumber}
-    </span>
-    <span>
-        <span class="account-info-title">Địa chỉ:</span> 
-        ${empty customer.address ? 'Chưa có thông tin' : customer.address}
-    </span>
-</div>
+                            <div class="d-grid gap-2 account-info">
+                                <span>
+                                    <span class="account-info-title">Họ tên:</span> 
+                                    ${empty customer.fullName ? 'Chưa có thông tin' : customer.fullName} / 
+                                    <span class="account-info-title">Giới tính:</span> 
+                                    ${empty customer.gender ? 'Chưa có thông tin' : customer.gender}
+                                </span>
+                                <span>
+                                    <span class="account-info-title">Ngày sinh:</span> 
+                                    ${empty customer.birthDate ? 'Chưa có thông tin' : customer.birthDate}
+                                </span>
+                                <c:choose>
+                                    <c:when test="${not empty customer.email and fn:contains(customer.email, '@')}">
+                                        <span><span class="account-info-title">Email:</span> ${customer.email}</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span><span class="account-info-title">Email:</span> Chưa có thông tin</span>
+                                    </c:otherwise>
+                                </c:choose>
+                                <span>
+                                    <span class="account-info-title">Điện thoại:</span> 
+                                    ${empty customer.phoneNumber ? 'Chưa có thông tin' : customer.phoneNumber}
+                                </span>
+                                <span>
+                                    <span class="account-info-title">Địa chỉ:</span> 
+                                    ${empty customer.address ? 'Chưa có thông tin' : customer.address}
+                                </span>
+                            </div>
                             <div class="mt-3">
                                 <button type="button" class="btn btn-success" 
                                         data-bs-toggle="modal" data-bs-target="#exampleModal"
@@ -157,7 +159,7 @@
 
                                                         </div>
                                                     </c:if>
-                                                    
+
                                                     <!-- Điện thoại -->
                                                     <div class="mb-2">
                                                         <label class="form-label">Điện thoại</label>
