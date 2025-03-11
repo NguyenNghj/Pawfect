@@ -98,29 +98,39 @@ public class EditStaffServlet extends HttpServlet {
         String phone = request.getParameter("phone");
         String address = request.getParameter("address");
         String gender = request.getParameter("gender");
-        String birthDateStr = request.getParameter("birthDate"); // Lấy ngày sinh
+        String date = request.getParameter("birthDate"); // Lấy ngày sinh
         String image = request.getParameter("image");
         boolean isActive = request.getParameter("isActive") != null;
         String hashPassword = StaffDAO.hashPasswordMD5(password);
 
         // Debug xem dữ liệu nhận được
-        System.out.println("Received birthDate: " + birthDateStr);
+        System.out.println("Received birthDate: " + date);
 
         // Xử lý ngày tháng đúng định dạng
         Date birthDate = null;
-        if (birthDateStr != null && !birthDateStr.isEmpty()) {
+        if (date != null && !date.isEmpty()) {
             try {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                java.util.Date parsedDate = sdf.parse(birthDateStr);
+                java.util.Date parsedDate = sdf.parse(date);
                 birthDate = new Date(parsedDate.getTime()); // Chuyển sang java.sql.Date
+                
+                // Kiểm tra tuổi nhân viên phải từ 16 trở lên
+                java.util.Date currentDate = new java.util.Date();
+                int currentYear = currentDate.getYear() + 1900; // Lấy năm hiện tại
+                int birthYear = birthDate.toLocalDate().getYear(); // Lấy năm sinh
+                int age = currentYear - birthYear; // Tính tuổi
+
+                if (age < 16) {
+                    System.out.println("Lỗi: Nhân viên chưa đủ 16 tuổi.");
+                    response.sendRedirect("editstaff.jsp?staffId=" + staffId + "&error=underage");
+                    return;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("Lỗi chuyển đổi birthDate: " + e.getMessage());
                 response.sendRedirect("editstaff.jsp?error=invalidDate");
                 return;
-            }
-        }
-
+            }}
         // Cập nhật nhân viên
         Staff staff = new Staff(staffId, roleName, hashPassword, fullName, email, phone, address, gender, birthDate, image, isActive);
         boolean updateSuccess = StaffDAO.updateStaff(staff);

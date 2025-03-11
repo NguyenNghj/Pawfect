@@ -140,6 +140,9 @@ input, select, button {
                                     <label class="form-label">Ngày Sinh</label>
                                     <input type="date" class="form-control" name="birthDate">
                                 </div>
+    <c:if test="${param.error eq 'underage'}">
+    <div class="alert alert-danger">Nhân viên phải trên 16 tuổi!</div>
+</c:if>
 
                                 <div class="mb-3">
                                     <label class="form-label">Ảnh (URL)</label>

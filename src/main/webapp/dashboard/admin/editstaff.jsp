@@ -51,7 +51,7 @@
 
                             <div class="mb-3">
                                 <label class="form-label">Mật Khẩu</label>
-                                <input type="password" class="form-control" name="password" value="${staff.password}" required>
+                                <input type="password" class="form-control" name="password" placeholder="Enter password" >
                             </div>
 
                             <div class="mb-3">
@@ -82,13 +82,41 @@
                                     <option value="Others" ${staff.gender == 'Others' ? 'selected' : ''}>Khác</option>
                                 </select>
                             </div>
+<div class="mb-3">
+    <label class="form-label">Ngày Sinh</label>
+    <input type="date" class="form-control" name="birthDate" 
+           value="${staff.birthDate}" id="birthDate" required>
+    <small id="ageError" style="color: red; display: none;">Nhân viên phải đủ 16 tuổi trở lên.</small>
+</div>
 
-                            <div class="mb-3">
-                                <label class="form-label">Ngày Sinh</label>
-                                <input type="date" class="form-control" name="birthDate" 
-                                       value="<fmt:formatDate value='${staff.birthDate}' pattern='yyyy-MM-dd'/>">
-                            </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let birthDateInput = document.getElementById("birthDate");
+        let ageError = document.getElementById("ageError");
 
+        // Tính toán ngày tối đa để đảm bảo tuổi ≥ 16
+        let today = new Date();
+        let minAgeDate = new Date();
+        minAgeDate.setFullYear(today.getFullYear() - 16); // Lùi 16 năm
+
+        // Chặn người dùng chọn ngày sinh nhỏ hơn 16 năm trước
+        birthDateInput.setAttribute("max", minAgeDate.toISOString().split("T")[0]);
+
+        birthDateInput.addEventListener("change", function () {
+            let selectedDate = new Date(birthDateInput.value);
+            if (selectedDate > minAgeDate) {
+                ageError.style.display = "block"; // Hiển thị thông báo lỗi
+                birthDateInput.value = ""; // Xóa giá trị nhập sai
+            } else {
+                ageError.style.display = "none"; // Ẩn thông báo lỗi
+            }
+        });
+    });
+</script>
+
+                            <c:if test="${param.error eq 'underage'}">
+                                <div class="alert alert-danger">Nhân viên phải trên 16 tuổi!</div>
+                            </c:if>
                             <div class="mb-3">
                                 <label class="form-label">Ảnh (URL)</label>
                                 <input type="text" class="form-control" name="image" value="${staff.image}">

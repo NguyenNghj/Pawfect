@@ -88,6 +88,17 @@ public class StaffAddServlet extends HttpServlet {
         if (birthDateStr != null && !birthDateStr.isEmpty()) {
             birthDate = Date.valueOf(birthDateStr);
         }
+        // Kiểm tra tuổi (phải >= 16)
+        java.util.Date currentDate = new java.util.Date();
+        int currentYear = currentDate.getYear() + 1900; // Lấy năm hiện tại
+        int birthYear = birthDate.toLocalDate().getYear(); // Lấy năm sinh
+        int age = currentYear - birthYear; // Tính tuổi
+        
+        if (age < 16) {
+            response.sendRedirect("staffadd.jsp?error=underage");
+            return;
+        }
+    
 
         // Tạo đối tượng Staff
         Staff staff = new Staff(roleName, hashPassword, fullName, email, phone, address, gender, birthDate, image, true);
