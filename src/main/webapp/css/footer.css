@@ -13,10 +13,22 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     box-sizing: border-box;
 }
 
+footer{
+    background: #8C6E63;
+}
+
 .footer-title {
-    color: #4c4c4c;
+    color: #FFF2DF;
     margin-bottom: 20px;
     padding: 0;
+}
+
+.links span{
+    color: #FFF2DF;
+}
+
+.links a{
+    color:#FFE0B2;
 }
 
 .links {
@@ -82,5 +94,5 @@ footer {
 }
 
 .footer-end span {
-    color: #4c4c4c;
+    color: #3E2522;
 }
