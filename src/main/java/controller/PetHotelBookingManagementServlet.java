@@ -90,22 +90,23 @@ public class PetHotelBookingManagementServlet extends HttpServlet {
 
                 if (booking != null) {
                     int roomId = booking.getRoomId();
+                    int petId = booking.getPetId(); // Lấy ID thú cưng
 
                     switch (action) {
                         case "approve":
                             if (PetHotelDAO.decreaseAvailableQuantity(roomId)) {
-                                bookingDAO.updateBookingStatus(bookingID, "Đã duyệt");
+                                bookingDAO.updateBookingStatus(bookingID, "Đã duyệt", petId);
                             }
                             break;
                         case "cancel":
-                            bookingDAO.updateBookingStatus(bookingID, "Đã hủy");
+                            bookingDAO.updateBookingStatus(bookingID, "Đã hủy", petId);
                             break;
                         case "checkin":
-                            bookingDAO.updateBookingStatus(bookingID, "Đã nhận phòng");
+                            bookingDAO.updateBookingStatus(bookingID, "Đã nhận phòng", petId);
                             break;
                         case "checkout":
                             if (PetHotelDAO.increaseAvailableQuantity(roomId)) {
-                                bookingDAO.updateBookingStatus(bookingID, "Đã trả phòng");
+                                bookingDAO.updateBookingStatus(bookingID, "Đã trả phòng", petId); // Cập nhật pet
                             }
                             break;
                         default:

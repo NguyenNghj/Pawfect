@@ -294,7 +294,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AdminPetRoomsListServlet</servlet-name>
-        <url-pattern>/dashboard/admin/petroom</url-pattern>
+        <url-pattern>/dashboard/admin/pethotel</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DeletePetHotelServlet</servlet-name>
@@ -338,11 +338,11 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddPetHotelServlet</servlet-name>
-        <url-pattern>/dashboard/admin/addroom</url-pattern>
+        <url-pattern>/dashboard/admin/createpethotel</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EditPetHotelServlet</servlet-name>
-        <url-pattern>/dashboard/admin/editroom</url-pattern>
+        <url-pattern>/dashboard/admin/editpethotel</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PetHotelBookingManagementServlet</servlet-name>
@@ -438,7 +438,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>BookingServlet</servlet-name>
-        <url-pattern>/booking</url-pattern>
+        <url-pattern>/bookingform</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>BookingHistoryServlet</servlet-name>

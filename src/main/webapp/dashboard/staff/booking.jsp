@@ -218,7 +218,11 @@
                                         for (PetHotelBooking booking : bookings) {
                                     %>
                                     <tr class="booking-row" data-status="<%= booking.getStatus()%>">
-                                        <td style="width: 140px; text-align: center; vertical-align: middle;"><%= booking.getCustomerName()%></td>
+                                        <td style="width: 140px; text-align: center; vertical-align: middle;">
+                                            <a href="BookingDetailServlet?id=<%= booking.getBookingId()%>" style="color: black;">
+                                                <%= booking.getCustomerName()%>
+                                            </a>
+                                        </td>
                                         <td style="width: 140px; text-align: center; vertical-align: middle;"><%= booking.getPetName()%></td>
                                         <td style="width: 140px; text-align: center; vertical-align: middle;"><%= booking.getRoomName()%></td>
                                         <td style="text-align: center; vertical-align: middle;"><%= sdf.format(booking.getCheckIn())%></td>

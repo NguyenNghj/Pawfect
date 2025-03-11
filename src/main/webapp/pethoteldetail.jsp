@@ -16,8 +16,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Phòng ${room.roomName} dành cho ${room.roomType}</title>
-        <link rel="stylesheet" href="./css/pethoteldetail.css">
+        <link rel="stylesheet" href="./css/pethoteldetail_v1.css">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     </head>
     <body>
         <ol class="breadcrumb">
@@ -46,20 +47,21 @@
 
             <div class="info-container">
                 <h2>Phòng <%= room.getRoomName()%></h2>
-                <div class="detail">                
-                    <p class="room-type">Dành cho <%= room.getRoomType()%></p>
-                    <p class="room-price">Giá: <%= NumberFormat.getInstance(new Locale("vi", "VN")).format(room.getPricePerNight())%> đ/đêm</p>
-                    <p class="room-weight">Cân nặng phù hợp: <%= room.getMinWeight()%> - <%= room.getMaxWeight()%> kg</p>
-                    <p class="room-quantity">Số lượng phòng trống: <%= room.getAvailableQuantity()%>/<%= room.getQuantity()%> phòng</p>
-                    <p class="room-status">Trạng thái: <%= room.getStatus()%></p>
-                    <hr class="divider"> 
-                    <p class="room-description"><%= room.getDescription()%></p>
+                <div class="detail">
+                    <p class="room-type"><i></i> Dành cho <%= room.getRoomType()%></p>
+                    <p class="room-price"><i></i> Giá: <%= NumberFormat.getInstance(new Locale("vi", "VN")).format(room.getPricePerNight())%> đ/đêm</p>
+                    <p class="room-weight"><i></i> Cân nặng phù hợp: <%= room.getMinWeight()%> - <%= room.getMaxWeight()%> kg</p>
+                    <p class="room-quantity"><i></i> Số lượng phòng trống: <%= room.getAvailableQuantity()%>/<%= room.getQuantity()%> phòng</p>
+                    <p class="room-status"><i></i> Trạng thái: <%= room.getStatus()%></p>
+                    <hr class="divider">
+                    <p class="room-description"><i></i> <%= room.getDescription()%></p>
                 </div>
                 <div class="button-container">
-                    <a href="booking?id=<%= room.getRoomId()%>" class="booking-btn" data-status="<%= room.getStatus()%>">Đặt phòng ngay</a>
-                    <a href="pethotel" class="back-btn">Quay lại</a>
+                    <a href="bookingform?id=<%= room.getRoomId()%>" class="booking-btn" data-status="<%= room.getStatus()%>"><i></i> Đặt lịch ngay</a>
+                    <a href="pethotel" class="back-btn"><i></i> Quay lại</a>
                 </div>
             </div>
+
         </div>
 
         <%-- Danh sách phòng tương tự --%>
@@ -80,7 +82,7 @@
                     <div class="pethotel-weight">
                         Cân nặng: <%= similarRoom.getMinWeight()%> - <%= similarRoom.getMaxWeight()%> kg
                     </div>
-                    <a href="booking?id=<%= similarRoom.getRoomId()%>" class="booking" data-status="<%= similarRoom.getStatus()%>">Đặt phòng ngay</a>
+                    <a href="bookingform?id=<%= similarRoom.getRoomId()%>" class="booking" data-status="<%= similarRoom.getStatus()%>">Đặt lịch ngay</a>
                 </div>
 
                 <%

@@ -96,7 +96,7 @@
                         </nav>
                     </div>   
 
-                    <button class="btn btn-success" onclick="window.location.href = 'addroom'">
+                    <button class="btn btn-success" onclick="window.location.href = 'createpethotel'">
                         <i class="fa fa-plus"></i> Thêm Phòng
                     </button>
 
@@ -117,13 +117,13 @@
 
                             <div style="padding: 15px 15px 25px 15px;">
                                 <table class="table table-hover">
-                                    <thead class="table-primary" style="text-align: center; vertical-align: middle; padding: 12px; font-weight: bold;">
+                                    <thead class="table" style="text-align: center; vertical-align: middle; padding: 12px; font-weight: bold;">
                                         <tr>
                                             <th scope="col">Hình ảnh</th>
                                             <th scope="col">Tên phòng</th>
                                             <th scope="col">Loại</th>
-                                            <th scope="col">Cân nặng tối thiểu (kg)</th>
-                                            <th scope="col">Cân nặng tối đa (kg)</th>
+                                            <th scope="col">Min (kg)</th>
+                                            <th scope="col">Max (kg)</th>
                                             <th scope="col">Giá (VNĐ)</th>
                                             <th scope="col">Mô tả</th>
                                             <th scope="col">Số lượng</th>
@@ -136,8 +136,8 @@
                                                 for (PetHotel room : petRooms) {%>
                                         <tr>
                                             <td> <img src="<%= room.getRoomImage()%>" alt="Hình ảnh phòng" width="150" height="150"> </td>
-                                            <td style="width: 12%;"><%= room.getRoomName()%></td>
-                                            <td style="width: 9%;"><%= room.getRoomType()%></td>
+                                            <td style="text-align: center; width: 12%;"><%= room.getRoomName()%></td>
+                                            <td style="text-align: center; width: 9%;"><%= room.getRoomType()%></td>
                                             <td style="text-align: center;"><%= room.getMinWeight()%></td>
                                             <td style="text-align: center;"><%= room.getMaxWeight()%></td>
                                             <%
@@ -156,7 +156,7 @@
                                                 <button type="button" class="btn btn-primary" onclick="editRoom(<%= room.getRoomId()%>)">Sửa</button>
                                                 <script>
                                                     function editRoom(roomId) {
-                                                        window.location.href = 'editroom?room_id=' + roomId;
+                                                        window.location.href = 'editpethotel?room_id=' + roomId;
                                                     }
                                                 </script>
 
