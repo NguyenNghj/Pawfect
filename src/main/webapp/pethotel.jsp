@@ -56,7 +56,7 @@
                     <div class="pethotel-weight">
                         Cân nặng: <%= room.getMinWeight()%> - <%= room.getMaxWeight()%> kg
                     </div>
-                    <a href="booking?id=<%= room.getRoomId()%>" class="booking" data-status="<%= room.getStatus()%>">Đặt phòng ngay</a>
+                    <a href="bookingform?id=<%= room.getRoomId()%>" class="booking" data-status="<%= room.getStatus()%>">Đặt lịch ngay</a>
                 </div>
                 <% }
                 } else { %>

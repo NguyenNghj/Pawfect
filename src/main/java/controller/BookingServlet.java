@@ -19,7 +19,9 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.Customers;
 import model.Pet;
 import model.PetHotel;
@@ -70,7 +72,6 @@ public class BookingServlet extends HttpServlet {
             throws ServletException, IOException {
         System.out.println("=== BookingServlet: doGet START ===");
 
-        // Lấy customerId từ cookie
         Integer customerId = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -78,7 +79,6 @@ public class BookingServlet extends HttpServlet {
                 if ("customerId".equals(cookie.getName())) {
                     try {
                         customerId = Integer.parseInt(cookie.getValue());
-                        System.out.println("Customer ID from cookie: " + customerId);
                     } catch (NumberFormatException e) {
                         System.out.println("ERROR: Invalid customerId in cookie!");
                     }
@@ -87,58 +87,42 @@ public class BookingServlet extends HttpServlet {
             }
         }
 
-        // Nếu chưa đăng nhập, chuyển hướng về login
         if (customerId == null) {
-            System.out.println("ERROR: customerId is null, redirecting to login.");
             response.sendRedirect("login");
             return;
         }
 
         try {
-            // Lấy thông tin khách hàng
             Customers customer = CustomersDAO.getCustomerById(customerId);
             if (customer == null) {
-                System.out.println("ERROR: Customer not found for ID: " + customerId);
                 response.sendRedirect("error.jsp?message=Customer not found");
                 return;
             }
-            System.out.println("Customer found: " + customer.getFullName());
 
-            // Lấy roomId từ request
             String roomIdParam = request.getParameter("id");
-            System.out.println("Room ID from request: " + roomIdParam);
             if (roomIdParam == null || roomIdParam.isEmpty()) {
-                System.out.println("ERROR: roomId is null or empty, redirecting to homepage.");
                 response.sendRedirect("homepage.jsp");
                 return;
             }
 
-            int roomId;
-            try {
-                roomId = Integer.parseInt(roomIdParam);
-            } catch (NumberFormatException e) {
-                System.out.println("ERROR: Invalid room ID format: " + roomIdParam);
-                response.sendRedirect("error.jsp?message=Invalid room ID");
-                return;
-            }
-
-            // Lấy thông tin phòng
+            int roomId = Integer.parseInt(roomIdParam);
             PetHotel room = PetHotelDAO.getPetRoomById(roomId);
             if (room == null) {
-                System.out.println("ERROR: Room not found for ID: " + roomId);
                 response.sendRedirect("error.jsp?message=Room not found");
                 return;
             }
-            System.out.println("Room found: " + room.getRoomName());
 
-            // Lấy danh sách thú cưng của khách hàng
             PetDAO petDAO = new PetDAO();
             List<Pet> petList = petDAO.getPetsByCustomerId(customerId);
-            if (petList == null || petList.isEmpty()) {
-                System.out.println("WARNING: No pets found for customer ID: " + customerId);
+
+            // Lấy trạng thái từng thú cưng từ PetHotelBookingDAO
+            Map<Integer, String> petStatusMap = new HashMap<>();
+            for (Pet pet : petList) {
+                String petStatus = PetHotelBookingDAO.getPetStatusById(Integer.parseInt(pet.getPetId()));
+                petStatusMap.put(Integer.parseInt(pet.getPetId()), petStatus);
             }
 
-            // Truyền dữ liệu sang JSP
+            request.setAttribute("petStatusMap", petStatusMap);
             request.setAttribute("customer", customer);
             request.setAttribute("room", room);
             request.setAttribute("petList", petList);
@@ -148,10 +132,8 @@ public class BookingServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("ERROR: Exception occurred: " + e.getClass().getName() + " - " + e.getMessage());
-            response.sendRedirect("error.jsp?message=Unexpected error: " + e.getClass().getSimpleName());
+            response.sendRedirect("error.jsp?message=Unexpected error");
         }
-
     }
 
     /**

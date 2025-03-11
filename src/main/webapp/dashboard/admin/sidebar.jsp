@@ -69,7 +69,7 @@
             </a>
         </nav>
         <nav class="navbar bg-body-tertiary" id="petroom">                                            
-            <a class="navbar-brand d-flex align-items-center gap-3" href="petroom">
+            <a class="navbar-brand d-flex align-items-center gap-3" href="pethotel">
                 <i class="fa-solid fa-hotel fa-lg"></i>  
                 <span>Pet Hotel</span>
             </a>
