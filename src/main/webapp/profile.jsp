@@ -100,7 +100,7 @@
                                         <span><span class="account-info-title">Email:</span> ${customer.email}</span>
                                     </c:when>
                                     <c:otherwise>
-                                        <span><span class="account-info-title">Email:</span> Chưa có thông tin</span>
+                                        <span><span class="account-info-title">Email:</span> Đăng nhập bằng Google</span>
                                     </c:otherwise>
                                 </c:choose>
                                 <span>

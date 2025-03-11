@@ -23,8 +23,8 @@ import jakarta.mail.internet.MimeMessage;
 
 public class SendMail {
     public static void sendEmail(String to, String subject, String messageText) {
-        final String from = "tranducthanh11b1@gmail.com"; // Thay bằng email của bạn
-        final String password = "sbib igat hpsr ocxw"; // Thay bằng mật khẩu ứng dụng của Gmail
+        final String from = "pawfectg3@gmail.com"; // Thay bằng email của bạn
+        final String password = "ldof gbqp hurw qrkn"; // Thay bằng mật khẩu ứng dụng của Gmail
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -39,14 +39,25 @@ public class SendMail {
         });
 
         try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-            message.setSubject(subject);
-            message.setText(messageText);
+           Message message = new MimeMessage(session);
+message.setFrom(new InternetAddress(from));
+message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+message.setSubject("Reset password");
 
-            Transport.send(message);
-            System.out.println("Email sent successfully.");
+// Nội dung email với HTML
+String emailContent = "<h1 style='color: #0078D4;'>Đặt lại mật khẩu thành công</h1>"
+        + "<p>Xin chào,</p>"
+        + "<p>Bạn đã yêu cầu đặt lại mật khẩu cho tài khoản của mình. Dưới đây là mật khẩu mới của bạn:</p>"
+        + "<p><strong style='font-size: 18px; color: red;'>" + messageText + "</strong></p>"
+        + "<p>Vui lòng đăng nhập và thay đổi mật khẩu ngay để đảm bảo an toàn cho tài khoản của bạn.</p>"
+        + "<p>Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này hoặc liên hệ với bộ phận hỗ trợ.</p>"
+        + "<p>Trân trọng,</p>"
+        + "<p><strong>Đội ngũ hỗ trợ</strong></p>";
+
+message.setContent(emailContent, "text/html; charset=UTF-8");
+
+// Gửi email
+Transport.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();
         }
