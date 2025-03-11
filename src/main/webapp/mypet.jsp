@@ -42,12 +42,14 @@
 
                         </div>
                         <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <i class="bi bi-calendar-date fs-4 text-primary"></i>
-                                    <a href="bookinghistory" class="text-decoration-none text-dark">Lịch sử đặt lịch</a>
+                            <a href="bookinghistory" class="text-decoration-none">
+                                <div class="card h-100">
+                                    <div class="card-body d-flex align-items-center gap-3">
+                                        <i class="bi bi-calendar-date fs-4 text-primary"></i>
+                                        <span class="text-dark">Lịch sử đặt lịch</span>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                         <div class="col-md-4">
                             <a href="profile" class="text-decoration-none">

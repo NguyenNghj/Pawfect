@@ -22,19 +22,8 @@
                         <h4 class="footer-title">Về chúng tôi</h4>
                         <ul class="links">
                             <li><a href="">Giới thiệu</a></li>
-                            <li><a href="">Hướng dẫn mua hàng</a></li>
-                            <li><a href="">Đăng ký thành viên</a></li>
-                            <li><a href="">Liên hệ</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-auto">
-                        <h4 class="footer-title">Về chúng tôi</h4>
-                        <ul class="links">
-                            <li><a href="">Chính sách thanh toán</a></li>
-                            <li><a href="">Chính sách giao hàng</a></li>
-                            <li><a href="">Chính sách đổi trả</a></li>
-                            <li><a href="">Chính sách bảo mật</a></li>
-                            <li><a href="">Điều khoản dịch vụ</a></li>
+                            <li><a href="register">Đăng ký thành viên</a></li>
+                            <li><a href="https://mail.google.com/mail/u/0/?view=cm&to=pawfectg3@gmail.com" target="_blank">Liên hệ</a></li>
                         </ul>
                     </div>
                     <div class="col-auto">
@@ -43,47 +32,39 @@
                             <ul class="links">
                                 <li class="d-flex align-items-center gap-3">
                                     <i class="fa-solid fa-map-location-dot fa-lg"></i>
-                                    <span>8888 Nguyễn Văn Cừ nối dài, Ninh Kiều, Cần Thơ</span>
+                                    <span>600 Nguyễn Văn Cừ Nối Dài, An Bình, Bình Thủy, Cần Thơ</span>
                                 </li>
                                 <li class="d-flex align-items-center gap-3">
                                     <i class="fa-solid fa-paper-plane fa-lg"></i>
-                                    <span>pawfect@gmail.com</span>
+                                    <span>pawfectg3@gmail.com</span>
                                 </li>
                                 <li class="d-flex align-items-center gap-3">
                                     <i class="fa-solid fa-phone fa-lg"></i>
-                                    <span>0123456789</span>
+                                    <span>0967017222</span>
                                 </li>           
                             </ul>
                         </div>
                         <div>
-                            <h4 class="footer-title">Kết nối với chúng tôi</h4>
-                            <div class="social-icon p-0 d-flex align-items-center gap-3">
-                                <a class="btn">
-                                    <img src="../images/icons/facebook.png" alt="">
+                            <h4 class="footer-title mb-2 mt-3">Kết nối với chúng tôi</h4>
+                            <div class="social-icon p-0 d-flex align-items-center gap-2">
+                                <a class="btn" href="https://www.facebook.com/GemNghj?locale=vi_VN">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/900px-Facebook_Logo_%282019%29.png" alt="">
                                 </a>
                                 <a class="btn">
-                                    <img src="../images/icons/Icon_of_Zalo.svg.png" alt="">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Icon_of_Zalo.svg/120px-Icon_of_Zalo.svg.png" alt="">
                                 </a>
                                 <a class="btn">
-                                    <img src="../images/icons/tiktok.png" alt="">
+                                    <i class='bx bxl-tiktok' style="font-size: 31px"></i>
                                 </a>
                                 <a class="btn">
-                                    <img src="../images/icons/youtube.png" alt="">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/YouTube_full-color_icon_%282024%29.svg/1486px-YouTube_full-color_icon_%282024%29.svg.png" alt="">
                                 </a>
                             </div>
                         </div>
                     </div>
                     <div class="col-auto">
                         <div class="d-flex flex-column align-items-center gap-4 footer-logo"> 
-                            <img src="../images/logos/Logo_Truong_Đai_hoc_FPT.svg" alt="">
-                            <div class="d-flex align-items-center gap-3 footer-logo-1">
-                                <img src="../images/logos/logo-da-thong-bao-bo-cong-thuong.webp" alt="" >                    
-                                <img src="../images/logos/handle_cert.png" alt="">
-                            </div>
-                            <div class="d-flex align-items-center gap-3 footer-logo-2">
-                                <img src="//images.dmca.com/Badges/dmca_protected_sml_120l.png?ID=//www.dmca.com/Protection/Status.aspx?id=a99f8ae5-2c7c-4b4b-85c2-3051ff1fa219" alt="">                    
-                                <img src="../images/logos/InstantSSL Trust Seal/instantssl_trust_seal_md.png" alt="">
-                            </div>
+                            <iframe style="border-radius: 20px" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3929.0533542569997!2d105.72985667479374!3d10.012451790093571!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a0882139720a77%3A0x3916a227d0b95a64!2sFPT%20University!5e0!3m2!1svi!2s!4v1741661901831!5m2!1svi!2s" width="520" height="370" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                     </div>
                 </div>
