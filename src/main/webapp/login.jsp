@@ -33,6 +33,7 @@
         </script>
     </head>
     <body>
+      
         <div class="container-fluid p-0">
             <div class="row g-0 login-container">
                 <div class="col-md-6 illustration-side">
@@ -80,6 +81,7 @@
 
                         <div class="divider">Hoặc</div>
                         <a href="register" class="btn btn-primary w-100 mb-3" style="align-content: center">Đăng ký tài khoản</a>
+                         <a href="pawfect" >Trang chủ</a>
                     </div>
                 </div>
             </div>

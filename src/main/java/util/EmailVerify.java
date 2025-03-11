@@ -20,8 +20,8 @@ import java.util.Properties;
  */
 public class EmailVerify {
       public static void sendVerificationEmail(String recipientEmail, String verificationCode) throws MessagingException {
-        final String fromEmail = "tranducthanh11b1@gmail.com"; // Email của bạn
-        final String password = "sbib igat hpsr ocxw"; // Mật khẩu ứng dụng (App Password)
+        final String fromEmail = "pawfectg3@gmail.com"; // Email của bạn
+        final String password = "ldof gbqp hurw qrkn"; // Mật khẩu ứng dụng (App Password)
 
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
@@ -36,12 +36,24 @@ public class EmailVerify {
         });
 
         Message message = new MimeMessage(session);
-        message.setFrom(new InternetAddress(fromEmail));
-        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
-        message.setSubject("Verify Mail ");
-        message.setText("you verify code : " + verificationCode );
+message.setFrom(new InternetAddress(fromEmail));
+message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientEmail));
+message.setSubject("Email Verify");
 
-        Transport.send(message);
+
+String emailContent = "<h1 style='color: #0078D4;'>Xác minh địa chỉ email của bạn</h1>"
+        + "<p>Để hoàn thành thiết lập tài khoản Pawfect của bạn, chúng tôi chỉ cần đảm bảo địa chỉ email này là của bạn.</p>"
+        + "<p>Để xác minh địa chỉ email của bạn, hãy sử dụng mã bảo mật này: "
+        + "<strong style='font-size: 18px;'>"+verificationCode+"</strong></p>"
+        + "<p>Nếu không yêu cầu mã này thì bạn có thể bỏ qua email này một cách an toàn. "
+        + "Có thể ai đó khác đã nhập địa chỉ email của bạn do nhầm lẫn.</p>"
+        + "<p>Xin cám ơn,</p>";
+       
+
+message.setContent(emailContent, "text/html; charset=UTF-8");
+
+// Gửi email
+Transport.send(message);
     }
       
 }

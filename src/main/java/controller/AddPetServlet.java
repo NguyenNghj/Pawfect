@@ -6,6 +6,7 @@
 package controller;
 
 import dao.PetDAO;
+import dao.ProfileDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -18,6 +19,7 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.nio.file.Paths;
 import java.sql.Date;
+import model.User;
 
 /**
  *
@@ -65,7 +67,20 @@ public class AddPetServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+         String customerId = null;   
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {            
+                if ("customerId".equals(cookie.getName())) {
+                         customerId  = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        ProfileDAO profileDAO = new ProfileDAO();
+User user = profileDAO.getUser(customerId);
+request.setAttribute("customer", user);
+        request.getRequestDispatcher("createpet.jsp").forward(request, response);
     } 
 
     /** 
@@ -96,7 +111,7 @@ public class AddPetServlet extends HttpServlet {
         String birthDateStr = request.getParameter("petDob");
         Date petDob = Date.valueOf(birthDateStr);
         
-        // Xác định đường dẫn thư mục lưu ảnh
+       
         String[] context = request.getServletContext().getRealPath("").split("target");
         String realPath = context[0] + "src" + File.separator + "main" + File.separator + "webapp" + File.separator + "img" + File.separator + "pet";
         File uploadDir = new File(realPath);

@@ -71,17 +71,17 @@
                             <div class="text-secondary mb-4">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span>Mã thú cưng#: [${pet.petId}]</span>
-                                  <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
-<% if (errorMessage != null) { %>
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi!',
-            text: "<%= errorMessage %>",
-            confirmButtonText: 'OK'
-        });
-    </script>
-<% } %>
+                                    <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+                                    <% if (errorMessage != null) {%>
+                                    <script>
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Lỗi!',
+                                            text: "<%= errorMessage%>",
+                                            confirmButtonText: 'OK'
+                                        });
+                                    </script>
+                                    <% }%>
                                     <div>
                                         <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#editPetModal" 
                                                 style="padding: 8px 18px;"
@@ -230,7 +230,10 @@
                                         <div class="col-md-9 mb-3 mb-md-0">
                                             <div class="mb-4">                       
                                                 <div class="text-success fw-bold">Trạng thái thú cưng</div>
-                                                <div>  ${pet.petStatus}</div>
+                                                <c:choose>
+                                                    <c:when test="${pet.petStatus == 'booking'}">Đã đặt lịch</c:when>
+                                                    <c:otherwise>Chưa đặt lịch</c:otherwise>
+                                                </c:choose>
                                                 <input type="hidden" name="petStatus" value="${pet.petStatus}">
                                             </div>
 
