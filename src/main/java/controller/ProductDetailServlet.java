@@ -86,8 +86,8 @@ public class ProductDetailServlet extends HttpServlet {
             String username = getCookieValue(request, "customerId");
             if (username == null) {
                 System.out.println("Không tìm thấy customerId!");
-                return;
-            }
+                username = "0";
+            } 
 
             int totalQuantity = 0;
             int customerId = Integer.parseInt(username);
