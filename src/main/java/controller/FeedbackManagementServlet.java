@@ -166,7 +166,7 @@ public class FeedbackManagementServlet extends HttpServlet {
 
         System.out.println("searchContent: " + searchContent);
 
-        List<Feedback> feedbacks = FeedbackDAO.searchOrder(searchContent);
+        List<Feedback> feedbacks = FeedbackDAO.searchFeedback(searchContent);
 
         request.setAttribute("feedbackStatus", status);
         request.setAttribute("feedbacks", feedbacks);

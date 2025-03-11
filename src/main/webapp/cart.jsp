@@ -42,7 +42,7 @@
                             <!-- Nếu giỏ hàng trống -->
                             <div class="text-center" style="background-color: #fff3cd; padding: 10px; border-radius: 5px; border-radius: 5px; margin-bottom: 200px;">
                                 <span style="font-size: 18px; color: #856404;">
-                                    Không có sản phẩm nào. Quay lại cửa hàng để tiếp tục mua sắm.
+                                    Không có sản phẩm nào. Quay lại <a href="products">cửa hàng</a> để tiếp tục mua sắm.
                                 </span>
                             </div>
                         </c:when>

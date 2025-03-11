@@ -61,6 +61,28 @@ public class Order {
         this.discountAmount = discountAmount;
     }
 
+    public Order(int customerId, int paymentMethodId, int shippingMethodId, String name, String phone, String address, String note, double totalAmount, String status) {
+        this.customerId = customerId;
+        this.paymentMethodId = paymentMethodId;
+        this.shippingMethodId = shippingMethodId;
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
+        this.note = note;
+        this.totalAmount = totalAmount;
+        this.status = status;
+    }
+
+    public Order(int orderId, Integer staffId, String reasonCancel, String status, Timestamp finishDate) {
+        this.orderId = orderId;
+        this.staffId = staffId;
+        this.reasonCancel = reasonCancel;
+        this.status = status;
+        this.finishDate = finishDate;
+    }
+    
+    
+
     public int getOrderId() {
         return orderId;
     }
