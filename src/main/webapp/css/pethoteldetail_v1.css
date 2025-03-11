@@ -62,78 +62,122 @@ h3 {
     justify-content: center;
     align-items: center;
     padding: 30px;
+    background: #fff;/* Màu nền nhẹ nhàng */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
 .image-container img {
-    width: 80%; /* Giảm kích thước ảnh */
-    max-width: 400px; /* Đảm bảo không quá to */
+    width: 85%; /* Giữ tỷ lệ ảnh đẹp */
+    max-width: 450px;
     height: 400px;
     object-fit: cover;
-    border-radius: 8px; /* Bo góc nhẹ cho đẹp */
+    border-radius: 10px; /* Bo góc nhẹ */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
+
+.image-container img:hover {
+    transform: scale(1.05); /* Hiệu ứng phóng to khi hover */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
 
 .info-container {
     flex: 1;
-    padding: 50px;
+    padding: 40px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
 .info-container h2 {
-    padding-bottom: 20px;
+    padding-bottom: 15px;
     font-weight: bold;
     text-align: center;
-    font-size: 40px;
+    font-size: 36px;
     color: #8c6e63;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
+
+.info-container h2::before {
+    content: "🏠"; /* Icon phòng */
+    font-size: 28px;
+}
+
 .detail {
-    font-size: 24px;
-    padding-bottom: 20px;
-    padding-top: 20px;
-    flex-wrap: wrap; /* Đảm bảo không bị tràn trên màn hình nhỏ */
-    padding-left: 20px;
-    padding-right: 20px;
-    height: auto;
+    font-size: 20px;
+    padding: 25px;
     background: #FEF7EF;
-    border-radius: 15px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
-.detail:hover {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-}
-
-.room-type, .room-price, .room-weight{
-    font-size: 24px;
+.detail p {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 10px;
-    color: black;
 }
+
+.detail p::before {
+    font-size: 20px;
+}
+
+.room-type::before {
+    content: "🐾"; /* Icon động vật */
+}
+
+.room-price::before {
+    content: "💰"; /* Icon tiền */
+}
+
+.room-weight::before {
+    content: "⚖️"; /* Icon cân nặng */
+}
+
+.room-quantity::before {
+    content: "🏢"; /* Icon số phòng */
+}
+
+.room-status::before {
+    content: "✅"; /* Icon trạng thái */
+}
+
 .room-description {
-    font-size: 17px;
-    margin-bottom: 10px;
+    font-size: 18px;
+    line-height: 1.6;
     color: black;
 }
+
 .divider {
     border: none;
-    height: 2px; /* Độ dày của đường kẻ */
-    background-color: black; /* Màu xám nhạt */
-    margin: 15px 0; /* Khoảng cách trên dưới */
+    height: 2px;
+    background-color: #8c6e63;
+    margin: 15px 0;
 }
 
 .button-container {
     display: flex;
-    justify-content: center; /* Căn giữa theo chiều ngang */
-    gap: 20px; /* Khoảng cách giữa hai nút */
-    margin-top: 50px; /* Tạo khoảng cách với phần trên */
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
 }
 
 .booking-btn, .back-btn {
-    display: inline-block;
-    padding: 12px 24px; /* Kích thước nút đồng đều */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
     font-size: 18px;
     font-weight: bold;
-    text-align: center;
     border-radius: 8px;
     text-decoration: none;
     transition: all 0.3s ease-in-out;
-    min-width: 180px; /* Đảm bảo độ rộng giống nhau */
+    min-width: 180px;
 }
 
 .booking-btn {
@@ -146,15 +190,32 @@ h3 {
     color: black;
 }
 
+.booking-btn::before {
+    content: "📅"; /* Icon đặt lịch */
+}
+
 .back-btn {
     background-color: grey;
     color: white;
+    display: flex; /* Sử dụng flexbox */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    text-align: center; /* Đảm bảo text căn giữa */
+    padding: 12px 24px; /* Kích thước nút đồng đều */
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    min-width: 180px; /* Đảm bảo kích thước không bị nhỏ quá */
 }
 
 .back-btn:hover {
     background-color: #d9d9d9;
     color: #333;
 }
+
+
 
 
 /* Wrapper chứa danh sách phòng */

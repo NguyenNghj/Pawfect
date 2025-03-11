@@ -14,6 +14,7 @@ public class PetHotelBooking {
     private String staffName;
     private int petId;
     private String petName;
+    private String petStatus;
     private Timestamp checkIn;
     private Timestamp checkOut;
     private BigDecimal totalPrice;
@@ -21,6 +22,35 @@ public class PetHotelBooking {
     private String status;
     private Timestamp bookingDate;
     private boolean isActive;
+
+    public String getPetStatus() {
+        return petStatus;
+    }
+
+    public void setPetStatus(String petStatus) {
+        this.petStatus = petStatus;
+    }
+
+    // có petStatus
+    public PetHotelBooking(int bookingId, int roomId, String roomName, int customerId, String customerName, Integer staffId, String staffName, int petId, String petName, String petStatus, Timestamp checkIn, Timestamp checkOut, BigDecimal totalPrice, String note, String status, Timestamp bookingDate, boolean isActive) {
+        this.bookingId = bookingId;
+        this.roomId = roomId;
+        this.roomName = roomName;
+        this.customerId = customerId;
+        this.customerName = customerName;
+        this.staffId = staffId;
+        this.staffName = staffName;
+        this.petId = petId;
+        this.petName = petName;
+        this.petStatus = petStatus;
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+        this.totalPrice = totalPrice;
+        this.note = note;
+        this.status = status;
+        this.bookingDate = bookingDate;
+        this.isActive = isActive;
+    }
 
     public PetHotelBooking() {
     }

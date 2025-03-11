@@ -12,17 +12,55 @@
         <link rel="stylesheet" href="./css/bookingforcustomer_v1.css">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
         <script>
-            function showAlert(message) {
-                Swal.fire({
-                    title: "Thông báo",
-                    text: message,
-                    icon: "warning",
-                    confirmButtonText: "OK",
-                    confirmButtonColor: "#ff6b6b",
-                });
+            function setMinDateTime() {
+                let now = new Date();
+                now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); // Điều chỉnh múi giờ
+                let minDateTime = now.toISOString().slice(0, 16);
+
+                document.getElementById("checkIn").min = minDateTime;
+                document.getElementById("checkOut").min = minDateTime;
+            }
+
+            function updateCheckOutMin() {
+                let checkIn = document.getElementById("checkIn").value;
+                if (checkIn) {
+                    document.getElementById("checkOut").min = checkIn;
+                }
+            }
+
+            function validateCheckInOut() {
+                let checkIn = document.getElementById("checkIn").value;
+                let checkOut = document.getElementById("checkOut").value;
+                let now = new Date();
+
+                if (!checkIn) {
+                    showAlert("Vui lòng chọn ngày check-in!");
+                    return false;
+                }
+
+                let dateIn = new Date(checkIn);
+                if (dateIn < now) {
+                    showAlert("Vui lòng chọn thời gian check-in từ thời điểm hiện tại trở đi.");
+
+                    document.getElementById("checkIn").value = "";
+                    return false;
+                }
+
+
+                let dateOut = new Date(checkOut);
+                if (dateOut <= dateIn) {
+                    showAlert("Thời gian check-out phải sau check-in!");
+                    document.getElementById("checkOut").value = "";
+                    return false;
+                }
+
+                return true;
             }
 
             function calculateTotalPrice() {
+                if (!validateCheckInOut())
+                    return;
+
                 const checkIn = document.getElementById("checkIn").value;
                 const checkOut = document.getElementById("checkOut").value;
                 const pricePerNight = parseFloat(document.getElementById("pricePerNight").value);
@@ -35,16 +73,19 @@
 
                     if (days > 0) {
                         let total = days * pricePerNight;
-                        document.getElementById("totalPrice").value = total.toLocaleString('vi-VN'); // Hiển thị dạng có dấu phẩy
-                        document.getElementById("totalPriceHidden").value = total; // Giá trị thực không có dấu phẩy
-                    } else {
-                        showAlert("Vui lòng chọn ngày check-out hợp lệ!");
-                        document.getElementById("checkOut").value = "";
-                        document.getElementById("totalPrice").value = "";
+                        document.getElementById("totalPrice").value = total.toLocaleString('vi-VN');
+                        document.getElementById("totalPriceHidden").value = total;
                     }
                 }
             }
-
+            function showAlert(message) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Chọn thời gian hợp lệ!",
+                    text: message
+                });
+            }
+            window.onload = setMinDateTime;
         </script>
     </head>
     <body>
@@ -58,9 +99,7 @@
 
         <h3>THÔNG TIN ĐẶT LỊCH</h3>
 
-        <!-- Container chính -->
         <div class="container">
-            <!-- Thông tin khách hàng bên trái -->
             <div class="info-container">
                 <div class="info-box">
                     <h3>Thông tin khách hàng</h3>
@@ -74,9 +113,8 @@
                 <img src="${room.roomImage}" alt="Hình ảnh phòng ${room.roomName}" class="room-image">
             </div>
 
-            <!-- Form đặt phòng bên phải -->
             <div class="form-container">
-                <form action="booking" method="post" onsubmit="validateBooking(event)">
+                <form action="bookingform" method="post" onsubmit="return validateCheckInOut()">
                     <input type="hidden" name="customerId" value="${customer.customerId}">
                     <input type="hidden" name="roomId" value="${room.roomId}">
                     <input type="hidden" id="pricePerNight" value="${room.pricePerNight}">
@@ -84,33 +122,29 @@
 
                     <div class="form-group">
                         <label for="checkIn">Check-in:</label>
-                        <input type="datetime-local" name="checkIn" id="checkIn" required onchange="calculateTotalPrice()">
+                        <input type="datetime-local" name="checkIn" id="checkIn" required onchange="updateCheckOutMin(); calculateTotalPrice();">
                     </div>
 
                     <div class="form-group">
                         <label for="checkOut">Check-out:</label>
-                        <input type="datetime-local" name="checkOut" id="checkOut" required onchange="calculateTotalPrice()">
+                        <input type="datetime-local" name="checkOut" id="checkOut" required onchange="calculateTotalPrice();">
                     </div>
+
 
                     <div class="form-group">
                         <label for="petId">Chọn Thú Cưng:</label>
                         <c:choose>
                             <c:when test="${empty petList}">
                                 <p style="color: red;">Bạn chưa có thú cưng. Vui lòng thêm thú cưng trước khi đặt phòng!</p>
-                                <a href="viewpet" 
-                                   style="display:inline-block; background:#ff6600; color:#fff; padding:10px 10px;
-                                   font-size:14px; font-weight:bold; text-decoration:none; border-radius:6px;
-                                   transition:0.3s; white-space:nowrap; max-width:110px; text-align:left;"
-                                   onmouseover="this.style.background = '#cc5500'"
-                                   onmouseout="this.style.background = '#ff6600'">
-                                    ➕ Thêm Pet
-                                </a>
-
+                                <a href="viewpet" class="add-pet-btn">➕ Thêm thú cưng</a>
                             </c:when>
                             <c:otherwise>
-                                <select name="petId" id="petId" required>
+                                <select name="petId" id="petId" required onchange="checkPetStatus();">
+                                    <option value="" disabled selected>Chọn thú cưng của bạn</option> <!-- Option mặc định -->
                                     <c:forEach var="pet" items="${petList}">
-                                        <option value="${pet.petId}">${pet.petname}</option>
+                                        <option value="${pet.petId}" data-status="${petStatusMap[pet.petId]}">
+                                            ${pet.petname}
+                                        </option>
                                     </c:forEach>
                                 </select>
                             </c:otherwise>
@@ -128,9 +162,32 @@
                         <input type="text" name="totalPrice" id="totalPrice" readonly>
                     </div>
 
-                    <button type="submit">Đặt Phòng</button>
+                    <button type="submit">Đặt lịch</button>
                 </form>
             </div>
         </div>
+        <script>
+            function checkPetStatus() {
+                let petSelect = document.getElementById("petId");
+                let selectedPet = petSelect.options[petSelect.selectedIndex];
+                let petStatus = selectedPet.getAttribute("data-status");
+
+                if (petStatus === "booking") {
+                    Swal.fire({
+                        title: "Thú cưng đang có lịch đặt!",
+                        text: "Bạn có chắc chắn muốn tiếp tục đặt phòng?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Tiếp tục",
+                        cancelButtonText: "Hủy"
+                    }).then((result) => {
+                        if (!result.isConfirmed) {
+                            petSelect.selectedIndex = 0; // Reset về chọn đầu tiên
+                        }
+                    });
+                }
+            }
+        </script>
+
     </body>
 </html>
