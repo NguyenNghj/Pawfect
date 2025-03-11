@@ -93,10 +93,14 @@ input, select, button {
                     <div class="card">
                         <div class="card-body">
                             <form action="staffadd" method="post">
-                                <div class="mb-3">
-                                    <label class="form-label">Vai Trò</label>
-                                    <input type="text" class="form-control" name="roleName" required>
-                                </div>
+                          <div class="mb-3">
+    <label class="form-label">Vai Trò</label>
+    <select class="form-control" name="roleName">
+        <option value="Admin" ${staff.roleName eq 'Admin' ? 'selected' : ''}>Admin</option>
+        <option value="Staff" ${staff.roleName eq 'Staff' ? 'selected' : ''}>Staff</option>
+    </select>
+</div>
+
 
                                 <div class="mb-3">
                                     <label class="form-label">Mật Khẩu</label>

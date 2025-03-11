@@ -23,15 +23,16 @@
 
             body {
                 width: 100%
+                    
             }
 
             #main {
-                background-color: #F3E5D8; /* Màu nền cho phần Dashboard */
+                background-color: #EEEEEE; /* Màu nền cho phần Dashboard */
                 padding: 0 40px;
             }
 
             .dropdown-menu {
-                background-color: #d7ccc8; /* Màu nền cho menu dropdown */
+                background-color: #EEEEEE; /* Màu nền cho menu dropdown */
                 border-radius: 8px;
                 box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
             }
@@ -41,7 +42,7 @@
             }
 
             .dropdown-item:hover {
-                background-color: #efebe9; /* Hiệu ứng hover */
+                background-color: #EEEEEE; /* Hiệu ứng hover */
             }
 
             h1 {
@@ -67,8 +68,8 @@
             .container {
 
                 width: 95%; /* Điều chỉnh chiều rộng để cả hai vừa trên một dòng */
-                padding: 20px;
-                background: #d7ccc8;
+                
+                background: #EEEEEE;
                 border-radius: 10px;
                 box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
             }
@@ -76,7 +77,7 @@
             canvas {
                 background: #efebe9;
                 border-radius: 8px;
-                padding: 10px;
+
                 width: 100%; /* Đảm bảo chart co giãn hợp lý */
                 height: 300px;
             }
@@ -97,7 +98,6 @@
                 padding: 12px 24px;
                 border: 2px solid #5d4037; /* Viền nâu đậm */
                 border-radius: 8px;
-                background-color: #d7ccc8; /* Đồng bộ với nền chung */
                 color: #212529; /* Màu chữ nâu */
                 font-size: 22px;
                 text-align: center;

@@ -240,6 +240,10 @@
         <servlet-name>EditVoucherServlet</servlet-name>
         <servlet-class>controller.EditVoucherServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditStaffServlet</servlet-name>
+        <servlet-class>controller.EditStaffServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>PetHotelServlet</servlet-name>
         <url-pattern>/pethotel</url-pattern>
@@ -471,6 +475,10 @@
     <servlet-mapping>
         <servlet-name>EditVoucherServlet</servlet-name>
         <url-pattern>/dashboard/admin/editvoucher</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditStaffServlet</servlet-name>
+        <url-pattern>/dashboard/admin/editstaff</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

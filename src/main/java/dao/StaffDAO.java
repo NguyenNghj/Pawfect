@@ -122,31 +122,51 @@ public class StaffDAO {
         }
     }
 
-    public boolean updateStaff(Staff staff) {
-        String query = "UPDATE Staffs SET role_name = ?, password = ?, full_name = ?, email = ?, phone = ?, "
-                + "address = ?, gender = ?, birth_date = ?, image = ?, is_active = ? WHERE staff_id = ?";
+ public boolean updateStaff(Staff staff) {
+    String query = "UPDATE Staffs SET role_name = ?, password = ?, full_name = ?, email = ?, phone = ?, "
+            + "address = ?, gender = ?, birth_date = ?, image = ?, is_active = ? WHERE staff_id = ?";
+    Connection conn = null;
+    PreparedStatement ps = null;
 
-        try {
-            conn = new DBContext().getConnection();
-            ps = conn.prepareStatement(query);
-            ps.setString(1, staff.getRoleName());
-            ps.setString(2, staff.getPassword());
-            ps.setString(3, staff.getFullName());
-            ps.setString(4, staff.getEmail());
-            ps.setString(5, staff.getPhone());
-            ps.setString(6, staff.getAddress());
-            ps.setString(7, staff.getGender());
+    try {
+        conn = new DBContext().getConnection();
+        ps = conn.prepareStatement(query);
+
+        ps.setString(1, staff.getRoleName());
+        ps.setString(2, hashPasswordMD5(staff.getPassword()));
+        ps.setString(3, staff.getFullName());
+        ps.setString(4, staff.getEmail());
+        ps.setString(5, staff.getPhone());
+        ps.setString(6, staff.getAddress());
+        ps.setString(7, staff.getGender());
+        
+        // Nếu birthDate là null, set null cho SQL
+        if (staff.getBirthDate() != null) {
             ps.setDate(8, staff.getBirthDate());
-            ps.setString(9, staff.getImage());
-            ps.setBoolean(10, staff.isActive());
-            ps.setInt(11, staff.getStaffId()); // Sửa lỗi
+        } else {
+            ps.setNull(8, java.sql.Types.DATE);
+        }
+        
+        ps.setString(9, staff.getImage());
+        ps.setBoolean(10, staff.isActive());
+        ps.setInt(11, staff.getStaffId());
 
-            return ps.executeUpdate() > 0;
+        int rowsAffected = ps.executeUpdate();
+        return rowsAffected > 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        System.out.println("Lỗi cập nhật nhân viên: " + e.getMessage());
+    } finally {
+        try {
+            if (ps != null) ps.close();
+            if (conn != null) conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
     }
+    return false;
+}
+
 
     public boolean deleteStaff(int staffId) {
         String query = "UPDATE Staffs SET is_active = 0 WHERE staff_id = ?";

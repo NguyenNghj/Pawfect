@@ -219,6 +219,9 @@
                                 </table>
                             </div>
                         </div>
+                         <nav class="navbar navbar-light d-flex gap-2" style="background-color: #EEEEEE;">
+                                <a href="customers" class="btn btn-primary">Danh Sách Khách Hàng</a>
+                            </nav>
 
                         <div class="col-4 pe-0 main-dashboard-table">
                             <div class="d-flex justify-content-around align-items-center main-dashboard-table-header">
