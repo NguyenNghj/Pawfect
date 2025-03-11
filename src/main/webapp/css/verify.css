@@ -7,14 +7,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : LENOVO
 */
 
- body {
-            font-family: 'Baloo 2', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f5ff;
-        }
+body {
+    font-family: 'Baloo 2', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwcHDQ0HBwcHBwcHBw0HBwcHBw8ICQcNFREWFhURExUYHSggGBolGxMTITEhMSkrLi4uFx8zODMsNygtLisBCgoKDQ0NDg0NDisZFRkrKy0tNy0rKzcrKystKysrKystKy0rKysrLSstKysrLSstLSsrNy0rKysrKy0rKysrK//AABEIAMIBAwMBIgACEQEDEQH/xAAYAAEBAQEBAAAAAAAAAAAAAAAAAQIDBP/EABcQAQEBAQAAAAAAAAAAAAAAAAABAhH/xAAYAQEBAQEBAAAAAAAAAAAAAAAAAQIFBP/EABURAQEAAAAAAAAAAAAAAAAAAAAB/9oADAMBAAIRAxEAPwBl2y5Zdcua9zcajMaiCqigAKKIoKAAAAAAqKCqigAAAAgqAiVRBlK0zRWKzW6zQY4jQDjl1y5ZdcqjcajMagKAgoCiiKCgAAAAAKAKqRQUAAAEABEVEEStVmis1it1mgwKA4ZdcuWXXLSNxqMxqIKAgoAoqKqKAAAAACgA0ACgAAAIqAIqAiVUqKzWK3WaDAoDz5dcueXTLSNxqMxqMigoAACooKIqgIAoigqxFBQAUAAAABBEqpVESqzUVKzWmagyAo8+XXLll0y1WXSNRmNMqqoAoAoqAiiCiiAKqLAUAFVFBRFAAQAQBKqUErNWoKjNaZqDICq82XXLjl1y1WXSNRmNRkaEUUVAFAAAUAAVWVEVUUFEUFVAFAARUQGaqUErNarKKiVazRUEFHmy6ZcsuuVrLpG4xGoitKyoKIoAAAAAAKqCo0rMUFVAFVFAAQAQBFQVKzVqIJWa1WaKyAo8mXXLjl1yrLrG45xuIrSoIKIoKIKKIAoAKAIqsqoqooKIoKgIAAIioKlSqiCVmrWaKyADyZdcuOXXKsusbjnluIrUVAFEUFEUABRRFAVFEFQBpWYqigICoAqCAAiKhRKCVmrWaKyIKPLl0y5ZdcjLrGoxG4itCKCiKCgAoigKiqAAKIoLFQEVUAUQABBQEASqzUGazVrFUQRRXky65csuuRHXLUYjcQaVIAoAKqKAqCiqgCiKAqKoKioiiAKCAAgoCUCs0tZtBKxWqxaCdE6A8+XXLjh1yDrG4xG4gsVIqCiKooigoigoiqCoKKACgCKIAogigIAlpazaBazaVm0EtYtW1m0E6M9FHHLtkER0y3ARWooAKACgAoARQUBRQABQBAAAAVEqiDNZBUZrNAGKxQBkAH//2Q==') no-repeat center center/cover;
+}
 
         .wrapper {
             background: white;

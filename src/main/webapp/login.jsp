@@ -35,12 +35,12 @@
     <body>
         <div class="container-fluid p-0">
             <div class="row g-0 login-container">
-                 <div class="col-md-6 illustration-side">
- 
-        <img src="img/login/img.png" 
-             alt="E-commerce illustration" class="img-fluid">
-  
-</div>
+                <div class="col-md-6 illustration-side">
+
+                    <img src="img/login/img.png" 
+                         alt="E-commerce illustration" class="img-container">
+
+                </div>
                 <div class="col-md-6 form-side position-relative">
                     <div class="login-form">
                         <h1 class="title">Pawfect - Đăng nhập</h1>
