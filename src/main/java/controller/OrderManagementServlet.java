@@ -19,7 +19,6 @@ import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import model.DiscountOrder;
 import model.Order;
 import model.OrderItem;
 import model.Product;
@@ -87,9 +86,6 @@ public class OrderManagementServlet extends HttpServlet {
                 case "search":
                     searchOrder(request, response);
                     break;
-                default:
-                    // listNhanVien(request, response);
-                    break;
             }
         } catch (ServletException | IOException | SQLException e) {
             throw new ServletException(e);
@@ -136,11 +132,11 @@ public class OrderManagementServlet extends HttpServlet {
             String updateStatus = request.getParameter("updateStatus").trim();
             String statusType = request.getParameter("statusType");
             String actionBack = request.getParameter("actionBack");
-            String reasonCancel = request.getParameter("reasonCancel").trim();
-//            System.out.println("reasonCancel: " + reasonCancel);
+//            String reasonCancel = request.getParameter("reasonCancel").trim();
+////            System.out.println("reasonCancel: " + reasonCancel);
 
             System.out.println("updateStatus: " + updateStatus);
-
+                      
             boolean update = false;
 
             // Neu duyet hoan thanh don hang thi add thoi gian hoan thanh don
@@ -188,6 +184,7 @@ public class OrderManagementServlet extends HttpServlet {
                 ProductDAO productDAO = new ProductDAO();
 
                 List<OrderItem> orderitems = OrderDAO.getOrderItemsByOrderId(orderId);
+                // Lap qua tung orderItem de thu hoi lai san pham 
                 for (OrderItem orderitem : orderitems) {
                     Product product = productDAO.getProductById(orderitem.getProductId());
                     product.setStock(product.getStock() + orderitem.getQuantity());

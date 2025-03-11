@@ -5,6 +5,7 @@
 package controller;
 
 import dao.CartDAO;
+import dao.CustomersDAO;
 import dao.DiscountOrderDAO;
 import dao.OrderDAO;
 import dao.ProductDAO;
@@ -23,6 +24,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import model.Customers;
 import model.DiscountOrder;
 import model.Order;
 import model.OrderItem;
@@ -138,6 +140,8 @@ public class OrderServlet extends HttpServlet {
             int voucherId = Integer.parseInt(request.getParameter("voucherId"));
 //            double shippingCost = Double.parseDouble(request.getParameter("shippingCost"));
 
+
+            // Kiem tra du lieu dau vao
             try {
                 if (email == null || email.isEmpty()) {
                     throw new IllegalArgumentException("error-data-email-empty");
@@ -186,14 +190,16 @@ public class OrderServlet extends HttpServlet {
                 status = "Chờ lấy hàng";
             }
 
+            Order order = new Order(customerId, paymentMethod_id, shippingMethod_id, name, phone, address, note, totalCartPrice + salePrice, status);
             int orderId = 0;
-            orderId = OrderDAO.insertOrder(customerId, paymentMethod_id, shippingMethod_id, name, phone, address, note, totalCartPrice + salePrice, status);
+            orderId = OrderDAO.insertOrder(order);
             // Tao don hang thanh cong
             if (orderId != 0) {
                 HttpSession session = request.getSession();
                 session.setAttribute("orderId", orderId);
                 System.out.println("Them don hang thanh cong.");
 
+                // Neu tim duoc voucher thi ap dung voucher
                 if (voucherId != 0) {
                     DiscountOrderDAO discountOrderDAO = new DiscountOrderDAO();
                     DiscountOrder discountOrder = new DiscountOrder(orderId, voucherId, totalCartPrice);
@@ -226,10 +232,17 @@ public class OrderServlet extends HttpServlet {
                 String emailContent = Email.renderJSPToString(request, response, "sendemail.jsp");
 
                 ExecutorService executor = Executors.newFixedThreadPool(10); // Tạo một ExecutorService với 10 luồng
+                
+                Customers customers;
+                // Lay thong tin email cua khach dat hang
+                customers = CustomersDAO.getCustomerById(customerId);
+                String customerEmail = customers.getEmail();
+                System.out.println("customerEmail: " + customerEmail);
 
+                // Gui email cho khach hang
                 executor.submit(() -> {
                     try {
-                        Email.sendEmail("vuquangduc1404@gmail.com", "Xác nhận đơn hàng", emailContent);
+                        Email.sendEmail(customerEmail, "Xác nhận đơn hàng", emailContent);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -271,6 +284,7 @@ public class OrderServlet extends HttpServlet {
 
             List<Order> orders = OrderDAO.getOrderByOrderId(orderId);
 
+            // Neu khach hang nhan "Yeu cau huy" (trang thai don hang la "Cho lay hang")
             if (confirmCancel.equals("Yêu cầu huỷ")) {
                 confirmCancel += "...";
                 boolean requestCancel = OrderDAO.requestCancelOrder(confirmCancel, reasonCancel, true, orderId);
@@ -303,6 +317,7 @@ public class OrderServlet extends HttpServlet {
                     System.out.println("Yeu cau huy don hang that bai!!");
                 }
 
+                // Neu khach hang nhan "Huy don" (trang thai don hang la "Cho xac nhan")
             } else {
 
                 boolean cancel = OrderDAO.cancelOrder(confirmCancel, reasonCancel, orderId);
@@ -352,11 +367,13 @@ public class OrderServlet extends HttpServlet {
 
         int orderId = Integer.parseInt(request.getParameter("orderId"));
 
+        // Lay du lieu orderItem cua don hang do
         List<OrderItem> orderitems = OrderDAO.getOrderItemsByOrderId(orderId);
         double basicPrice = 0;
         for (OrderItem orderitem : orderitems) {
             basicPrice += orderitem.getSubtotal();
         }
+        // Lay don hang cu the
         List<Order> orders = OrderDAO.getOrderByOrderId(orderId);
 
         request.setAttribute("basicPrice", basicPrice);
