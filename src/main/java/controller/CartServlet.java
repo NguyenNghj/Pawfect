@@ -233,18 +233,6 @@ public class CartServlet extends HttpServlet {
             int customerId = Integer.parseInt(request.getParameter("customerId"));
             // Lay yeu cau Tang hoac Giam so luong san pham
             String target = request.getParameter("target");
-//            int stock = Integer.parseInt(request.getParameter("stock"));
-//            int quantity = Integer.parseInt(request.getParameter("quantity"));
-//
-//            int quantityFromCart = CartDAO.getQuantityOfProduct(customerId, productId);
-//            if (quantityFromCart + quantity > stock) {
-//                json.put("status", "error");
-//                json.put("message", "Vượt quá tồn kho");
-//                json.put("stock", stock); // Trả về tồn kho để hiển thị thông báo phía client
-//                json.put("quantityFromCart", quantityFromCart);
-//                response.getWriter().write(json.toString());
-//                return;
-//            }
 
             // Tang so luong san pham
             if (target.equals("increase")) {

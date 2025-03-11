@@ -86,7 +86,8 @@ public class OrderDAO {
             + "LEFT JOIN PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
             + "LEFT JOIN ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
             + "LEFT JOIN DiscountOrders do ON o.order_id = do.order_id\n"
-            + "WHERE o.customer_id = ? AND o.status = ?";
+            + "WHERE o.customer_id = ? AND o.status = ?\n"
+            + "ORDER BY o.order_id DESC;";
 
     protected static String Get_All_Order_By_Status = "SELECT \n"
             + "    o.*, \n"
@@ -102,7 +103,8 @@ public class OrderDAO {
             + "LEFT JOIN PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
             + "LEFT JOIN ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
             + "LEFT JOIN DiscountOrders do ON o.order_id = do.order_id\n"
-            + "WHERE o.status = ?";
+            + "WHERE o.status = ?\n"
+            + "ORDER BY o.order_id DESC;";
 
     protected static String Get_All_Order = "SELECT \n"
             + "    o.*, \n"
@@ -117,7 +119,8 @@ public class OrderDAO {
             + "LEFT JOIN Staffs s ON o.staff_id = s.staff_id\n"
             + "LEFT JOIN PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
             + "LEFT JOIN ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
-            + "LEFT JOIN DiscountOrders do ON o.order_id = do.order_id";
+            + "LEFT JOIN DiscountOrders do ON o.order_id = do.order_id\n"
+            + "ORDER BY o.order_id DESC;";
 
     protected static String Get_Order_By_CustomerId = "SELECT \n"
             + "    o.*, \n"
@@ -126,14 +129,15 @@ public class OrderDAO {
             + "    sm.name AS shipping_method_name, \n"
             + "    sm.shipping_fee AS shipping_method_fee, \n"
             + "    c.full_name AS customer_name,\n"
-            + "	do.discount_amount\n"
+            + "    do.discount_amount\n"
             + "FROM Orders o\n"
             + "LEFT JOIN Customers c ON o.customer_id = c.customer_id\n"
             + "LEFT JOIN Staffs s ON o.staff_id = s.staff_id\n"
             + "LEFT JOIN PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
             + "LEFT JOIN ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
             + "LEFT JOIN DiscountOrders do ON o.order_id = do.order_id\n"
-            + "WHERE o.customer_id = ?";
+            + "WHERE o.customer_id = ?\n"
+            + "ORDER BY o.order_id DESC;";
 
     protected static String Get_Order_By_OrderId = "SELECT \n"
             + "    o.*, \n"
@@ -579,7 +583,7 @@ public class OrderDAO {
         return list;
     }
 
-    public static int insertOrder(int customerId, int paymentMethod_id, int shippingMethod_id, String recipient_name, String recipient_phone, String shipping_address, String delivery_notes, double total_amount, String status) throws SQLException {
+    public static int insertOrder(Order order) throws SQLException {
         boolean success = false;
         int orderId = 0;
         try {
@@ -588,15 +592,15 @@ public class OrderDAO {
             Con.setAutoCommit(false);
 
             PreparedStatement ps = Con.prepareStatement(Create_Order, Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, customerId);
-            ps.setInt(2, paymentMethod_id);
-            ps.setInt(3, shippingMethod_id);
-            ps.setString(4, recipient_name);
-            ps.setString(5, recipient_phone);
-            ps.setString(6, shipping_address);
-            ps.setString(7, delivery_notes);
-            ps.setDouble(8, total_amount);
-            ps.setString(9, status);
+            ps.setInt(1, order.getCustomerId());
+            ps.setInt(2, order.getPaymentMethodId());
+            ps.setInt(3, order.getShippingMethodId());
+            ps.setString(4, order.getName());
+            ps.setString(5, order.getPhone());
+            ps.setString(6, order.getAddress());
+            ps.setString(7, order.getNote());
+            ps.setDouble(8, order.getTotalAmount());
+            ps.setString(9, order.getStatus());
             success = ps.executeUpdate() > 0;
             if (!success) {
                 System.out.println("Loi khi insert data Order!!");
@@ -610,7 +614,7 @@ public class OrderDAO {
 
             ps = Con.prepareStatement(Create_Order_Item);
 
-            List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+            List<CartItem> cartItems = CartDAO.getCartByCustomerId(order.getCustomerId());
             for (CartItem cartItem : cartItems) {
                 ps.setInt(1, orderId);
                 ps.setInt(2, cartItem.getProductId());

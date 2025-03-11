@@ -192,7 +192,7 @@ public class FeedbackDAO {
             + "JOIN\n"
             + "    Products p ON f.product_id = p.product_id";
 
-    public static List<Feedback> searchOrder(String search) {
+    public static List<Feedback> searchFeedback(String search) {
         List<Feedback> list = new ArrayList<>();
         try {
             Con = new DBContext().getConnection();

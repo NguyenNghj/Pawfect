@@ -179,12 +179,7 @@
                                                     <span>Địa chỉ: ${o.address}</span>
                                                     <span></span>
                                                 </div>
-                                                <!-- <address class="text-secondary">
-                                                    Jane Doe<br>
-                                                    1455 Market Street,<br>
-                                                    San Francisco, CA 10977<br>
-                                                    United States
-                                                </address> -->
+              
                                             </div>
                                             <div class="col-md-5">
                                                 <h6 style="margin-bottom: 3px;">Phương thức giao hàng</h6>
@@ -220,7 +215,6 @@
                                         <div class="order-item">
                                             <c:forEach items="${orderitems}" var="oi">
                                                 <div class="mb-4">
-                                                    <!-- <div class="text-secondary small mb-2">PACKAGE 1 OF 2</div> -->
                                                     <div class="d-flex">
                                                         <div class="position-relative">
                                                             <img src="./img/products/${oi.productImage}" alt="Product" class="rounded me-3" width="80" height="80">
@@ -230,7 +224,11 @@
                                                             </span>
                                                         </div>
                                                         <div class="flex-grow-1">
-                                                            <div class="fw-bold">${oi.productName}</div>
+                                                            <div class="fw-bold">
+                                                                <a href="product?id=${oi.productId}&rating=tc" style="text-decoration: none">
+                                                                    ${oi.productName}
+                                                                </a>                           
+                                                            </div>
                                                             <div class="text-secondary">
                                                                 <f:formatNumber value="${oi.productPrice}" pattern="#,##0" />đ                                                               
                                                             </div>
