@@ -28,17 +28,17 @@ body {
 }
 .login-container {
     height: 100vh;
-    max-width: 1400px;
-    margin: 0 auto;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
 }
 
 .illustration-side {
-    background-color: #e8f0fe;
+    background: url(../img/login/anhcho.jpg) no-repeat center center;
+    background-size: cover;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
 
 .illustration-side img {
     max-width: 100%;
