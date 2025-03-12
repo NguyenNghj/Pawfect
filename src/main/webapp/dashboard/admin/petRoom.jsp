@@ -160,7 +160,7 @@
                                             %>
                                             <td style="text-align: center;"><%= formatter.format(room.getPricePerNight())%></td>
                                             <td><%= room.getDescription()%></td>
-                                            <td style="width: 8%; text-align: center;"><%= room.getQuantity()%></td>
+                                            <td style="width: 8%; text-align: center;"><%= room.getAvailableQuantity()%>/<%= room.getQuantity()%></td>
                                             <td style="width: 10%;">
                                                 <span style="font-weight: bold; color: white; padding: 5px; color: <%= room.getStatus().equals("Còn phòng") ? "green" : "red"%>;">
                                                     <%= room.getStatus()%>
