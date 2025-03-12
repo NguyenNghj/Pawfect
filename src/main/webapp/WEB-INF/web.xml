@@ -256,6 +256,10 @@
         <servlet-name>StatisticsServlet</servlet-name>
         <servlet-class>controller.StatisticsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewCustomersForStaffServlet</servlet-name>
+        <servlet-class>controller.ViewCustomersForStaffServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>PetHotelServlet</servlet-name>
         <url-pattern>/pethotel</url-pattern>
@@ -495,6 +499,10 @@
     <servlet-mapping>
         <servlet-name>StatisticsServlet</servlet-name>
         <url-pattern>/dashboard/admin/statistics</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewCustomersForStaffServlet</servlet-name>
+        <url-pattern>/dashboard/staff/viewcustomersforStaff</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

@@ -28,7 +28,7 @@
             </a>
         </nav>
         <nav class="navbar bg-body-tertiary" id="customer">                                            
-            <a class="navbar-brand d-flex align-items-center gap-3" href="">
+            <a class="navbar-brand d-flex align-items-center gap-3" href="viewcustomersforStaff">
                 <i class="fa-solid fa-box fa-lg"></i>
                 <span>Khách hàng</span>
             </a>                          

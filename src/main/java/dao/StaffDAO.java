@@ -181,6 +181,37 @@ public class StaffDAO {
         }
         return false;
     }
+     public List<Staff> searchStaffs(String keyword) {
+    List<Staff> staffList = new ArrayList<>();
+    String query = "SELECT * FROM Staffs WHERE LOWER(full_name) LIKE LOWER(N'%' + ? + '%') AND is_active = 1";
+
+    try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(query)) {
+        
+        String searchPattern = "%" + keyword + "%";
+        ps.setString(1, searchPattern);
+
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            staffList.add(new Staff(
+                    rs.getInt("staff_id"),
+                    rs.getString("role_name"),
+                    rs.getString("password"),
+                    rs.getString("full_name"),
+                    rs.getString("email"),
+                    rs.getString("phone"),
+                    rs.getString("address"),
+                    rs.getString("gender"),
+                    rs.getDate("birth_date"),
+                    rs.getString("image"),
+                    rs.getBoolean("is_active")
+            ));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return staffList;
+}
     /**
      * Hashes a password using MD5 algorithm
      *
@@ -205,4 +236,6 @@ public class StaffDAO {
         }
         return hashedPassword;
     }
+  
+
 }
