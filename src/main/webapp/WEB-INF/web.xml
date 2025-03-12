@@ -8,7 +8,7 @@
         <filter-name>DashboardFillter</filter-name>
         <url-pattern>/dashboard/*</url-pattern>
     </filter-mapping>
-     <filter>
+    <filter>
         <filter-name>CustomerFillter</filter-name>
         <filter-class>Fillter.CustomerFillter</filter-class>
     </filter>
@@ -141,10 +141,6 @@
         <servlet-class>controller.PetHotelDetailServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>DashboardServlet</servlet-name>
-        <servlet-class>controller.DashboardServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>EditProductServlet</servlet-name>
         <servlet-class>controller.EditProductServlet</servlet-class>
     </servlet>
@@ -255,6 +251,10 @@
     <servlet>
         <servlet-name>RegisterGoogle</servlet-name>
         <servlet-class>controller.RegisterGoogle</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>StatisticsServlet</servlet-name>
+        <servlet-class>controller.StatisticsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>PetHotelServlet</servlet-name>
@@ -381,10 +381,6 @@
         <url-pattern>/deletepet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>DashboardServlet</servlet-name>
-        <url-pattern>/dashboard/admin/dashboard</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>EditProductServlet</servlet-name>
         <url-pattern>/dashboard/admin/editproduct</url-pattern>
     </servlet-mapping>
@@ -495,6 +491,10 @@
     <servlet-mapping>
         <servlet-name>RegisterGoogle</servlet-name>
         <url-pattern>/registergoogle</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StatisticsServlet</servlet-name>
+        <url-pattern>/dashboard/admin/statistics</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
