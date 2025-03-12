@@ -86,54 +86,56 @@
                         </div>
                     </div>
 
-                    <div class="row mt-2">
+                    <div class="row mt-2 bg-white p-3 d-flex align-items-center justify-content-center" 
+                         style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item" style="color: #6c757d;">Dashboard</li>
-                                <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Đơn hàng</li>
+                            <ol class="breadcrumb mb-0" style ="font-weight: bold;">
+                                <li class="breadcrumb-item">Dashboard</li>
+                                <li class="breadcrumb-item">Nhân viên</li>
+                                <li class="breadcrumb-item active" aria-current="page">Quản lí đơn hàng</li>
                             </ol>
                         </nav>
+                    </div>        
+
+                    <div class="row d-flex align-items-center" style="margin-top: 30px;">
+                        <div class="col-md-6">
+                            <form action="ordermanagement?&action=search&status=${param.status}" method="post" class="d-flex">
+                                <label for="inputName" class="col-sm-2 col-form-label">Tìm kiếm:</label>
+                                <input name="searchContent" type="search" class="form-control" id="inputName" placeholder="Tên khách hàng...">
+                            </form>
+                        </div>
                     </div>
 
-                    <form action="ordermanagement?&action=search&status=${param.status}" method="post">
-                        <div class="row" style="background-color: white; padding: 16px; border-radius: 5px; margin-top: 30px; margin-bottom: 20px">
-                            <label for="inputEmail3" class="col-sm-2 col-form-label">Tìm kiếm theo tên:</label>
-                            <div class="col-sm-4">
-                                <input name="searchContent" type="search" class="form-control" id="inputEmail3" placeholder="Khách hàng">
-                            </div>
-                        </div>
-                    </form>
 
-                    <div class="row" style="margin-bottom: 50px;">
+                    <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <div class="main-dashboard-table">
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
-                                 style="background-color: #007BFF; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
+                                 style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                               
                                 <i class="fa-solid fa-truck-ramp-box fa-lg"></i>
                                 <h4 class="mb-0">Danh sách đơn hàng</h4>
                             </div>
                             <div style="padding: 15px 15px 25px 15px;">
                                 <!-- Order Tabs -->
-                                <ul class="nav nav-tabs mb-4">
-                                    <li class="nav-item">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item" style="font-weight: bold; border-width: 2px;">
                                         <a class="nav-link <c:if test="${orderStatus == 'tc'}">active</c:if>" href="ordermanagement?&action=view&status=tc"">Tất cả</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item" style="font-weight: bold; border-width: 2px;">
                                             <a class="nav-link <c:if test="${orderStatus == 'cxn'}">active</c:if>" href="ordermanagement?&action=view&status=cxn">Chờ xác nhận</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item" style="font-weight: bold; border-width: 2px;">
                                             <a class="nav-link <c:if test="${orderStatus == 'clh'}">active</c:if>" href="ordermanagement?&action=view&status=clh">Chờ lấy hàng</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item" style="font-weight: bold; border-width: 2px;">
                                             <a class="nav-link <c:if test="${orderStatus == 'cgh'}">active</c:if>" href="ordermanagement?&action=view&status=cgh">Chờ giao hàng</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item" style="font-weight: bold; border-width: 2px;">
                                             <a class="nav-link <c:if test="${orderStatus == 'ht'}">active</c:if>" href="ordermanagement?&action=view&status=ht">Hoàn thành</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item" style="font-weight: bold; border-width: 2px;">
                                             <a class="nav-link <c:if test="${orderStatus == 'ych'}">active</c:if>" href="ordermanagement?&action=view&status=ych">Yêu cầu huỷ</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item" style="font-weight: bold; border-width: 2px;">
                                             <a class="nav-link <c:if test="${orderStatus == 'dh'}">active</c:if>" href="ordermanagement?&action=view&status=dh">Đã huỷ</a>
                                         </li>
                                     </ul>
@@ -510,18 +512,17 @@
                             }
                         </script>
                     </div>          
-
                 </div>
-
             </div>
         </div>
+    </div>
 
-        <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <script>
+    <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
 
                             function approve(event) {
                                 let button = event.currentTarget; // Lấy nút được nhấn
@@ -684,6 +685,6 @@
 
                             });
 
-        </script>
-    </body>
+    </script>
+</body>
 </html>
