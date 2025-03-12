@@ -75,7 +75,7 @@
 
 
                                     <div class="buttons">
-                                        <button class="add-to-cart add-to-cart-nut nutnhan" data-product-id="${product.productId}" data-product-name="${product.productName}">
+                                        <button class="add-to-cart add-to-cart-nut nutnhan" data-product-id="${product.productId}" data-product-name="${product.productName}" data-product-stock="${product.stock}">
                                             <i class='bx bx-cart-add add-to-cart-logo'></i>
                                             THÊM VÀO GIỎ HÀNG
                                         </button>
@@ -293,8 +293,9 @@
                                                 <fmt:formatNumber value="${product.productPrice}" pattern="#,##0" />đ
                                             </p>
                                             <a href="#">
-                                                <button class="add-to-cart" data-product-id="${product.productId}" data-product-name="${product.productName}">
+                                                <button class="add-to-cart" data-product-id="${product.productId}" data-product-name="${product.productName}" data-product-stock="${product.stock}">
                                                     <i class="cart-icon"></i>
+                                                    <input type="hidden" class="input-number" value="1">
                                                 </button>
                                             </a>
                                         </div>
@@ -452,9 +453,10 @@
                 return;
             }
 
-            const stock = ${product.stock};
+            const stock = $(this).data('product-stock');
             const quantityToAdd = $('.input-number').val();
-            var productId = $(this).data('product-id');
+            console.log("quantityToAdd:", quantityToAdd);
+            let productId = $(this).data('product-id');
             console.log("productId:", productId);
             var productName = $(this).data('product-name');
             console.log("productName:", productName);
@@ -541,7 +543,7 @@
 
             const stock = ${product.stock};
             const quantityToAdd = $('.input-number').val();
-            var productId = $(this).data('product-id');
+            let productId = $(this).data('product-id');
             console.log("productId:", productId);
             var action = "add";
             var customerId = customerCookie; // ID của khách hàng (cần lấy từ session hoặc cookie)

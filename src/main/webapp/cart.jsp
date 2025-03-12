@@ -42,7 +42,7 @@
                             <!-- Nếu giỏ hàng trống -->
                             <div class="text-center" style="background-color: #fff3cd; padding: 10px; border-radius: 5px; border-radius: 5px; margin-bottom: 200px;">
                                 <span style="font-size: 18px; color: #856404;">
-                                    Không có sản phẩm nào. Quay lại <a href="products">cửa hàng</a> để tiếp tục mua sắm.
+                                    Không có sản phẩm nào. Quay lại <a href="products" style="color: #856404; font-weight: bold;">cửa hàng</a> để tiếp tục mua sắm.
                                 </span>
                             </div>
                         </c:when>
@@ -171,11 +171,13 @@
 
                                 // Kiểm tra xem giỏ hàng có còn sản phẩm nào không
                                 if ($(".item-product").length === 0) { // Nếu không còn sản phẩm nào                              
-                                    $("#cart-main").html("<div class='text-center' style='background-color: #fff3cd; padding: 10px; border-radius: 5px; margin-bottom: 200px;'>" +
-                                            "<span style='font-size: 18px; color: #856404;'>" +
-                                            "Không có sản phẩm nào. Quay lại cửa hàng để tiếp tục mua sắm." +
-                                            "</span>" +
-                                            "</div>");
+                                    $("#cart-main").html(`
+                                    <div class="text-center" style="background-color: #fff3cd; padding: 10px; border-radius: 5px; margin-bottom: 200px;">
+                                        <span style="font-size: 18px; color: #856404;">
+                                            Không có sản phẩm nào. Quay lại <a href="products" style="color: #856404; font-weight: bold;">cửa hàng</a> để tiếp tục mua sắm.
+                                        </span>
+                                    </div>
+                                `);
                                     console.log("Giỏ hàng trống!");
                                 }
 
@@ -229,7 +231,7 @@
                     success: function (response) {
                         // Cap nhat tong tien gio hang
                         $("#total-price").text(formatNumber(response.totalCartPrice));
-                        
+
                         if (response.removed) {
                             // Xoa san pham khoi gio hang neu quantity = 0
                             $("#item-product-" + productId).remove();
@@ -242,11 +244,13 @@
 
                             // Kiểm tra xem giỏ hàng có còn sản phẩm nào không
                             if ($(".item-product").length === 0) { // Nếu không còn sản phẩm nào                              
-                                $("#cart-main").html("<div class='text-center' style='background-color: #fff3cd; padding: 10px; border-radius: 5px; margin-bottom: 200px;'>" +
-                                        "<span style='font-size: 18px; color: #856404;'>" +
-                                        "Không có sản phẩm nào. Quay lại cửa hàng để tiếp tục mua sắm." +
-                                        "</span>" +
-                                        "</div>");
+                                $("#cart-main").html(`
+                                    <div class="text-center" style="background-color: #fff3cd; padding: 10px; border-radius: 5px; margin-bottom: 200px;">
+                                        <span style="font-size: 18px; color: #856404;">
+                                            Không có sản phẩm nào. Quay lại <a href="products" style="color: #856404; font-weight: bold;">cửa hàng</a> để tiếp tục mua sắm.
+                                        </span>
+                                    </div>
+                                `);
                                 console.log("Giỏ hàng trống!");
                             }
                         } else {

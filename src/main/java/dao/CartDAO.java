@@ -129,14 +129,14 @@ public class CartDAO {
         return list;
     }
 
-    public static boolean addToCart(int customerId, int productId, int quantity) {
+    public static boolean addToCart(CartItem cart) {
         boolean rs = false;
         try {
             Con = new DBContext().getConnection();
             PreparedStatement ps = Con.prepareStatement(Add_To_Cart);
-            ps.setInt(1, customerId);
-            ps.setInt(2, productId);
-            ps.setInt(3, quantity);
+            ps.setInt(1, cart.getCustomerId());
+            ps.setInt(2, cart.getProductId());
+            ps.setInt(3, cart.getQuantity());
             rs = ps.executeUpdate() > 0;
             ps.close();
         } catch (SQLException e) {
@@ -315,14 +315,14 @@ public class CartDAO {
         return rs;
     }
 
-    public static boolean increaseProductFromCart(int quantity, int productId, int customerId) {
+    public static boolean increaseProductFromCart(CartItem cart) {
         boolean rs = false;
         try {
             Con = new DBContext().getConnection();
             PreparedStatement ps = Con.prepareStatement(Increase_Quantity);
-            ps.setInt(1, quantity);
-            ps.setInt(2, customerId);
-            ps.setInt(3, productId);
+            ps.setInt(1, cart.getQuantity());
+            ps.setInt(2, cart.getCustomerId());
+            ps.setInt(3, cart.getProductId());
             rs = ps.executeUpdate() > 0;
             ps.close();
         } catch (SQLException e) {
