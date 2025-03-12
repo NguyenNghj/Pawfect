@@ -6,6 +6,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@include file="./components/header.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,7 +19,7 @@
     <body>
         <div class="container py-4">
             <!-- Breadcrumb -->
-            <div class="row mt-2 bg-white p-3 mb-3 d-flex align-items-center justify-content-center" 
+            <div class="row mt-2 bg-white p-3 mb-4 d-flex align-items-center justify-content-center" 
                  style="border-radius: 20px; height: 60px;">
                 <nav padding: 0 5px;" aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0" style ="font-weight: bold;">
@@ -197,7 +198,7 @@
                         <!-- Thông tin cá nhân -->
                         <a href="profile" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-regular fa-user fa-lg" style="color: #0062ad;"></i>
-                            <span style="color: #1c49c2;"><b>Thông tin cá nhân</b></span>
+                            <span style="color: #D3A376;"><b>Thông tin cá nhân</b></span>
                         </a>
                         <!-- Thú cưng của tôi -->
                         <a href="viewpet" class="list-group-item list-group-item-action d-flex align-items-center gap-3">

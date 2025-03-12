@@ -4,6 +4,7 @@
     Author     : Vu Quang Duc - CE181221
 --%>
 
+<%@include file="./components/header.jsp" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -140,7 +141,7 @@
                         <!-- Đổi mật khẩu -->
                         <a href="changepassword" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-solid fa-key fa-lg" style="color: #eabd1a;"></i>
-                            <span style="color: #1c49c2;"><b>Đổi mật khẩu</b></span>
+                            <span style="color: #D3A376;"><b>Đổi mật khẩu</b></span>
                         </a>
                         <!-- Đăng xuất -->
                         <a href="logout" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
