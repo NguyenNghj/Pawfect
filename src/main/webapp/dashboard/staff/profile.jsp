@@ -20,7 +20,7 @@
 
                 <!-- SIDEBAR -->
                 <jsp:include page="sidebar.jsp"/>
-                                <%
+                <%
                     Cookie[] cookies = request.getCookies();
                     String staffRole = "";
                     String staffName = "";
@@ -83,15 +83,16 @@
                         </div>
                     </div>
 
-                    <div class="row mt-2">
+                    <div class="row mt-2 bg-white p-3 d-flex align-items-center justify-content-center" 
+                         style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item" style="color: #6c757d;">Dashboard</li>
-                                <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Hồ sơ</li>
+                            <ol class="breadcrumb mb-0" style ="font-weight: bold;">
+                                <li class="breadcrumb-item">Dashboard</li>
+                                <li class="breadcrumb-item">Nhân viên</li>
+                                <li class="breadcrumb-item active" aria-current="page">Hồ sơ người dùng</li>
                             </ol>
                         </nav>
-                    </div>                    
+                    </div>                     
 
                     <div class="row mt-3 align-items-center" style="background-color: white; padding: 20px; border-radius: 7px;">
                         <div class="col-4">
@@ -112,7 +113,7 @@
                                             session.removeAttribute("messageType");
                                         }
                                     %>
-                                    <button type="button" class="btn btn-link text-decoration-none" data-bs-toggle="modal" data-bs-target="#changePassModal">
+                                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#changePassModal">
                                         Đổi mật khẩu
                                     </button>                                   
                                 </div>
