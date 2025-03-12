@@ -116,7 +116,7 @@
                         <div class="main-dashboard-table">
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
                                  style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
-                                <i class="fa-solid fa-boxes-stacked fa-lg"></i>
+                                <i class="fa-solid fa-ticket"></i>
                                 <h4 class="mb-0">Danh sách mã giảm giá</h4>
                             </div>
                             <div style="padding: 15px 15px 25px 15px;">

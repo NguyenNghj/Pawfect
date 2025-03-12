@@ -33,6 +33,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     padding: 35px 0 !important;
 }
 
+.logout-container {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+}
+
 .profile-img {
     width: 46px;
     height: 46px;
@@ -239,7 +249,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
 
 .nav-tabs .nav-link.active {
     font-weight: bold;
-    color: #FFF2DF;
+    color: #D3A376;
 }
 
 .bodycolor-name-address-total {
@@ -316,9 +326,10 @@ body, h1, h2, h3, h4, h5, h6, p, a, span, button, .breadcrumb-item, .navbar-bran
     border-color: #FFE0B2;
 }
 
-.btn-danger{
+.dangxuat{
     width: 200px;
 }
+
 /* Định dạng chung */
 body {
     font-family: Arial, sans-serif;
@@ -333,8 +344,8 @@ body {
     margin: 10px 0;
     border-radius: 12px; /* Bo góc mềm mại hơn */
     border: 2px solid #d7ccc8; /* Viền màu nhẹ */
-    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.15), 
-                -4px -4px 12px rgba(255, 255, 255, 0.7); /* Hiệu ứng bóng nổi */
+    box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.15),
+        -4px -4px 12px rgba(255, 255, 255, 0.7); /* Hiệu ứng bóng nổi */
 }
 
 
@@ -460,7 +471,7 @@ canvas {
     color: #333;
     font-size: 12px; /* Thu nhỏ chữ */
     font-weight: normal; /* Không quá đậm */
-    
+
 }
 .chart-container {
     display: flex;

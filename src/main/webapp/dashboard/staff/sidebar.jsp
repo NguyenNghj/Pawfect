@@ -66,7 +66,7 @@
         </nav>
 
         <div class="row logout-container">
-            <button type="button" class="btn btn-danger dangxuat" onclick="window.location.href = 'logoutstaff'">Đăng xuất</button>
+            <button type="button" class="btn btn btn-dark dangxuat" onclick="window.location.href = 'logoutstaff'">Đăng xuất</button>
         </div>
 
 
