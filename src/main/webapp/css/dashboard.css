@@ -17,7 +17,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     margin-left: 250px; /* Đẩy nội dung sang phải để không bị che */
     padding: 20px;
     width: calc(100vw - 250px); /* Giữ nội dung vừa với phần còn lại */
-     height: 100vh;
+    height: 100vh;
 }
 .sidebar {
     background: #8C6E63;
@@ -27,6 +27,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     left: 0;
     width: 250px;
     z-index: 1000; /* Đảm bảo sidebar không bị che */
+}
+
+.logout-container {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .sidebar-brandName {
@@ -239,7 +247,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
 
 .nav-tabs .nav-link.active {
     font-weight: bold;
-    color: #FFF2DF;
+    color: #D3A376;
 }
 
 .bodycolor-name-address-total {
@@ -316,6 +324,6 @@ body, h1, h2, h3, h4, h5, h6, p, a, span, button, .breadcrumb-item, .navbar-bran
     border-color: #FFE0B2;
 }
 
-.btn-danger{
+.dangxuat{
     width: 200px;
 }

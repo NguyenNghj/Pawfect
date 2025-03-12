@@ -19,64 +19,8 @@
             <div class="row">
 
                 <!-- SIDEBAR -->
-                <div class="col-2" id="sidebar">
-                    <div class="row pt-4 sidebar-brandName">
-                        <div class="col d-flex justify-content-center align-items-center gap-3">
-                            <i class="fa-solid fa-paw fa-beat" style="font-size: 36px;"></i>
-                            <span>
-                                <h3 style="margin: 0;">PetCare</h3>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="row">                  
-                        <nav class="navbar bg-body-tertiary">                                    
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="dashboard.jsp">
-                                <i class="fa-solid fa-chart-line fa-lg"></i> 
-                                Dashboard
-                            </a>
-                        </nav>
-                        <nav class="navbar bg-body-tertiary">
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="ordermanagement?&action=view&status=tc">
-                                <i class="fa-solid fa-truck-ramp-box fa-lg"></i>
-                                <span>Đơn hàng</span>
-                            </a>
-                        </nav>  
-                        <nav class="navbar bg-body-tertiary">
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="pethotelbooking">
-                                <i class="fa-solid fa-building-circle-check fa-lg"></i>
-                                <span>Khách sạn thú cưng</span>
-                            </a>
-                        </nav>                  
-                        <nav class="navbar bg-body-tertiary">
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="feedbackmanagement?&action=view&status=0" >
-                                <i class="fa-solid fa-comment fa-lg"></i>
-                                <span>Product Feedbacks</span>
-                            </a>
-                        </nav>                  
-                    </div>
-
-                    <div class="row">
-                        <hr style="margin: 10px 0;">
-                    </div>
-
-                    <div class="row">
-                        <nav class="navbar bg-body-tertiary active">                                   
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="staffprofile" style="color: white; pointer-events: none;">
-                                <i class="fa-solid fa-address-book fa-lg"></i>   
-                                <span>Hồ sơ</span>
-                            </a>                          
-                        </nav>
-                        <nav class="navbar bg-body-tertiary">                                              
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="logoutstaff">
-                                <i class="fa-solid fa-right-from-bracket fa-lg"></i>
-                                <span>Đăng xuất</span>
-                            </a>
-                        </nav>
-                    </div>
-
-                </div>
-                <%
+                <jsp:include page="sidebar.jsp"/>
+                                <%
                     Cookie[] cookies = request.getCookies();
                     String staffRole = "";
                     String staffName = "";

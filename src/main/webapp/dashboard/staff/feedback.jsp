@@ -23,63 +23,7 @@
             <div class="row">
 
                 <!-- SIDEBAR -->
-                <div class="col-2" id="sidebar">
-                    <div class="row pt-4 sidebar-brandName">
-                        <div class="col d-flex justify-content-center align-items-center gap-3">
-                            <i class="fa-solid fa-paw fa-beat" style="font-size: 36px;"></i>
-                            <span>
-                                <h3 style="margin: 0;">PetCare</h3>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="row">                  
-                        <nav class="navbar bg-body-tertiary">                                    
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="dashboard.jsp">
-                                <i class="fa-solid fa-chart-line fa-lg"></i> 
-                                Dashboard
-                            </a>
-                        </nav>
-                        <nav class="navbar bg-body-tertiary">
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="ordermanagement?&action=view&status=tc">
-                                <i class="fa-solid fa-truck-ramp-box fa-lg"></i>
-                                <span>Đơn hàng</span>
-                            </a>
-                        </nav>  
-                        <nav class="navbar bg-body-tertiary">
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="pethotelbooking">
-                                <i class="fa-solid fa-building-circle-check fa-lg"></i>
-                                <span>Khách sạn thú cưng</span>
-                            </a>
-                        </nav>                  
-                        <nav class="navbar bg-body-tertiary active">
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="feedbackmanagement?&action=view&status=0" style="color: white; pointer-events: none;">
-                                <i class="fa-solid fa-comment fa-lg"></i>
-                                <span>Phản hồi sản phẩm</span>
-                            </a>
-                        </nav>                  
-                    </div>
-
-                    <div class="row">
-                        <hr style="margin: 10px 0;">
-                    </div>
-
-                    <div class="row">
-                        <nav class="navbar bg-body-tertiary">                                   
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="profile.jsp">
-                                <i class="fa-solid fa-address-book fa-lg"></i>   
-                                <span>Hồ sơ</span>
-                            </a>                          
-                        </nav>
-                        <nav class="navbar bg-body-tertiary">                                              
-                            <a class="navbar-brand d-flex align-items-center gap-3" href="#">
-                                <i class="fa-solid fa-right-from-bracket fa-lg"></i>
-                                <span>Đăng xuất</span>
-                            </a>
-                        </nav>
-                    </div>
-
-                </div>
+                <jsp:include page="sidebar.jsp"/>
 
                 <%
                     Cookie[] cookies = request.getCookies();
@@ -143,239 +87,242 @@
                         </div>
                     </div>
 
-                    <div class="row mt-2">
+                    <div class="row mt-2 bg-white p-3 d-flex align-items-center justify-content-center" 
+                         style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item" style="color: #6c757d;">Dashboard</li>
-                                <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                            <ol class="breadcrumb mb-0" style ="font-weight: bold;">
+                                <li class="breadcrumb-item">Dashboard</li>
+                                <li class="breadcrumb-item">Nhân viên</li>
                                 <li class="breadcrumb-item active" aria-current="page">Phản hồi sản phẩm</li>
                             </ol>
                         </nav>
-                    </div>   
+                    </div>  
 
-                    <form action="feedbackmanagement?&action=search&status=${param.status}" method="post">
-                        <div class="row" style="background-color: white; padding: 16px; border-radius: 5px; margin-top: 30px; margin-bottom: 20px">
-                            <label for="inputEmail3" class="col-sm-2 col-form-label">Tìm kiếm theo tên:</label>
-                            <div class="col-sm-4">
-                                <input name="searchContent" type="search" class="form-control" id="inputEmail3" placeholder="Sản phẩm hoặc khách hàng">
-                            </div>
+                    <div class="row d-flex align-items-center" style="margin-top: 30px;">
+                        <div class="col-md-6">
+                            <form action="feedbackmanagement?&action=search&status=${param.status}" method="post" class="d-flex">
+                                <label for="inputName" class="col-sm-2 col-form-label">Tìm kiếm:</label>
+                                <input name="searchContent" type="search" class="form-control" id="inputName" placeholder="Tên sản phẩm hoặc khách hàng...">
+                            </form>
                         </div>
-                    </form>
+                    </div>
 
-                    <div class="row" style="margin-bottom: 50px;">
+                    <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <div class="main-dashboard-table">
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
-                                 style="background-color: #007BFF; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
+                                 style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                       
                                 <i class="fa-solid fa-comments fa-lg"></i>
                                 <h4 class="mb-0">Danh sách phản hồi</h4>
                             </div>
                             <div style="padding: 15px 15px 25px 15px;">
                                 <!-- Order Tabs -->
-                                <ul class="nav nav-tabs mb-4">
-                                    <li class="nav-item">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item" style="font-weight: bold; border-width: 2px;">
                                         <a class="nav-link <c:if test="${feedbackStatus == '0'}">active</c:if>" href="feedbackmanagement?&action=view&status=0"">Tất cả</a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item" style="font-weight: bold; border-width: 2px;">
                                             <a class="nav-link <c:if test="${feedbackStatus == '5'}">active</c:if>" href="feedbackmanagement?&action=view&status=5">5 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item" style="font-weight: bold; border-width: 2px;">
                                             <a class="nav-link <c:if test="${feedbackStatus == '4'}">active</c:if>" href="feedbackmanagement?&action=view&status=4">4 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item" style="font-weight: bold; border-width: 2px;">
                                             <a class="nav-link <c:if test="${feedbackStatus == '3'}">active</c:if>" href="feedbackmanagement?&action=view&status=3">3 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item" style="font-weight: bold; border-width: 2px;">
                                             <a class="nav-link <c:if test="${feedbackStatus == '2'}">active</c:if>" href="feedbackmanagement?&action=view&status=2">2 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></a>
                                         </li>
-                                        <li class="nav-item">
+                                        <li class="nav-item" style="font-weight: bold; border-width: 2px;">
                                             <a class="nav-link <c:if test="${feedbackStatus == '1'}">active</c:if>" href="feedbackmanagement?&action=view&status=1">1 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></a>
                                         </li>
                                     </ul>
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" style="width: 5%;">Id</th>
-                                                <th scope="col" style="width: 17%;">Sản phẩm</th>
-                                                <th scope="col" style="width: 13%;">Khách hàng</th>
-                                                <th scope="col" style="width: 11%;">Đánh giá</th>
-                                                <th scope="col">Nhận xét</th>     
-                                                <th scope="col" style="width: 8%;">Phản hồi</th>  
-                                                <th scope="col" style="width: 9%;">Trạng thái</th>
-                                                <th scope="col" style="width: 17%;">Hành động</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        <c:set var="itemsPerPage" value="10" />
-                                        <c:set var="totalFeedbacks" value="${fn:length(feedbacks)}" />
-                                        <c:set var="totalPages" value="${(totalFeedbacks + itemsPerPage - 1) / itemsPerPage}"/>
-
-                                        <!-- Ensure currentPage is set correctly -->
-                                        <c:set var="currentPage">
-                                            <c:choose>
-                                                <c:when test="${not empty param.page}">
-                                                    ${param.page}
-                                                </c:when>
-                                                <c:otherwise>1</c:otherwise>
-                                            </c:choose>
-                                        </c:set>
-
-                                        <c:set var="start" value="${(currentPage - 1) * itemsPerPage}" />
-                                        <c:set var="end" value="${start + itemsPerPage}" />
-
-                                        <c:forEach items="${feedbacks}" var="f" varStatus="loop">
-                                            <c:if test="${loop.index >= start and loop.index < end}">
+                                    <div style="padding: 15px 15px 25px 15px;">
+                                        <table class="table">
+                                            <thead>
                                                 <tr>
-                                                    <th scope="row">#${f.feedbackId}</th>
-                                                    <td>${f.productName}</td>
-                                                    <td>${f.customerName}</td>
-                                                    <td>
-                                                        <c:forEach var="i" begin="1" end="5">
+                                                    <th scope="col" style="width: 5%;">Id</th>
+                                                    <th scope="col" style="width: 17%;">Sản phẩm</th>
+                                                    <th scope="col" style="width: 13%;">Khách hàng</th>
+                                                    <th scope="col" style="width: 11%;">Đánh giá</th>
+                                                    <th scope="col">Nhận xét</th>     
+                                                    <th scope="col" style="width: 8%;">Phản hồi</th>  
+                                                    <th scope="col" style="width: 9%;">Trạng thái</th>
+                                                    <th scope="col" style="width: 17%;">Hành động</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            <c:set var="itemsPerPage" value="10" />
+                                            <c:set var="totalFeedbacks" value="${fn:length(feedbacks)}" />
+                                            <c:set var="totalPages" value="${(totalFeedbacks + itemsPerPage - 1) / itemsPerPage}"/>
+
+                                            <!-- Ensure currentPage is set correctly -->
+                                            <c:set var="currentPage">
+                                                <c:choose>
+                                                    <c:when test="${not empty param.page}">
+                                                        ${param.page}
+                                                    </c:when>
+                                                    <c:otherwise>1</c:otherwise>
+                                                </c:choose>
+                                            </c:set>
+
+                                            <c:set var="start" value="${(currentPage - 1) * itemsPerPage}" />
+                                            <c:set var="end" value="${start + itemsPerPage}" />
+
+                                            <c:forEach items="${feedbacks}" var="f" varStatus="loop">
+                                                <c:if test="${loop.index >= start and loop.index < end}">
+                                                    <tr>
+                                                        <th scope="row">#${f.feedbackId}</th>
+                                                        <td>${f.productName}</td>
+                                                        <td>${f.customerName}</td>
+                                                        <td>
+                                                            <c:forEach var="i" begin="1" end="5">
+                                                                <c:choose>
+                                                                    <c:when test="${i <= f.rating}">
+                                                                        <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <i class="fa-regular fa-star" style="color: #FFD43B;"></i>
+                                                                    </c:otherwise>
+                                                                </c:choose>
+                                                            </c:forEach>    
+                                                        </td>
+                                                        <td>${f.comment}</td>
+                                                        <td>
+                                                            <c:if test="${not empty f.reply}"><i class="fa-solid fa-check fa-xl" style="color: #02a704;"></i></c:if>
+                                                            <c:if test="${empty f.reply}"><i class="fa-solid fa-xmark fa-xl" style="color: #c12b06;"></i></c:if>
+                                                            </td>
+                                                            <td>
                                                             <c:choose>
-                                                                <c:when test="${i <= f.rating}">
-                                                                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                                <c:when test="${f.isVisible == true}">
+                                                                    <span class="text-success fw-bold">Hiện</span>
                                                                 </c:when>
                                                                 <c:otherwise>
-                                                                    <i class="fa-regular fa-star" style="color: #FFD43B;"></i>
+                                                                    <span class="text-danger fw-bold">Ẩn</span>
                                                                 </c:otherwise>
-                                                            </c:choose>
-                                                        </c:forEach>    
-                                                    </td>
-                                                    <td>${f.comment}</td>
-                                                    <td>
-                                                        <c:if test="${not empty f.reply}"><i class="fa-solid fa-check fa-xl" style="color: #02a704;"></i></c:if>
-                                                        <c:if test="${empty f.reply}"><i class="fa-solid fa-xmark fa-xl" style="color: #c12b06;"></i></c:if>
+                                                            </c:choose>                                                   
                                                         </td>
                                                         <td>
-                                                        <c:choose>
-                                                            <c:when test="${f.isVisible == true}">
-                                                                <span class="text-success fw-bold">Hiện</span>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <span class="text-danger fw-bold">Ẩn</span>
-                                                            </c:otherwise>
-                                                        </c:choose>                                                   
-                                                    </td>
-                                                    <td>
-                                                        <button type="button" class="btn btn-primary open-modal"
-                                                                data-bs-toggle="modal" data-bs-target="#feedbackModal"
-                                                                data-feedback-id="${f.feedbackId}"
-                                                                data-product-name="${f.productName}"
-                                                                data-customer-name="${f.customerName}"
-                                                                data-rating="${f.rating}"
-                                                                data-comment="${f.comment}"
-                                                                data-reply="${f.reply}"
-                                                                data-status="${param.status}"
-                                                                data-img="${f.imagePath}"
-                                                                >
-                                                            Chi tiết
-                                                        </button>
-                                                        <c:choose>
-                                                            <c:when test="${f.isVisible == true}">
-                                                                <button type="button" class="btn btn-secondary hideButton1"
-                                                                        data-feedback-id="${f.feedbackId}"
-                                                                        data-customer-name="${f.customerName}"
-                                                                        data-status="${param.status}"
-                                                                        >
-                                                                    Ẩn
-                                                                </button>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <button type="button" class="btn btn-success hideButton2"
-                                                                        data-feedback-id="${f.feedbackId}"
-                                                                        data-customer-name="${f.customerName}"
-                                                                        data-status="${param.status}"
-                                                                        >
-                                                                    Hiện
-                                                                </button>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                        <button type="button" class="btn btn-danger hideButton3"
-                                                                data-feedback-id="${f.feedbackId}"
-                                                                data-status="${param.status}"
-                                                                >
-                                                            Xoá
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </c:if>
-                                        </c:forEach>
+                                                            <button type="button" class="btn btn-primary open-modal"
+                                                                    data-bs-toggle="modal" data-bs-target="#feedbackModal"
+                                                                    data-feedback-id="${f.feedbackId}"
+                                                                    data-product-name="${f.productName}"
+                                                                    data-customer-name="${f.customerName}"
+                                                                    data-rating="${f.rating}"
+                                                                    data-comment="${f.comment}"
+                                                                    data-reply="${f.reply}"
+                                                                    data-status="${param.status}"
+                                                                    data-img="${f.imagePath}"
+                                                                    >
+                                                                Chi tiết
+                                                            </button>
+                                                            <c:choose>
+                                                                <c:when test="${f.isVisible == true}">
+                                                                    <button type="button" class="btn btn-secondary hideButton1"
+                                                                            data-feedback-id="${f.feedbackId}"
+                                                                            data-customer-name="${f.customerName}"
+                                                                            data-status="${param.status}"
+                                                                            >
+                                                                        Ẩn
+                                                                    </button>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <button type="button" class="btn btn-success hideButton2"
+                                                                            data-feedback-id="${f.feedbackId}"
+                                                                            data-customer-name="${f.customerName}"
+                                                                            data-status="${param.status}"
+                                                                            >
+                                                                        Hiện
+                                                                    </button>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                            <button type="button" class="btn btn-danger hideButton3"
+                                                                    data-feedback-id="${f.feedbackId}"
+                                                                    data-status="${param.status}"
+                                                                    >
+                                                                Xoá
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </c:if>
+                                            </c:forEach>
 
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
 
-                                <!-- Modal -->
-                                <div class="modal fade" id="feedbackModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="feedbackModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="feedbackModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
 
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="feedbackModalLabel">  </h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <form id="feedbackForm" action="feedbackmanagement?&action=reply" method="post">
-                                                <div class="modal-body">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="feedbackModalLabel">  </h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form id="feedbackForm" action="feedbackmanagement?&action=reply" method="post">
+                                                    <div class="modal-body">
 
-                                                    <div class="mb-3">
-                                                        <label for="product-name" class="col-form-label"><b>Sản phẩm:</b></label>
-                                                        <input type="text" class="form-control" id="product-name" readonly>
-                                                    </div>
-                                                    <div class="row mb-3">
-                                                        <div class="col">
-                                                            <label for="customer-name" class="col-form-label"><b>Khách hàng:</b></label>
-                                                            <input type="text" class="form-control" id="customer-name" readonly>
+                                                        <div class="mb-3">
+                                                            <label for="product-name" class="col-form-label"><b>Sản phẩm:</b></label>
+                                                            <input type="text" class="form-control" id="product-name" readonly>
                                                         </div>
-                                                        <div class="col-3">
-                                                            <label for="fb-rating" class="col-form-label"><b>Đánh giá:</b></label>
-                                                            <div class="input-group"> 
-                                                                <input type="text" class="form-control" id="fb-rating" value="5" readonly>
-                                                                <span class="input-group-text">
-                                                                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
-                                                                </span>
+                                                        <div class="row mb-3">
+                                                            <div class="col">
+                                                                <label for="customer-name" class="col-form-label"><b>Khách hàng:</b></label>
+                                                                <input type="text" class="form-control" id="customer-name" readonly>
+                                                            </div>
+                                                            <div class="col-3">
+                                                                <label for="fb-rating" class="col-form-label"><b>Đánh giá:</b></label>
+                                                                <div class="input-group"> 
+                                                                    <input type="text" class="form-control" id="fb-rating" value="5" readonly>
+                                                                    <span class="input-group-text">
+                                                                        <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                                                    </span>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="fb-comment" class="col-form-label"><b>Bình luận của khách:</b></label>
-                                                        <textarea style="height: 80px;" class="form-control" id="fb-comment" readonly></textarea>
-                                                    </div>
-
-                                                    <div id="feedback-image-container" class="mt-2">
-                                                        <div class="mb-1">
-                                                            <span><b>Hình ảnh phản hồi</b></span>
+                                                        <div class="mb-3">
+                                                            <label for="fb-comment" class="col-form-label"><b>Bình luận của khách:</b></label>
+                                                            <textarea style="height: 80px;" class="form-control" id="fb-comment" readonly></textarea>
                                                         </div>
-                                                        <img id="feedback-image"
-                                                             src=".${f.imagePath}"
-                                                             alt="Product review image"
-                                                             style="width: 140px; height: 120px; object-fit: cover;"
-                                                             />
+
+                                                        <div id="feedback-image-container" class="mt-2">
+                                                            <div class="mb-1">
+                                                                <span><b>Hình ảnh phản hồi</b></span>
+                                                            </div>
+                                                            <img id="feedback-image"
+                                                                 src=".${f.imagePath}"
+                                                                 alt="Product review image"
+                                                                 style="width: 140px; height: 120px; object-fit: cover;"
+                                                                 />
+                                                        </div>
+
+                                                        <div class="mb-3">
+                                                            <label for="fb-reply" class="col-form-label"><b>Phản hồi của nhân viên:</b></label>
+                                                            <textarea style="height: 80px;" name="reply" class="form-control" id="fb-reply" required></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                        <button type="submit" class="btn btn-primary" id="confirm-btn">Lưu</button>
                                                     </div>
 
-                                                    <div class="mb-3">
-                                                        <label for="fb-reply" class="col-form-label"><b>Phản hồi của nhân viên:</b></label>
-                                                        <textarea style="height: 80px;" name="reply" class="form-control" id="fb-reply" required></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                                    <button type="submit" class="btn btn-primary" id="confirm-btn">Lưu</button>
-                                                </div>
-
-                                                <input type="hidden" name="feedbackId" id="feedback-id">
-                                                <input type="hidden" name="status" id="status">
-                                            </form>                                       
+                                                    <input type="hidden" name="feedbackId" id="feedback-id">
+                                                    <input type="hidden" name="status" id="status">
+                                                </form>                                       
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <!-- Nếu 'không' có đánh giá nào! -->
-                                <c:if test="${empty feedbacks}">                     
-                                    <div>
-                                        <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
-                                            Không có đánh giá nào!
-                                        </h5>
-                                    </div>
-                                </c:if>
+                                    <!-- Nếu 'không' có đánh giá nào! -->
+                                    <c:if test="${empty feedbacks}">                     
+                                        <div>
+                                            <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
+                                                Không có đánh giá nào!
+                                            </h5>
+                                        </div>
+                                    </c:if>
+                                </div>
                             </div>
                         </div>
 
@@ -409,18 +356,17 @@
                             }
                         </script>
                     </div>          
-
                 </div>
-
             </div>
         </div>
+    </div>
 
 
-        <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script>
+    <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
                             document.addEventListener("DOMContentLoaded", function () {
 
 
@@ -630,6 +576,6 @@
                                     });
                                 });
                             });
-        </script>
-    </body>
+    </script>
+</body>
 </html>
