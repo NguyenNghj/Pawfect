@@ -104,7 +104,7 @@
                         <div class="col-md-6">
                             <form action="product" method="get" class="d-flex">
                                 <label for="inputName" class="col-sm-2 col-form-label">Tìm kiếm:</label>
-                                <input name="search" type="search" class="form-control" id="inputName" placeholder="Tên khách ...">
+                                <input name="search" type="search" class="form-control" id="inputName" placeholder="Tên khách hàng...">
                             </form>
                         </div>
                     </div>

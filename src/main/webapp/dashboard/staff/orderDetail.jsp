@@ -21,7 +21,7 @@
             <div class="row">
 
                 <!-- SIDEBAR -->
-              <jsp:include page="sidebar.jsp"/>
+                <jsp:include page="sidebar.jsp"/>
 
                 <%
                     Cookie[] cookies = request.getCookies();
@@ -85,16 +85,17 @@
                         </div>
                     </div>
 
-                    <div class="row mt-2">
+                    <div class="row mt-2 bg-white p-3 d-flex align-items-center justify-content-center" 
+                         style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item" style="color: #6c757d;">Dashboard</li>
-                                <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
-                                <li class="breadcrumb-item"><a href="ordermanagement?&action=view&status=tc">Đơn hàng</a></li>
+                            <ol class="breadcrumb mb-0" style ="font-weight: bold;">
+                                <li class="breadcrumb-item">Dashboard</li>
+                                <li class="breadcrumb-item">Nhân viên</li>
+                                <li class="breadcrumb-item">Đơn hàng</li>
                                 <li class="breadcrumb-item active" aria-current="page">Chi tiết đơn hàng</li>
                             </ol>
                         </nav>
-                    </div>   
+                    </div>  
 
                     <div class="row" style="margin-top: 30px; margin-bottom: 50px;">
                         <div class="main-dashboard-table">
@@ -573,26 +574,26 @@
         document.getElementById("refuseForm").addEventListener("submit", function (event) {
             event.preventDefault(); // Ngăn form gửi đi ngay lập tức
 
+            Swal.fire({
+                icon: "info",
+                title: "Đang xử lý...",
+                text: "Vui lòng chờ trong giây lát.",
+                timer: 1400,
+                timerProgressBar: true,
+                allowOutsideClick: false,
+                showConfirmButton: false // Ẩn nút OK
+            }).then(() => {
+
                 Swal.fire({
-                    icon: "info",
-                    title: "Đang xử lý...",
-                    text: "Vui lòng chờ trong giây lát.",
-                    timer: 1400,
-                    timerProgressBar: true,
-                    allowOutsideClick: false,
-                    showConfirmButton: false // Ẩn nút OK
+                    icon: "success",
+                    title: "Từ chối yêu cầu huỷ đơn hàng thành công!",
+                    text: "Bạn đã từ chối yêu cầu hủy đơn hàng. Vui lòng tiếp tục xử lý đơn hàng theo quy trình. Nếu cần, hãy liên hệ khách hàng để giải thích lý do."
                 }).then(() => {
-
-                    Swal.fire({
-                        icon: "success",
-                        title: "Từ chối yêu cầu huỷ đơn hàng thành công!",
-                        text: "Bạn đã từ chối yêu cầu hủy đơn hàng. Vui lòng tiếp tục xử lý đơn hàng theo quy trình. Nếu cần, hãy liên hệ khách hàng để giải thích lý do."
-                    }).then(() => {
-                        document.getElementById("refuseForm").submit(); // Gửi form sau khi hiển thị thông báo thành công
-                    });
-
+                    document.getElementById("refuseForm").submit(); // Gửi form sau khi hiển thị thông báo thành công
                 });
-            
+
+            });
+
         });
 
 
