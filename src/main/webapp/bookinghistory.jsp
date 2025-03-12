@@ -14,12 +14,16 @@
     <body>
         <div class="container py-4"> 
             <!-- Breadcrumb -->
-            <nav aria-label="breadcrumb" class="mb-4">
-                <ol class="breadcrumb p-3" style="background-color: white; border-radius: 5px;">
-                    <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Lịch sử đặt lịch</li>
-                </ol>
-            </nav>
+
+            <div class="row mt-2 bg-white p-3 mb-3 d-flex align-items-center justify-content-center" 
+                 style="border-radius: 20px; height: 60px;">
+                <nav padding: 0 5px;" aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0" style ="font-weight: bold;">
+                        <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Lịch sử đặt lịch</li>
+                    </ol>
+                </nav>
+            </div>
 
             <div class="row g-4">
                 <!-- Main Content -->
@@ -71,71 +75,74 @@
                     <!-- Booking History -->
                     <div class="card">
                         <div class="card-body">
-                            <h2 class="h4 mb-3">Lịch sử đặt phòng</h2>
+                            <h5 class="card-title mb-4">Lịch đã đặt của bạn</h5>
 
                             <!-- Bộ lọc trạng thái -->
-                            <div class="d-flex gap-2 mb-3 p-2 rounded shadow-sm">
-                                <button class="btn btn-outline-primary filter-btn active" data-status="all">
-                                    Tất cả
-                                </button>
-                                <button class="btn btn-outline-success filter-btn" data-status="Đã duyệt">
-                                    Đã duyệt
-                                </button>
-                                <button class="btn btn-outline-warning filter-btn" data-status="Chờ xác nhận">
-                                    Chờ xác nhận
-                                </button>
-                                <button class="btn btn-outline-danger filter-btn" data-status="Đã hủy">
-                                    Đã hủy
-                                </button>
-                                <button class="btn btn-outline-info filter-btn" data-status="Đã nhận phòng">
-                                    Đã nhận phòng
-                                </button>
-                                <button class="btn btn-outline-secondary filter-btn" data-status="Đã trả phòng">
-                                    Đã trả phòng
-                                </button>
-                            </div>
+                            <!-- Bộ lọc trạng thái -->
+                            <ul class="nav nav-tabs mb-4">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-status="all" style="cursor: pointer;">Tất cả</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-status="Đã duyệt" style="cursor: pointer;">Đã duyệt</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-status="Chờ xác nhận"style="cursor: pointer;">Chờ xác nhận</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " data-status="Đã hủy" style="cursor: pointer;">Đã hủy</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-status="Đã nhận phòng" style="cursor: pointer;">Đã nhận phòng</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-status="Đã trả phòng" style="cursor: pointer;">Đã trả phòng</a>
+                                </li>
+                            </ul>
 
                             <c:choose>
                                 <c:when test="${not empty booking}">
-                                    <table class="table table-striped table-bordered">
-                                        <thead class="table-primary">
-                                            <tr>
-                                                <th>Tên phòng</th>
-                                                <th>Ngày đặt lịch</th>
-                                                <th>Tổng tiền</th>
-                                                <th>Trạng thái</th>
-                                                <th>Chi tiết</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="booking-table">
-                                            <c:forEach var="b" items="${booking}">
-                                                <tr class="booking-row" data-status="${b.status}">
-                                                    <td>${b.roomName}</td>
-                                                    <td>
-                                                        <fmt:formatDate value="${b.bookingDate}" pattern="dd/MM/yyyy HH:mm" />
-                                                    </td>
-                                                    <td class="format-price">${b.totalPrice}</td>
-                                                    <td>
-                                                        <span class="badge bg-${b.status eq 'Đã duyệt' ? 'success' 
-                                                                                : (b.status eq 'Chờ xác nhận' ? 'warning' 
-                                                                                : (b.status eq 'Đã hủy' ? 'danger' 
-                                                                                : (b.status eq 'Đã nhận phòng' ? 'info' 
-                                                                                : (b.status eq 'Đã trả phòng' ? 'secondary' : 'secondary'))))}">
-                                                                  ${b.status}
-                                                              </span>
-                                                        </td>
-                                                        <td>
-                                                            <a href="bookinghistorydetail?id=${b.bookingId}" class="btn btn-primary btn-sm">
-                                                                Xem chi tiết
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
-                                            </tbody>
-                                        </table>
+                                    <c:forEach var="b" items="${booking}">
+                                        <div class="card mb-3 hover-card" data-status="${b.status}">
+                                            <a href="bookinghistorydetail?id=${b.bookingId}" style="text-decoration: none; color: inherit;">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <h6 class="mb-3">
+                                                                ${b.roomName} - 
+                                                                <span class="text-${b.status eq 'Đã duyệt' ? 'success' 
+                                                                                    : (b.status eq 'Chờ xác nhận' ? 'warning' 
+                                                                                    : (b.status eq 'Đã hủy' ? 'danger' 
+                                                                                    : (b.status eq 'Đã nhận phòng' ? 'info' 
+                                                                                    : (b.status eq 'Đã trả phòng' ? 'secondary' : 'secondary'))))} fw-bold">
+                                                                          ${b.status}
+                                                                      </span>
+                                                                </h6>
+                                                                <p class="text-secondary mb-2">
+                                                                    Thú cưng: ${b.petName}
+                                                                </p>
+                                                                <p class="text-secondary mb-2">
+                                                                    Ngày đặt lịch: 
+                                                                    <fmt:formatDate value="${b.bookingDate}" pattern="dd/MM/yyyy HH:mm" />
+                                                                </p>
+                                                            </div>
+                                                            <div class="col-auto text-end">
+                                                                <h5 class="mb-0 text-primary fw-bold">
+                                                                    <fmt:formatNumber value="${b.totalPrice}" pattern="#,##0" />đ
+                                                                </h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </c:forEach>
                                     </c:when>
                                     <c:otherwise>
-                                        <p class="text-muted">Bạn chưa có đặt phòng nào.</p>
+                                        <div>
+                                            <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px;">
+                                                Bạn chưa có đặt phòng nào.
+                                            </h5>
+                                        </div>
                                     </c:otherwise>
                                 </c:choose>
                             </div>
@@ -170,6 +177,7 @@
                             </a>
                         </div>
                     </div>
+
                 </div>
             </div>
             <script>
@@ -238,25 +246,27 @@
                     });
                 });
             </script>
+
             <script>
                 document.addEventListener("DOMContentLoaded", function () {
-                    const filterButtons = document.querySelectorAll(".filter-btn");
-                    const rows = document.querySelectorAll(".booking-row");
+                    const filterTabs = document.querySelectorAll(".nav-tabs .nav-link"); // Chọn tất cả các tab
+                    const bookingCards = document.querySelectorAll(".hover-card");
 
-                    filterButtons.forEach(button => {
-                        button.addEventListener("click", function () {
-                            // Loại bỏ lớp active khỏi tất cả nút
-                            filterButtons.forEach(btn => btn.classList.remove("active"));
+                    filterTabs.forEach(tab => {
+                        tab.addEventListener("click", function () {
+                            // Loại bỏ lớp active khỏi tất cả tab
+                            filterTabs.forEach(btn => btn.classList.remove("active"));
                             this.classList.add("active");
 
                             const filterStatus = this.getAttribute("data-status");
 
-                            rows.forEach(row => {
-                                const rowStatus = row.getAttribute("data-status");
-                                if (filterStatus === "all" || rowStatus === filterStatus) {
-                                    row.style.display = "";
+                            bookingCards.forEach(card => {
+                                const cardStatus = card.getAttribute("data-status");
+
+                                if (filterStatus === "all" || cardStatus === filterStatus) {
+                                    card.style.display = "block"; // Hiển thị
                                 } else {
-                                    row.style.display = "none";
+                                    card.style.display = "none"; // Ẩn
                                 }
                             });
                         });
@@ -266,7 +276,6 @@
 
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
             <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
-
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         </body>
     </html>

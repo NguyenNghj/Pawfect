@@ -14,6 +14,10 @@ body {
     font-family: 'Baloo 2', sans-serif; /* Áp dụng font cho tiêu đề thẻ */
 }
 
+.text-primary {
+    color: #D3A376 !important;
+}
+
 .hover-card {
     transition: all 0.3s ease-in-out;
 }
@@ -30,6 +34,10 @@ body {
 .nav-tabs .nav-link.active {
     font-weight: bold;
     color: #0d6efd;
+}
+
+a{
+    color: #D3A376;
 }
 
 .account-action a {
