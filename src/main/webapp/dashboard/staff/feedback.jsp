@@ -117,23 +117,23 @@
                             <div style="padding: 15px 15px 25px 15px;">
                                 <!-- Order Tabs -->
                                 <ul class="nav nav-tabs">
-                                    <li class="nav-item" style="font-weight: bold; border-width: 2px;">
-                                        <a class="nav-link <c:if test="${feedbackStatus == '0'}">active</c:if>" href="feedbackmanagement?&action=view&status=0"">Tất cả</a>
+                                    <li class="nav-item">
+                                        <a class="nav-link <c:if test="${feedbackStatus == '0'}">active</c:if>" href="feedbackmanagement?&action=view&status=0" style="font-weight: bold; border-width: 2px;">Tất cả</a>
                                         </li>
-                                        <li class="nav-item" style="font-weight: bold; border-width: 2px;">
-                                            <a class="nav-link <c:if test="${feedbackStatus == '5'}">active</c:if>" href="feedbackmanagement?&action=view&status=5">5 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></a>
+                                        <li class="nav-item">
+                                            <a class="nav-link <c:if test="${feedbackStatus == '5'}">active</c:if>" href="feedbackmanagement?&action=view&status=5" style="font-weight: bold; border-width: 2px;">5 <i class="fa-solid fa-star" style="color: #FFD43B; border-width: 2px;"></i></a>
                                         </li>
-                                        <li class="nav-item" style="font-weight: bold; border-width: 2px;">
-                                            <a class="nav-link <c:if test="${feedbackStatus == '4'}">active</c:if>" href="feedbackmanagement?&action=view&status=4">4 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></a>
+                                        <li class="nav-item" >
+                                            <a class="nav-link <c:if test="${feedbackStatus == '4'}">active</c:if>" href="feedbackmanagement?&action=view&status=4" style="font-weight: bold; border-width: 2px;">4 <i class="fa-solid fa-star" style="color: #FFD43B; border-width: 2px;"></i></a>
                                         </li>
-                                        <li class="nav-item" style="font-weight: bold; border-width: 2px;">
-                                            <a class="nav-link <c:if test="${feedbackStatus == '3'}">active</c:if>" href="feedbackmanagement?&action=view&status=3">3 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></a>
+                                        <li class="nav-item">
+                                            <a class="nav-link <c:if test="${feedbackStatus == '3'}">active</c:if>" href="feedbackmanagement?&action=view&status=3" style="font-weight: bold; border-width: 2px;">3 <i class="fa-solid fa-star" style="color: #FFD43B; border-width: 2px;"></i></a>
                                         </li>
-                                        <li class="nav-item" style="font-weight: bold; border-width: 2px;">
-                                            <a class="nav-link <c:if test="${feedbackStatus == '2'}">active</c:if>" href="feedbackmanagement?&action=view&status=2">2 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></a>
+                                        <li class="nav-item">
+                                            <a class="nav-link <c:if test="${feedbackStatus == '2'}">active</c:if>" href="feedbackmanagement?&action=view&status=2" style="font-weight: bold; border-width: 2px;">2 <i class="fa-solid fa-star" style="color: #FFD43B; border-width: 2px;"></i></a>
                                         </li>
-                                        <li class="nav-item" style="font-weight: bold; border-width: 2px;">
-                                            <a class="nav-link <c:if test="${feedbackStatus == '1'}">active</c:if>" href="feedbackmanagement?&action=view&status=1">1 <i class="fa-solid fa-star" style="color: #FFD43B;"></i></a>
+                                        <li class="nav-item">
+                                            <a class="nav-link <c:if test="${feedbackStatus == '1'}">active</c:if>" href="feedbackmanagement?&action=view&status=1" style="font-weight: bold; border-width: 2px;">1 <i class="fa-solid fa-star" style="color: #FFD43B; border-width: 2px;"></i></a>
                                         </li>
                                     </ul>
                                     <div style="padding: 15px 15px 25px 15px;">

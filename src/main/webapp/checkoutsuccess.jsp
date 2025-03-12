@@ -25,7 +25,7 @@
                     <h1 class="h3 mb-3">Cảm ơn bạn đã đặt hàng!</h1>
                     <p class="text-muted mb-1" style="font-size: 17px;">Chúng tôi đã nhận được đơn đặt hàng của bạn và sẽ xử lý trong vòng 2-3 ngày làm việc</p>              
                     <p class="text-muted" style="font-size: 17px;">Mã đơn hàng của bạn là #${orderId + 2500000}</p>                
-    
+
                     <div class="mt-4 d-flex justify-content-center gap-4">
                         <a href="pawfect" class="btn btn-secondary" style="padding: 8px 24px;">Trở về trang chủ</a>
                         <a href="order?&action=viewdetail&orderId=${orderId}" class="btn btn-outline-primary" style="padding: 8px 40px;">Chi tiết đơn hàng</a>                       

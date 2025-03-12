@@ -15,7 +15,7 @@
         <div class="container py-4"> 
             <!-- Breadcrumb -->
 
-            <div class="row mt-2 bg-white p-3 mb-3 d-flex align-items-center justify-content-center" 
+            <div class="row mt-2 bg-white p-3 mb-4 d-flex align-items-center justify-content-center" 
                  style="border-radius: 20px; height: 60px;">
                 <nav padding: 0 5px;" aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0" style ="font-weight: bold;">
