@@ -147,7 +147,7 @@
                                                     <th scope="col">Nhận xét</th>     
                                                     <th scope="col" style="width: 8%;">Phản hồi</th>  
                                                     <th scope="col" style="width: 9%;">Trạng thái</th>
-                                                    <th scope="col" style="width: 17%;">Hành động</th>
+                                                    <th scope="col" style="width: 18%;">Hành động</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

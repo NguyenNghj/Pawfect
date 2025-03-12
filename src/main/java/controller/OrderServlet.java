@@ -140,7 +140,6 @@ public class OrderServlet extends HttpServlet {
             int voucherId = Integer.parseInt(request.getParameter("voucherId"));
 //            double shippingCost = Double.parseDouble(request.getParameter("shippingCost"));
 
-
             // Kiem tra du lieu dau vao
             try {
                 if (email == null || email.isEmpty()) {
@@ -232,7 +231,7 @@ public class OrderServlet extends HttpServlet {
                 String emailContent = Email.renderJSPToString(request, response, "sendemail.jsp");
 
                 ExecutorService executor = Executors.newFixedThreadPool(10); // Tạo một ExecutorService với 10 luồng
-                
+
                 Customers customers;
                 // Lay thong tin email cua khach dat hang
                 customers = CustomersDAO.getCustomerById(customerId);
@@ -287,7 +286,8 @@ public class OrderServlet extends HttpServlet {
             // Neu khach hang nhan "Yeu cau huy" (trang thai don hang la "Cho lay hang")
             if (confirmCancel.equals("Yêu cầu huỷ")) {
                 confirmCancel += "...";
-                boolean requestCancel = OrderDAO.requestCancelOrder(confirmCancel, reasonCancel, true, orderId);
+                Order order = new Order(orderId, reasonCancel, true, confirmCancel);
+                boolean requestCancel = OrderDAO.requestCancelOrder(order);
                 if (requestCancel) {
                     System.out.println("Yeu cau huy don hang thanh cong.");
 
@@ -320,7 +320,8 @@ public class OrderServlet extends HttpServlet {
                 // Neu khach hang nhan "Huy don" (trang thai don hang la "Cho xac nhan")
             } else {
 
-                boolean cancel = OrderDAO.cancelOrder(confirmCancel, reasonCancel, orderId);
+                Order order = new Order(orderId, reasonCancel, confirmCancel);
+                boolean cancel = OrderDAO.cancelOrder(order);
                 if (cancel) {
                     System.out.println("Huy don hang thanh cong.");
 
@@ -328,14 +329,24 @@ public class OrderServlet extends HttpServlet {
                     String orderDate = orders.get(0).getOrderDate();
                     String supportLink = "https://example.com/support";
 
-                    String contentEmail = Email.emailRequsetCancel;
+                    String contentEmail = Email.emailCancel;
                     String finalContentEmail = String.format(contentEmail, customerName, (orderId + 2500000), orderDate, supportLink);
+
+                    // Lay customerId tu Cookie
+                    String customerIdStr = getCustomerIdFromCookies(request);
+                    int customerId = Integer.parseInt(customerIdStr);
+
+                    Customers customers;
+                    // Lay thong tin email cua khach dat hang
+                    customers = CustomersDAO.getCustomerById(customerId);
+                    String customerEmail = customers.getEmail();
+                    System.out.println("customerEmail: " + customerEmail);
 
                     ExecutorService executor = Executors.newFixedThreadPool(10); // Tạo một ExecutorService với 10 luồng
 
                     executor.submit(() -> {
                         try {
-//                        Email.sendEmail("vuquangduc1404@gmail.com", "Xác nhận đơn hàng", finalContentEmail);
+                            Email.sendEmail(customerEmail, "Đơn hàng của bạn đã bị huỷ", finalContentEmail);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

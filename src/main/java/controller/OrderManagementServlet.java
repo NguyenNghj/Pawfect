@@ -196,7 +196,7 @@ public class OrderManagementServlet extends HttpServlet {
                 String orderDate = orders.get(0).getOrderDate();
                 String supportLink = "https://example.com/support";
 
-                String contentEmail = Email.emailCancelByStaff;
+                String contentEmail = Email.emailCancel;
                 String finalContentEmail = String.format(contentEmail, customerName, reasonCancel, (orderId + 2500000), orderDate, supportLink);
 
                 ExecutorService executor = Executors.newFixedThreadPool(10); // Tạo một ExecutorService với 10 luồng
