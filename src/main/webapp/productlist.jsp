@@ -54,17 +54,36 @@
                 function applyFilter(filterName, filterValue) {
                     let urlParams = new URLSearchParams(window.location.search);
 
-                    // Nếu đã chọn filter đó thì bỏ filter đi
-                    if (urlParams.get(filterName) === filterValue.toString()) {
-                        urlParams.delete(filterName);
+                    if (filterName === "pettype") {
+                        let selectedPetTypes = urlParams.get("pettype");
+
+                        if (selectedPetTypes === "3") {
+                            // Nếu đang chọn cả hai (pettype=3), bỏ bớt giá trị được click
+                            selectedPetTypes = filterValue.toString();
+                        } else if (selectedPetTypes === filterValue.toString()) {
+                            // Nếu chỉ đang chọn 1 giá trị và bấm lại → Xóa khỏi filter
+                            urlParams.delete("pettype");
+                        } else if (selectedPetTypes) {
+                            // Nếu đang chọn một giá trị khác, thêm giá trị mới vào (chọn cả Chó và Mèo)
+                            selectedPetTypes = "3";
+                        } else {
+                            // Nếu chưa chọn gì, đặt giá trị được click
+                            selectedPetTypes = filterValue.toString();
+                        }
+
+                        urlParams.set("pettype", selectedPetTypes);
                     } else {
-                        urlParams.set(filterName, filterValue);
+                        // Xử lý các bộ lọc khác bình thường
+                        if (urlParams.get(filterName) === filterValue.toString()) {
+                            urlParams.delete(filterName);
+                        } else {
+                            urlParams.set(filterName, filterValue);
+                        }
                     }
 
-                    urlParams.set('page', 1); // Khi lọc, reset về trang 1
+                    urlParams.set('page', 1); // Reset về trang 1 khi lọc
                     window.location.search = urlParams.toString();
                 }
-
             </script>
 
             <div class="row">
@@ -132,11 +151,19 @@
                             }
                         });
 
-                        // Thêm class 'active' vào lọc kiểu thú cưng (Chó, Mèo)
+                        // Xử lý nhiều giá trị cho pettype
+                        let selectedPetTypes = selectedPetType ? selectedPetType.split(",") : [];
+
                         document.querySelectorAll(".pettype-box-filter .nut-loc").forEach(label => {
                             let filterValue = label.getAttribute("onclick").match(/\d+/)[0]; // Lấy số từ onclick
-                            if (selectedPetType === filterValue) {
+
+                            if (selectedPetTypes.includes("3")) {
+                                // Nếu pettype=3, bật cả hai nút "Chó" và "Mèo"
                                 label.classList.add("active");
+                            } else if (selectedPetTypes.includes(filterValue)) {
+                                label.classList.add("active");
+                            } else {
+                                label.classList.remove("active");
                             }
                         });
                     });
@@ -200,7 +227,7 @@
                                             </c:forEach>
 
                                             <!-- Nút Next -->
-                                            <li class="page-item ${currentPage >= totalPages-1 ? 'disabled' : ''}">
+                                            <li class="page-item ${currentPage >= totalPages ? 'disabled' : ''}">
                                                 <a class="page-link" href="javascript:updatePage(${currentPage + 1})">Next</a>
                                             </li>
                                         </ul>

@@ -129,9 +129,16 @@ public class ProductDAO {
         }
 
         if (petTypeFilter != null && !petTypeFilter.isEmpty()) {
-            String petTypeName = petTypeFilter.equals("1") ? "Chó" : "Mèo";
-            query.append(" AND p.product_petType = ?");
-            params.add(petTypeName);
+            if (petTypeFilter.equals("3")) {
+                // Nếu petTypeFilter = 3, lấy cả Chó và Mèo
+                query.append(" AND p.product_petType = ?");
+                params.add("Chó và Mèo");
+            } else {
+                // Nếu chỉ có 1 giá trị (Chó hoặc Mèo)
+                String petTypeName = petTypeFilter.equals("1") ? "Chó" : "Mèo";
+                query.append(" AND p.product_petType = ?");
+                params.add(petTypeName);
+            }
         }
 
         if (priceFilter != null) {
