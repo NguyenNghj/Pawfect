@@ -8,11 +8,15 @@
 <div class="col-2 sidebar" id="sidebar">
     <div class="row pt-4 sidebar-brandName">
         <div class="col d-flex justify-content-center align-items-center gap-3">
-            <i class="fa-solid fa-paw fa-beat" style="font-size: 36px;"></i>
+            <i class="fa-solid fa-paw fa-beat" style="font-size: 36px; color: #FFF2DF"></i>
             <span>
-                <h3 style="margin: 0;">PetCare</h3>
+                <h3 style="margin: 0; color: #FFF2DF">PAWFECT</h3>
             </span>
         </div>
+    </div>
+
+    <div class="row">
+        <hr style="margin: 10px 0; border-top: 4px solid white;">
     </div>
 
     <div class="row">                  
@@ -31,12 +35,12 @@
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample1">
                     <div class="accordion-body">
-                        <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;">
+                        <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;" id="staff">
                             <div class="container-fluid">
                                 <a class="navbar-brand" href="staff">Nhân viên</a>
                             </div>
                         </nav>
-                        <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;">
+                        <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;" id="customers">
                             <div class="container-fluid">
                                 <a class="navbar-brand" href="customers">Khách hàng</a>
                             </div>
@@ -72,19 +76,13 @@
     </div>
 
     <div class="row">
-        <hr style="margin: 10px 0;">
+        <hr style="margin: 10px 0; border-top: 4px solid white;">
     </div>
 
     <div class="row" style="display: flex; justify-content: center">
 
         <button type="button" class="btn btn-danger" href="logoutadmin">Ðang xuất</button>
 
-        <!--        <nav class="navbar bg-body-tertiary" id="logout">                                              
-                    <a class="navbar-brand d-flex align-items-center gap-3" href="logoutadmin">
-                        <i class="fa-solid fa-right-from-bracket fa-lg"></i>
-                        <span>Ðang xuất</span>
-                    </a>
-                </nav>-->
     </div>
 
     <%
@@ -124,7 +122,9 @@
                 "category": "category",
                 "pethotel": "pethotel",
                 "profile": "profile",
-                "logout": "logout"
+                "logout": "logout",
+                "staff": "staff",
+                "customers": "customers"
             };
 
             // Xóa lớp 'active' khỏi tất cả các navbar
@@ -146,11 +146,27 @@
                     let activeIcon = activeNav.querySelector("i");
                     let activeSpan = activeNav.querySelector("span");
                     if (activeIcon)
-                        activeIcon.style.color = "white";
+                        activeIcon.style.color = "#fcdb51";
                     if (activeSpan)
-                        activeSpan.style.color = "white";
+                        activeSpan.style.color = "#fcdb51";
+                }
+            }
+
+            // Kiểm tra nếu trang hiện tại là "staff" hoặc "customers" thì mở rộng accordion
+            if (currentPath === "staff" || currentPath === "customers") {
+                let accordion = document.getElementById("collapseOne");
+                if (accordion) {
+                    accordion.classList.add("show"); // Mở rộng accordion
+
+                    // Highlight mục con tương ứng
+                    let activeSubNav = document.getElementById(navItems[currentPath]);
+                    if (activeSubNav) {
+                        activeSubNav.classList.add("active");
+                        activeSubNav.style.fontWeight = "bold"; // Làm đậm chữ để dễ nhận diện hơn
+                    }
                 }
             }
         });
     </script>
+
 </div>
