@@ -23,7 +23,7 @@
 
             body {
                 width: 100%
-                    
+
             }
 
             #main {
@@ -68,7 +68,7 @@
             .container {
 
                 width: 95%; /* Điều chỉnh chiều rộng để cả hai vừa trên một dòng */
-                
+
                 background: #EEEEEE;
                 border-radius: 10px;
                 box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
@@ -177,7 +177,7 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Dashboard</h1>
+                                <h1>Thống kê</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
                                 <span>Username2025 (Admin)</span>
@@ -209,14 +209,15 @@
                         </div>
                     </div>
 
-                    <div class="row mt-2">
+                    <div class="row mt-2 bg-white p-3 d-flex align-items-center justify-content-center" 
+                         style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item" style="color: #6c757d;">Dashboard</li>
-                                <li class="breadcrumb-item active" aria-current="page">Home</li>
+                            <ol class="breadcrumb mb-0" style ="font-weight: bold;">
+                                <li class="breadcrumb-item">Dashboard</li>
+                                <li class="breadcrumb-item active" aria-current="page">Thống kê</li>
                             </ol>
                         </nav>
-                    </div>
+                    </div>  
 
                     <!-- comment    <div class="row mt-3">
                         <div class="d-flex gap-3" style="padding: 0;">
