@@ -30,6 +30,13 @@ public class CartItem {
         this.productImage = productImage;
         this.productName = productName;
     }
+
+    public CartItem(int customerId, int productId, int quantity) {
+        this.customerId = customerId;
+        this.productId = productId;
+        this.quantity = quantity;
+    }
+    
     
     public double getSubtotal() {
         return productPrice * quantity;

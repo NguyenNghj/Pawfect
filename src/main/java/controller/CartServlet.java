@@ -76,9 +76,6 @@ public class CartServlet extends HttpServlet {
                 case "add":
                     addToCart(request, response);
                     break;
-                default:
-//                    listNhanVien(request, response);
-                    break;
             }
         } catch (ServletException | IOException | SQLException e) {
             throw new ServletException(e);
@@ -110,10 +107,16 @@ public class CartServlet extends HttpServlet {
         int quantity = Integer.parseInt(request.getParameter("quantity"));
         int stock = Integer.parseInt(request.getParameter("stock"));
 
+        
+        System.out.println("quantity: " + quantity);
+        System.out.println("stock: " + stock);
+        
         JSONObject json = new JSONObject();
         response.setContentType("application/json");
 
+        // Kiem tra ton kho cua san pham duoc them vao
         int quantityFromCart = CartDAO.getQuantityOfProduct(customerId, productId);
+        // Neu so luong them vuot qua ton kho thi thong bao loi
         if (quantityFromCart + quantity > stock) {
             json.put("status", "error");
             json.put("message", "Vượt quá tồn kho");
@@ -123,19 +126,26 @@ public class CartServlet extends HttpServlet {
             return;
         }
 
+        // Kiem tra san pham da co trong gio hang hay chua
         boolean checkProdut = CartDAO.checkProductInCart(productId, customerId);
+        // Neu co roi thi tang so luong san pham trong gio hang
         if (checkProdut) {
-            CartDAO.increaseProductFromCart(quantity, productId, customerId);
+            CartItem cartItem = new CartItem(customerId, productId, quantity);
+            CartDAO.increaseProductFromCart(cartItem);
             json.put("status", "success");
             json.put("message", "Add to cart successfully!");
+            
+            // Neu chua thi them san pham vao gio hang
         } else {
-            CartDAO.addToCart(customerId, productId, quantity);
+            CartItem cartItem = new CartItem(customerId, productId, quantity);
+            CartDAO.addToCart(cartItem);
             json.put("status", "success");
             json.put("message", "Add to cart successfully!");
         }
 
         int totalQuantity = 0;
         List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+        // Tinh tong so luong san pham trong gio hang sau khi update gio hang de cap nhat lai UI
         for (CartItem cartItem : cartItems) {
             totalQuantity += cartItem.getQuantity();
         }
@@ -167,11 +177,13 @@ public class CartServlet extends HttpServlet {
 
         int totalQuantity = 0;
         if (!cartItems.isEmpty()) {
+            // Tinh tong so luong san pham trong gio hang de hien thi
             for (CartItem cartItem : cartItems) {
                 totalQuantity += cartItem.getQuantity();
             }
         }
 
+        // Tinh tong gia trong gio hang de hien thi
         double totalCartPrice = CartDAO.getTotalCartByCustomerId(customerId);
 
         request.setAttribute("cartItems", cartItems);
@@ -207,6 +219,7 @@ public class CartServlet extends HttpServlet {
                 }
                 json.put("totalQuantity", totalQuantity);
 
+                // Lay tong tien gio hang sau khi remove de cap nhat UI
                 double newTotalCartPrice = CartDAO.getTotalCartByCustomerId(customerId);
                 json.put("totalCartPrice", newTotalCartPrice);
 
@@ -234,9 +247,10 @@ public class CartServlet extends HttpServlet {
             // Lay yeu cau Tang hoac Giam so luong san pham
             String target = request.getParameter("target");
 
-            // Tang so luong san pham
+            // Neu user nhan + de tang sl san pham
             if (target.equals("increase")) {
-                update = CartDAO.increaseProductFromCart(1, productId, customerId);
+                CartItem cartItem = new CartItem(customerId, productId, 1);
+                update = CartDAO.increaseProductFromCart(cartItem);
                 if (update) {
                     System.out.println("Tang so luong thanh cong!");
 
@@ -247,8 +261,8 @@ public class CartServlet extends HttpServlet {
 
                     int totalQuantity = 0;
                     if (!cartItems.isEmpty()) {
-                        for (CartItem cartItem : cartItems) {
-                            totalQuantity += cartItem.getQuantity();
+                        for (CartItem c : cartItems) {
+                            totalQuantity += c.getQuantity();
                         }
                     }
                     json.put("totalQuantity", totalQuantity);
@@ -267,7 +281,7 @@ public class CartServlet extends HttpServlet {
                     System.out.println("Tang so luong that bai!!");
                 }
 
-                // Giam so luong san pham
+                // Neu user nhan - de giam sl san pham
             } else if (target.equals("decrease")) {
                 update = CartDAO.decreseProductFromCart(productId, customerId);
                 if (update) {
