@@ -97,13 +97,15 @@
                                     <p><strong>Số điện thoại:</strong> ${customer.phone}</p>
                                     <p><strong>Email:</strong> ${customer.email}</p>
                                     <br><h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #007bff;">Nhân viên phụ trách</h5>
-                                    <p>${booking.staffName}</p>
+                                    <p>${empty booking.staffName ? "Chưa có nhân viên tiếp nhận" : booking.staffName}</p>
+
                                 </div>
 
                                 <!-- Cột thông tin đặt phòng -->
                                 <div style="flex: 1; background: #f8f9fa; padding: 15px; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);">
                                     <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #007bff;">Thông tin đặt phòng</h5>
                                     <p><strong>Tên phòng:</strong> ${booking.roomName}</p>
+                                    <p><strong>Tên thú cưng:</strong> ${booking.petName}</p> <!-- Thêm dòng này -->
                                     <p><strong>Ngày check-in:</strong> 
                                         <br><fmt:formatDate value="${booking.checkIn}" pattern="HH:mm - dd/MM/yyyy" />
                                     </p>

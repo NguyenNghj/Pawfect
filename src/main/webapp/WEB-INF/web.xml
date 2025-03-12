@@ -106,7 +106,7 @@
     </servlet>
     <servlet>
         <servlet-name>AddPetHotelServlet</servlet-name>
-        <servlet-class>controller.AddPetHotelServlet</servlet-class>
+        <servlet-class>controller.CreatePetHotelServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>EditPetHotelServlet</servlet-name>

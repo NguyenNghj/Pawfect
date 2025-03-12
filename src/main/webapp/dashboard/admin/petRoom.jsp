@@ -9,6 +9,8 @@
 <%@page import="java.util.List"%>
 <%@ page import="java.text.NumberFormat, java.util.Locale" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -106,11 +108,16 @@
 
                         <!-- Form Tìm Kiếm -->
                         <div class="col-md-6">
-                            <form action="pethotel" method="get" class="d-flex">
-                                <label for="inputName" class="col-sm-2 col-form-label">Tìm kiếm:</label>
-                                <input name="search" type="search" class="form-control" id="inputName" placeholder="Tên Pet Hotel...">
+                            <form action="pethotel" method="get" class="d-flex align-items-center">
+                                <label for="searchInput" class="col-sm-2 col-form-label">Tìm kiếm:</label>
+                                <input type="text" name="search" class="form-control" id="searchInput" 
+                                       placeholder="Nhập tên phòng, loại phòng hoặc trạng thái..."
+                                       value="${searchQuery}">
                             </form>
                         </div>
+
+
+
                     </div>
 
                     <!--                    <button class="btn btn-success" onclick="window.location.href = 'createpethotel'">
@@ -174,13 +181,13 @@
                                                         window.location.href = 'editpethotel?room_id=' + roomId;
                                                     }
                                                 </script>
-
                                             </td>
+
                                         </tr>
                                         <% }
                                         } else { %>
                                         <tr>
-                                            <td colspan="5" class="text-center">
+                                            <td colspan="10" class="text-center w-100">
                                                 <div class="alert alert-warning" role="alert">
                                                     Không có phòng nào được tìm thấy.
                                                 </div>
@@ -191,12 +198,40 @@
                                 </table>
                             </div>
                         </div>
-                    </div>        
-                </div>
+                        <c:if test="${totalPages > 1}">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center">
+                                    <!-- Nút Previous -->
+                                    <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                        <a class="page-link" href="javascript:updatePage(${currentPage - 1})">Trước</a>
+                                    </li>
 
+                                    <!-- Hiển thị danh sách số trang -->
+                                    <c:forEach var="i" begin="1" end="${totalPages}">
+                                        <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                            <a class="page-link" href="javascript:updatePage(${i})">${i}</a>
+                                        </li>
+                                    </c:forEach>
+
+                                    <!-- Nút Next -->
+                                    <li class="page-item ${currentPage >= totalPages ? 'disabled' : ''}">
+                                        <a class="page-link" href="javascript:updatePage(${currentPage + 1})">Tiếp</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </c:if>
+                    </div>  
+                </div>
             </div>
         </div>
 
+        <script>
+            function updatePage(page) {
+                let urlParams = new URLSearchParams(window.location.search);
+                urlParams.set('page', page); // Cập nhật số trang
+                window.location.search = urlParams.toString();
+            }
+        </script>
 
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

@@ -139,7 +139,7 @@
                                 <option value="Hết phòng" <%= room.getStatus().equals("Hết phòng") ? "selected" : ""%>>Hết phòng</option>
                             </select>
                             <button type="submit" class="btn btn-primary mt-3">Lưu thay đổi</button>
-                            <button type="button" class="btn btn-secondary mt-3"  onclick="location.href = 'petroom'">Quay lại</button>
+                            <button type="button" class="btn btn-secondary mt-3"  onclick="location.href = 'pethotel'">Quay lại</button>
                         </form>
                         <br><br>
                     </div>

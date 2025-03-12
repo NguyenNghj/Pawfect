@@ -102,9 +102,10 @@
                     <div class="row d-flex align-items-center" style="margin-top: 30px;">
                         <!-- Form Tìm Kiếm -->
                         <div class="col-md-6">
-                            <form action="product" method="get" class="d-flex">
+                            <form action="pethotelbooking" method="get" class="d-flex">
                                 <label for="inputName" class="col-sm-2 col-form-label">Tìm kiếm:</label>
-                                <input name="search" type="search" class="form-control" id="inputName" placeholder="Tên khách hàng...">
+                                <input name="search" type="search" class="form-control" id="inputName" 
+                                       placeholder="Tên khách hàng..." value="${searchQuery}">
                             </form>
                         </div>
                     </div>
@@ -167,16 +168,29 @@
                                         </thead>
                                         <tbody id="bookingTable">
                                             <%
-                                                List<PetHotelBooking> bookings = PetHotelBookingDAO.getAllBookings();
+                                                String searchQuery = request.getParameter("search");
+                                                List<PetHotelBooking> bookings;
+
+                                                if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+                                                    bookings = PetHotelBookingDAO.searchBookingsByCustomerName(searchQuery.trim());
+                                                } else {
+                                                    bookings = PetHotelBookingDAO.getAllBookings();
+                                                }
+
                                                 if (bookings.isEmpty()) {
                                             %>
                                             <tr>
-                                                <td colspan="8" style="text-align: center; font-weight: bold; color: black; padding: 15px;">
+                                                <td colspan="8" style="text-align: center; font-weight: bold; color: red; padding: 15px;">
+                                                    <% if (searchQuery != null && !searchQuery.trim().isEmpty()) {%>
+                                                    Không tìm thấy kết quả cho từ khóa "<%= searchQuery%>"
+                                                    <% } else { %>
                                                     Chưa có yêu cầu đặt phòng nào.
+                                                    <% } %>
                                                 </td>
                                             </tr>
                                             <%
                                             } else {
+
                                                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
                                                 NumberFormat formatter = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
                                                 for (PetHotelBooking booking : bookings) {

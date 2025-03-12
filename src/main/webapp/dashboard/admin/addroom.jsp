@@ -102,7 +102,7 @@
 
                     <div class="addroom" style="background-color: white;" method="post">
                         <br>
-                        <form id="addRoomForm" action="addroom" method="post" style="max-width: 400px; margin:  auto;" >
+                        <form id="addRoomForm" action="createpethotel" method="post" style="max-width: 400px; margin:  auto;" >
                             <label>Tên phòng:</label>
                             <input type="text" name="roomName" class="form-control" required style="margin-bottom: 10px;">
                             <label>Hình ảnh:</label>
@@ -127,7 +127,7 @@
 
 
                             <button type="submit" class="btn btn-success mt-3">Thêm phòng</button>
-                            <button type="button" class="btn btn-secondary mt-3" onclick="location.href = 'petroom'">Quay lại</button>
+                            <button type="button" class="btn btn-secondary mt-3" onclick="location.href = 'pethotel'">Quay lại</button>
                         </form>
                         <br>
 

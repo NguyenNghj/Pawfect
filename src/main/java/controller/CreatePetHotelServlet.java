@@ -18,7 +18,7 @@ import model.PetHotel;
  *
  * @author Nguyen Tien Thanh
  */
-public class AddPetHotelServlet extends HttpServlet {
+public class CreatePetHotelServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -54,7 +54,9 @@ public class AddPetHotelServlet extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * 
      */
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

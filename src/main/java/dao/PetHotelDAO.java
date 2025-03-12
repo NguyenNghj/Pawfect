@@ -256,7 +256,7 @@ public class PetHotelDAO {
             closeConnection();
         }
     }
-    
+
     public static boolean decreaseAvailableQuantity(int roomId) {
         String query = "UPDATE PetHotel SET available_quantity = available_quantity - 1 WHERE room_id = ? AND available_quantity > 0";
         boolean success = false;
@@ -295,6 +295,41 @@ public class PetHotelDAO {
             closeConnection();
         }
         return success;
+    }
+
+    public static List<PetHotel> searchPetRooms(String search) {
+        List<PetHotel> petRooms = new ArrayList<>();
+        String query = "SELECT * FROM PetHotel WHERE is_active = 1 "
+                + "AND (room_name LIKE ? OR room_type LIKE ? OR status LIKE ?)";
+
+        try ( Connection conn = new DBContext().getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
+
+            String keyword = "%" + search + "%";
+            ps.setString(1, keyword); // Tìm kiếm theo tên phòng
+            ps.setString(2, keyword); // Tìm kiếm theo loại phòng
+            ps.setString(3, keyword); // Tìm kiếm theo trạng thái
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                petRooms.add(new PetHotel(
+                        rs.getInt("room_id"),
+                        rs.getString("room_name"),
+                        rs.getString("room_image"),
+                        rs.getString("room_type"),
+                        rs.getDouble("min_weight"),
+                        rs.getDouble("max_weight"),
+                        rs.getInt("quantity"),
+                        rs.getInt("available_quantity"),
+                        rs.getDouble("price_per_night"),
+                        rs.getString("description"),
+                        rs.getString("status"),
+                        rs.getBoolean("is_active")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return petRooms;
     }
 
     // Hàm đóng kết nối
