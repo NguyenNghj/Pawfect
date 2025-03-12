@@ -49,7 +49,7 @@
                     }
                 %>
                 <!-- MAIN -->
-                <div class="col" id="main" style="padding: 0 40px;">
+                <div class="col-10" id="main" style="padding: 0 40px;">
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
@@ -96,14 +96,14 @@
                     </div>   
 
                     <div class="row d-flex align-items-center" style="margin-top: 30px;">
-  
+
                         <div class="col-md-6">
                             <a href="createvoucher" class="btn btn-success">
                                 <i class="fa-solid fa-plus"></i> Tạo mã giảm giá
                             </a>
                         </div>
 
- 
+
                         <div class="col-md-6">
                             <form action="voucher" method="get" class="d-flex">
                                 <label for="inputName" class="col-sm-2 col-form-label">Tìm kiếm:</label>

@@ -16,9 +16,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     background-color: #eee;
 }
 
-
-.sidebar{
+.sidebar {
     background: #8C6E63;
+    height: 100vh;
 }
 
 .sidebar-brandName {
@@ -53,15 +53,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
 }
 
 .navbar.bg-body-tertiary.active {
-    /*    background-color: #D3A376 !important;*/
+    display: flex;
+    align-items: center; /* Căn giữa theo chiều dọc */
+    border: 2px solid #fcdb51;
 }
-
 .navbar.bg-body-tertiary:not(.active) a:hover {
-    color: red;
+    color: #fcdb51;
 }
 
 .accordion-header button:hover {
-    color: red;
+    color: #fcdb51;
 }
 
 .accordion-body {
@@ -78,11 +79,23 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     box-shadow: none;
 }
 
-.accordion-button:not(.collapsed) {
+
+.accordion-button {
     color: unset;
     background-color: unset;
     box-shadow: none;
 }
+
+.accordion-button {
+    color: #FFF2DF;
+    background: #8C6E63;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #FFF2DF;
+    background: #8C6E63;
+}
+
 
 .navbar-brand {
     color: #FFF2DF;
