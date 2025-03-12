@@ -95,12 +95,7 @@
         // Xóa lớp 'active' khỏi tất cả các navbar
         document.querySelectorAll(".navbar").forEach(nav => {
             nav.classList.remove("active");
-            let icon = nav.querySelector("i");
-            let span = nav.querySelector("span");
-            if (icon)
-                icon.style.color = "";
-            if (span)
-                span.style.color = "";
+  
         });
 
         // Kiểm tra và áp dụng lớp 'active' nếu có trang khớp
@@ -109,12 +104,6 @@
                 let activeNav = document.getElementById(navItems[key]);
                 if (activeNav) {
                     activeNav.classList.add("active");
-                    let activeIcon = activeNav.querySelector("i");
-                    let activeSpan = activeNav.querySelector("span");
-                    if (activeIcon)
-                        activeIcon.style.color = "#fcdb51";
-                    if (activeSpan)
-                        activeSpan.style.color = "#fcdb51";
                 }
                 break; // Dừng vòng lặp khi tìm thấy trang phù hợp
             }
