@@ -62,7 +62,7 @@ public class OrderDAO {
             + "	request_cancel = ?\n"
             + "WHERE order_id = ?";
 
-    protected static String Update_Order_Status = "UPDATE Orders\n"
+    protected static String Cancel_Order = "UPDATE Orders\n"
             + "SET status = ?, \n"
             + "    reason_cancel = ?\n"
             + "WHERE order_id = ?";
@@ -260,15 +260,15 @@ public class OrderDAO {
         return update;
     }
 
-    public static boolean requestCancelOrder(String status, String reasonCancel, boolean requestCancel, int orderId) {
+    public static boolean requestCancelOrder(Order order) {
         boolean update = false;
         try {
             Con = new DBContext().getConnection();
             PreparedStatement ps = Con.prepareStatement(Request_Cancel_Order);
-            ps.setString(1, status);
-            ps.setString(2, reasonCancel);
-            ps.setBoolean(3, requestCancel);
-            ps.setInt(4, orderId);
+            ps.setString(1, order.getStatus());
+            ps.setString(2, order.getReasonCancel());
+            ps.setBoolean(3, order.isRequestCancel());
+            ps.setInt(4, order.getOrderId());
             update = ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -276,14 +276,14 @@ public class OrderDAO {
         return update;
     }
 
-    public static boolean cancelOrder(String status, String reasonCancel, int orderId) {
+    public static boolean cancelOrder(Order order) {
         boolean update = false;
         try {
             Con = new DBContext().getConnection();
-            PreparedStatement ps = Con.prepareStatement(Update_Order_Status);
-            ps.setString(1, status);
-            ps.setString(2, reasonCancel);
-            ps.setInt(3, orderId);
+            PreparedStatement ps = Con.prepareStatement(Cancel_Order);
+            ps.setString(1, order.getStatus());
+            ps.setString(2, order.getReasonCancel());
+            ps.setInt(3, order.getOrderId());
             update = ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();

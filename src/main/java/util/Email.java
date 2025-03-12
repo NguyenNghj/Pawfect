@@ -144,7 +144,7 @@ public class Email {
             + "</body>\n"
             + "</html>";
 
-    public static String emailCancelByStaff = "<!DOCTYPE html>\n"
+    public static String emailCancel = "<!DOCTYPE html>\n"
             + "<html lang=\"vi\">\n"
             + "<head>\n"
             + "    <meta charset=\"UTF-8\">\n"

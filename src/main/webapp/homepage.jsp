@@ -113,7 +113,7 @@
             </div>
         </div>
 
-        <section>
+        <section class="section-wave">
             <div class="wave wave1"></div>
             <div class="wave wave2"></div>
             <div class="wave wave3"></div>
@@ -232,8 +232,8 @@
                 <div class="container">
                     <div class="section-title">
                         <h2>Đánh giá từ khách hàng</h2>
-                        <p>Phản hồi từ những khách hàng đã sử dụng dịch vụ</p>
-                    </div>
+                        <p>Phản hồi từ những khách hàng đã sử dụng dịch vụ</p>                                           
+                    </div>                 
 
                     <div class="carousel-container">
                         <div class="carousel-track" id="reviewsTrack">
@@ -242,7 +242,7 @@
                                 <!-- Review Card 1 -->
                                 <div class="review-card collapsed">
                                     <div class="customer-info">
-                                        <!--<img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Customer" class="customer-avatar">-->
+<!--                                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Customer" class="customer-avatar">-->
                                         <div>
                                             <h4 class="customer-name">${f.customerName}</h4>
                                             <div class="customer-date">${f.feedbackDate}</div>

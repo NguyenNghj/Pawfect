@@ -74,8 +74,12 @@ public class HomePageServlet extends HttpServlet {
             // Lấy danh sách feedback và xáo trộn nếu có
             List<Feedback> feedbacks = FeedbackDAO.getAllProductFeedback();
             if (feedbacks != null && !feedbacks.isEmpty()) {
+                // Xáo trộn feedbacks
                 Collections.shuffle(feedbacks);
                 request.setAttribute("feedbacks", feedbacks);
+                System.out.println("Lay danh sach feedback thanh cong.");
+            } else {
+                System.out.println("Lay danh sach feedback that bai!");
             }
 
             // Kiểm tra cookie để lấy tổng số lượng sản phẩm trong giỏ hàng
@@ -107,7 +111,7 @@ public class HomePageServlet extends HttpServlet {
             // Forward đến trang homepage
             RequestDispatcher dispatcher = request.getRequestDispatcher("homepage.jsp");
             dispatcher.forward(request, response);
-        } catch (Exception e) {
+        } catch (ServletException | IOException e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Đã xảy ra lỗi hệ thống.");
             request.getRequestDispatcher("/pawfect").forward(request, response);

@@ -80,9 +80,21 @@ public class Order {
         this.status = status;
         this.finishDate = finishDate;
     }
-    
-    
 
+    public Order(int orderId, String reasonCancel, boolean requestCancel, String status) {
+        this.orderId = orderId;
+        this.reasonCancel = reasonCancel;
+        this.requestCancel = requestCancel;
+        this.status = status;
+    }
+
+    public Order(int orderId, String reasonCancel, String status) {
+        this.orderId = orderId;
+        this.reasonCancel = reasonCancel;
+        this.status = status;
+    }
+    
+   
     public int getOrderId() {
         return orderId;
     }
