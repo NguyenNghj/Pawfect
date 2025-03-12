@@ -62,6 +62,33 @@ public class LoginStaffServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Lấy danh sách cookie
+        Cookie[] cookies = request.getCookies();
+        String role = null;
+        String staffName = null;
+        String staffId = null;
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("staffRole".equals(cookie.getName())) {
+                    role = cookie.getValue();
+                } else if ("staffName".equals(cookie.getName())) {
+                    staffName = cookie.getValue();
+                } else if ("staffId".equals(cookie.getName())) {
+                    staffId = cookie.getValue();
+                }
+            }
+        }
+
+        if (role != null && staffName != null && staffId != null) {
+            if ("Staff".equals(role)) {
+                response.sendRedirect("dashboard/staff/dashboard");
+                return;
+            } else if ("Admin".equals(role)) {
+                response.sendRedirect("dashboard/admin/dashboard");
+                return;
+            }
+        }
         RequestDispatcher dispatcher = request.getRequestDispatcher("loginadmin.jsp");
         dispatcher.forward(request, response);
     }
@@ -101,9 +128,9 @@ public class LoginStaffServlet extends HttpServlet {
                 staffName.setMaxAge(60 * 60 * 24 * 1);
                 response.addCookie(staffName);
                 if (account.getRole().equals("Admin")) {
-                    response.sendRedirect("dashboard/admin/dashboard.jsp");
+                    response.sendRedirect("dashboard/admin/dashboard");
                 } else {
-                    response.sendRedirect("dashboard/staff/dashboard.jsp");
+                    response.sendRedirect("dashboard/staff/dashboard");
                 }
             } else {
                 response.sendRedirect("loginadmin.jsp?error=Invalid Credentials");

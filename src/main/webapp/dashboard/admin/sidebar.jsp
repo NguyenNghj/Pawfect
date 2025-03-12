@@ -82,7 +82,7 @@
     <div class="row" style="display: flex; justify-content: center">
 
         <div class="row logout-container">
-            <button type="button" class="btn btn-danger dangxuat" onclick="window.location.href = 'logoutstaff'">Đăng xuất</button>
+            <button type="button" class="btn btn-danger dangxuat" onclick="window.location.href = 'logoutadmin'">Đăng xuất</button>
         </div>
 
     </div>
