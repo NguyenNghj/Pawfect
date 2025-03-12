@@ -81,92 +81,93 @@
 
     <div class="row" style="display: flex; justify-content: center">
 
-        <button type="button" class="btn btn-danger" href="logoutadmin">Ðang xuất</button>
+        <div class="row logout-container">
+            <button type="button" class="btn btn-danger dangxuat" onclick="window.location.href = 'logoutstaff'">Đăng xuất</button>
+        </div>
 
     </div>
+</div>
+<%
+    Cookie[] cookies = request.getCookies();
+    String staffRole = "";
+    String staffName = "";
 
-    <%
-        Cookie[] cookies = request.getCookies();
-        String staffRole = "";
-        String staffName = "";
+    if (cookies != null) {
+        for (Cookie cookie : cookies) {
+            String name = cookie.getName();
+            String value = cookie.getValue();
 
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                String name = cookie.getName();
-                String value = cookie.getValue();
+            if ("staffRole".equals(name)) {
+                staffRole = value;
+            } else if ("staffName".equals(name)) {
+                staffName = value;
+            }
 
-                if ("staffRole".equals(name)) {
-                    staffRole = value;
-                } else if ("staffName".equals(name)) {
-                    staffName = value;
-                }
+            // Nếu đã lấy được cả hai giá trị thì thoát vòng lặp
+            if (!staffRole.isEmpty() && !staffName.isEmpty()) {
+                break;
+            }
+        }
+    }
+%>
 
-                // Nếu đã lấy được cả hai giá trị thì thoát vòng lặp
-                if (!staffRole.isEmpty() && !staffName.isEmpty()) {
-                    break;
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Lấy đường dẫn hiện tại
+        const currentPath = window.location.pathname.split("/").pop();
+
+        // Danh sách các trang và ID tương ứng
+        const navItems = {
+            "dashboard": "dashboard",
+            "product": "product",
+            "voucher": "voucher",
+            "category": "category",
+            "pethotel": "pethotel",
+            "profile": "profile",
+            "logout": "logout",
+            "staff": "staff",
+            "customers": "customers"
+        };
+
+        // Xóa lớp 'active' khỏi tất cả các navbar
+        document.querySelectorAll(".navbar").forEach(nav => {
+            nav.classList.remove("active");
+            let icon = nav.querySelector("i");
+            let span = nav.querySelector("span");
+            if (icon)
+                icon.style.color = "";
+            if (span)
+                span.style.color = "";
+        });
+
+        // Kiểm tra nếu trang hiện tại khớp với ID trong danh sách
+        if (navItems[currentPath]) {
+            let activeNav = document.getElementById(navItems[currentPath]);
+            if (activeNav) {
+                activeNav.classList.add("active");
+                let activeIcon = activeNav.querySelector("i");
+                let activeSpan = activeNav.querySelector("span");
+                if (activeIcon)
+                    activeIcon.style.color = "#fcdb51";
+                if (activeSpan)
+                    activeSpan.style.color = "#fcdb51";
+            }
+        }
+
+        // Kiểm tra nếu trang hiện tại là "staff" hoặc "customers" thì mở rộng accordion
+        if (currentPath === "staff" || currentPath === "customers") {
+            let accordion = document.getElementById("collapseOne");
+            if (accordion) {
+                accordion.classList.add("show"); // Mở rộng accordion
+
+                // Highlight mục con tương ứng
+                let activeSubNav = document.getElementById(navItems[currentPath]);
+                if (activeSubNav) {
+                    activeSubNav.classList.add("active");
+                    activeSubNav.style.fontWeight = "bold"; // Làm đậm chữ để dễ nhận diện hơn
                 }
             }
         }
-    %>
+    });
+</script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Lấy đường dẫn hiện tại
-            const currentPath = window.location.pathname.split("/").pop();
-
-            // Danh sách các trang và ID tương ứng
-            const navItems = {
-                "dashboard": "dashboard",
-                "product": "product",
-                "voucher": "voucher",
-                "category": "category",
-                "pethotel": "pethotel",
-                "profile": "profile",
-                "logout": "logout",
-                "staff": "staff",
-                "customers": "customers"
-            };
-
-            // Xóa lớp 'active' khỏi tất cả các navbar
-            document.querySelectorAll(".navbar").forEach(nav => {
-                nav.classList.remove("active");
-                let icon = nav.querySelector("i");
-                let span = nav.querySelector("span");
-                if (icon)
-                    icon.style.color = "";
-                if (span)
-                    span.style.color = "";
-            });
-
-            // Kiểm tra nếu trang hiện tại khớp với ID trong danh sách
-            if (navItems[currentPath]) {
-                let activeNav = document.getElementById(navItems[currentPath]);
-                if (activeNav) {
-                    activeNav.classList.add("active");
-                    let activeIcon = activeNav.querySelector("i");
-                    let activeSpan = activeNav.querySelector("span");
-                    if (activeIcon)
-                        activeIcon.style.color = "#fcdb51";
-                    if (activeSpan)
-                        activeSpan.style.color = "#fcdb51";
-                }
-            }
-
-            // Kiểm tra nếu trang hiện tại là "staff" hoặc "customers" thì mở rộng accordion
-            if (currentPath === "staff" || currentPath === "customers") {
-                let accordion = document.getElementById("collapseOne");
-                if (accordion) {
-                    accordion.classList.add("show"); // Mở rộng accordion
-
-                    // Highlight mục con tương ứng
-                    let activeSubNav = document.getElementById(navItems[currentPath]);
-                    if (activeSubNav) {
-                        activeSubNav.classList.add("active");
-                        activeSubNav.style.fontWeight = "bold"; // Làm đậm chữ để dễ nhận diện hơn
-                    }
-                }
-            }
-        });
-    </script>
-
-</div>
