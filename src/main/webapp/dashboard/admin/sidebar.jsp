@@ -70,7 +70,7 @@
         <nav class="navbar bg-body-tertiary" id="pethotel">                                            
             <a class="navbar-brand d-flex align-items-center gap-3" href="pethotel">
                 <i class="fa-solid fa-hotel fa-lg"></i>  
-                <span>Pet Hotel</span>
+                <span>Khách sạn thú cưng</span>
             </a>
         </nav>
     </div>
