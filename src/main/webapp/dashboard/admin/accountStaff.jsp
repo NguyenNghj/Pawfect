@@ -22,88 +22,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="../../css/dashboard.css">
         <title>Quản Lí Nhân Viên</title>
-        <style>
-            .main-dashboard-table-header {
-                background-color: #8C6E63; /* Màu nền */
-                padding: 12px 20px; /* Tạo khoảng cách giữa nội dung và viền */
-                border-radius: 8px; /* Bo góc nhẹ */
-                display: flex; /* Căn theo chiều ngang */
-                align-items: center; /* Căn giữa theo chiều dọc */
-                justify-content: center; /* Căn giữa nội dung */
-                gap: 10px; /* Khoảng cách giữa icon và tiêu đề */
-                color: white; /* Màu chữ */
-                font-weight: bold; /* Làm đậm chữ */
-            }
 
-            .main-dashboard-table-header i {
-                font-size: 22px; /* Kích thước icon */
-            }
-
-            .main-dashboard-table-header h4 {
-                margin: 0; /* Loại bỏ margin để tránh khoảng cách không cần thiết */
-                font-size: 20px; /* Điều chỉnh kích thước chữ */
-            }
-
-            /* Thiết kế cơ bản cho nút */
-            .delete-btn {
-                color: white;
-                background-color: red; /* Màu đỏ để cảnh báo */
-                padding: 8px 12px;
-                text-decoration: none;
-                border-radius: 5px;
-                font-weight: bold;
-                border: none;
-                cursor: pointer;
-                transition: background-color 0.3s ease-in-out;
-            }
-
-            /* Hiệu ứng khi di chuột vào */
-            .delete-btn:hover {
-                background-color: darkred; /* Đỏ đậm hơn khi hover */
-            }
-
-            /* Tạo khoảng cách giữa các nút nếu cần */
-            .delete-btn + .delete-btn {
-                margin-left: 10px;
-            }
-
-
-            .table th {
-                background-color: #f8f9fa;
-                font-weight: bold;
-            }
-            .edit-btn, .delete-btn {
-                display: inline-block;
-                padding: 6px 10px;
-                border-radius: 5px;
-                text-align: center;
-                min-width: 60px;
-            }
-
-            .edit-btn {
-                background-color: #007bff;
-                color: white;
-                text-decoration: none;
-            }
-
-            .edit-btn:hover {
-                background-color: #0056b3;
-            }
-
-            .delete-btn {
-                background-color: #dc3545;
-                color: white;
-                text-decoration: none;
-            }
-
-            .delete-btn:hover {
-                background-color: #a71d2a;
-            }
-
-
-
-
-        </style>
     </head>
     <body>
         <div class="container-fluid">
@@ -171,41 +90,39 @@
                         </div>
                     </div>
 
-                    <div class="row mt-2">
+                    <div class="row mt-2 bg-white p-3 d-flex align-items-center justify-content-center" 
+                         style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item" style="color: #6c757d;">Dashboard</li>
-                                <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Nhân Viên</li>
+                            <ol class="breadcrumb mb-0" style ="font-weight: bold;">
+                                <li class="breadcrumb-item">Dashboard</li>
+                                <li class="breadcrumb-item active" aria-current="page">Quản lí nhân viên</li>
                             </ol>
                         </nav>
-                    </div>   
+                    </div>         
 
-                    <div class="row">
-                        <div class="col-3 p-0" style="margin-top: 60px;">
+                    <div class="row d-flex align-items-center" style="margin-top: 30px;">
+                        <!-- Button Thêm Sản Phẩm -->
+                        <div class="col-md-6">
+                            <a href="/dashboard/admin/createproduct" class="btn btn-success">
+                                <i class="fa-solid fa-plus"></i> Tạo nhân viên
+                            </a>
+                        </div>
 
-
-                            <nav class="navbar navbar-light d-flex gap-2" style="background-color: #EEEEEE;">
-                                <a href="customers" class="btn btn-primary">Danh Sách Khách Hàng</a>
-                            </nav>
-
-
-
-
-
-                            <nav class="navbar navbar-light" style="background-color: #EEEEEE;">
-                                <a href="staffadd" class="btn btn-success">+ Thêm Nhân Viên</a>
-                            </nav>
-
-
-                        </div>        
+                        <!-- Form Tìm Kiếm -->
+                        <div class="col-md-6">
+                            <form action="product" method="get" class="d-flex">
+                                <label for="inputName" class="col-sm-2 col-form-label">Tìm kiếm:</label>
+                                <input name="search" type="search" class="form-control" id="inputName" placeholder="Tên nhân viên...">
+                            </form>
+                        </div>
                     </div>
                     <!-- Hiển THị List -->
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <div class="main-dashboard-table">
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
-                                 <i class="fa-solid fa-address-card" style="font-size: 22px;"></i>
+                                 style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">
+                                <i class="fa-solid fa-address-card"></i>
                                 <h4 class="mb-0">Danh Sách Nhân Viên</h4>
                             </div>
                             <div style="padding: 15px 15px 25px 15px;">
@@ -243,12 +160,11 @@
                                             <td><%= staff.getBirthDate()%></td>
                                             <td><%= staff.isActive() ? "Hoạt động" : "Đã nghỉ"%></td>
                                             <td>
-                                                <a href="editstaff?staffId=<%= staff.getStaffId()%>" class="edit-btn">Sửa</a> |
-                                                <a href="staffdelete?id=<%= staff.getStaffId()%>&action=delete" 
-                                                   class="delete-btn"
-                                                   onclick="return confirm('Bạn có chắc muốn xóa nhân viên này?');">
-                                                    Xóa
+                                                <a href="editstaff?staffId=<%= staff.getStaffId()%>" 
+                                                   class="btn btn-primary">
+                                                    Chỉnh sửa
                                                 </a>
+
                                             </td>
                                         </tr>
 
