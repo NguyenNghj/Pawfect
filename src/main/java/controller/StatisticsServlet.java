@@ -2,17 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package controller;
 
 import dao.ProductDAO;
 import dao.ViewFinancialStatisticsDAO;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Calendar;
 import java.util.List;
 import model.Product;
 import model.Staff;
@@ -21,38 +22,35 @@ import model.Staff;
  *
  * @author ADMIN
  */
-public class DashboardServlet extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
+public class StatisticsServlet extends HttpServlet {
+   
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DashboardServlet</title>");
+            out.println("<title>Servlet StatisticsServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DashboardServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet StatisticsServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    }
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
+    /** 
      * Handles the HTTP <code>GET</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -60,7 +58,7 @@ public class DashboardServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         ViewFinancialStatisticsDAO dao = new ViewFinancialStatisticsDAO();
         // Hiển thị tổng sản phẩm
         double Month1 = dao.getTotaMoneyByMonth(01);
@@ -142,6 +140,37 @@ public class DashboardServlet extends HttpServlet {
         request.setAttribute("Monthhh10", Monthhh10);
         request.setAttribute("Monthhh11", Monthhh11);
         request.setAttribute("Monthhh12", Monthhh12);
+         // Lấy tháng và năm hiện tại
+        Calendar cal = Calendar.getInstance();
+        int currentMonth = cal.get(Calendar.MONTH) + 1;
+        int currentYear = cal.get(Calendar.YEAR);
+
+        // Xác định tháng trước
+        int previousMonth = currentMonth - 1;
+        int previousYear = currentYear;
+        if (previousMonth == 0) {
+            previousMonth = 12;
+            previousYear -= 1;
+        }
+
+        // Lấy doanh thu của tháng hiện tại và tháng trước
+        double currentRevenue = dao.getTotaMoneyByMonthh(currentMonth);
+        double previousRevenue = dao.getTotaMoneyByMonthh(previousMonth);
+
+        // Tính % thay đổi doanh thu
+        double revenueChangePercent = 0;
+        String revenueChangeText;
+        if (previousRevenue > 0) {
+            revenueChangePercent = ((currentRevenue - previousRevenue) / previousRevenue) * 100;
+            revenueChangeText = String.format("%.2f", revenueChangePercent) + "%";
+        } else {
+            revenueChangeText = "Không có dữ liệu tháng trước";
+        }
+
+        // Gửi dữ liệu đến JSP
+        request.setAttribute("currentRevenue", currentRevenue);
+        request.setAttribute("previousRevenue", previousRevenue);
+        request.setAttribute("revenueChangePercent", revenueChangeText);
         
         ProductDAO productDAO = new ProductDAO();
         List<Product> topProducts = new ViewFinancialStatisticsDAO().getTopSellingProducts();
@@ -163,9 +192,8 @@ public class DashboardServlet extends HttpServlet {
         request.getRequestDispatcher("dashboard.jsp").forward(request, response);
     }
 
-    /**
+    /** 
      * Handles the HTTP <code>POST</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -173,13 +201,12 @@ public class DashboardServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
+    /** 
      * Returns a short description of the servlet.
-     *
      * @return a String containing servlet description
      */
     @Override
