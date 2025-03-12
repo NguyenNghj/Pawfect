@@ -8,9 +8,9 @@
 <div class="col-2 sidebar" id="sidebar">
     <div class="row pt-4 sidebar-brandName">
         <div class="col d-flex justify-content-center align-items-center gap-3">
-            <i class="fa-solid fa-paw fa-beat" style="font-size: 36px; color: #FFF2DF"></i>
+            <i class="fa-solid fa-paw fa-beat" style="font-size: 36px; color: white"></i>
             <span>
-                <h3 style="margin: 0; color: #FFF2DF">PAWFECT</h3>
+                <h3 style="margin: 0; color: white">PAWFECT</h3>
             </span>
         </div>
     </div>
@@ -132,12 +132,6 @@
         // Xóa lớp 'active' khỏi tất cả các navbar
         document.querySelectorAll(".navbar").forEach(nav => {
             nav.classList.remove("active");
-            let icon = nav.querySelector("i");
-            let span = nav.querySelector("span");
-            if (icon)
-                icon.style.color = "";
-            if (span)
-                span.style.color = "";
         });
 
         // Kiểm tra nếu trang hiện tại khớp với ID trong danh sách
@@ -145,12 +139,6 @@
             let activeNav = document.getElementById(navItems[currentPath]);
             if (activeNav) {
                 activeNav.classList.add("active");
-                let activeIcon = activeNav.querySelector("i");
-                let activeSpan = activeNav.querySelector("span");
-                if (activeIcon)
-                    activeIcon.style.color = "#fcdb51";
-                if (activeSpan)
-                    activeSpan.style.color = "#fcdb51";
             }
         }
 
@@ -164,10 +152,10 @@
                 let activeSubNav = document.getElementById(navItems[currentPath]);
                 if (activeSubNav) {
                     activeSubNav.classList.add("active");
-                    activeSubNav.style.fontWeight = "bold"; // Làm đậm chữ để dễ nhận diện hơn
                 }
             }
         }
     });
+
 </script>
 

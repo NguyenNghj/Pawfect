@@ -36,7 +36,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
 .logout-container {
     position: absolute;
     bottom: 20px;
-    left: 50%;
+    left: 55%;
     transform: translateX(-50%);
     width: 100%;
     text-align: center;
@@ -67,14 +67,24 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
 .navbar.bg-body-tertiary {
     background-color: unset !important;
     padding: 10px 0 10px 20px;
-
 }
 
 .navbar.bg-body-tertiary.active {
-    display: flex;
     align-items: center; /* Căn giữa theo chiều dọc */
-    border: 2px solid #fcdb51;
+    background: #F5E3CC  !important;
+    border-radius: 30px;
+    display: inline-flex; /* Sử dụng flexbox */
 }
+
+.navbar.bg-body-tertiary.active span{
+    font-weight: bold;
+    color: #8C6E63;
+}
+
+.navbar.bg-body-tertiary.active i{
+    color: #8C6E63;
+}
+
 .navbar.bg-body-tertiary:not(.active) a:hover {
     color: #fcdb51;
 }
@@ -118,6 +128,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
 .navbar-brand {
     color: #FFF2DF;
     font-size: 16px;
+}
+
+.navbar.active .navbar-brand {
+    color: #8C6E63 !important;
+    font-weight: bold;
 }
 
 

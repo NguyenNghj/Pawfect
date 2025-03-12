@@ -9,9 +9,9 @@
 <div class="col-2 sidebar" id="sidebar">
     <div class="row pt-4 sidebar-brandName">
         <div class="col d-flex justify-content-center align-items-center gap-3">
-            <i class="fa-solid fa-paw fa-beat" style="font-size: 36px; color: #FFF2DF"></i>
+            <i class="fa-solid fa-paw fa-beat" style="font-size: 36px; color: white"></i>
             <span>
-                <h3 style="margin: 0; color: #FFF2DF">PAWFECT</h3>
+                <h3 style="margin: 0; color: white">PAWFECT</h3>
             </span>
         </div>
     </div>
