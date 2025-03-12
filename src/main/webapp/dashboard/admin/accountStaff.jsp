@@ -23,6 +23,7 @@
         <link rel="stylesheet" href="../../css/dashboard.css">
         <title>Quản Lí Nhân Viên</title>
 
+   
     </head>
     <body>
         <div class="container-fluid">
@@ -104,7 +105,7 @@
                         <!-- Button Thêm Sản Phẩm -->
                         <div class="col-md-6">
                             <a href="/dashboard/admin/createproduct" class="btn btn-success">
-                                <i class="fa-solid fa-plus"></i> Tạo nhân viên
+                                <i class="fa-solid fa-plus"></i> Thêm Nhân Viên
                             </a>
                         </div>
 
@@ -115,6 +116,12 @@
                                 <input name="search" type="search" class="form-control" id="inputName" placeholder="Tên nhân viên...">
                             </form>
                         </div>
+
+                            <nav class="navbar navbar-light d-flex gap-2" style="background-color: #EEEEEE;">
+                                <a href="customers" class="btn btn-primary">Danh Sách Khách Hàng</a>
+                            </nav>
+
+                        </div>        
                     </div>
                     <!-- Hiển THị List -->
 
@@ -160,9 +167,11 @@
                                             <td><%= staff.getBirthDate()%></td>
                                             <td><%= staff.isActive() ? "Hoạt động" : "Đã nghỉ"%></td>
                                             <td>
-                                                <a href="editstaff?staffId=<%= staff.getStaffId()%>" 
-                                                   class="btn btn-primary">
-                                                    Chỉnh sửa
+                                                <a href="editstaff?staffId=<%= staff.getStaffId()%>" class="edit-btn">Chỉnh sửa</a> |
+                                                <a href="staffdelete?id=<%= staff.getStaffId()%>&action=delete" 
+                                                   class="delete-btn"
+                                                   onclick="return confirm('Bạn có chắc muốn xóa nhân viên này?');">
+                                                    Xóa
                                                 </a>
 
                                             </td>

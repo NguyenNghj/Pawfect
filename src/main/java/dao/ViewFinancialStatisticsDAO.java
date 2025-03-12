@@ -153,4 +153,22 @@ String sql = "SELECT TOP 5 p.product_id, p.product_name, p.product_price, p.prod
     }
     return 0;
 }
+            public double getRevenue(int month, int year) {
+        String sql = "SELECT SUM(o.total_amount-sm.shipping_fee)"
+                + "FROM Orders o"
+                + "JOIN ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id"
+                + "WHERE MONTH(order_date) = ? AND YEAR(order_date) = ? AND status = 'Hoàn thành';";
+
+        try ( PreparedStatement st = conn.prepareStatement(sql)) {
+            st.setInt(1, month);
+            st.setInt(2, year);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble(1); // Trả về tổng doanh thu đã trừ phí ship
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

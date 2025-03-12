@@ -21,7 +21,7 @@
 
     <div class="row">                  
         <nav class="navbar bg-body-tertiary" id="dashboard">                                    
-            <a class="navbar-brand d-flex align-items-center gap-3" href="dashboard">
+            <a class="navbar-brand d-flex align-items-center gap-3" href="statistics">
                 <i class="fa-solid fa-chart-line fa-lg"></i> 
                 <span>Thống kê</span>
             </a>
