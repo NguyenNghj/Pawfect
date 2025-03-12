@@ -106,7 +106,7 @@
                     %>
                     <div class="editroom" style="background-color: white;" method="post">
                         <br>
-                        <form id="editRoomForm" action="editroom" method="post" style="max-width: 400px; margin:  auto;" >
+                        <form id="editRoomForm" action="editpethotel" method="post" style="max-width: 400px; margin:  auto;" >
                             <input type="hidden" name="room_id" value="<%= room.getRoomId()%>">
 
                             <label>Tên phòng:</label>
