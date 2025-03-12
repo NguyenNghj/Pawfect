@@ -201,7 +201,7 @@
                                         </li>
                                         <li class="profile-img-info2 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-right-from-bracket" style="font-size: 20px;"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="#">Logout</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="logoutadmin">Logout</a>
                                         </li>
                                     </div>
                                 </ul>
