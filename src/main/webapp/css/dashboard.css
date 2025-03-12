@@ -53,7 +53,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
 }
 
 .navbar.bg-body-tertiary.active {
-    background-color: #D3A376 !important;
+    /*    background-color: #D3A376 !important;*/
 }
 
 .navbar.bg-body-tertiary:not(.active) a:hover {
@@ -85,7 +85,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
 }
 
 .navbar-brand {
-    color: #D3A376;
+    color: #FFF2DF;
     font-size: 16px;
 }
 
@@ -293,4 +293,8 @@ body, h1, h2, h3, h4, h5, h6, p, a, span, button, .breadcrumb-item, .navbar-bran
 .page-link:hover {
     color: #FFE0B2;
     border-color: #FFE0B2;
+}
+
+.btn-danger{
+    width: 200px;
 }
