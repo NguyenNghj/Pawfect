@@ -18,12 +18,15 @@
     <body>
         <div class="container py-4">
             <!-- Breadcrumb -->
-            <nav aria-label="breadcrumb" class="mb-4">
-                <ol class="breadcrumb p-3" style="background-color: white; border-radius: 5px;">
-                    <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Tài khoản</li>
-                </ol>
-            </nav>
+            <div class="row mt-2 bg-white p-3 mb-3 d-flex align-items-center justify-content-center" 
+                 style="border-radius: 20px; height: 60px;">
+                <nav padding: 0 5px;" aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0" style ="font-weight: bold;">
+                        <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Tài khoản</li>
+                    </ol>
+                </nav>
+            </div>
 
             <div class="row g-4">
                 <!-- Main Content -->
