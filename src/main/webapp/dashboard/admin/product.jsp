@@ -85,12 +85,12 @@
                         </div>
                     </div>
 
-                    <div class="row mt-2">
+                    <div class="row mt-2 bg-white p-3 d-flex align-items-center justify-content-center" 
+                         style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
-                            <ol class="breadcrumb">
+                            <ol class="breadcrumb mb-0" style ="font-weight: bold;">
                                 <li class="breadcrumb-item">Dashboard</li>
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Product</li>
+                                <li class="breadcrumb-item active" aria-current="page">Quản lí sản phẩm</li>
                             </ol>
                         </nav>
                     </div>   

@@ -14,11 +14,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
 
 #main {
     background-color: #eee;
+    margin-left: 250px; /* Đẩy nội dung sang phải để không bị che */
+    padding: 20px;
+    width: calc(100vw - 250px); /* Giữ nội dung vừa với phần còn lại */
+     height: 100vh;
 }
-
 .sidebar {
     background: #8C6E63;
-    height: 100vh;
+    height: 100vh; /* Chiếm toàn bộ chiều cao màn hình */
+    position: fixed; /* Giữ cố định khi cuộn */
+    top: 0;
+    left: 0;
+    width: 250px;
+    z-index: 1000; /* Đảm bảo sidebar không bị che */
 }
 
 .sidebar-brandName {
@@ -33,7 +41,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
 }
 
 .breadcrumb-item.active {
-    color: #3c91e6;
+    color: #D3A376;
 }
 
 .breadcrumb .breadcrumb-item a {
