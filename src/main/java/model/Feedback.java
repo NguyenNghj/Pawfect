@@ -17,6 +17,7 @@ public class Feedback {
     private int customerId;
     private int staffId;
     private int productId;
+    private int orderId;
     private String customerName;
     private String staffName;
     private String productName;
@@ -30,11 +31,12 @@ public class Feedback {
     public Feedback() {
     }
 
-    public Feedback(int feedbackId, int customerId, int staffId, int productId, String customerName, String staffName, String productName, int rating, String comment, String reply, String imagePath, Timestamp feedbackDate, boolean isVisible) {
+    public Feedback(int feedbackId, int customerId, int staffId, int productId, int orderId, String customerName, String staffName, String productName, int rating, String comment, String reply, String imagePath, Timestamp feedbackDate, boolean isVisible) {
         this.feedbackId = feedbackId;
         this.customerId = customerId;
         this.staffId = staffId;
         this.productId = productId;
+        this.orderId = orderId;
         this.customerName = customerName;
         this.staffName = staffName;
         this.productName = productName;
@@ -45,6 +47,17 @@ public class Feedback {
         this.feedbackDate = feedbackDate;
         this.isVisible = isVisible;
     }
+
+    public Feedback(int customerId, int productId, int orderId, int rating, String comment, String imagePath) {
+        this.customerId = customerId;
+        this.productId = productId;
+        this.orderId = orderId;
+        this.rating = rating;
+        this.comment = comment;
+        this.imagePath = imagePath;
+    }
+    
+    
 
     public int getFeedbackId() {
         return feedbackId;
@@ -76,6 +89,14 @@ public class Feedback {
 
     public void setProductId(int productId) {
         this.productId = productId;
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 
     public String getCustomerName() {
@@ -150,5 +171,7 @@ public class Feedback {
     public void setIsVisible(boolean isVisible) {
         this.isVisible = isVisible;
     }
+
+
 
 }

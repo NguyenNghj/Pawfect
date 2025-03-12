@@ -63,6 +63,7 @@ public class FeedbackDAO {
             + "    f.customer_id,\n"
             + "    f.staff_id,\n"
             + "    f.product_id,\n"
+            + "    f.order_id,\n"
             + "    c.full_name AS customer_name,\n"
             + "    s.full_name AS staff_name,\n"
             + "    p.product_name,\n"
@@ -124,6 +125,7 @@ public class FeedbackDAO {
             + "    f.customer_id,\n"
             + "    f.staff_id,\n"
             + "    f.product_id,\n"
+            + "    f.order_id,\n"
             + "    c.full_name AS customer_name,\n"
             + "    s.full_name AS staff_name,\n"
             + "    p.product_name,\n"
@@ -207,6 +209,7 @@ public class FeedbackDAO {
                         rs.getInt("customer_id"),
                         rs.getInt("staff_id"),
                         rs.getInt("product_id"),
+                        rs.getInt("order_id"),
                         rs.getString("customer_name"),
                         rs.getString("staff_name"),
                         rs.getString("product_name"),
@@ -294,6 +297,7 @@ public class FeedbackDAO {
                         rs.getInt("customer_id"),
                         rs.getInt("staff_id"),
                         rs.getInt("product_id"),
+                        rs.getInt("order_id"),
                         rs.getString("customer_name"),
                         rs.getString("staff_name"),
                         rs.getString("product_name"),
@@ -338,6 +342,7 @@ public class FeedbackDAO {
                         rs.getInt("customer_id"),
                         rs.getInt("staff_id"),
                         rs.getInt("product_id"),
+                        rs.getInt("order_id"),
                         rs.getString("customer_name"),
                         rs.getString("staff_name"),
                         rs.getString("product_name"),
@@ -367,17 +372,17 @@ public class FeedbackDAO {
         return list;
     }
 
-    public static boolean addFeedback(int customerId, int productId, int orderId, int rating, String comment, String image_path) {
+    public static boolean addFeedback(Feedback feedback) {
         boolean rs = false;
         try {
             Con = new DBContext().getConnection();
             PreparedStatement ps = Con.prepareStatement(Add_Feedback);
-            ps.setInt(1, customerId);
-            ps.setInt(2, productId);
-            ps.setInt(3, orderId);
-            ps.setInt(4, rating);
-            ps.setString(5, comment);
-            ps.setString(6, image_path);
+            ps.setInt(1, feedback.getCustomerId());
+            ps.setInt(2, feedback.getProductId());
+            ps.setInt(3, feedback.getOrderId());
+            ps.setInt(4, feedback.getRating());
+            ps.setString(5, feedback.getComment());
+            ps.setString(6, feedback.getImagePath());
             rs = ps.executeUpdate() > 0;
             ps.close();
         } catch (SQLException e) {
@@ -409,6 +414,7 @@ public class FeedbackDAO {
                         rs.getInt("customer_id"),
                         rs.getInt("staff_id"),
                         rs.getInt("product_id"),
+                        rs.getInt("order_id"),
                         rs.getString("customer_name"),
                         rs.getString("staff_name"),
                         rs.getString("product_name"),
@@ -480,6 +486,7 @@ public class FeedbackDAO {
                         rs.getInt("customer_id"),
                         rs.getInt("staff_id"),
                         rs.getInt("product_id"),
+                        rs.getInt("order_id"),
                         rs.getString("customer_name"),
                         rs.getString("staff_name"),
                         rs.getString("product_name"),
@@ -522,6 +529,7 @@ public class FeedbackDAO {
                         rs.getInt("customer_id"),
                         rs.getInt("staff_id"),
                         rs.getInt("product_id"),
+                        rs.getInt("order_id"),
                         rs.getString("customer_name"),
                         rs.getString("staff_name"),
                         rs.getString("product_name"),

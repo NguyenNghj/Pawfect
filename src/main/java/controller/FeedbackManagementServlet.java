@@ -204,8 +204,9 @@ public class FeedbackManagementServlet extends HttpServlet {
             // Lay orderId don hang da hoan thanh gan nhat co san pham do
             int orderId = OrderDAO.getLastCompleteOrder(intCustomerId, formatProductId);
 
+            Feedback feedback = new Feedback(intCustomerId, formatProductId, orderId, formatRating, comment, imagePath);
             // Xử lý đánh giá (giả sử cập nhật thành công)
-            boolean update = FeedbackDAO.addFeedback(intCustomerId, formatProductId, orderId, formatRating, comment, imagePath);
+            boolean update = FeedbackDAO.addFeedback(feedback);
             if (update) {
                 System.out.println("Đánh giá thành công.");
                 response.setContentType("text/html");
