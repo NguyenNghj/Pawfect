@@ -5,7 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<div class="col-2" id="sidebar">
+<div class="col-2 sidebar" id="sidebar">
     <div class="row pt-4 sidebar-brandName">
         <div class="col d-flex justify-content-center align-items-center gap-3">
             <i class="fa-solid fa-paw fa-beat" style="font-size: 36px;"></i>
@@ -31,11 +31,6 @@
                 </h2>
                 <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample1">
                     <div class="accordion-body">
-                        <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;">
-                            <div class="container-fluid">
-                                <a class="navbar-brand" href="admin">Quản trị viên</a>
-                            </div>
-                        </nav>
                         <nav class="navbar bg-body-tertiary" style="padding-bottom: 0;">
                             <div class="container-fluid">
                                 <a class="navbar-brand" href="staff">Nhân viên</a>
@@ -68,7 +63,7 @@
                 <span>Thể loại sản phẩm</span>
             </a>
         </nav>
-        <nav class="navbar bg-body-tertiary" id="petroom">                                            
+        <nav class="navbar bg-body-tertiary" id="pethotel">                                            
             <a class="navbar-brand d-flex align-items-center gap-3" href="pethotel">
                 <i class="fa-solid fa-hotel fa-lg"></i>  
                 <span>Pet Hotel</span>
@@ -130,7 +125,7 @@
                 "product": "product",
                 "voucher": "voucher",
                 "category": "category",
-                "petroom": "petroom",
+                "pethotel": "pethotel",
                 "profile": "profile",
                 "logout": "logout"
             };

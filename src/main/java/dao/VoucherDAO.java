@@ -49,7 +49,7 @@ public class VoucherDAO {
         }
         return voucherList;
     }
-    
+
     public Voucher getVoucherByCode(String voucherCode) {
         String query = "SELECT voucher_id, code, description, discount_percentage, discount_amount, min_order_value, max_discount, start_date, end_date, is_active "
                 + "FROM Voucher WHERE code = ?";

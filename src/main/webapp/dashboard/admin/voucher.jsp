@@ -95,13 +95,21 @@
                         </nav>
                     </div>   
 
-                    <div class="row">
-                        <div class="col-3 p-0" style="margin-top: 60px;">
-                            <a href="/dashboard/admin/createvoucher" type="button" class="btn btn-success">
-                                <i class="fa-solid fa-plus"></i>
-                                Tạo mã giảm giá
+                    <div class="row d-flex align-items-center" style="margin-top: 30px;">
+  
+                        <div class="col-md-6">
+                            <a href="createvoucher" class="btn btn-success">
+                                <i class="fa-solid fa-plus"></i> Tạo mã giảm giá
                             </a>
-                        </div>        
+                        </div>
+
+ 
+                        <div class="col-md-6">
+                            <form action="voucher" method="get" class="d-flex">
+                                <label for="inputName" class="col-sm-2 col-form-label">Tìm kiếm:</label>
+                                <input name="search" type="search" class="form-control" id="inputName" placeholder="Tên mã giảm giá...">
+                            </form>
+                        </div>
                     </div>
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
