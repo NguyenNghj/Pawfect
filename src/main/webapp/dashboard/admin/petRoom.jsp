@@ -91,16 +91,31 @@
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item" style="color: #6c757d;">Dashboard</li>
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">PetHotels</li>
+                                <li class="breadcrumb-item active" aria-current="page">Khách sạn thú cưng</li>
                             </ol>
                         </nav>
                     </div>   
 
-                    <button class="btn btn-success" onclick="window.location.href = 'createpethotel'">
-                        <i class="fa fa-plus"></i> Thêm Phòng
-                    </button>
+                    <div class="row d-flex align-items-center" style="margin-top: 30px;">
 
+                        <div class="col-md-6">
+                            <a href="createpethotel" class="btn btn-success">
+                                <i class="fa-solid fa-plus"></i> Tạo phòng thú cưng
+                            </a>
+                        </div>
 
+                        <!-- Form Tìm Kiếm -->
+                        <div class="col-md-6">
+                            <form action="pethotel" method="get" class="d-flex">
+                                <label for="inputName" class="col-sm-2 col-form-label">Tìm kiếm:</label>
+                                <input name="search" type="search" class="form-control" id="inputName" placeholder="Tên Pet Hotel...">
+                            </form>
+                        </div>
+                    </div>
+
+                    <!--                    <button class="btn btn-success" onclick="window.location.href = 'createpethotel'">
+                                            <i class="fa fa-plus"></i> Thêm Phòng
+                                        </button>-->
 
 
                     <%
@@ -153,46 +168,11 @@
                                             </td>
 
                                             <td style="width: 12%;">
-                                                <button type="button" class="btn btn-primary" onclick="editRoom(<%= room.getRoomId()%>)">Sửa</button>
+                                                <button type="button" class="btn btn-primary" onclick="editRoom(<%= room.getRoomId()%>)">Chỉnh sửa</button>
                                                 <script>
                                                     function editRoom(roomId) {
                                                         window.location.href = 'editpethotel?room_id=' + roomId;
                                                     }
-                                                </script>
-
-                                                <!-- Nút Xóa -->
-                                                <button type="button" class="btn btn-danger btn-sm" 
-                                                        onclick="confirmDelete('<%= room.getRoomId()%>')">
-                                                    <i class="fa fa-trash"></i> Xóa
-                                                </button>
-
-                                                <script>
-                                                    function confirmDelete(roomId) {
-                                                        Swal.fire({
-                                                            title: `Bạn có chắc chắn muốn xóa phòng có ID ${roomId} không?`,
-                                                            text: "Hành động này không thể hoàn tác!",
-                                                            icon: "warning",
-                                                            showCancelButton: true,
-                                                            confirmButtonColor: "#007BFF",
-                                                            cancelButtonColor: "#DC3545",
-                                                            confirmButtonText: "Có, xóa phòng",
-                                                            cancelButtonText: "Hủy, quay lại"
-                                                        }).then((result) => {
-                                                            if (result.isConfirmed) {
-                                                                let form = document.createElement("form");
-                                                                form.method = "POST";
-                                                                form.action = "/deleteroom";
-                                                                let input = document.createElement("input");
-                                                                input.type = "hidden";
-                                                                input.name = "roomId";
-                                                                input.value = roomId;
-                                                                form.appendChild(input);
-                                                                document.body.appendChild(form);
-                                                                form.submit();
-                                                            }
-                                                        });
-                                                    }
-
                                                 </script>
 
                                             </td>
