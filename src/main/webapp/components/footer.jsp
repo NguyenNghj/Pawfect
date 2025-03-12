@@ -21,7 +21,7 @@
                     <div class="col-auto">
                         <h4 class="footer-title">Về chúng tôi</h4>
                         <ul class="links">
-                            <li><a href="">Giới thiệu</a></li>
+                            <li><a href="aboutus.jsp">Giới thiệu</a></li>
                             <li><a href="register">Đăng ký thành viên</a></li>
                             <li><a href="https://mail.google.com/mail/u/0/?view=cm&to=pawfectg3@gmail.com" target="_blank">Liên hệ</a></li>
                         </ul>
@@ -45,7 +45,7 @@
                             </ul>
                         </div>
                         <div>
-                            <h4 class="footer-title mb-2 mt-3">Kết nối với chúng tôi</h4>
+                            <h4 class="footer-title mb-2 mt-4">Kết nối với chúng tôi</h4>
                             <div class="social-icon p-0 d-flex align-items-center gap-2">
                                 <a class="btn" href="https://www.facebook.com/GemNghj?locale=vi_VN">
                                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/900px-Facebook_Logo_%282019%29.png" alt="">
@@ -69,7 +69,7 @@
                     </div>
                 </div>
                 <div class="row footer-end">
-                    <span class="text-center">Copyright 2025 © Bản quyền thuộc về PawPect | Cung cấp bởi Group 3</span>       
+                    <span class="text-center text-light">Copyright 2025 © Bản quyền thuộc về PawPect | Cung cấp bởi Group 3</span>       
                 </div>
 
             </div>
