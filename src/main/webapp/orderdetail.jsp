@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@include file="./components/header.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -179,7 +180,7 @@
                                                     <span>Địa chỉ: ${o.address}</span>
                                                     <span></span>
                                                 </div>
-              
+
                                             </div>
                                             <div class="col-md-5">
                                                 <h6 style="margin-bottom: 3px;">Phương thức giao hàng</h6>

@@ -5,6 +5,7 @@
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@include file="./components/header.jsp" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -69,24 +70,28 @@
                     <!-- Orders Section -->
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title mb-4">Thú cưng của bạn</h5>
-                            <div>
-                                <a href="createpet" style="text-decoration: none;">
-                                    <button style="background-color: #8C6E63; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 16px; cursor: pointer;">
-                                        Thêm thú cưng
-                                    </button>
-                                </a>
-                            </div>   
+                            <div class="" style="display: flex; align-items: center; justify-content: space-between;">
+                                <h5 class="card-title mb-4">Thú cưng của bạn</h5>
+                                <div class="mb-4" style="margin-left: auto;">
+                                    <a href="createpet" style="text-decoration: none;">
+                                        <button style="background-color: #8C6E63; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-size: 16px; cursor: pointer;">
+                                            Thêm thú cưng
+                                        </button>
+                                    </a>
+                                </div>
+                            </div>
+
+
                             <!-- Order Tabs -->
                             <ul class="nav nav-tabs mb-4">
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="#" data-filter="all">Tất cả</a>
+                                    <a class="nav-link active" href="#" data-filter="all" style = "font-weight: bold; border-width: 2px;">Tất cả</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#" data-filter="Chó">Chó</a>
+                                    <a class="nav-link" href="#" data-filter="Chó" style = "font-weight: bold; border-width: 2px;">Chó</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#" data-filter="Mèo">Mèo</a>
+                                    <a class="nav-link" href="#" data-filter="Mèo" style = "font-weight: bold; border-width: 2px;">Mèo</a>
                                 </li>
                             </ul>
 
@@ -253,7 +258,7 @@
                         </a>
                         <a href="viewpet" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-solid fa-paw fa-lg" style="color: #8C6E63;"></i>
-                            <span style="color: #1c49c2;"><b>Thú cưng của tôi</b></span>
+                            <span style="color: #D3A376;"><b>Thú cưng của tôi</b></span>
                         </a>
                         <c:if test="${customer.email != null and fn:contains(customer.email, '@')}">
                             <a href="changepassword" class="list-group-item list-group-item-action d-flex align-items-center gap-3">

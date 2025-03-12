@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@include file="./components/header.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -77,26 +78,26 @@
                         <div class="card-body">
                             <h5 class="card-title mb-4">Lịch đã đặt của bạn</h5>
 
-                            <!-- Bộ lọc trạng thái -->
+
                             <!-- Bộ lọc trạng thái -->
                             <ul class="nav nav-tabs mb-4">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-status="all" style="cursor: pointer;">Tất cả</a>
+                                    <a class="nav-link active" data-status="all" style="cursor: pointer; font-weight: bold; border-width: 2px;">Tất cả</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-status="Đã duyệt" style="cursor: pointer;">Đã duyệt</a>
+                                    <a class="nav-link" data-status="Đã duyệt" style="cursor: pointer; font-weight: bold; border-width: 2px;">Đã duyệt</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-status="Chờ xác nhận"style="cursor: pointer;">Chờ xác nhận</a>
+                                    <a class="nav-link" data-status="Chờ xác nhận"style="cursor: pointer; font-weight: bold; border-width: 2px;">Chờ xác nhận</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link " data-status="Đã hủy" style="cursor: pointer;">Đã hủy</a>
+                                    <a class="nav-link " data-status="Đã hủy" style="cursor: pointer; font-weight: bold; border-width: 2px;">Đã hủy</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-status="Đã nhận phòng" style="cursor: pointer;">Đã nhận phòng</a>
+                                    <a class="nav-link" data-status="Đã nhận phòng" style="cursor: pointer; font-weight: bold; border-width: 2px;">Đã nhận phòng</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-status="Đã trả phòng" style="cursor: pointer;">Đã trả phòng</a>
+                                    <a class="nav-link" data-status="Đã trả phòng" style="cursor: pointer; font-weight: bold; border-width: 2px;">Đã trả phòng</a>
                                 </li>
                             </ul>
 
@@ -156,7 +157,7 @@
                             <!-- Thông tin cá nhân -->
                             <a href="profile" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                                 <i class="fa-regular fa-user fa-lg" style="color: #0062ad;"></i>
-                                <span style="color: #1c49c2;"><b>Thông tin cá nhân</b></span>
+                                <span>Thông tin cá nhân</span>
                             </a>
                             <!-- Thú cưng của tôi -->
                             <a href="viewpet" class="list-group-item list-group-item-action d-flex align-items-center gap-3">

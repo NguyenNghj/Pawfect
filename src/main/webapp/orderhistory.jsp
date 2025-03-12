@@ -8,6 +8,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@include file="./components/header.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,7 +21,7 @@
     <body>
         <div class="container py-4">
             <!-- Breadcrumb -->
-            <div class="row mt-2 bg-white p-3 mb-3 d-flex align-items-center justify-content-center" 
+            <div class="row mt-2 bg-white p-3 mb-4 d-flex align-items-center justify-content-center" 
                  style="border-radius: 20px; height: 60px;">
                 <nav padding: 0 5px;" aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0" style ="font-weight: bold;">
@@ -71,30 +72,30 @@
                     <!-- Orders Section -->
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title mb-4">Đơn hàng của bạn</h5>
+                            <h5 class="card-title mb-4" >Đơn hàng của bạn</h5>
 
                             <!-- Order Tabs -->
                             <ul class="nav nav-tabs mb-4">
                                 <li class="nav-item">
-                                    <a class="nav-link <c:if test="${orderStatus == 'tc'}">active</c:if>" href="order?&action=view&status=tc"">Tất cả</a>
+                                    <a class="nav-link <c:if test="${orderStatus == 'tc'}">active</c:if>" href="order?&action=view&status=tc" style="font-weight: bold; border-width: 2px;">Tất cả</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link <c:if test="${orderStatus == 'cxn'}">active</c:if>" href="order?&action=view&status=cxn">Chờ xác nhận</a>
+                                        <a class="nav-link <c:if test="${orderStatus == 'cxn'}">active</c:if>" href="order?&action=view&status=cxn" style="font-weight: bold; border-width: 2px;">Chờ xác nhận</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link <c:if test="${orderStatus == 'clh'}">active</c:if>" href="order?&action=view&status=clh">Chờ lấy hàng</a>
+                                        <a class="nav-link <c:if test="${orderStatus == 'clh'}">active</c:if>" href="order?&action=view&status=clh" style="font-weight: bold; border-width: 2px;">Chờ lấy hàng</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link <c:if test="${orderStatus == 'cgh'}">active</c:if>" href="order?&action=view&status=cgh">Chờ giao hàng</a>
+                                        <a class="nav-link <c:if test="${orderStatus == 'cgh'}">active</c:if>" href="order?&action=view&status=cgh" style="font-weight: bold; border-width: 2px;">Chờ giao hàng</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link <c:if test="${orderStatus == 'ht'}">active</c:if>" href="order?&action=view&status=ht">Hoàn thành</a>
+                                        <a class="nav-link <c:if test="${orderStatus == 'ht'}">active</c:if>" href="order?&action=view&status=ht" style="font-weight: bold; border-width: 2px;">Hoàn thành</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link <c:if test="${orderStatus == 'ych'}">active</c:if>" href="order?&action=view&status=ych">Yêu cầu huỷ</a>
+                                        <a class="nav-link <c:if test="${orderStatus == 'ych'}">active</c:if>" href="order?&action=view&status=ych" style="font-weight: bold; border-width: 2px;">Yêu cầu huỷ</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link <c:if test="${orderStatus == 'dh'}">active</c:if>" href="order?&action=view&status=dh">Đã huỷ</a>
+                                        <a class="nav-link <c:if test="${orderStatus == 'dh'}">active</c:if>" href="order?&action=view&status=dh" style="font-weight: bold; border-width: 2px;">Đã huỷ</a>
                                     </li>
                                 </ul>
 

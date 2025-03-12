@@ -5,6 +5,7 @@
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@include file="./components/header.jsp" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -18,13 +19,12 @@
     <body>
         <div class="container py-4">
             <!-- Breadcrumb -->
-            <div class="row mt-2 bg-white p-3 d-flex align-items-center justify-content-center mb-4" 
+            <div class="row mt-2 bg-white p-3 mb-4 d-flex align-items-center justify-content-center" 
                  style="border-radius: 20px; height: 60px;">
-                <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
+                <nav padding: 0 5px;" aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0" style ="font-weight: bold;">
-                        <li class="breadcrumb-item">Dashboard</li>
-                        <li class="breadcrumb-item">Nhân viên</li>
-                        <li class="breadcrumb-item active" aria-current="page">Hồ sơ người dùng</li>
+                        <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Thêm thú cưng</li>
                     </ol>
                 </nav>
             </div>
@@ -139,7 +139,7 @@
                                                 <input type="number" name="petWeight" value="" class="form-control" step="0.01">
                                                 <span id="petWeightError" class="text-danger"></span>
                                             </div>
-
+                                            
                                             <!-- Sinh nhật -->
                                             <div class="mb-3">
                                                 <label class="form-label">Sinh nhật</label>
@@ -149,8 +149,8 @@
                                         </div>
 
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                            <button type="submit" class="btn btn-success">Thêm</button>
+                                            <button type="submit" class="btn btn-success me-2">Thêm</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="window.location.href = 'viewpet'">Trở lại</button>
                                         </div>
                                     </div>
                                 </div>
@@ -171,7 +171,7 @@
                         </a>
                         <a href="viewpet" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-solid fa-paw fa-lg" style="color: #8C6E63;"></i>
-                            <span style="color: #1c49c2;"><b>Thú cưng của tôi</b></span>
+                            <span style="color: #D3A376;"><b>Thú cưng của tôi</b></span>
                         </a>
                         <c:if test="${customer.email != null and fn:contains(customer.email, '@')}">
                             <a href="changepassword" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
