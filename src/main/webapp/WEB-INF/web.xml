@@ -8,7 +8,7 @@
         <filter-name>CustomerFillter</filter-name>
         <url-pattern>/dashboard/*</url-pattern>
     </filter-mapping>
-     <filter>
+    <filter>
         <filter-name>CustomerFillter</filter-name>
         <filter-class>Fillter.CustomerFillter</filter-class>
     </filter>
@@ -106,7 +106,7 @@
     </servlet>
     <servlet>
         <servlet-name>AddPetHotelServlet</servlet-name>
-        <servlet-class>controller.AddPetHotelServlet</servlet-class>
+        <servlet-class>controller.CreatePetHotelServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>EditPetHotelServlet</servlet-name>

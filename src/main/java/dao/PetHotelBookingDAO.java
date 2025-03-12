@@ -27,6 +27,7 @@ public class PetHotelBookingDAO {
     protected static final String Cancel_Booking = "UPDATE PetHotelBookings SET status = N'Đã hủy' WHERE booking_id = ? AND is_active = 1";
     protected static final String Create_Booking = "INSERT INTO PetHotelBookings (room_id, customer_id, pet_id, check_in, check_out, total_price, note, status, booking_date, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), 1)";
     protected static final String Delete_Booking = "UPDATE PetHotelBookings SET is_active = 0 WHERE booking_id = ?";
+    protected static final String Search_Bookings_By_Customer_Name = Get_All_Bookings + " AND c.full_name LIKE ?";
 
     // Lấy danh sách tất cả Booking
     public static List<PetHotelBooking> getAllBookings() {
@@ -105,7 +106,7 @@ public class PetHotelBookingDAO {
         return null;
     }
 
-    public static boolean updateBookingStatus(int bookingId, String status, int petId) {
+    public static boolean updateBookingStatus(int bookingId, String status, int petId, int staffId) {
         boolean success = false;
         Connection con = null;
         PreparedStatement ps = null;
@@ -115,27 +116,27 @@ public class PetHotelBookingDAO {
             con = new DBContext().getConnection();
             con.setAutoCommit(false); // Bắt đầu transaction
 
-            // Cập nhật trạng thái booking
-            String updateBookingQuery = "UPDATE PetHotelBookings SET status = ? WHERE booking_id = ?";
+            // Cập nhật trạng thái booking và staffId
+            String updateBookingQuery = "UPDATE PetHotelBookings SET status = ?, staff_id = ? WHERE booking_id = ?";
             ps = con.prepareStatement(updateBookingQuery);
             ps.setString(1, status);
-            ps.setInt(2, bookingId);
+            ps.setInt(2, staffId);
+            ps.setInt(3, bookingId);
 
             if (ps.executeUpdate() > 0) {
-                // Nếu trạng thái là "Đã nhận phòng", cập nhật pet_status thành "booking"
+                // Cập nhật trạng thái của thú cưng
+                String updatePetStatusQuery = null;
                 if ("Đã nhận phòng".equals(status)) {
-                    String updatePetStatusQuery = "UPDATE Pets SET pet_status = 'booking' WHERE pet_id = ?";
-                    ps2 = con.prepareStatement(updatePetStatusQuery);
-                    ps2.setInt(1, petId);
-                    ps2.executeUpdate();
-                } // Nếu trạng thái là "Đã trả phòng", cập nhật pet_status thành "non-booking"
-                else if ("Đã trả phòng".equals(status)) {
-                    String updatePetStatusQuery = "UPDATE Pets SET pet_status = 'non-booking' WHERE pet_id = ?";
+                    updatePetStatusQuery = "UPDATE Pets SET pet_status = 'booking' WHERE pet_id = ?";
+                } else if ("Đã trả phòng".equals(status)) {
+                    updatePetStatusQuery = "UPDATE Pets SET pet_status = 'non-booking' WHERE pet_id = ?";
+                }
+
+                if (updatePetStatusQuery != null) {
                     ps2 = con.prepareStatement(updatePetStatusQuery);
                     ps2.setInt(1, petId);
                     ps2.executeUpdate();
                 }
-                // Nếu trạng thái là "Đã hủy", không thay đổi trạng thái thú cưng
 
                 con.commit(); // Xác nhận transaction
                 success = true;
@@ -168,6 +169,54 @@ public class PetHotelBookingDAO {
         }
         return success;
     }
+
+    public static boolean updateBookingStatusWithoutStaff(int bookingId, String status, int petId) {
+        boolean success = false;
+        Connection con = null;
+        PreparedStatement ps = null;
+        PreparedStatement ps2 = null;
+
+        try {
+            con = new DBContext().getConnection();
+            con.setAutoCommit(false); // Bắt đầu transaction
+
+            // Cập nhật trạng thái booking (không cập nhật staff_id)
+            String updateBookingQuery = "UPDATE PetHotelBookings SET status = ? WHERE booking_id = ?";
+            ps = con.prepareStatement(updateBookingQuery);
+            ps.setString(1, status);
+            ps.setInt(2, bookingId);
+
+            if (ps.executeUpdate() > 0) {
+                // Nếu trạng thái là "Đã hủy", không cập nhật pet_status
+                con.commit();
+                success = true;
+            } else {
+                con.rollback();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                if (con != null) {
+                    con.rollback();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return success;
+    }
+
     //Booking
     public static boolean createBooking(int roomId, int customerId, int petId, Timestamp checkIn, Timestamp checkOut, BigDecimal totalPrice, String note) {
         boolean success = false;
@@ -297,6 +346,45 @@ public class PetHotelBookingDAO {
             closeConnection();
         }
         return petStatus;
+    }
+
+    public static List<PetHotelBooking> searchBookingsByCustomerName(String customerName) {
+        List<PetHotelBooking> list = new ArrayList<>();
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Search_Bookings_By_Customer_Name);
+            ps.setString(1, "%" + customerName + "%"); // Tìm kiếm theo chuỗi chứa tên khách hàng
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                PetHotelBooking booking = new PetHotelBooking(
+                        rs.getInt("booking_id"),
+                        rs.getInt("room_id"),
+                        rs.getString("room_name"),
+                        rs.getInt("customer_id"),
+                        rs.getString("customer_name"),
+                        rs.getObject("staff_id") != null ? rs.getInt("staff_id") : null, // Xử lý null
+                        rs.getString("staff_name"),
+                        rs.getInt("pet_id"),
+                        rs.getString("pet_name"),
+                        rs.getTimestamp("check_in"),
+                        rs.getTimestamp("check_out"),
+                        rs.getBigDecimal("total_price"),
+                        rs.getString("note"),
+                        rs.getString("status"),
+                        rs.getTimestamp("booking_date"),
+                        rs.getBoolean("is_active")
+                );
+                list.add(booking);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
+        }
+        return list;
     }
 
     // Hàm đóng kết nối

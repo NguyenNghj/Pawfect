@@ -8,6 +8,7 @@ import dao.PetHotelBookingDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -74,6 +75,7 @@ public class CancelBookingServlet extends HttpServlet {
             throws ServletException, IOException {
         // Lấy bookingId từ request
         String bookingIdStr = request.getParameter("bookingId");
+        String staffIdStr = getStaffIdFromCookies(request); // Lấy ID nhân viên từ cookie
 
         // Kiểm tra bookingId hợp lệ
         if (bookingIdStr != null && !bookingIdStr.isEmpty()) {
@@ -87,9 +89,15 @@ public class CancelBookingServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 if (booking != null) {
                     int petId = booking.getPetId(); // Lấy ID thú cưng
+                    Integer staffID = (staffIdStr != null && !staffIdStr.isEmpty()) ? Integer.parseInt(staffIdStr) : null;
 
                     // Gọi DAO để cập nhật trạng thái booking thành "Đã hủy"
-                    boolean success = bookingDAO.updateBookingStatus(bookingId, "Đã hủy", petId);
+                    boolean success;
+                    if (staffID != null) {
+                        success = bookingDAO.updateBookingStatusWithoutStaff(bookingId, "Đã hủy", petId);
+                    } else {
+                        success = bookingDAO.updateBookingStatusWithoutStaff(bookingId, "Đã hủy", petId);
+                    }
 
                     if (success) {
                         session.setAttribute("message", "Hủy đặt phòng thành công!");
@@ -125,5 +133,17 @@ public class CancelBookingServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    // Lấy Cookie nhân viên
 
+    private String getStaffIdFromCookies(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("staffId")) { // Giả sử cookie lưu staffId
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+    }
 }

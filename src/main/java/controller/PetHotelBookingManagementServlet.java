@@ -9,6 +9,7 @@ import dao.PetHotelDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -63,8 +64,17 @@ public class PetHotelBookingManagementServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<PetHotelBooking> bookings = bookingDAO.getAllBookings();
+        String searchQuery = request.getParameter("search"); // Lấy tham số tìm kiếm từ request
+        List<PetHotelBooking> bookings;
+
+        if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+            bookings = PetHotelBookingDAO.searchBookingsByCustomerName(searchQuery);
+        } else {
+            bookings = PetHotelBookingDAO.getAllBookings();
+        }
+
         request.setAttribute("bookings", bookings);
+        request.setAttribute("searchQuery", searchQuery); // Truyền lại giá trị tìm kiếm cho JSP
         request.getRequestDispatcher("booking.jsp").forward(request, response);
     }
 
@@ -81,32 +91,35 @@ public class PetHotelBookingManagementServlet extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         String bookingId = request.getParameter("bookingId");
-        String filter = request.getParameter("filter"); // Lấy trạng thái lọc
+        String filter = request.getParameter("filter");
 
-        if (action != null && bookingId != null) {
+        String staffId = getStaffIdFromCookies(request); // Lấy ID nhân viên từ cookie
+
+        if (action != null && bookingId != null && staffId != null) {
             try {
                 int bookingID = Integer.parseInt(bookingId);
+                int staffID = Integer.parseInt(staffId); // Chuyển từ String sang int
                 PetHotelBooking booking = bookingDAO.getBookingById(bookingID);
 
                 if (booking != null) {
                     int roomId = booking.getRoomId();
-                    int petId = booking.getPetId(); // Lấy ID thú cưng
+                    int petId = booking.getPetId();
 
                     switch (action) {
                         case "approve":
                             if (PetHotelDAO.decreaseAvailableQuantity(roomId)) {
-                                bookingDAO.updateBookingStatus(bookingID, "Đã duyệt", petId);
+                                bookingDAO.updateBookingStatus(bookingID, "Đã duyệt", petId, staffID);
                             }
                             break;
                         case "cancel":
-                            bookingDAO.updateBookingStatus(bookingID, "Đã hủy", petId);
+                            bookingDAO.updateBookingStatus(bookingID, "Đã hủy", petId, staffID);
                             break;
                         case "checkin":
-                            bookingDAO.updateBookingStatus(bookingID, "Đã nhận phòng", petId);
+                            bookingDAO.updateBookingStatus(bookingID, "Đã nhận phòng", petId, staffID);
                             break;
                         case "checkout":
                             if (PetHotelDAO.increaseAvailableQuantity(roomId)) {
-                                bookingDAO.updateBookingStatus(bookingID, "Đã trả phòng", petId); // Cập nhật pet
+                                bookingDAO.updateBookingStatus(bookingID, "Đã trả phòng", petId, staffID);
                             }
                             break;
                         default:
@@ -118,7 +131,6 @@ public class PetHotelBookingManagementServlet extends HttpServlet {
             }
         }
 
-        // Giữ trạng thái filter khi redirect
         String encodedFilter = (filter != null) ? URLEncoder.encode(filter, StandardCharsets.UTF_8.toString()) : "";
         response.sendRedirect("pethotelbooking?filter=" + encodedFilter);
     }
@@ -132,5 +144,18 @@ public class PetHotelBookingManagementServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    // Lấy Cookie nhân viên
+    private String getStaffIdFromCookies(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("staffId")) { // Giả sử cookie lưu staffId
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+    }
 
 }

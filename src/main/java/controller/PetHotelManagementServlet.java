@@ -5,6 +5,7 @@
 package controller;
 
 import dao.PetHotelDAO;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -58,8 +59,49 @@ public class PetHotelManagementServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        List<PetHotel> petRooms = PetHotelDAO.getAllPetRooms(); // Lấy danh sách phòng từ DB
-        request.setAttribute("petRooms", petRooms); // Gửi dữ liệu sang JSP
+        // Lấy tham số tìm kiếm từ request
+        String search = request.getParameter("search");
+
+        // Lấy số trang từ request, mặc định là trang 1 nếu không có
+        int currentPage = 1;
+        String pageParam = request.getParameter("page");
+        if (pageParam != null) {
+            try {
+                currentPage = Integer.parseInt(pageParam);
+            } catch (NumberFormatException e) {
+                currentPage = 1; // Nếu lỗi, quay về trang đầu
+            }
+        }
+
+        // Số lượng phòng trên mỗi trang
+        int itemsPerPage = 5;
+        List<PetHotel> allRooms;
+
+        if (search != null && !search.trim().isEmpty()) {
+            // Nếu có tìm kiếm, lấy danh sách phòng theo từ khóa
+            allRooms = PetHotelDAO.searchPetRooms(search);
+        } else {
+            // Nếu không có tìm kiếm, lấy toàn bộ danh sách phòng
+            allRooms = PetHotelDAO.getAllPetRooms();
+        }
+
+        // Tính tổng số trang
+        int totalPages = (int) Math.ceil((double) allRooms.size() / itemsPerPage);
+
+        // Xác định vị trí bắt đầu và kết thúc
+        int start = (currentPage - 1) * itemsPerPage;
+        int end = Math.min(start + itemsPerPage, allRooms.size());
+
+        // Lấy danh sách phòng theo trang hiện tại
+        List<PetHotel> petRooms = allRooms.subList(start, end);
+
+        // Gửi dữ liệu sang JSP
+        request.setAttribute("petRooms", petRooms);
+        request.setAttribute("searchQuery", search); // Giữ lại từ khóa tìm kiếm
+        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("totalPages", totalPages);
+
+        // Chuyển hướng đến trang hiển thị kết quả
         request.getRequestDispatcher("/dashboard/admin/petRoom.jsp").forward(request, response);
     }
 
