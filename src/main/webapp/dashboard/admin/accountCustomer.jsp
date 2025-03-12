@@ -96,12 +96,21 @@
 
                     <div class="row d-flex align-items-center" style="margin-top: 30px;">
                         <!-- Form Tìm Kiếm -->
-                        <div class="col-md-6">
-                            <form action="product" method="get" class="d-flex">
-                                <label for="inputName" class="col-sm-2 col-form-label">Tìm kiếm:</label>
-                                <input name="search" type="search" class="form-control" id="inputName" placeholder="Tên khách hàng...">
+                           <div class="col-md-6">
+                            <form action="customers" method="get" class="d-flex mb-3 align-items-center" 
+                                  style="max-width: 400px; margin: 0 auto; border-radius: 25px; background: #f8f9fa; padding: 5px;">
+
+                                <input type="text" name="keyword" class="form-control" placeholder="Tìm Kiếm Theo Tên"
+                                       value="<%= request.getAttribute("searchKeyword") != null ? request.getAttribute("searchKeyword") : ""%>"
+                                       style="flex: 1; border: none; outline: none; padding: 8px 12px; border-radius: 20px; font-size: 14px;">
+
+                                <button type="submit" class="btn btn-primary" 
+                                        style="border-radius: 20px; padding: 6px 15px; font-size: 14px; font-weight: bold; background-color: #007bff; border: none; transition: 0.3s;">
+                                    Tìm Kiếm
+                                </button>
                             </form>
                         </div>
+
                     </div>
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
@@ -133,6 +142,7 @@
                                             if (customerList != null) {
                                                 for (Customers customer : customerList) {
                                         %>
+
                                         <tr>
                                             <td><%= customer.getCustomerId()%></td>
                                             <td><%= customer.getFullName()%></td>
@@ -141,25 +151,32 @@
                                             <td><%= customer.getAddress()%></td>
                                             <td><%= customer.getGender()%></td>
                                             <td><%= customer.getBirthDate()%></td>
+
                                             <td>
                                                 <% if ("admin".equalsIgnoreCase(staffRole)) { %> 
                                                 <% if (customer.isActive()) {%>
                                                 <form action="customersban" method="get" onsubmit="return confirm('Bạn có chắc muốn cấm khách hàng này?');">
+
                                                     <input type="hidden" name="id" value="<%= customer.getCustomerId()%>">
                                                     <input type="hidden" name="action" value="ban">
-                                                    <button type="submit" class="btn btn-danger">Cấm</button>
+                                                    <button type="submit" class="btn btn-danger" style=" display: flex;
+                                                            justify-content: center; /* Căn giữa theo chiều ngang */
+                                                            align-items: center; /* Căn giữa theo chiều dọc */
+                                                            height: 100%; /* Đảm bảo chiều cao full của ô */">Cấm</button>
+
                                                 </form>
                                                 <% } else {%>
                                                 <form action="customersban" method="get" onsubmit="return confirm('Bạn có chắc muốn gỡ cấm khách hàng này?');">
                                                     <input type="hidden" name="id" value="<%= customer.getCustomerId()%>">
                                                     <input type="hidden" name="action" value="unban">
-                                                    <button type="submit" class="btn btn-success">Mở</button>
+                                                    <button type="submit" class="btn btn-success"style="">Mở</button>
                                                 </form>
                                                 <% } %>
                                                 <% } else { %>
                                                 <span class="text-muted">Không có quyền</span>
                                                 <% } %>
                                             </td>
+
                                         </tr>
                                         <%
                                             }
