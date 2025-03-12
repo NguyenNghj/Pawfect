@@ -20,7 +20,7 @@
     </div>
 
     <div class="row">                  
-        <nav class="navbar bg-body-tertiary" id="dashboard">                                    
+        <nav class="navbar bg-body-tertiary" id="statistics">                                    
             <a class="navbar-brand d-flex align-items-center gap-3" href="statistics">
                 <i class="fa-solid fa-chart-line fa-lg"></i> 
                 <span>Thống kê</span>
@@ -70,7 +70,7 @@
         <nav class="navbar bg-body-tertiary" id="pethotel">                                            
             <a class="navbar-brand d-flex align-items-center gap-3" href="pethotel">
                 <i class="fa-solid fa-hotel fa-lg"></i>  
-                <span>Pet Hotel</span>
+                <span>Khách sạn thú cưng</span>
             </a>
         </nav>
     </div>
@@ -82,7 +82,7 @@
     <div class="row" style="display: flex; justify-content: center">
 
         <div class="row logout-container">
-            <button type="button" class="btn btn-danger dangxuat" onclick="window.location.href = 'logoutadmin'">Đăng xuất</button>
+            <button type="button" class="btn btn btn-dark dangxuat" onclick="window.location.href = 'logoutadmin'">Đăng xuất</button>
         </div>
 
     </div>
@@ -118,7 +118,7 @@
 
         // Danh sách các trang và ID tương ứng
         const navItems = {
-            "dashboard": "dashboard",
+            "statistics": "statistics",
             "product": "product",
             "voucher": "voucher",
             "category": "category",

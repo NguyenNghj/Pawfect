@@ -57,23 +57,21 @@
                     if (filterName === "pettype") {
                         let selectedPetTypes = urlParams.get("pettype");
 
-                        if (selectedPetTypes === "3") {
-                            // Nếu đang chọn cả hai (pettype=3), bỏ bớt giá trị được click
-                            selectedPetTypes = filterValue.toString();
-                        } else if (selectedPetTypes === filterValue.toString()) {
-                            // Nếu chỉ đang chọn 1 giá trị và bấm lại → Xóa khỏi filter
+                        if (selectedPetTypes === filterValue.toString()) {
+                            // Nếu đang chọn 1 hoặc 2 và bấm lần nữa → Xóa khỏi filter
                             urlParams.delete("pettype");
+                        } else if (selectedPetTypes === "3") {
+                            // Nếu đang chọn "3" (Chó + Mèo), bỏ bớt giá trị được click
+                            selectedPetTypes = filterValue.toString();
+                            urlParams.set("pettype", selectedPetTypes);
                         } else if (selectedPetTypes) {
-                            // Nếu đang chọn một giá trị khác, thêm giá trị mới vào (chọn cả Chó và Mèo)
-                            selectedPetTypes = "3";
+                            // Nếu đang chọn 1 giá trị khác, chọn cả Chó và Mèo
+                            urlParams.set("pettype", "3");
                         } else {
                             // Nếu chưa chọn gì, đặt giá trị được click
-                            selectedPetTypes = filterValue.toString();
+                            urlParams.set("pettype", filterValue.toString());
                         }
-
-                        urlParams.set("pettype", selectedPetTypes);
                     } else {
-                        // Xử lý các bộ lọc khác bình thường
                         if (urlParams.get(filterName) === filterValue.toString()) {
                             urlParams.delete(filterName);
                         } else {
@@ -81,9 +79,10 @@
                         }
                     }
 
-                    urlParams.set('page', 1); // Reset về trang 1 khi lọc
+                    urlParams.set('page', 1);
                     window.location.search = urlParams.toString();
                 }
+
             </script>
 
             <div class="row">
@@ -127,27 +126,28 @@
                         let selectedCategory = urlParams.get("category");
                         let selectedPetType = urlParams.get("pettype");
 
-                        // Thêm class 'active' vào nút lọc giá
-                        document.querySelectorAll(".gia-box-filter .nut-loc").forEach(label => {
-                            let filterValue = label.getAttribute("onclick").match(/\d+/)[0]; // Lấy số từ onclick
-                            if (selectedPrice === filterValue) {
-                                label.classList.add("active");
-                            }
-                        });
+                        function toggleActive(selector, selectedValue) {
+                            document.querySelectorAll(selector).forEach(label => {
+                                let filterValue = label.getAttribute("onclick").match(/\d+/)[0]; // Lấy số từ onclick
 
-                        // Thêm class 'active' vào nút lọc kiểu sắp xếp
-                        document.querySelectorAll(".kieu-box-filter .nut-loc").forEach(label => {
-                            let filterValue = label.getAttribute("onclick").match(/\d+/)[0]; // Lấy số từ onclick
-                            if (selectedSort === filterValue) {
-                                label.classList.add("active");
-                            }
-                        });
+                                if (selectedValue === filterValue) {
+                                    label.classList.toggle("active"); // Toggle active
+                                } else {
+                                    label.classList.remove("active");
+                                }
+                            });
+                        }
 
-                        // Thêm class 'active' vào danh mục sản phẩm
+                        toggleActive(".gia-box-filter .nut-loc", selectedPrice);
+                        toggleActive(".kieu-box-filter .nut-loc", selectedSort);
+
+                        // Xử lý danh mục sản phẩm
                         document.querySelectorAll(".category-item").forEach(item => {
                             let categoryValue = item.textContent.trim();
                             if (selectedCategory && categoryValue === selectedCategory) {
-                                item.classList.add("active");
+                                item.classList.toggle("active");
+                            } else {
+                                item.classList.remove("active");
                             }
                         });
 
@@ -155,18 +155,18 @@
                         let selectedPetTypes = selectedPetType ? selectedPetType.split(",") : [];
 
                         document.querySelectorAll(".pettype-box-filter .nut-loc").forEach(label => {
-                            let filterValue = label.getAttribute("onclick").match(/\d+/)[0]; // Lấy số từ onclick
+                            let filterValue = label.getAttribute("onclick").match(/\d+/)[0];
 
                             if (selectedPetTypes.includes("3")) {
-                                // Nếu pettype=3, bật cả hai nút "Chó" và "Mèo"
                                 label.classList.add("active");
                             } else if (selectedPetTypes.includes(filterValue)) {
-                                label.classList.add("active");
+                                label.classList.toggle("active");
                             } else {
                                 label.classList.remove("active");
                             }
                         });
                     });
+
                 </script>
 
 

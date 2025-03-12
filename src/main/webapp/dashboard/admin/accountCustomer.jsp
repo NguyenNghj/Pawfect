@@ -155,11 +155,19 @@
                                                     <input type="hidden" name="action" value="unban">
                                                     <button type="submit" class="btn btn-success">Mở</button>
                                                 </form>
-                                                <% } %>
+                                                <% }%>
+
+                                                <!-- Nút gửi mã giảm giá -->
+                                                <form action="sendDiscountCode" method="post">
+                                                    <input type="hidden" name="customerId" value="<%= customer.getCustomerId()%>">
+                                                    <button type="submit" class="btn btn-success">Gửi mã giảm giá</button>
+                                                </form>
+
                                                 <% } else { %>
                                                 <span class="text-muted">Không có quyền</span>
                                                 <% } %>
                                             </td>
+
                                         </tr>
                                         <%
                                             }
