@@ -89,7 +89,7 @@ public class AddPetHotelServlet extends HttpServlet {
 
         PetHotelDAO roomDAO = new PetHotelDAO();
         if (roomDAO.addRoom(room)) {
-            response.sendRedirect("petroom");
+            response.sendRedirect("pethotel");
         } else {
             RequestDispatcher dispatcher = request.getRequestDispatcher("addroom.jsp");
             dispatcher.forward(request, response);

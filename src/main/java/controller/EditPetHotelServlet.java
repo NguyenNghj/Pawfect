@@ -111,7 +111,7 @@ public class EditPetHotelServlet extends HttpServlet {
         boolean isUpdated = dao.updatePetRoom(room);
 
         if (isUpdated) {
-            response.sendRedirect("petroom"); // Sau khi cập nhật, chuyển hướng về danh sách phòng
+            response.sendRedirect("pethotel"); // Sau khi cập nhật, chuyển hướng về danh sách phòng
         } else {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to update the room");
         }
