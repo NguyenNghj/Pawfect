@@ -82,10 +82,10 @@ public class LoginStaffServlet extends HttpServlet {
 
         if (role != null && staffName != null && staffId != null) {
             if ("Staff".equals(role)) {
-                response.sendRedirect("dashboard/staff/dashboard");
+                response.sendRedirect("dashboard/staff/dashboard.jsp");
                 return;
             } else if ("Admin".equals(role)) {
-                response.sendRedirect("dashboard/admin/dashboard");
+                response.sendRedirect("dashboard/admin/dashboard.jsp");
                 return;
             }
         }
@@ -128,9 +128,9 @@ public class LoginStaffServlet extends HttpServlet {
                 staffName.setMaxAge(60 * 60 * 24 * 1);
                 response.addCookie(staffName);
                 if (account.getRole().equals("Admin")) {
-                    response.sendRedirect("dashboard/admin/dashboard");
+                    response.sendRedirect("dashboard/admin/dashboard.jsp");
                 } else {
-                    response.sendRedirect("dashboard/staff/dashboard");
+                    response.sendRedirect("dashboard/staff/dashboard.jsp");
                 }
             } else {
                 response.sendRedirect("loginadmin.jsp?error=Invalid Credentials");

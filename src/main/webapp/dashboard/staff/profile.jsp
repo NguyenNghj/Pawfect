@@ -61,7 +61,7 @@
                                         <% if ("Admin".equals(staffRole)) { %>
                                         <li class="profile-img-switch-employee d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-repeat"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="admin/dashboard.jsp">Switch to admin</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="/dashboard/admin/dashboard.jsp">Switch to admin</a>
                                         </li>
                                         <% }%>
                                         <li class="profile-img-switch-store d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
