@@ -31,7 +31,7 @@
                 }
             })();
         </script>
- 
+
         <div class="all">
             <div class="mt-4 bg-white p-3 mb-4 d-flex align-items-center justify-content-left" 
                  style="border-radius: 20px; height: 60px;">
