@@ -78,13 +78,32 @@ public class CreateVoucherServlet extends HttpServlet {
             // Nhận dữ liệu từ form
             String code = request.getParameter("code");
             String description = request.getParameter("description");
-            int discountPercentage = Integer.parseInt(request.getParameter("discountPercentage"));
-            double discountAmount = Double.parseDouble(request.getParameter("discountAmount"));
-            double minOrderValue = Double.parseDouble(request.getParameter("minOrderValue"));
-            double maxDiscount = Double.parseDouble(request.getParameter("maxDiscount"));
-            Timestamp startDate = Timestamp.valueOf(request.getParameter("startDate").replace("T", " ") + ":00");
-            Timestamp endDate = Timestamp.valueOf(request.getParameter("endDate").replace("T", " ") + ":00");
-            boolean isActive = Boolean.parseBoolean(request.getParameter("active"));
+            int discountPercentage = request.getParameter("discountPercentage") != null
+                    ? Integer.parseInt(request.getParameter("discountPercentage"))
+                    : 0;
+
+            double discountAmount = request.getParameter("discountAmount") != null
+                    ? Double.parseDouble(request.getParameter("discountAmount"))
+                    : 0.0;
+            String minOrderValueParam = request.getParameter("minOrderValue");
+            String maxDiscountParam = request.getParameter("maxDiscount");
+            String startDateParam = request.getParameter("startDate");
+            String endDateParam = request.getParameter("endDate");
+            String isActiveParam = request.getParameter("active");
+
+            if (minOrderValueParam == null || maxDiscountParam == null
+                    || startDateParam == null || endDateParam == null) {
+                throw new IllegalArgumentException("Một số trường dữ liệu bị thiếu.");
+            }
+
+            double minOrderValue = Double.parseDouble(minOrderValueParam);
+            double maxDiscount = Double.parseDouble(maxDiscountParam);
+
+            // Xử lý định dạng ngày tháng từ input (yyyy-MM-ddTHH:mm)
+            Timestamp startDate = Timestamp.valueOf(startDateParam.replace("T", " ") + ":00");
+            Timestamp endDate = Timestamp.valueOf(endDateParam.replace("T", " ") + ":00");
+
+            boolean isActive = Boolean.parseBoolean(isActiveParam);
 
             VoucherDAO voucherDAO = new VoucherDAO();
 

@@ -158,7 +158,7 @@
 
                             <button type="submit" class="btn btn-primary">Thêm voucher</button>
                             <a href="<c:url value='/dashboard/admin/voucher'/>" class="btn btn-secondary" id="back">Trở về</a>
-                        </form>
+                        </form>                        
 
                         <script>
                             document.addEventListener("DOMContentLoaded", function () {
@@ -171,6 +171,29 @@
                                         confirmButtonText: "OK"
                                     });
                                 }
+                            });
+                        </script>
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const discountPercentage = document.querySelector('input[name="discountPercentage"]');
+                                const discountAmount = document.querySelector('input[name="discountAmount"]');
+
+                                discountPercentage.addEventListener("input", function () {
+                                    if (discountPercentage.value) {
+                                        discountAmount.disabled = true;
+                                    } else {
+                                        discountAmount.disabled = false;
+                                    }
+                                });
+
+                                discountAmount.addEventListener("input", function () {
+                                    if (discountAmount.value) {
+                                        discountPercentage.disabled = true;
+                                    } else {
+                                        discountPercentage.disabled = false;
+                                    }
+                                });
                             });
                         </script>
 

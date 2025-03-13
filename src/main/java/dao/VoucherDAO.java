@@ -164,6 +164,24 @@ public class VoucherDAO {
         return false;
     }
 
+    public boolean isCodeExists(String code, int voucherId) {
+        String query = "SELECT COUNT(*) FROM voucher WHERE code = ? AND voucherId <> ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setString(1, code);
+            ps.setInt(2, voucherId);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Nếu số lượng > 0, nghĩa là code đã tồn tại
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean isCodeExists(String code) {
         String query = "SELECT COUNT(*) FROM voucher WHERE code = ?";
         try {
