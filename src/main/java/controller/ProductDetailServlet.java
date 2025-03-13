@@ -92,6 +92,7 @@ public class ProductDetailServlet extends HttpServlet {
             int totalQuantity = 0;
             int customerId = Integer.parseInt(username);
 
+            // Lay tong so san pham trong gio hang
             List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
             if (!cartItems.isEmpty()) {
                 for (CartItem cartItem : cartItems) {

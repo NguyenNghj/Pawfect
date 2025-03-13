@@ -228,6 +228,8 @@ public class OrderServlet extends HttpServlet {
                 request.setAttribute("basicPrice", basicPrice);
                 request.setAttribute("orderitems", orderitems);
                 request.setAttribute("orders", orders);
+
+                // Chuyen doi jsp sang String
                 String emailContent = Email.renderJSPToString(request, response, "sendemail.jsp");
 
                 ExecutorService executor = Executors.newFixedThreadPool(10); // Tạo một ExecutorService với 10 luồng
@@ -325,12 +327,23 @@ public class OrderServlet extends HttpServlet {
                 if (cancel) {
                     System.out.println("Huy don hang thanh cong.");
 
+                    ProductDAO productDAO = new ProductDAO();
+
+                    List<OrderItem> orderitems = OrderDAO.getOrderItemsByOrderId(orderId);
+                    // Lap qua tung orderItem de thu hoi lai san pham 
+                    for (OrderItem orderitem : orderitems) {
+                        Product product = productDAO.getProductById(orderitem.getProductId());
+                        product.setStock(product.getStock() + orderitem.getQuantity());
+                        productDAO.updateProduct(product);
+                    }
+
                     String customerName = orders.get(0).getCustomerName();
                     String orderDate = orders.get(0).getOrderDate();
                     String supportLink = "https://example.com/support";
 
                     String contentEmail = Email.emailCancel;
-                    String finalContentEmail = String.format(contentEmail, customerName, (orderId + 2500000), orderDate, supportLink);
+                    // Chuyen du lieu qua email (sau contentEmail)
+                    String finalContentEmail = String.format(contentEmail, customerName, reasonCancel, (orderId + 2500000), orderDate, supportLink);
 
                     // Lay customerId tu Cookie
                     String customerIdStr = getCustomerIdFromCookies(request);

@@ -146,8 +146,8 @@
                                                 <th scope="col" style="width: 18%;">Họ tên</th>
                                                 <th scope="col">Địa chỉ giao hàng</th>
                                                 <th scope="col" style="width: 10%;">Tổng tiền</th>
-                                                <th scope="col" style="width: 12%;">Trạng thái</th>
-                                                <th scope="col" style="width: 18%;">Hành động</th>
+                                                <th scope="col" style="width: 11%;">Trạng thái</th>
+                                                <th scope="col" style="width: 19%;">Hành động</th>
                                             </tr>
                                         </thead>
                                         <tbody>
