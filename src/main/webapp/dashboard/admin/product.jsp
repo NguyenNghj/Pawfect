@@ -105,12 +105,23 @@
                         </div>
 
                         <!-- Form Tìm Kiếm -->
+
+
                         <div class="col-md-6">
-                            <form action="product" method="get" class="d-flex">
-                                <label for="inputName" class="col-sm-2 col-form-label">Tìm kiếm:</label>
-                                <input name="search" type="search" class="form-control" id="inputName" placeholder="Tên sản phẩm...">
+                            <form action="product" method="get" class="d-flex mb-3 align-items-center" 
+                                  style="max-width: 400px; margin: 0 auto; border-radius: 25px; background: #f8f9fa; padding: 5px;">
+
+                                <input type="search" name="search" class="form-control" id="inputName" placeholder="Tên sản phẩm..."
+               
+                                       style="flex: 1; border: none; outline: none; padding: 8px 12px; border-radius: 20px; font-size: 14px;">
+                                <button type="submit" class="btn btn-primary" 
+                                        style="border-radius: 20px; padding: 6px 15px; font-size: 14px; font-weight: bold; background-color: #007bff; border: none; transition: 0.3s;">
+                                    Tìm Kiếm
+                                </button>
                             </form>
                         </div>
+                                       
+                                       
                     </div>
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
