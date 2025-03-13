@@ -87,7 +87,7 @@
                                                         <div class="col">
                                                             <div class="d-flex align-items-center gap-4">
                                                                 <img class="rounded" src="/img/pet/${pro.petImg != null ? pro.petImg : 'default.jpg'}" 
-                                                                     alt="" width="90" height="90">
+                                                                     alt="" width="90" height="90" style ="object-fit: cover;">
                                                                 <div class="d-grid gap-1">
                                                                     <h6 style="font-size: 18px;">
                                                                         <c:choose>
