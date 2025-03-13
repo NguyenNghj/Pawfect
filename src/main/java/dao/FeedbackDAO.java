@@ -447,14 +447,14 @@ public class FeedbackDAO {
         return list;
     }
 
-    public static boolean replyFeedback(int staffId, String reply, int feedbackId) {
+    public static boolean replyFeedback(Feedback feedback) {
         boolean update = false;
         try {
             Con = new DBContext().getConnection();
             PreparedStatement ps = Con.prepareStatement(Reply_Feedback);
-            ps.setInt(1, staffId);
-            ps.setString(2, reply);
-            ps.setInt(3, feedbackId);
+            ps.setInt(1, feedback.getStaffId());
+            ps.setString(2, feedback.getReply());
+            ps.setInt(3, feedback.getFeedbackId());
             update = ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();

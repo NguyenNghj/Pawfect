@@ -278,7 +278,8 @@ public class FeedbackManagementServlet extends HttpServlet {
         System.out.println("Reply: " + reply);
         String status = request.getParameter("status");
 
-        boolean update = FeedbackDAO.replyFeedback(intStaffId, reply, feedbackId);
+        Feedback feedback = new Feedback(feedbackId, intStaffId, reply);
+        boolean update = FeedbackDAO.replyFeedback(feedback);
         if (update) {
             System.out.println("Phan hoi danh gia thanh cong.");
             response.sendRedirect("feedbackmanagement?action=view" + "&status=" + status);
@@ -318,25 +319,6 @@ public class FeedbackManagementServlet extends HttpServlet {
                 feedbacks = FeedbackDAO.getAllProductFeedback();
             }
 
-            // switch (status) {
-            // case "5s":
-            // feedbacks = FeedbackDAO.getAllOrderByStatus("Chờ xác nhận");
-            // break;
-            // case "4s":
-            // feedbacks = FeedbackDAO.getAllOrderByStatus("Chờ lấy hàng");
-            // break;
-            // case "3s":
-            // feedbacks = FeedbackDAO.getAllOrderByStatus("Chờ giao hàng");
-            // break;
-            // case "2s":
-            // feedbacks = FeedbackDAO.getAllOrderByStatus("Hoàn thành");
-            // break;
-            // case "1s":
-            // feedbacks = FeedbackDAO.getAllOrderByStatus("Yêu cầu huỷ...");
-            // break;
-            // default:
-            // feedbacks = FeedbackDAO.getAllProductFeedback();
-            // }
             request.setAttribute("feedbackStatus", status);
             request.setAttribute("feedbacks", feedbacks);
             request.getRequestDispatcher("/dashboard/staff/feedback.jsp").forward(request, response);

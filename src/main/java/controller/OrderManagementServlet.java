@@ -4,6 +4,8 @@
  */
 package controller;
 
+import static controller.OrderServlet.getCustomerIdFromCookies;
+import dao.CustomersDAO;
 import dao.OrderDAO;
 import dao.ProductDAO;
 import java.io.IOException;
@@ -19,6 +21,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import model.Customers;
 import model.Order;
 import model.OrderItem;
 import model.Product;
@@ -136,7 +139,7 @@ public class OrderManagementServlet extends HttpServlet {
 ////            System.out.println("reasonCancel: " + reasonCancel);
 
             System.out.println("updateStatus: " + updateStatus);
-                      
+
             boolean update = false;
 
             // Neu duyet hoan thanh don hang thi add thoi gian hoan thanh don
@@ -201,9 +204,19 @@ public class OrderManagementServlet extends HttpServlet {
 
                 ExecutorService executor = Executors.newFixedThreadPool(10); // Tạo một ExecutorService với 10 luồng
 
+                // Lay customerId tu Cookie
+                String customerIdStr = getCustomerIdFromCookies(request);
+                int customerId = Integer.parseInt(customerIdStr);
+
+                Customers customers;
+                // Lay thong tin email cua khach dat hang
+                customers = CustomersDAO.getCustomerById(customerId);
+                String customerEmail = customers.getEmail();
+                System.out.println("customerEmail: " + customerEmail);
+
                 executor.submit(() -> {
                     try {
-                        Email.sendEmail("vuquangduc1404@gmail.com", "Thông báo huỷ đơn hàng", finalContentEmail);
+                        Email.sendEmail(customerEmail, "Thông báo huỷ đơn hàng", finalContentEmail);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

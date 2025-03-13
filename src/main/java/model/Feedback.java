@@ -56,6 +56,12 @@ public class Feedback {
         this.comment = comment;
         this.imagePath = imagePath;
     }
+
+    public Feedback(int feedbackId, int staffId, String reply) {
+        this.feedbackId = feedbackId;
+        this.staffId = staffId;
+        this.reply = reply;
+    }
     
     
 
