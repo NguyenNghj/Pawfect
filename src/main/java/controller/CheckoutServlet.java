@@ -9,10 +9,12 @@ import dao.VoucherDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 import model.CartItem;
 import model.Voucher;
@@ -106,6 +108,48 @@ public class CheckoutServlet extends HttpServlet {
 
                 // Nguoc lai
             } else {
+                
+                // Kiem tra voucher da het han su dung hay chua?
+                Timestamp endDate = voucher.getEndDate();
+                Timestamp now = new Timestamp(System.currentTimeMillis());
+                
+                // Neu voucher da het han su dung
+                if(now.after(endDate)){
+                    System.out.println("Voucher da het han su dung!");
+                    json.put("status", "outOfDateVoucher");
+                    response.getWriter().write(json.toString());
+                    response.getWriter().flush();
+                    return;
+                }
+                
+                // Kiem tra voucher con hoat dong khong?
+                if(voucher.isActive() == false){
+                    System.out.println("Voucher khong con hoat dong!");
+                    json.put("status", "isActiveVoucher");
+                    response.getWriter().write(json.toString());
+                    response.getWriter().flush();
+                    return;
+                }
+                
+                // Lay customerId tu Cookie
+                String customerIdStr = getCustomerIdFromCookies(request);
+                int customerId = Integer.parseInt(customerIdStr);
+                
+                // Check xem khach da su dung voucher do hay chua?
+                int numberOfUseVoucher = voucherDAO.numberOfUseVoucher(customerId, voucherCode);
+                if(numberOfUseVoucher > 0){
+                    System.out.println("Voucher da duoc su dung truoc do!");
+                    json.put("status", "voucherIsUse");
+                    response.getWriter().write(json.toString());
+                    response.getWriter().flush();
+                    return;
+                } else if(numberOfUseVoucher == 0){
+                    System.out.println("Voucher chua duoc su dung.");
+                } else {
+                    System.out.println("Loi! Khong kiem tra duoc.");
+                    return;
+                }
+
                 System.out.println("Lay ma khuyen mai thanh cong.");
 
                 if (basePrice < voucher.getMinOrderValue()) {
@@ -117,9 +161,11 @@ public class CheckoutServlet extends HttpServlet {
                     return;
                 }
 
-                // Xet xem ma khuyen mai discount theo % hay la gia tien
+                // Khuyen mai theo gia tien
                 if (voucher.getDiscountAmount() != 0) {
                     json.put("discountValue", voucher.getDiscountAmount());
+
+                    // Khuyen mai theo %
                 } else {
                     double salePrice = basePrice * (voucher.getDiscountPercentage() / 100.0);
                     System.out.println("salePrice: " + salePrice);
@@ -145,15 +191,21 @@ public class CheckoutServlet extends HttpServlet {
 
     private void viewCheckout(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        int customerId = 1;
+
+        // Lay customerId tu Cookie
+        String customerIdStr = getCustomerIdFromCookies(request);
+        int customerId = Integer.parseInt(customerIdStr);
 
         List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
 
         int totalQuantity = 0;
         if (!cartItems.isEmpty()) {
+            System.out.println("Lay gio hang thanh cong.");
             for (CartItem cartItem : cartItems) {
                 totalQuantity += cartItem.getQuantity();
             }
+        } else {
+            System.out.println("Khong lay duoc gio hang!");
         }
 
         double totalCartPrice = CartDAO.getTotalCartByCustomerId(customerId);
@@ -162,6 +214,18 @@ public class CheckoutServlet extends HttpServlet {
         request.setAttribute("totalCartPrice", totalCartPrice);
         request.setAttribute("totalQuantity", totalQuantity);
         request.getRequestDispatcher("checkout.jsp").forward(request, response);
+    }
+
+    public static String getCustomerIdFromCookies(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("customerId".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 
     /**
