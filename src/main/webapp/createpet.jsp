@@ -74,18 +74,16 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="editPetModalLabel">Thêm thông tin thú cưng</h1>
+                                            <h5 class="card-title fs-5" id="editPetModalLabel">Thêm thông tin thú cưng</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body edit-pet-detail">
                                             <input type="hidden" name="petId" >
                                             <input type="hidden" name="existingImage" >
 
-
-
                                             <!-- Input chọn ảnh -->
                                             <div class="mb-3">
-                                                <label for="editProductImage" class="form-label">Hình ảnh</label>
+                                                <label for="editProductImage" class="form-label pt-4">Hình ảnh</label>
                                                 <div style="display: flex; gap: 10px; align-items: center;">
                                                     <img id="previewImage" class="img-thumbnail" 
                                                          style="width: 150px; height: 150px; display: ${not empty pet.petImg ? 'block' : 'none'};" 
@@ -139,7 +137,7 @@
                                                 <input type="number" name="petWeight" value="" class="form-control" step="0.01">
                                                 <span id="petWeightError" class="text-danger"></span>
                                             </div>
-                                            
+
                                             <!-- Sinh nhật -->
                                             <div class="mb-3">
                                                 <label class="form-label">Sinh nhật</label>
@@ -149,7 +147,7 @@
                                         </div>
 
                                         <div class="modal-footer">
-                                            <button type="submit" class="btn btn-success me-2">Thêm</button>
+                                            <button type="submit" class="btn btn-success me-2">Thêm thú cưng</button>
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="window.location.href = 'viewpet'">Trở lại</button>
                                         </div>
                                     </div>

@@ -21,13 +21,21 @@
         <link rel="stylesheet" href="./css/productlist.css">
     </head>
     <body>
-        <ol class="breadcrumb">
-            <li><a class="trang-chu" href="/pawfect">Trang chủ</a></li>
-            <li>Sản phẩm</li>
-        </ol>
+
+
 
         <div class="all">
-            <h2>Sản phẩm</h2>
+            <div class="mt-4 bg-white p-3 mb-4 d-flex align-items-center justify-content-left" 
+                 style="border-radius: 20px; height: 60px;">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0" style ="font-weight: bold;">
+                        <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Danh sách sản phẩm</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <h2 style = "margin: 0">Sản phẩm</h2>
 
             <!-- Bộ lọc -->
             <div class="filter">

@@ -15,7 +15,8 @@ body {
 }
 
 .text-primary {
-    color: #D3A376 !important;
+    color: #8C6E63 !important;
+    font-weight: bold;
 }
 
 .hover-card {
@@ -94,7 +95,6 @@ a{
 }
 
 .edit-pet-detail div label {
-    color: #a88f79;
     font-weight: bold;
     font-family: 'Baloo 2', sans-serif;
 }
@@ -104,3 +104,6 @@ a{
     font-family: 'Baloo 2', sans-serif;
 }
 
+.form-label{
+    font-weight: bold;
+}

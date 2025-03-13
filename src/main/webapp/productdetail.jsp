@@ -31,13 +31,20 @@
                 }
             })();
         </script>
-        <ol class="breadcrumb">
-            <li><a class="trang-chu" href="/products">Trang chủ</a></li>
-            <li><a class="trang-chu" href="/products?category=${product.categoryName}">${product.categoryName}</a></li>
-            <li>${product.productName}</li>
-        </ol>
-
+ 
         <div class="all">
+            <div class="mt-4 bg-white p-3 mb-4 d-flex align-items-center justify-content-left" 
+                 style="border-radius: 20px; height: 60px;">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0" style ="font-weight: bold;">
+                        <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="/products?category=${product.categoryName}" class="text-decoration-none">${product.categoryName}</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" style="text-transform: uppercase;">
+                            ${product.productName}
+                        </li>
+                    </ol>
+                </nav>
+            </div>
             <div class="container">
                 <div class="product">
                     <div class="row">

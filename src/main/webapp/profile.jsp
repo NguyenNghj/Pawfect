@@ -21,7 +21,7 @@
             <!-- Breadcrumb -->
             <div class="row mt-2 bg-white p-3 mb-4 d-flex align-items-center justify-content-center" 
                  style="border-radius: 20px; height: 60px;">
-                <nav padding: 0 5px;" aria-label="breadcrumb">
+                <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0" style ="font-weight: bold;">
                         <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Tài khoản</li>
@@ -33,43 +33,7 @@
                 <!-- Main Content -->
                 <div class="col-md-8">
                     <!-- Top Cards -->
-                    <div class="row g-4 mb-4">
 
-                        <!-- Lịch sử đơn hàng -->
-                        <div class="col-md-4">
-                            <a href="order?&action=view&status=tc" class="text-decoration-none">
-                                <div class="card h-100">
-                                    <div class="card-body d-flex align-items-center gap-3">
-                                        <i class="bi bi-clipboard-check fs-4 text-primary"></i>
-                                        <span class="text-dark">
-                                            Lịch sử đơn hàng
-                                        </span>
-                                    </div>
-                                </div>
-                            </a>
-
-                        </div>
-                        <!-- Lịch sử đật lịch -->
-                        <div class="col-md-4">
-                            <a href="bookinghistory" class="text-decoration-none">
-                                <div class="card h-100">
-                                    <div class="card-body d-flex align-items-center gap-3">
-                                        <i class="bi bi-calendar-date fs-4 text-primary"></i>
-                                        <span class="text-dark">Lịch sử đặt lịch</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <!-- Xin chào khách hàng -->
-                        <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <i class="bi bi-person-circle fs-4"></i>
-                                    <span>Xin chào, <span class="text-primary">${customer.fullName}</span></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <%
                         String message = (String) session.getAttribute("message");
                         String messageType = (String) session.getAttribute("messageType");
@@ -87,48 +51,69 @@
                     <!-- Orders Section -->
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title mb-4">Thông tin tài khoản</h5>
-                            <div class="d-grid gap-2 account-info">
-                                <span>
-                                    <span class="account-info-title">Họ tên:</span> 
-                                    ${empty customer.fullName ? 'Chưa có thông tin' : customer.fullName} / 
-                                    <span class="account-info-title">Giới tính:</span> 
-                                    ${empty customer.gender ? 'Chưa có thông tin' : customer.gender}
-                                </span>
-                                <span>
-                                    <span class="account-info-title">Ngày sinh:</span> 
-                                    ${empty customer.birthDate ? 'Chưa có thông tin' : customer.birthDate}
-                                </span>
-                                <c:choose>
-                                    <c:when test="${not empty customer.email and fn:contains(customer.email, '@')}">
-                                        <span><span class="account-info-title">Email:</span> ${customer.email}</span>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <span><span class="account-info-title">Email:</span> Đăng nhập bằng Google</span>
-                                    </c:otherwise>
-                                </c:choose>
-                                <span>
-                                    <span class="account-info-title">Điện thoại:</span> 
-                                    ${empty customer.phoneNumber ? 'Chưa có thông tin' : customer.phoneNumber}
-                                </span>
-                                <span>
-                                    <span class="account-info-title">Địa chỉ:</span> 
-                                    ${empty customer.address ? 'Chưa có thông tin' : customer.address}
-                                </span>
-                            </div>
+                            <h5 class="card-title mb-4 justify-content-center text-center">Thông tin tài khoản</h5>                 
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="card mb-4">
+                                            <div class="card-body text-center">
+                                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                                                     class="rounded-circle img-fluid" style="width: 150px;">
+                                                <h5 class="my-3">${empty customer.fullName ? 'Chưa có thông tin' : customer.fullName}</h5>
+                                                <button type="button" class="btn btn-success" 
+                                                        data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                                        >
+                                                    Chỉnh sửa thông tin
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-8">
+                                        <div class="card mb-4">
+                                            <div class="card-body">                                                     
+                                                <div class="row">
+                                                    <div class="col-sm-3 account-info-title"><p class="mb-0">Email</p></div>
+                                                    <div class="col-sm-9">
+                                                        <c:choose>
+                                                            <c:when test="${not empty customer.email and fn:contains(customer.email, '@')}">
+                                                                <p class="mb-0">${customer.email}</p>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <p class="mb-0">Đăng nhập bằng Google</p>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-sm-3 account-info-title"><p class="mb-0">Điện thoại</p></div>
+                                                    <div class="col-sm-9"><p class="mb-0">${empty customer.phoneNumber ? 'Chưa có thông tin' : customer.phoneNumber}</p></div>
+                                                </div>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-sm-3 account-info-title"><p class="mb-0">Ngày sinh</p></div>
+                                                    <div class="col-sm-9"><p class="mb-0">${empty customer.birthDate ? 'Chưa có thông tin' : customer.birthDate}</p></div>
+                                                </div>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-sm-3 account-info-title"><p class="mb-0">Địa chỉ</p></div>
+                                                    <div class="col-sm-9"><p class="mb-0">${empty customer.address ? 'Chưa có thông tin' : customer.address}</p></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>            
+
                             <div class="mt-3">
-                                <button type="button" class="btn btn-success" 
-                                        data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                        >
-                                    Chỉnh sửa thông tin
-                                </button>
                                 <form action="profile" method="POST" onsubmit="return validateForm()">
                                     <!-- Modal -->
                                     <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Chỉnh sửa thông tin</h1>
+                                                    <h1 class="card-title fs-5" id="exampleModalLabel">Chỉnh sửa thông tin</h1>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
@@ -186,15 +171,14 @@
                                     </div>
                                 </form>
                             </div>
-
                         </div>
                     </div>
+
                 </div>
 
                 <!-- Sidebar -->
                 <div class="col-md-4">
                     <div class="list-group account-action">
-
                         <!-- Thông tin cá nhân -->
                         <a href="profile" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-regular fa-user fa-lg" style="color: #0062ad;"></i>
@@ -212,6 +196,14 @@
                                 <span>Đổi mật khẩu</span>
                             </a>
                         </c:if>
+                        <a href="order?&action=view&status=tc" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                            <i class="bi bi-clipboard-check fs-4" style="color: #008080;"></i>
+                            <span>Lịch sử đơn hàng</span>
+                        </a>
+                        <a href="bookinghistory" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                            <i class="bi bi-calendar-date fs-4" style="color: #808000;"></i>
+                            <span>Lịch sử đặt lịch</span>
+                        </a>
                         <!-- Đăng xuất -->
                         <a href="logout" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-solid fa-arrow-right-from-bracket fa-lg" style="color: #d01616;"></i>
