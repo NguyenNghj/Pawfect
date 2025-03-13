@@ -100,6 +100,29 @@ public class CategoryDAO {
         return isActive;
     }
 
+    public List<Category> searchCategories(String keyword) {
+        List<Category> categories = new ArrayList<>();
+        String query = "SELECT category_id, category_name, is_active FROM Category WHERE category_name LIKE ?";
+
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setString(1, "%" + keyword + "%"); // Tìm kiếm theo từ khóa
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                categories.add(new Category(
+                        rs.getInt(1),
+                        rs.getString(2),
+                        rs.getBoolean(3)
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return categories;
+    }
+
     public boolean createCategory(Category category) {
         String query = "INSERT INTO Category (category_name, is_active) VALUES (?, ?)";
         try {

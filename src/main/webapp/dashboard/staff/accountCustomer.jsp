@@ -96,15 +96,13 @@
 
                     <div class="row d-flex align-items-center" style="margin-top: 30px;">
                         <!-- Form Tìm Kiếm -->
-                           <div class="col-md-6">
-                            <form action="viewcustomersforStaff" method="get" class="d-flex mb-3 align-items-center" 
-                                  style="max-width: 400px; margin: 0 auto; border-radius: 25px; background: #f8f9fa; padding: 5px;">
-
-                                <input type="text" name="keyword" class="form-control" placeholder="Tìm Kiếm Theo Tên"
+                        <div class="col-md-6 text-start">
+                            <form action="viewcustomersforStaff" method="get" class="d-flex mb-3 align-items-center"
+                                  style="max-width: 400px; border-radius: 25px; background: #f8f9fa; padding: 5px;">
+                                <input type="text" name="keyword" class="form-control" placeholder="Nhập từ khóa..."
                                        value="<%= request.getAttribute("searchKeyword") != null ? request.getAttribute("searchKeyword") : ""%>"
                                        style="flex: 1; border: none; outline: none; padding: 8px 12px; border-radius: 20px; font-size: 14px;">
-
-                                <button type="submit" class="btn btn-primary" 
+                                <button type="submit" class="btn btn-primary"
                                         style="border-radius: 20px; padding: 6px 15px; font-size: 14px; font-weight: bold; background-color: #007bff; border: none; transition: 0.3s;">
                                     Tìm Kiếm
                                 </button>

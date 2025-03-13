@@ -90,18 +90,22 @@
                          style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
-                                <li class="breadcrumb-item">Dashboard</li>
-                                <li class="breadcrumb-item">Nhân viên</li>
+                                <li class="breadcrumb-item">Dashboard</li>                             
                                 <li class="breadcrumb-item active" aria-current="page">Quản lí đơn hàng</li>
                             </ol>
                         </nav>
                     </div>        
 
                     <div class="row d-flex align-items-center" style="margin-top: 30px;">
-                        <div class="col-md-6">
-                            <form action="ordermanagement?&action=search&status=${param.status}" method="post" class="d-flex">
-                                <label for="inputName" class="col-sm-2 col-form-label">Tìm kiếm:</label>
-                                <input name="searchContent" type="search" class="form-control" id="inputName" placeholder="Tên khách hàng...">
+                        <div class="col-md-6 text-start">
+                            <form action="ordermanagement?&action=search&status=${param.status}" method="post" class="d-flex mb-3 align-items-center"
+                                  style="max-width: 400px; border-radius: 25px; background: #f8f9fa; padding: 5px;">
+                                <input type="search" name="searchContent" class="form-control" id="searchInput" placeholder="Nhập từ khóa..."
+                                       style="flex: 1; border: none; outline: none; padding: 8px 12px; border-radius: 20px; font-size: 14px;">
+                                <button type="submit" class="btn btn-primary"
+                                        style="border-radius: 20px; padding: 6px 15px; font-size: 14px; font-weight: bold; background-color: #007bff; border: none; transition: 0.3s;">
+                                    Tìm Kiếm
+                                </button>
                             </form>
                         </div>
                     </div>

@@ -88,7 +88,6 @@
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
                                 <li class="breadcrumb-item">Dashboard</li>
-                                <li class="breadcrumb-item">Nhân viên</li>
                                 <li class="breadcrumb-item active" aria-current="page">Hồ sơ người dùng</li>
                             </ol>
                         </nav>

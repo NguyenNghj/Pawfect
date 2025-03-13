@@ -99,15 +99,21 @@
 
                         <div class="col-md-6">
                             <a href="createvoucher" class="btn btn-success">
-                                <i class="fa-solid fa-plus"></i> Tạo mã giảm giá
+                                <i class="fa-solid fa-plus"></i> Tạo mã giảm 
                             </a>
                         </div>
 
-
                         <div class="col-md-6">
-                            <form action="voucher" method="get" class="d-flex">
-                                <label for="inputName" class="col-sm-2 col-form-label">Tìm kiếm:</label>
-                                <input name="search" type="search" class="form-control" id="inputName" placeholder="Tên mã giảm giá...">
+                            <form action="voucher" method="get" class="d-flex mb-3 align-items-center" 
+                                  style="max-width: 400px; margin: 0 auto; border-radius: 25px; background: #f8f9fa; padding: 5px;">
+
+                                <input type="search" name="search" class="form-control" id="inputName" placeholder="Nhập từ khóa..."
+
+                                       style="flex: 1; border: none; outline: none; padding: 8px 12px; border-radius: 20px; font-size: 14px;">
+                                <button type="submit" class="btn btn-primary" 
+                                        style="border-radius: 20px; padding: 6px 15px; font-size: 14px; font-weight: bold; background-color: #007bff; border: none; transition: 0.3s;">
+                                    Tìm Kiếm
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -115,10 +121,11 @@
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <div class="main-dashboard-table">
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
-                                 style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
+                                 style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                   
                                 <i class="fa-solid fa-ticket"></i>
                                 <h4 class="mb-0">Danh sách mã giảm giá</h4>
                             </div>
+
                             <div style="padding: 15px 15px 25px 15px;">
                                 <table class="table">
                                     <thead>

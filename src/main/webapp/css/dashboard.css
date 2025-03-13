@@ -16,8 +16,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     background-color: #eee;
     margin-left: 250px; /* Đẩy nội dung sang phải để không bị che */
     padding: 20px;
-    width: calc(100vw - 250px); /* Giữ nội dung vừa với phần còn lại */
-    height: 100vh;
+        width: calc(100vw - 250px); /* Giữ nội dung vừa với phần còn lại */
+        height: 100vh;
 }
 .sidebar {
     background: #8C6E63;
