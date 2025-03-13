@@ -49,6 +49,7 @@ public class GoogleLoginServlet extends HttpServlet {
         } else {
              HttpSession session = request.getSession();
     session.setAttribute("ggId", acc.getId());
+     session.setAttribute("ggName", acc.getName());
     response.sendRedirect("/registergoogle");
 //            userDAO.insertGoogleAcc(acc);
 //            String customer = userDAO.getCustomerId(acc.getId());

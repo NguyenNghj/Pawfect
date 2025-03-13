@@ -46,14 +46,13 @@
                     window.location.href = "/pawfect";
                 });
             </script>
-            <% } %>
+            <% }%>
 
             <div class="container-fluid p-0">
                 <div class="row g-0 register-container">
                     <!-- Illustration Side -->
                     <div class="col-md-6 illustration-side">
-                        <img src="img/login/img.png" 
-                             alt="E-commerce illustration" class="img-fluid">
+                       
                     </div>
 
                     <!-- Form Side -->
@@ -65,7 +64,9 @@
                                 <!-- Họ tên -->
                                 <div class="mb-3">
                                     <label for="fullName" class="form-label">Họ tên</label>
-                                    <input type="text" name="fullName"class="form-control" id="fullName" placeholder="Nhập họ tên đầy đủ" required>
+                                    <input type="text" name="fullName" class="form-control" id="fullName" 
+                                           placeholder="Nhập họ tên đầy đủ" required 
+                                           value="<%= session.getAttribute("ggName") != null ? session.getAttribute("ggName") : ""%>">
                                     <div class="invalid-feedback">
                                         Vui lòng nhập họ tên.
                                     </div>
