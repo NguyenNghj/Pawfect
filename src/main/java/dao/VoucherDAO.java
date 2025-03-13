@@ -8,6 +8,7 @@ import db.DBContext;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.Voucher;
@@ -21,6 +22,27 @@ public class VoucherDAO {
     Connection conn = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
+
+    public int numberOfUseVoucher(int customerId, String voucherCode) {
+        String query = "SELECT COUNT(*)\n"
+                + "FROM DiscountOrders d\n"
+                + "JOIN Orders o ON d.order_id = o.order_id\n"
+                + "JOIN Voucher v ON d.voucher_id = v.voucher_id\n"
+                + "WHERE o.customer_id = ? AND v.code = ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, customerId);
+            ps.setString(2, voucherCode);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; 
+    }
 
     public List<Voucher> getAllVoucher() {
         List<Voucher> voucherList = new ArrayList<>();

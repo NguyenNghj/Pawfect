@@ -349,6 +349,30 @@
                                                                 text: "Đơn hàng tối thiểu " + formatCurrency(response.minOrderValue),
                                                                 icon: "error"
                                                             });
+                                                        } else if (response.status === "voucherIsUse") {
+                                                            console.log("Voucher đã được sử dụng");
+
+                                                            Swal.fire({
+                                                                title: "Mã khuyến mãi đã được sử dụng!",
+                                                                text: "Bạn đã sử dụng mã khuyến mãi này trước đó. Xin vui lòng thử lại mã khác!",
+                                                                icon: "error"
+                                                            });
+                                                        } else if (response.status === "outOfDateVoucher") {
+                                                            console.log("Voucher đã hết hạn");
+
+                                                            Swal.fire({
+                                                                title: "Mã khuyến mãi đã hết hạn!",
+                                                                text: "Mã khuyến mãi này đã hết hạn. Xin vui lòng thử lại mã khác!",
+                                                                icon: "error"
+                                                            });
+                                                        } else if (response.status === "isActiveVoucher") {
+                                                            console.log("Mã khuyến mãi không còn hoạt động");
+
+                                                            Swal.fire({
+                                                                title: "Mã khuyến mãi không còn hoạt động!",
+                                                                text: "Mã khuyến mãi này hiện tại không còn hoạt động nữa. Xin vui lòng thử lại mã khác!",
+                                                                icon: "error"
+                                                            });
                                                         } else {
                                                             console.log("Lỗi áp mã khuyến mãi!");
                                                             Swal.fire({
