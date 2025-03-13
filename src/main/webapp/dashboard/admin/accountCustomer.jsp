@@ -7,6 +7,9 @@
 <%@page import="model.Customers"%>
 <%@page import="model.Customers"%>
 <%@page import="java.util.List"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -96,21 +99,17 @@
 
                     <div class="row d-flex align-items-center" style="margin-top: 30px;">
                         <!-- Form Tìm Kiếm -->
-                        <div class="col-md-6">
-                            <form action="customers" method="get" class="d-flex mb-3 align-items-center" 
-                                  style="max-width: 400px; margin: 0 auto; border-radius: 25px; background: #f8f9fa; padding: 5px;">
-
-                                <input type="text" name="keyword" class="form-control" placeholder="Tìm Kiếm Theo Tên"
-                                       value="<%= request.getAttribute("searchKeyword") != null ? request.getAttribute("searchKeyword") : ""%>"
+                        <div class="col-md-6 text-start"> <!-- Thêm text-start để căn trái -->
+                            <form action="customers" method="get" class="d-flex mb-3 align-items-center"
+                                  style="max-width: 400px; border-radius: 25px; background: #f8f9fa; padding: 5px;">
+                                <input type="text" name="search" class="form-control" placeholder="Nhập từ khóa..."
                                        style="flex: 1; border: none; outline: none; padding: 8px 12px; border-radius: 20px; font-size: 14px;">
-
-                                <button type="submit" class="btn btn-primary" 
+                                <button type="submit" class="btn btn-primary"
                                         style="border-radius: 20px; padding: 6px 15px; font-size: 14px; font-weight: bold; background-color: #007bff; border: none; transition: 0.3s;">
                                     Tìm Kiếm
                                 </button>
                             </form>
                         </div>
-
                     </div>
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
@@ -197,6 +196,13 @@
                                     %>
                                     </tbody>
                                 </table>
+                                <c:if test="${empty customerList}">                     
+                                    <div>
+                                        <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
+                                            Không tìm thấy!
+                                        </h5>
+                                    </div>
+                                </c:if>
                             </div>
                         </div>
                     </div>

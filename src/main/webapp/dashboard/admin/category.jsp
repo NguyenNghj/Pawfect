@@ -53,7 +53,7 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Quản lí thể loại</h1>
+                                <h1>Quản lí danh mục</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
                                 <span><%= staffName%></span>
@@ -95,13 +95,26 @@
                         </nav>
                     </div>    
 
-                    <div class="row">
-                        <div class="col-3 p-0" style="margin-top: 60px;">
-                            <a href="/dashboard/admin/createcategory" type="button" class="btn btn-success">
-                                <i class="fa-solid fa-plus"></i>
-                                Tạo danh mục
+                    <div class="row d-flex align-items-center" style="margin-top: 30px;">
+                        <div class="col-md-6">
+                            <a href="createcategory" class="btn btn-success">
+                                <i class="fa-solid fa-plus"></i> Tạo danh mục
                             </a>
-                        </div>        
+                        </div>
+
+                        <div class="col-md-6">
+                            <form action="category" method="get" class="d-flex mb-3 align-items-center" 
+                                  style="max-width: 400px; margin: 0 auto; border-radius: 25px; background: #f8f9fa; padding: 5px;">
+                                <input type="search" name="search" class="form-control" id="inputName" placeholder="Nhập từ khóa..."
+
+                                       style="flex: 1; border: none; outline: none; padding: 8px 12px; border-radius: 20px; font-size: 14px;">
+                                <button type="submit" class="btn btn-primary" 
+                                        style="border-radius: 20px; padding: 6px 15px; font-size: 14px; font-weight: bold; background-color: #007bff; border: none; transition: 0.3s;">
+                                    Tìm Kiếm
+                                </button>
+                            </form>
+                        </div>
+
                     </div>
 
 
@@ -144,9 +157,17 @@
                                         </c:forEach>
                                     </tbody>
                                 </table>
+                                <c:if test="${empty categories}">                     
+                                    <div>
+                                        <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
+                                            Không tìm thấy!
+                                        </h5>
+                                    </div>
+                                </c:if>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>  

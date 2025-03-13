@@ -112,11 +112,9 @@
                         <div class="col-md-6">
                             <form action="staff" method="get" class="d-flex mb-3 align-items-center" 
                                   style="max-width: 400px; margin: 0 auto; border-radius: 25px; background: #f8f9fa; padding: 5px;">
+                                <input type="search" name="search" class="form-control" id="inputName" placeholder="Nhập từ khóa..."
 
-                                <input type="text" name="keyword" class="form-control" placeholder="Tìm Kiếm Theo Tên"
-                                       value="<%= request.getAttribute("searchKeyword") != null ? request.getAttribute("searchKeyword") : ""%>"
                                        style="flex: 1; border: none; outline: none; padding: 8px 12px; border-radius: 20px; font-size: 14px;">
-
                                 <button type="submit" class="btn btn-primary" 
                                         style="border-radius: 20px; padding: 6px 15px; font-size: 14px; font-weight: bold; background-color: #007bff; border: none; transition: 0.3s;">
                                     Tìm Kiếm
@@ -154,8 +152,8 @@
                                     <tbody>
                                         <%
                                             List<Staff> staffList = (List<Staff>) request.getAttribute("staffList");
-                                            if (staffList != null && !staffList.isEmpty()) {
-                                                for (Staff staff : staffList) {
+
+                                            for (Staff staff : staffList) {
                                         %>
                                         <tr>
                                             <td><%= staff.getStaffId()%></td>
@@ -180,17 +178,17 @@
                                         </tr>
                                         <%
                                             }
-                                        } else {
-                                        %>
-                                        <tr>
-                                            <td colspan="11">Không có nhân viên nào.</td>
-                                        </tr>
-                                        <%
-                                            }
+
                                         %>
                                     </tbody>
-
                                 </table>
+                                <c:if test="${empty staffList}">                     
+                                    <div>
+                                        <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
+                                            Không tìm thấy!
+                                        </h5>
+                                    </div>
+                                </c:if>
                             </div>
                         </div>
                     </div>          

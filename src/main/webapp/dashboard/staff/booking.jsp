@@ -93,19 +93,21 @@
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
                                 <li class="breadcrumb-item">Dashboard</li>
-                                <li class="breadcrumb-item">Nhân viên</li>
                                 <li class="breadcrumb-item active" aria-current="page">Quản lí yêu cầu đặt phòng</li>
                             </ol>
                         </nav>
                     </div> 
 
                     <div class="row d-flex align-items-center" style="margin-top: 30px;">
-                        <!-- Form Tìm Kiếm -->
-                        <div class="col-md-6">
-                            <form action="pethotelbooking" method="get" class="d-flex">
-                                <label for="inputName" class="col-sm-2 col-form-label">Tìm kiếm:</label>
-                                <input name="search" type="search" class="form-control" id="inputName" 
-                                       placeholder="Tên khách hàng..." value="${searchQuery}">
+                        <div class="col-md-6 text-start">
+                            <form action="pethotelbooking" method="get" class="d-flex mb-3 align-items-center"
+                                  style="max-width: 400px; border-radius: 25px; background: #f8f9fa; padding: 5px;">
+                                <input type="search" name="search" class="form-control" id="searchInput" placeholder="Nhập từ khóa..."
+                                       style="flex: 1; border: none; outline: none; padding: 8px 12px; border-radius: 20px; font-size: 14px;">
+                                <button type="submit" class="btn btn-primary"
+                                        style="border-radius: 20px; padding: 6px 15px; font-size: 14px; font-weight: bold; background-color: #007bff; border: none; transition: 0.3s;">
+                                    Tìm Kiếm
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -177,20 +179,6 @@
                                                     bookings = PetHotelBookingDAO.getAllBookings();
                                                 }
 
-                                                if (bookings.isEmpty()) {
-                                            %>
-                                            <tr>
-                                                <td colspan="8" style="text-align: center; font-weight: bold; color: red; padding: 15px;">
-                                                    <% if (searchQuery != null && !searchQuery.trim().isEmpty()) {%>
-                                                    Không tìm thấy kết quả cho từ khóa "<%= searchQuery%>"
-                                                    <% } else { %>
-                                                    Chưa có yêu cầu đặt phòng nào.
-                                                    <% } %>
-                                                </td>
-                                            </tr>
-                                            <%
-                                            } else {
-
                                                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
                                                 NumberFormat formatter = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
                                                 for (PetHotelBooking booking : bookings) {
@@ -250,12 +238,18 @@
                                                 </td>
                                             </tr>
                                             <%
-                                                    }
                                                 }
                                             %>
                                         </tbody>
 
                                     </table>
+                                    <c:if test="${empty bookings}">                     
+                                        <div>
+                                            <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
+                                                Không tìm thấy!
+                                            </h5>
+                                        </div>
+                                    </c:if>
                                 </div>
                             </div>
                         </div>
@@ -263,8 +257,7 @@
                 </div>
             </div>
         </div>
-        <%
-            String filterParam = request.getParameter("filter");
+        <%            String filterParam = request.getParameter("filter");
             String currentFilter = (filterParam != null) ? URLDecoder.decode(filterParam, StandardCharsets.UTF_8.toString()) : "all";
         %>
         <script>

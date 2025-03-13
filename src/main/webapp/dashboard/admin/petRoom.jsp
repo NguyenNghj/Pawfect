@@ -100,24 +100,27 @@
 
                     <div class="row d-flex align-items-center" style="margin-top: 30px;">
 
+                        <!-- Button Thêm Sản Phẩm -->
                         <div class="col-md-6">
-                            <a href="createpethotel" class="btn btn-success">
-                                <i class="fa-solid fa-plus"></i> Tạo phòng thú cưng
-                            </a>
+                            <nav class="navbar navbar-light" style="background-color: #EEEEEE;">
+                                <a href="createpethotel" class="btn btn-success">+ Tạo phòng thú cưng</a>
+                            </nav>
                         </div>
 
                         <!-- Form Tìm Kiếm -->
                         <div class="col-md-6">
-                            <form action="pethotel" method="get" class="d-flex align-items-center">
-                                <label for="searchInput" class="col-sm-2 col-form-label">Tìm kiếm:</label>
-                                <input type="text" name="search" class="form-control" id="searchInput" 
-                                       placeholder="Nhập tên phòng, loại phòng hoặc trạng thái..."
-                                       value="${searchQuery}">
+                            <form action="product" method="get" class="d-flex mb-3 align-items-center" 
+                                  style="max-width: 400px; margin: 0 auto; border-radius: 25px; background: #f8f9fa; padding: 5px;">
+
+                                <input type="search" name="search" class="form-control" id="inputName" placeholder="Nhập từ khóa..."
+
+                                       style="flex: 1; border: none; outline: none; padding: 8px 12px; border-radius: 20px; font-size: 14px;">
+                                <button type="submit" class="btn btn-primary" 
+                                        style="border-radius: 20px; padding: 6px 15px; font-size: 14px; font-weight: bold; background-color: #007bff; border: none; transition: 0.3s;">
+                                    Tìm Kiếm
+                                </button>
                             </form>
                         </div>
-
-
-
                     </div>
 
                     <!--                    <button class="btn btn-success" onclick="window.location.href = 'createpethotel'">

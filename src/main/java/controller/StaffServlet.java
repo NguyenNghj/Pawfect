@@ -59,7 +59,7 @@ public class StaffServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         StaffDAO staffDAO = new StaffDAO();
-        String keyword = request.getParameter("keyword");
+        String keyword = request.getParameter("search");
         List<Staff> staffList;
 
         if (keyword != null && !keyword.trim().isEmpty()) {

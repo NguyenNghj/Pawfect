@@ -106,13 +106,12 @@
 
                         <!-- Form Tìm Kiếm -->
 
-
                         <div class="col-md-6">
                             <form action="product" method="get" class="d-flex mb-3 align-items-center" 
                                   style="max-width: 400px; margin: 0 auto; border-radius: 25px; background: #f8f9fa; padding: 5px;">
 
-                                <input type="search" name="search" class="form-control" id="inputName" placeholder="Tên sản phẩm..."
-               
+                                <input type="search" name="search" class="form-control" id="inputName" placeholder="Nhập từ khóa..."
+
                                        style="flex: 1; border: none; outline: none; padding: 8px 12px; border-radius: 20px; font-size: 14px;">
                                 <button type="submit" class="btn btn-primary" 
                                         style="border-radius: 20px; padding: 6px 15px; font-size: 14px; font-weight: bold; background-color: #007bff; border: none; transition: 0.3s;">
@@ -120,8 +119,8 @@
                                 </button>
                             </form>
                         </div>
-                                       
-                                       
+
+
                     </div>
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
@@ -164,43 +163,41 @@
                                         <c:set var="start" value="${(currentPage - 1) * itemsPerPage}" />
                                         <c:set var="end" value="${start + itemsPerPage}" />
 
-                                        <c:choose>
-                                            <c:when test="${empty productList}">
+                                        <c:forEach var="product" items="${productList}" varStatus="loop">
+                                            <c:if test="${loop.index >= start and loop.index < end}">
                                                 <tr>
-                                                    <td colspan="9" style="text-align: center; font-size: 20px;">Không tìm thấy sản phẩm</td>
-                                                </tr>                           
-                                            </c:when>
-                                            <c:otherwise>
-                                                <c:forEach var="product" items="${productList}" varStatus="loop">
-                                                    <c:if test="${loop.index >= start and loop.index < end}">
-                                                        <tr>
-                                                            <th scope="row">${product.productId}</th>
-                                                            <td><img src="/img/products/${product.productImage}" alt="Hình ảnh" width="50"></td>
-                                                            <td>${product.categoryName}</td>
-                                                            <td>${product.productName}</td>
-                                                            <td>${product.productPetType}</td>
-                                                            <td>${product.productPrice}</td>
-                                                            <td>${product.stock}</td>
-                                                            <td>
-                                                                <c:choose>
-                                                                    <c:when test="${product.active}">
-                                                                        <span class="text-success">Đang bán</span>
-                                                                    </c:when>
-                                                                    <c:otherwise>
-                                                                        <span class="text-danger">Ngừng bán</span>
-                                                                    </c:otherwise>
-                                                                </c:choose>
-                                                            </td>
-                                                            <td>
-                                                                <a href="/dashboard/admin/editproduct?productId=${product.productId}" class="btn btn-primary">Chỉnh sửa</a>
-                                                            </td>
-                                                        </tr>
-                                                    </c:if>
-                                                </c:forEach>
-                                            </c:otherwise>
-                                        </c:choose>
+                                                    <th scope="row">${product.productId}</th>
+                                                    <td><img src="/img/products/${product.productImage}" alt="Hình ảnh" width="50"></td>
+                                                    <td>${product.categoryName}</td>
+                                                    <td>${product.productName}</td>
+                                                    <td>${product.productPetType}</td>
+                                                    <td>${product.productPrice}</td>
+                                                    <td>${product.stock}</td>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${product.active}">
+                                                                <span class="text-success">Đang bán</span>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <span class="text-danger">Ngừng bán</span>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                    <td>
+                                                        <a href="/dashboard/admin/editproduct?productId=${product.productId}" class="btn btn-primary">Chỉnh sửa</a>
+                                                    </td>
+                                                </tr>
+                                            </c:if>
+                                        </c:forEach>
                                     </tbody>
-                                </table>                     
+                                </table>       
+                                <c:if test="${empty productList}">                     
+                                    <div>
+                                        <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
+                                            Không tìm thấy!
+                                        </h5>
+                                    </div>
+                                </c:if>
                             </div>
                         </div>
                     </div> 

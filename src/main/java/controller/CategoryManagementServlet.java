@@ -58,8 +58,15 @@ public class CategoryManagementServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String keyword = request.getParameter("search");
         CategoryDAO categoryDAO = new CategoryDAO();
-        List<Category> categories = categoryDAO.getAllCategories();
+        List<Category> categories;
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            categories = categoryDAO.searchCategories(keyword);
+        } else {
+            categories = categoryDAO.getAllCategories();
+        }
         request.setAttribute("categories", categories);
         request.getRequestDispatcher("/dashboard/admin/category.jsp").forward(request, response);
     }

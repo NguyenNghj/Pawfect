@@ -59,8 +59,16 @@ public class VoucherManagementServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String keyword = request.getParameter("search");
         VoucherDAO voucherDAO = new VoucherDAO();
-        List<Voucher> vouchers = voucherDAO.getAllVoucher();
+        List<Voucher> vouchers;
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            vouchers = voucherDAO.searchVouchers(keyword);
+        } else {
+            vouchers = voucherDAO.getAllVouchers();
+        }
+
         request.setAttribute("voucherList", vouchers);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard/admin/voucher.jsp");
         dispatcher.forward(request, response);

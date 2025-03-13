@@ -19,6 +19,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     width: calc(100vw - 250px); /* Giữ nội dung vừa với phần còn lại */
     height: 100vh;
 }
+
+.card-title {
+    color: #D3A376;
+    font-weight: 700;
+    font-family: 'Baloo 2', sans-serif; /* Áp dụng font cho tiêu đề thẻ */
+    font-size:20px;
+}
+
 .sidebar {
     background: #8C6E63;
     height: 100vh; /* Chiếm toàn bộ chiều cao màn hình */
