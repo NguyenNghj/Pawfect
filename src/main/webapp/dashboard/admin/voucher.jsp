@@ -53,7 +53,7 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Quản lí mã giảm </h1>
+                                <h1>Quản lí mã giảm giá</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
                                 <span><%= staffName%></span>
@@ -190,6 +190,13 @@
                                         </c:forEach>
                                     </tbody>
                                 </table>
+                                <c:if test="${empty voucherList}">                     
+                                    <div>
+                                        <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
+                                            Không tìm thấy!
+                                        </h5>
+                                    </div>
+                                </c:if>
                             </div>
                         </div>
                     </div> 

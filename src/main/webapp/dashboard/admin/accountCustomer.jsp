@@ -102,8 +102,7 @@
                         <div class="col-md-6 text-start"> <!-- Thêm text-start để căn trái -->
                             <form action="customers" method="get" class="d-flex mb-3 align-items-center"
                                   style="max-width: 400px; border-radius: 25px; background: #f8f9fa; padding: 5px;">
-                                <input type="text" name="keyword" class="form-control" placeholder="Nhập từ khóa..."
-                                       value="<%= request.getAttribute("searchKeyword") != null ? request.getAttribute("searchKeyword") : ""%>"
+                                <input type="text" name="search" class="form-control" placeholder="Nhập từ khóa..."
                                        style="flex: 1; border: none; outline: none; padding: 8px 12px; border-radius: 20px; font-size: 14px;">
                                 <button type="submit" class="btn btn-primary"
                                         style="border-radius: 20px; padding: 6px 15px; font-size: 14px; font-weight: bold; background-color: #007bff; border: none; transition: 0.3s;">

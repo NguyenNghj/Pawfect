@@ -179,20 +179,6 @@
                                                     bookings = PetHotelBookingDAO.getAllBookings();
                                                 }
 
-                                                if (bookings.isEmpty()) {
-                                            %>
-                                            <tr>
-                                                <td colspan="8" style="text-align: center; font-weight: bold; color: red; padding: 15px;">
-                                                    <% if (searchQuery != null && !searchQuery.trim().isEmpty()) {%>
-                                                    Không tìm thấy kết quả cho từ khóa "<%= searchQuery%>"
-                                                    <% } else { %>
-                                                    Chưa có yêu cầu đặt phòng nào.
-                                                    <% } %>
-                                                </td>
-                                            </tr>
-                                            <%
-                                            } else {
-
                                                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
                                                 NumberFormat formatter = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
                                                 for (PetHotelBooking booking : bookings) {
@@ -252,12 +238,18 @@
                                                 </td>
                                             </tr>
                                             <%
-                                                    }
                                                 }
                                             %>
                                         </tbody>
 
                                     </table>
+                                    <c:if test="${empty bookings}">                     
+                                        <div>
+                                            <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
+                                                Không tìm thấy!
+                                            </h5>
+                                        </div>
+                                    </c:if>
                                 </div>
                             </div>
                         </div>
@@ -265,8 +257,7 @@
                 </div>
             </div>
         </div>
-        <%
-            String filterParam = request.getParameter("filter");
+        <%            String filterParam = request.getParameter("filter");
             String currentFilter = (filterParam != null) ? URLDecoder.decode(filterParam, StandardCharsets.UTF_8.toString()) : "all";
         %>
         <script>

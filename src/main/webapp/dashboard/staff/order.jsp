@@ -479,7 +479,7 @@
                                 <c:if test="${empty orders}">                     
                                     <div>
                                         <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
-                                            Không có đơn hàng nào!
+                                            Không tìm thấy!
                                         </h5>
                                     </div>
                                 </c:if>

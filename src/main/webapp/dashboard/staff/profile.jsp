@@ -3,7 +3,9 @@
     Created on : Feb 11, 2025, 4:54:08 PM
     Author     : Vu Quang Duc - CE181221
 --%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -93,140 +95,156 @@
                         </nav>
                     </div>                     
 
-                    <div class="row mt-3 align-items-center" style="background-color: white; padding: 20px; border-radius: 7px;">
-                        <div class="col-4">
-                            <div class="d-grid justify-content-center gap-3">
-                                <img src="${staff.image}" alt=""
-                                     style="width: 220px; height: 220px; border-radius: 50%; object-fit: cover;">
-                                <div class="d-grid gap-1" style="text-align: center;">
-                                    <%
-                                        String message = (String) session.getAttribute("message");
-                                        String messageType = (String) session.getAttribute("messageType");
-                                        if (message != null) {
-                                    %>
-                                    <div class="alert <%= "success".equals(messageType) ? "alert-success" : "alert-danger"%>">
-                                        <%= message%>
-                                    </div>
-                                    <%
-                                            session.removeAttribute("message");
-                                            session.removeAttribute("messageType");
-                                        }
-                                    %>
-                                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#changePassModal">
-                                        Đổi mật khẩu
-                                    </button>                                   
-                                </div>
-                            </div>
-                        </div>
-                        <input type="hidden" name="password" value="${staff.password}">
-                        <!-- Modal Change Password -->
-                        <div class="modal fade" id="changePassModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="changePassModalLabel" aria-hidden="true">
-                            <form action="changestaffpassword" method="POST" onsubmit="return validatePassword()">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="changePassModalLabel">Đổi mật khẩu</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="mb-2">
-                                                <label for="oldPassword" class="form-label">Mật khẩu cũ <span class="text-danger">*</span></label>
-                                                <input type="password" name="password" class="form-control" id="oldPassword" required>
-                                                <div class="text-danger" id="oldPasswordError"></div>
-                                            </div>
-                                            <div class="mb-2">
-                                                <label for="newPassword" class="form-label">Mật khẩu mới <span class="text-danger">*</span></label>
-                                                <input type="password" name="newPassword" class="form-control" id="newPassword" required>
-                                                <div class="text-danger" id="newPasswordError"></div>
-                                            </div>
-                                            <div class="mb-2">
-                                                <label for="confirmPassword" class="form-label">Xác nhận lại mật khẩu <span class="text-danger">*</span></label>
-                                                <input type="password" name="newPassword2" class="form-control" id="confirmPassword" required>
-                                                <div class="text-danger" id="confirmPasswordError"></div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                            <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
+                    <div class="container">
+                        <h5 class="card-title mb-4 justify-content-center text-center">Thông tin tài khoản</h5>  
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="card mb-4">
+                                    <div class="card-body text-center">
+                                        <img src="${staff.image}" alt="avatar"
+                                             class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
+                                        <h5 class="my-3">${empty staff.fullName ? 'Chưa có thông tin' : staff.fullName}</h5>
+                                        <button type="button" class="btn btn-success" 
+                                                data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                            Chỉnh sửa thông tin
+                                        </button>
 
-                        <div class="col d-grid gap-3">
-                            <div class="d-grid gap-3 profile-info">
-                                <h3 style="margin: 0;">Thông tin người dùng</h3>
-                                <span><b>Họ tên:</b> ${staff.fullName}</span>
-                                <span><b>Email:</b> ${staff.email}</span>
-                                <span><b>Điện thoại:</b> ${staff.phone}</span>
-                                <span><b>Địa chỉ:</b> ${staff.address}</span>
-                                <span><b>Giới tính:</b> ${staff.gender}</span>
-                                <span><b>Sinh nhật:</b> ${staff.birthDate}</span>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <button type="button" class="btn btn-success d-flex align-items-center gap-2"
-                                        data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                        >
-                                    <i class="fa-solid fa-pen"></i>
-                                    <span>Sửa đổi</span>
+
+                            <div class="col-lg-8">
+                                <div class="card mb-4">
+                                    <div class="card-body">                                                     
+                                        <div class="row">
+                                            <div class="col-sm-3 account-info-title"><p class="mb-0">Email</p></div>
+                                            <div class="col-sm-9">
+                                                <c:choose>
+                                                    <c:when test="${not empty staff.email and fn:contains(staff.email, '@')}">
+                                                        <p class="mb-0">${staff.email}</p>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <p class="mb-0">Đăng nhập bằng Google</p>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3 account-info-title"><p class="mb-0">Điện thoại</p></div>
+                                            <div class="col-sm-9"><p class="mb-0">${empty staff.phone ? 'Chưa có thông tin' : staff.phone}</p></div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3 account-info-title"><p class="mb-0">Ngày sinh</p></div>
+                                            <div class="col-sm-9"><p class="mb-0">${empty staff.birthDate ? 'Chưa có thông tin' : staff.birthDate}</p></div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3 account-info-title"><p class="mb-0">Địa chỉ</p></div>
+                                            <div class="col-sm-9"><p class="mb-0">${empty staff.address ? 'Chưa có thông tin' : staff.address}</p></div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col-sm-3 account-info-title"><p class="mb-0">Giới tính</p></div>
+                                            <div class="col-sm-9"><p class="mb-0">${empty staff.gender ? 'Chưa có thông tin' : staff.gender}</p></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-info mt-2" data-bs-toggle="modal" data-bs-target="#changePassModal">
+                                    Đổi mật khẩu
                                 </button>
-
-                                <!-- Modal of Update User Info -->
-
-                                <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <form action="staffprofile" method="POST" onsubmit="return validateStaffForm()">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Chỉnh sửa thông tin</h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" name="name" value="${staff.fullName}" placeholder="Họ và tên">
-                                                        <label>Full name</label>
-                                                        <span id="nameError" class="text-danger"></span>
-                                                    </div>
-
-                                                    <div class="form-floating mb-3">
-                                                        <input type="tel" class="form-control" name="phone" value="${staff.phone}" placeholder="Số điện thoại">
-                                                        <label>Phone</label>
-                                                        <span id="phoneError" class="text-danger"></span>
-                                                    </div>
-
-                                                    <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" name="address" value="${staff.address}" placeholder="Địa chỉ">
-                                                        <label>Address</label>
-                                                        <span id="addressError" class="text-danger"></span>
-                                                    </div>
-
-                                                    <div class="form-floating mb-3">
-                                                        <select class="form-select" name="gender">
-                                                            <option value="Nam" ${staff.gender == 'Nam' ? "selected" : ""}>Nam</option>
-                                                            <option value="Nữ" ${staff.gender == 'Nữ' ? "selected" : ""}>Nữ</option>
-                                                        </select>
-                                                        <label>Gender</label>
-                                                    </div>
-
-                                                    <div class="form-floating mb-3">
-                                                        <input type="date" class="form-control" name="birthdate" value="${staff.birthDate}">
-                                                        <label>Birthday</label>
-                                                        <span id="birthdateError" class="text-danger"></span>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                                    <input type="submit" value="Lưu" class="btn btn-primary">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-
                             </div>
                         </div>
+                    </div>  
+
+
+                    <!-- Modal of Update User Info -->
+                    <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <form action="staffprofile" method="POST" onsubmit="return validateStaffForm()">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Chỉnh sửa thông tin</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" name="name" value="${staff.fullName}" placeholder="Họ và tên">
+                                            <label>Full name</label>
+                                            <span id="nameError" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <input type="tel" class="form-control" name="phone" value="${staff.phone}" placeholder="Số điện thoại">
+                                            <label>Phone</label>
+                                            <span id="phoneError" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <input type="text" class="form-control" name="address" value="${staff.address}" placeholder="Địa chỉ">
+                                            <label>Address</label>
+                                            <span id="addressError" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <select class="form-select" name="gender">
+                                                <option value="Nam" ${staff.gender == 'Nam' ? "selected" : ""}>Nam</option>
+                                                <option value="Nữ" ${staff.gender == 'Nữ' ? "selected" : ""}>Nữ</option>
+                                            </select>
+                                            <label>Gender</label>
+                                        </div>
+
+                                        <div class="form-floating mb-3">
+                                            <input type="date" class="form-control" name="birthdate" value="${staff.birthDate}">
+                                            <label>Birthday</label>
+                                            <span id="birthdateError" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                        <input type="submit" value="Lưu" class="btn btn-primary">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
+
+                    <!-- Modal Change Password -->
+                    <div class="modal fade" id="changePassModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="changePassModalLabel" aria-hidden="true">
+                        <form action="changestaffpassword" method="POST" onsubmit="return validatePassword()">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="changePassModalLabel">Đổi mật khẩu</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-2">
+                                            <label for="oldPassword" class="form-label">Mật khẩu cũ <span class="text-danger">*</span></label>
+                                            <input type="password" name="password" class="form-control" id="oldPassword" required>
+                                            <div class="text-danger" id="oldPasswordError"></div>
+                                        </div>
+                                        <div class="mb-2">
+                                            <label for="newPassword" class="form-label">Mật khẩu mới <span class="text-danger">*</span></label>
+                                            <input type="password" name="newPassword" class="form-control" id="newPassword" required>
+                                            <div class="text-danger" id="newPasswordError"></div>
+                                        </div>
+                                        <div class="mb-2">
+                                            <label for="confirmPassword" class="form-label">Xác nhận lại mật khẩu <span class="text-danger">*</span></label>
+                                            <input type="password" name="newPassword2" class="form-control" id="confirmPassword" required>
+                                            <div class="text-danger" id="confirmPasswordError"></div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                        <button type="submit" class="btn btn-primary">Đổi mật khẩu</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
                 </div>
 
             </div>
