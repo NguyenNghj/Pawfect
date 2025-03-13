@@ -116,22 +116,25 @@ public class EditVoucherServlet extends HttpServlet {
             String voucherIdParam = request.getParameter("voucherId");
             String code = request.getParameter("code");
             String description = request.getParameter("description");
-            String discountPercentageParam = request.getParameter("discountPercentage");
-            String discountAmountParam = request.getParameter("discountAmount");
+            int discountPercentage = request.getParameter("discountPercentage") != null
+                    ? Integer.parseInt(request.getParameter("discountPercentage"))
+                    : 0;
+
+            double discountAmount = request.getParameter("discountAmount") != null
+                    ? Double.parseDouble(request.getParameter("discountAmount"))
+                    : 0.0;
             String minOrderValueParam = request.getParameter("minOrderValue");
             String maxDiscountParam = request.getParameter("maxDiscount");
             String startDateParam = request.getParameter("startDate");
             String endDateParam = request.getParameter("endDate");
             String isActiveParam = request.getParameter("active");
 
-            if (voucherIdParam == null || discountPercentageParam == null || discountAmountParam == null
-                    || minOrderValueParam == null || maxDiscountParam == null || startDateParam == null || endDateParam == null) {
+            if (voucherIdParam == null || minOrderValueParam == null
+                    || maxDiscountParam == null || startDateParam == null || endDateParam == null) {
                 throw new IllegalArgumentException("Một số trường dữ liệu bị thiếu.");
             }
 
             int voucherId = Integer.parseInt(voucherIdParam);
-            int discountPercentage = Integer.parseInt(discountPercentageParam);
-            double discountAmount = Double.parseDouble(discountAmountParam);
             double minOrderValue = Double.parseDouble(minOrderValueParam);
             double maxDiscount = Double.parseDouble(maxDiscountParam);
 
@@ -144,7 +147,7 @@ public class EditVoucherServlet extends HttpServlet {
             VoucherDAO voucherDAO = new VoucherDAO();
 
             // Kiểm tra mã giảm giá đã tồn tại hay chưa
-            if (voucherDAO.isCodeExists(code)) {
+            if (voucherDAO.isCodeExists(code, voucherId)) {
                 request.setAttribute("errorMessage", "Mã giảm giá đã tồn tại!");
                 request.setAttribute("voucher", new Voucher(voucherId, code, description, discountPercentage, discountAmount, minOrderValue, maxDiscount, startDate, endDate, isActive));
                 request.getRequestDispatcher("/dashboard/admin/editvoucher.jsp").forward(request, response);
