@@ -34,34 +34,6 @@
             <div class="row g-4">
                 <!-- Main Content -->
                 <div class="col-md-8">
-                    <!-- Top Cards -->
-                    <div class="row g-4 mb-4">
-                        <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <i class="bi bi-clipboard-check fs-4 text-primary"></i>
-                                    <a href="#" class="text-decoration-none text-dark">Lịch sử đơn hàng</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <i class="bi bi-calendar-date fs-4 text-primary"></i>
-                                    <a href="#" class="text-decoration-none text-dark">Lịch sử đặt lịch</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <i class="bi bi-person-circle fs-4"></i>
-                                    <span>Xin chào, <span class="text-primary">[${customer.fullName}]</span></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Orders Section -->
                     <div class="card">
                         <div class="card-body">
@@ -265,20 +237,32 @@
                 <!-- Sidebar -->
                 <div class="col-md-4">
                     <div class="list-group account-action">
+                        <!-- Thông tin cá nhân -->
                         <a href="profile" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-regular fa-user fa-lg" style="color: #0062ad;"></i>
                             <span>Thông tin cá nhân</span>
                         </a>
+                        <!-- Thú cưng của tôi -->
                         <a href="viewpet" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-solid fa-paw fa-lg" style="color: #8C6E63;"></i>
-                            <span>Thú cưng của tôi</span>
+                            <span style="color: #D3A376;"><b>Thú cưng của tôi</b></span>
                         </a>
+                        <!-- Đổi mật khẩu -->
                         <c:if test="${customer.email != null and fn:contains(customer.email, '@')}">
                             <a href="changepassword" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                                 <i class="fa-solid fa-key fa-lg" style="color: #eabd1a;"></i>
                                 <span>Đổi mật khẩu</span>
                             </a>
                         </c:if>
+                        <a href="order?&action=view&status=tc" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                            <i class="bi bi-clipboard-check fs-4" style="color: #008080;"></i>
+                            <span>Lịch sử đơn hàng</span>
+                        </a>
+                        <a href="bookinghistory" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                            <i class="bi bi-calendar-date fs-4" style="color: #808000;"></i>
+                            <span>Lịch sử đặt lịch</span>
+                        </a>
+                        <!-- Đăng xuất -->
                         <a href="logout" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="fa-solid fa-arrow-right-from-bracket fa-lg" style="color: #d01616;"></i>
                             <span>Đăng xuất</span>

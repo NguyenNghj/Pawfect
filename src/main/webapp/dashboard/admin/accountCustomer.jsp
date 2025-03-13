@@ -96,7 +96,7 @@
 
                     <div class="row d-flex align-items-center" style="margin-top: 30px;">
                         <!-- Form Tìm Kiếm -->
-                           <div class="col-md-6">
+                        <div class="col-md-6">
                             <form action="customers" method="get" class="d-flex mb-3 align-items-center" 
                                   style="max-width: 400px; margin: 0 auto; border-radius: 25px; background: #f8f9fa; padding: 5px;">
 

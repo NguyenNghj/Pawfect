@@ -26,23 +26,18 @@ body {
     background-color: #f8f9fa;
 }
 
-.breadcrumb {
-    background-color: #ffffff;
-    list-style: none;
-    display: flex;
-    gap: 10px;
-    padding: 15px 0 15px 50px;
-    border-radius: 10px;
-    font-size: 20px;
-    font-weight: bold;
+.breadcrumb{
+    padding-left: 12px !important;
 }
 
-.breadcrumb li::after {
-    content: " \/ ";
+.breadcrumb .breadcrumb-item a {
+    text-decoration: none;
+    color: #D3A376;
 }
 
-.breadcrumb li:last-child::after {
-    content: "";
+.breadcrumb .breadcrumb-item a:hover {
+    color: #D3A376;
+    text-decoration: underline;
 }
 
 .trang-chu {

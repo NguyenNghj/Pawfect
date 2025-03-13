@@ -36,43 +36,26 @@
     <body>
         <div class="container py-4"> 
             <!-- Breadcrumb -->
-            <nav aria-label="breadcrumb" class="mb-4">
-                <ol class="breadcrumb p-3" style="background-color: white; border-radius: 5px;">
-                    <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Lịch sử đặt lịch</li>
-                </ol>
-            </nav>
+            <div class="row mt-2 bg-white p-3 mb-4 d-flex align-items-center justify-content-center" 
+                 style="border-radius: 20px; height: 60px;">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0" style="font-weight: bold;">
+                        <li class="breadcrumb-item">
+                            <a href="pawfect" class="text-decoration-none">Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="bookinghistory" class="text-decoration-none">Đặt lịch</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            <span>Đơn hàng:  ${param.orderId + 2500000}</span>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
 
             <div class="row g-4">
                 <!-- Main Content -->
                 <div class="col-md-8">
-                    <!-- Top Cards -->
-                    <div class="row g-4 mb-4">
-                        <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <i class="bi bi-clipboard-check fs-4 text-primary"></i>
-                                    <a href="#" class="text-decoration-none">Lịch sử đơn hàng</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <i class="bi bi-calendar-date fs-4 text-primary"></i>
-                                    <a href="bookinghistory" class="text-decoration-none" style="color: black;">Lịch sử đặt lịch</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <i class="bi bi-person-circle fs-4"></i>
-                                    <span>Xin chào, <span class="text-primary">${customer.fullName}</span></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <%
                         String message = (String) session.getAttribute("message");
                         String messageType = (String) session.getAttribute("messageType");
@@ -88,24 +71,24 @@
                     %>
                     <!-- Booking History -->
                     <div class="container py-4" style="max-width: 1000px; margin: auto; background: #ffffff; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); padding: 20px;">
-                        <h2 style="text-align: center; font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px;">Chi tiết đặt phòng</h2>
+                        <h5 style="text-align: center; font-size: 24px; font-weight: bold; color: #D3A376; margin-bottom: 20px;">Chi tiết đặt phòng</h5>
 
                         <c:if test="${not empty booking}">
                             <div style="display: flex; flex-direction: row; justify-content: space-between; gap: 20px;">
                                 <!-- Cột thông tin khách hàng -->
                                 <div style="flex: 1; background: #f8f9fa; padding: 15px; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);">
-                                    <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #007bff;">Thông tin khách hàng</h5>
+                                    <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #D3A376;">Thông tin khách hàng</h5>
                                     <p><strong>Họ tên:</strong> ${booking.customerName}</p>
                                     <p><strong>Số điện thoại:</strong> ${customer.phone}</p>
                                     <p><strong>Email:</strong> ${customer.email}</p>
-                                    <br><h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #007bff;">Nhân viên phụ trách</h5>
+                                    <br><h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #D3A376;">Nhân viên phụ trách</h5>
                                     <p>${empty booking.staffName ? "Chưa có nhân viên tiếp nhận" : booking.staffName}</p>
 
                                 </div>
 
                                 <!-- Cột thông tin đặt phòng -->
                                 <div style="flex: 1; background: #f8f9fa; padding: 15px; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);">
-                                    <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #007bff;">Thông tin đặt phòng</h5>
+                                    <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #D3A376;">Thông tin đặt phòng</h5>
                                     <p><strong>Tên phòng:</strong> ${booking.roomName}</p>
                                     <p><strong>Tên thú cưng:</strong> ${booking.petName}</p> <!-- Thêm dòng này -->
                                     <p><strong>Ngày check-in:</strong> 
@@ -122,8 +105,8 @@
 
                                 <!-- Cột thông tin tổng tiền -->
                                 <div style="flex: 1; background: #f8f9fa; padding: 15px; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);">
-                                    <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #007bff;">Trạng thái</h5> 
-                                    <span style="padding: 6px 12px; border-radius: 5px; font-size: 14px; color: #fff; background-color:
+                                    <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #D3A376;">Trạng thái</h5> 
+                                    <span style="padding: 6px 12px; border-radius: 5px; font-size: 14px; color: black; background-color:
                                           ${booking.status eq 'Đã duyệt' ? '#28a745' 
                                             : (booking.status eq 'Chờ xác nhận' ? '#ffc107' 
                                             : (booking.status eq 'Đã hủy' ? '#dc3545' 
@@ -133,10 +116,10 @@
                                           </span>
 
                                           </p>
-                                          <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #007bff;">Ghi chú</h5>
+                                          <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #D3A376;">Ghi chú</h5>
                                           <p>${booking.note}</p>
 
-                                          <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #007bff;">Tổng chi phí</h5>
+                                          <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #D3A376;">Tổng chi phí</h5>
                                           <p class="format-price" style="font-size: 20px; font-weight: bold; color: black;">${booking.totalPrice}</p>
                                     </div>
                                 </div>
@@ -167,11 +150,10 @@
                     <!-- Sidebar -->
                     <div class="col-md-4">
                         <div class="list-group account-action">
-
                             <!-- Thông tin cá nhân -->
                             <a href="profile" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                                 <i class="fa-regular fa-user fa-lg" style="color: #0062ad;"></i>
-                                <span style="color: #1c49c2;"><b>Thông tin cá nhân</b></span>
+                                <span>Thông tin cá nhân</span>
                             </a>
                             <!-- Thú cưng của tôi -->
                             <a href="viewpet" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
@@ -185,6 +167,14 @@
                                     <span>Đổi mật khẩu</span>
                                 </a>
                             </c:if>
+                            <a href="order?&action=view&status=tc" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                                <i class="bi bi-clipboard-check fs-4" style="color: #008080;"></i>
+                                <span>Lịch sử đơn hàng</span>
+                            </a>
+                            <a href="bookinghistory" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                                <i class="bi bi-calendar-date fs-4" style="color: #808000;"></i>
+                                <span style="color: #D3A376;"><b>Lịch sử đặt lịch</b></span>
+                            </a>
                             <!-- Đăng xuất -->
                             <a href="logout" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                                 <i class="fa-solid fa-arrow-right-from-bracket fa-lg" style="color: #d01616;"></i>

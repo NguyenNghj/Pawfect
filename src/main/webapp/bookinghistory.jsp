@@ -29,37 +29,6 @@
             <div class="row g-4">
                 <!-- Main Content -->
                 <div class="col-md-8">
-                    <!-- Top Cards -->
-                    <div class="row g-4 mb-4">
-                        <div class="col-md-4">
-                            <a href="order?&action=view&status=tc" class="text-decoration-none">
-                                <div class="card h-100">
-                                    <div class="card-body d-flex align-items-center gap-3">
-                                        <i class="bi bi-clipboard-check fs-4 text-primary"></i>
-                                        <span class="text-decoration-none text-dark">Lịch sử đơn hàng</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-md-4">
-                            <a href="#" class="text-decoration-none">
-                                <div class="card h-100 active-card">
-                                    <div class="card-body d-flex align-items-center gap-3">
-                                        <i class="bi bi-calendar-date fs-4 text-light fw-bold"></i>
-                                        <span style="color: white; font-weight: bold">Lịch sử đặt lịch</span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card h-100">
-                                <div class="card-body d-flex align-items-center gap-3">
-                                    <i class="bi bi-person-circle fs-4"></i>
-                                    <span>Xin chào, <span class="text-primary">${customer.fullName}</span></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <%
                         String message = (String) session.getAttribute("message");
                         String messageType = (String) session.getAttribute("messageType");
@@ -153,7 +122,6 @@
                     <!-- Sidebar -->
                     <div class="col-md-4">
                         <div class="list-group account-action">
-
                             <!-- Thông tin cá nhân -->
                             <a href="profile" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                                 <i class="fa-regular fa-user fa-lg" style="color: #0062ad;"></i>
@@ -171,6 +139,14 @@
                                     <span>Đổi mật khẩu</span>
                                 </a>
                             </c:if>
+                            <a href="order?&action=view&status=tc" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                                <i class="bi bi-clipboard-check fs-4" style="color: #008080;"></i>
+                                <span>Lịch sử đơn hàng</span>
+                            </a>
+                            <a href="bookinghistory" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                                <i class="bi bi-calendar-date fs-4" style="color: #808000;"></i>
+                                <span style="color: #D3A376;"><b>Lịch sử đặt lịch</b></span>
+                            </a>
                             <!-- Đăng xuất -->
                             <a href="logout" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                                 <i class="fa-solid fa-arrow-right-from-bracket fa-lg" style="color: #d01616;"></i>
