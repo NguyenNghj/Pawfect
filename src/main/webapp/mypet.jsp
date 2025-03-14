@@ -51,15 +51,14 @@
                             <!-- Order Tabs -->
                             <ul class="nav nav-tabs mb-4">
                                 <li class="nav-item">
-                                    <a class="nav-link <c:if test="${pettype == 'tc'}">active</c:if>" href="viewpet?&pettype" style="font-weight: bold; border-width: 2px;">Tất cả</a>
+                                    <a class="nav-link <c:if test="${petType == ' '}">active</c:if>" href="viewpet?&pettype" style="font-weight: bold; border-width: 2px;">Tất cả</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link <c:if test="${pettype == 'Chó'}">active</c:if>" href="viewpet?&pettype=Chó" style="font-weight: bold; border-width: 2px;">Chó</a>
+                                        <a class="nav-link <c:if test="${petType == 'Chó'}">active</c:if>" href="viewpet?&pettype=Chó" style="font-weight: bold; border-width: 2px;">Chó</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link <c:if test="${pettype == 'Mèo'}">active</c:if>" href="viewpet?&pettype=Mèo" style="font-weight: bold; border-width: 2px;">Mèo</a>
+                                        <a class="nav-link <c:if test="${petType == 'Mèo'}">active</c:if>" href="viewpet?&pettype=Mèo" style="font-weight: bold; border-width: 2px;">Mèo</a>
                                     </li>
-
                                 </ul>
 
                                 <div class="reviews-list">

@@ -4,24 +4,19 @@
  */
 package controller;
 
-import dao.CustomersDAO;
 import dao.VoucherDAO;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.Customers;
-import model.Voucher;
 
 /**
  *
- * @author ADMIN
+ * @author Nguyen Tri Nghi - CE180897
  */
-public class ViewCustomersForStaffServlet extends HttpServlet {
+public class SendVoucherServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +35,10 @@ public class ViewCustomersForStaffServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewCustomersForStaffServlet</title>");
+            out.println("<title>Servlet SendVoucherServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewCustomersForStaffServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SendVoucherServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,24 +56,7 @@ public class ViewCustomersForStaffServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String keyword = request.getParameter("search");
-        List<Customers> customerList;
-        VoucherDAO voucherDAO = new VoucherDAO();
-        List<Voucher> vouchers = voucherDAO.getAllActiveVouchers();
-        if (keyword != null && !keyword.trim().isEmpty()) {
-            // Nếu có keyword, thực hiện tìm kiếm
-            customerList = CustomersDAO.searchCustomers(keyword);
-        } else {
-            // Nếu không có keyword, lấy toàn bộ danh sách
-            customerList = CustomersDAO.getAllCustomers();
-        }
-
-        // Gửi danh sách khách hàng đến JSP để hiển thị
-        request.setAttribute("customerList", customerList);
-        request.setAttribute("vouchers", vouchers);
-        request.setAttribute("searchKeyword", keyword); // Giữ lại giá trị keyword để hiển thị trên giao diện
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard/staff/accountCustomer.jsp");
-        dispatcher.forward(request, response);
+        System.out.println("Nice");
     }
 
     /**
@@ -92,7 +70,34 @@ public class ViewCustomersForStaffServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        // Lấy dữ liệu từ form
+        String customerId = request.getParameter("customerId");
+        String voucherCode = request.getParameter("voucherCode");
+        // Kiểm tra dữ liệu hợp lệ
+        if (customerId == null || customerId.isEmpty() || voucherCode == null || voucherCode.isEmpty()) {
+            request.setAttribute("errorMessage", "Vui lòng chọn khách hàng và voucher.");
+            request.getRequestDispatcher("/dashboard/staff/viewcustomersforStaff").forward(request, response);
+            return;
+        }
+
+        try {
+            // Gửi voucher mail code ở đây
+
+//            boolean success= ;
+//
+//            if (success) {
+//                request.setAttribute("message", "Gửi voucher thành công!");
+            response.sendRedirect("/dashboard/staff/viewcustomersforStaff");
+//            } else {
+//                request.setAttribute("errorMessage", "Gửi voucher thất bại!");
+//            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
+        }
+
+        // Chuyển hướng về trang quản lý hoặc thông báo kết quả
+        request.getRequestDispatcher("/dashboard/staff/viewcustomersforStaff");
     }
 
     /**
