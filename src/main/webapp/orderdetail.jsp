@@ -28,8 +28,9 @@
                         <li class="breadcrumb-item">
                             <a href="pawfect" class="text-decoration-none">Trang chủ</a>
                         </li>
+                        <li class="breadcrumb-item"><a href="profile" class="text-decoration-none">Tài khoản</a></li>
                         <li class="breadcrumb-item">
-                            <a href="order?action=view&status=tc" class="text-decoration-none">Đơn hàng</a>
+                            <a href="order?action=view&status=tc" class="text-decoration-none">Lịch sử đơn hàng</a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">
                             <span>Đơn hàng:  ${param.orderId + 2500000}</span>

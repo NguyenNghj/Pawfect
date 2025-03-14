@@ -63,6 +63,7 @@ public class ViewPetServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String pettype = request.getParameter("pettype");
         String customerId = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -83,9 +84,13 @@ public class ViewPetServlet extends HttpServlet {
             }
         }
         request.setAttribute("totalQuantity", totalQuantity);
-
+        List<Pet> pets;
         PetDAO petDAO = new PetDAO();
-        List<Pet> pets = petDAO.getAllPets(customerId);
+        if (pettype != null && !pettype.trim().isEmpty()) {
+            pets = petDAO.filterPet(pettype);
+        } else {
+            pets = petDAO.getAllPets(customerId);
+        }
         request.setAttribute("pets", pets);
         ProfileDAO profileDAO = new ProfileDAO();
         User user = profileDAO.getUser(customerId);
