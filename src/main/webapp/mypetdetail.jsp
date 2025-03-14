@@ -51,32 +51,6 @@
                         <% }%>
 
                     </div>                              
-
-
-                   
-
-
-                    <!-- Modal xác nhận xoá thú cưng -->
-                    <div class="modal fade" id="removePetModal" tabindex="-1" aria-labelledby="removePetModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="removePetModalLabel">Xác nhận xoá thú cưng</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-
-                                <div class="modal-body">
-                                    <p style="text-align: left;">Bạn muốn chắc chắn xoá [${pet.petname}]</p>   
-                                </div>
-                                <div class="modal-footer">
-
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                    <a href="deletepet?petId=${pet.petId}&petStatus=${pet.petStatus}" class="btn btn-danger">Xoá</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <!-- Package Tracking -->
                     <div class="card">
                         <div class="card-body">
@@ -87,9 +61,9 @@
                                         <div class="card-body text-center">
                                             <img src="/img/pet/${pet.petImg}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
                                             <h5 class="my-3">${empty pet.petname ? 'Chưa có thông tin' : pet.petname}</h5>
-                                           <button type="button" class="btn btn-success" onclick="window.location.href='editpet?petId=${pet.petId}'">
-    Chỉnh sửa thông tin
-</button>
+                                            <button type="button" class="btn btn-success" onclick="window.location.href = 'editpet?petId=${pet.petId}'">
+                                                Chỉnh sửa thông tin
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -138,10 +112,30 @@
                                         </div>
                                     </div>
                                     <div class="text-end">
-                                        <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#removePetModal" 
-                                                style="padding: 8px 18px;">
+                                        <button class="btn btn-danger btn-sm" style="padding: 8px 18px;" onclick="confirmDelete('${pet.petId}', '${pet.petStatus}', '${pet.petname}')">
                                             <span style="font-size: 16px;">Xoá thú cưng</span>
                                         </button>
+
+                                       
+                                        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                                        <script>
+                                            function confirmDelete(petId, petStatus, petName) {
+                                                Swal.fire({
+                                                    title: "Xác nhận xoá thú cưng",
+                                                    text: `Bạn có chắc chắn muốn xoá thú cưng ${pet.petname} ?`,
+                                                    icon: "warning",
+                                                    showCancelButton: true,
+                                                    confirmButtonColor: "#d33",
+                                                    cancelButtonColor: "#6c757d",
+                                                    confirmButtonText: "Xoá",
+                                                    cancelButtonText: "Đóng"
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        window.location.href = `deletepet?petId=${pet.petId}&petStatus=${pet.petStatus}`;
+                                                    }
+                                                });
+                                            }
+                                        </script>
                                     </div>
                                 </div>
                             </div>
