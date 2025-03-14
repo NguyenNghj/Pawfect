@@ -20,7 +20,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="../../css/dashboard.css">
-        <title>Quản lí Pet Hotel</title>
+        <title>Quản lý Pet Hotel</title>
     </head>
     <body>
         <div class="container-fluid">
@@ -56,10 +56,10 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Quản lí khách sạn thú cưng</h1>
+                                <h1>Quản lý khách sạn thú cưng</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
-                                <span><%= staffName%></span>
+                                <span style = "color: #D3A376; font-weight: bold;"><%= staffName%></span>
                                 <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
                                 </button>
@@ -67,24 +67,11 @@
                                     <div class="d-grid gap-2">
                                         <li class="profile-img-switch-employee d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-repeat"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="/dashboard/staff/dashboard.jsp">Switch to employee</a>
-                                        </li>
-                                        <li class="profile-img-switch-store d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
-                                            <i class="fa-solid fa-store"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="#">Go to store</a>
-                                        </li>
-                                        <hr style="margin: 0;">
-                                        <li class="profile-img-info1 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
-                                            <i class="fa-solid fa-user-pen"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="adminprofile">Profile</a>
-                                        </li>
-                                        <li class="profile-img-info2 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
-                                            <i class="fa-solid fa-right-from-bracket" style="font-size: 20px;"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="logoutadmin">Logout</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="/dashboard/staff/statistics">Chuyển qua giao diện nhân viên</a>
                                         </li>
                                     </div>
                                 </ul>
-                            </div>                                                             
+                            </div>                                                              
                         </div>
                     </div>
 
@@ -93,7 +80,7 @@
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
                                 <li class="breadcrumb-item">Dashboard</li>
-                                <li class="breadcrumb-item active" aria-current="page">Quản lí khách sạn thú cưng</li>
+                                <li class="breadcrumb-item active" aria-current="page">Quản lý khách sạn thú cưng</li>
                             </ol>
                         </nav>
                     </div> 
