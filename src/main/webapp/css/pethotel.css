@@ -11,7 +11,7 @@
 }
 
 body {
-    background-color: #F4F4F4;
+    background-color: #F4F4F4 !important;
     text-align: center;
 }
 
