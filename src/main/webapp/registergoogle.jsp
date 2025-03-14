@@ -37,13 +37,13 @@
             <% if ("true".equals(success)) { %>
             <script>
                 Swal.fire({
-                    icon: 'success',
-                    title: 'Đăng ký thành công!',
-                    text: 'Bạn sẽ được chuyển hướng sau 1 giây...',
-                    showConfirmButton: false,
-                    timer: 1000
+                icon: 'success',
+                        title: 'Đăng ký thành công!',
+                        text: 'Bạn sẽ được chuyển hướng sau 1 giây...',
+                        showConfirmButton: false,
+                        timer: 1000
                 }).then(() => {
-                    window.location.href = "/pawfect";
+                window.location.href = "/pawfect";
                 });
             </script>
             <% }%>
@@ -52,7 +52,7 @@
                 <div class="row g-0 register-container">
                     <!-- Illustration Side -->
                     <div class="col-md-6 illustration-side">
-                       
+
                     </div>
 
                     <!-- Form Side -->
@@ -145,21 +145,106 @@
 
             <!-- Custom JavaScript -->
             <script>
-                (function () {
-                    'use strict';
-                    window.addEventListener('load', function () {
-                        var forms = document.querySelectorAll('.needs-validation');
-                        Array.prototype.slice.call(forms).forEach(function (form) {
-                            form.addEventListener('submit', function (event) {
-                                if (!form.checkValidity()) {
-                                    event.preventDefault();
-                                    event.stopPropagation();
-                                }
-                                form.classList.add('was-validated');
-                            }, false);
-                        });
-                    }, false);
-                })();
+                document.addEventListener("DOMContentLoaded", function () {
+                "use strict";
+                var forms = document.querySelectorAll(".needs-validation");
+                Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener("submit", function (event) {
+                document.querySelectorAll("input").forEach((input) => {
+                input.value = input.value.trim();
+                });
+                const fullName = document.getElementById("fullName");
+                const password = document.getElementById("password");
+                const confirmPassword = document.getElementById("confirmPassword");
+                // Kiểm tra full name không được toàn dấu cách
+                if (fullName.value.trim() === "") {
+                fullName.setCustomValidity("Họ tên không được để trống hoặc chỉ có dấu cách.");
+                } else {
+                fullName.setCustomValidity("");
+                }
+
+                // Kiểm tra mật khẩu không tính dấu cách
+                if (password.value.replace(/\s/g, "") !== confirmPassword.value.replace(/\s/g, "")) {
+                confirmPassword.setCustomValidity("Mật khẩu không khớp");
+                } else {
+                confirmPassword.setCustomValidity("");
+                }
+
+                if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+                }
+
+                form.classList.add("was-validated");
+                }, false);
+                });
+                // Kiểm tra full name khi nhập
+                document.getElementById("fullName").addEventListener("input", function () {
+                if (this.value.trim() === "") {
+                this.setCustomValidity("Họ tên không được để trống hoặc chỉ có dấu cách.");
+                } else {
+                this.setCustomValidity("");
+                }
+                this.reportValidity();
+                });
+                document.getElementById("confirmPassword").addEventListener("input", function () {
+                const password = document.getElementById("password").value.replace(/\s/g, "");
+                const confirmPassword = this.value.replace(/\s/g, "");
+                if (password !== confirmPassword) {
+                this.setCustomValidity("Mật khẩu không khớp");
+                } else {
+                this.setCustomValidity("");
+                }
+                this.reportValidity();
+                });
+                document.getElementById("togglePassword")?.addEventListener("click", function () {
+                togglePasswordVisibility("password", this);
+                });
+                document.getElementById("toggleConfirmPassword")?.addEventListener("click", function () {
+                togglePasswordVisibility("confirmPassword", this);
+                });
+                function togglePasswordVisibility(inputId, toggleIcon) {
+                const inputField = document.getElementById(inputId);
+                if (!inputField) return;
+                const type = inputField.getAttribute("type") === "password" ? "text" : "password";
+                inputField.setAttribute("type", type);
+                toggleIcon.classList.toggle("bi-eye");
+                toggleIcon.classList.toggle("bi-eye-slash");
+                }
+                });
+                document.addEventListener("DOMContentLoaded", function () {
+                "use strict";
+                var forms = document.querySelectorAll(".needs-validation");
+                Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener("submit", function (event) {
+                document.querySelectorAll("input, textarea").forEach((input) => {
+                input.value = input.value.trim();
+                if (!input.value.trim()) {
+                input.setCustomValidity("Không được để trống hoặc chỉ chứa dấu cách.");
+                } else {
+                input.setCustomValidity("");
+                }
+                });
+                if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+                }
+
+                form.classList.add("was-validated");
+                }, false);
+                });
+                document.querySelectorAll("input, textarea").forEach((input) => {
+                input.addEventListener("input", function () {
+                if (!this.value.trim()) {
+                this.setCustomValidity("Không được để trống hoặc chỉ chứa dấu cách.");
+                } else {
+                this.setCustomValidity("");
+                }
+                this.reportValidity();
+                });
+                });
+                });
+
             </script>
         </body>
     </html>
