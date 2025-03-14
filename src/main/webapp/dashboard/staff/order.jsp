@@ -258,7 +258,7 @@
                                                             </button>
                                                         </c:if>
                                                         <!-- Được huỷ đơn nếu đơn hàng ở trạng thái "Chờ xác nhận" hoặc "Chờ lấy hàng" -->
-                                                        <c:if test="${o.status == 'Chờ xác nhận' || o.status == 'Chờ lấy hàng'}">                                                      
+                                                        <c:if test="${o.status == 'Chờ xác nhận' || o.status == 'Chờ lấy hàng' || o.status == 'Chờ giao hàng'}">                                                      
                                                             <button type="button" class="btn btn-danger btn-cancel"       
                                                                     data-bs-toggle="modal" data-bs-target="#cancelModal"
                                                                     data-order-id="${o.orderId}"

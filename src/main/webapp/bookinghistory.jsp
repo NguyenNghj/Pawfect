@@ -73,8 +73,8 @@
 
                             <c:choose>
                                 <c:when test="${not empty booking}">
-                                    <c:forEach var="b" items="${booking}">
-                                        <div class="card mb-3 hover-card" data-status="${b.status}">
+                                    <c:forEach var="b" items="${booking}" varStatus="loop">
+                                        <div class="card mb-3 hover-card booking-item" data-status="${b.status}" style="<c:if test='${loop.index >= 4}'>display: none;</c:if>">
                                             <a href="bookinghistorydetail?id=${b.bookingId}" style="text-decoration: none; color: inherit;">
                                                 <div class="card-body">
                                                     <div class="row">
@@ -116,6 +116,13 @@
                                         </div>
                                     </c:otherwise>
                                 </c:choose>
+                                <div style="text-align: center">
+                                    <!-- Nút Xem thêm -->
+                                    <button id="loadMore" class="btn btn-success"
+                                            style="--bs-btn-padding-y: .45rem; --bs-btn-padding-x: 1.7rem; --bs-btn-font-size: 1.1rem;">
+                                        Xem thêm đặt lịch
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -248,6 +255,35 @@
                                 }
                             });
                         });
+                    });
+                });
+            </script>
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+            <script>
+                let initialPets = $(".booking-item").length; // Tổng số feedback có sẵn
+                let itemsToShow = 4; // Số feedback hiển thị ban đầu
+
+                $(".booking-item").slice(itemsToShow).hide(); // Ẩn feedback vượt quá số quy định
+
+                // Ẩn nút "Xem thêm" nếu tổng feedback nhỏ hơn hoặc bằng itemsToShow
+                if (initialPets <= itemsToShow) {
+                    $("#loadMore").hide();
+                }
+
+
+                $(document).ready(function () {
+                    $("#loadMore").click(function () {
+                        let hiddenPets = $(".booking-item:hidden"); // Lấy feedback chưa hiển thị
+                        let itemsToShow = hiddenPets.slice(0, 4); // Lấy số feedback muốn hiển thị tiếp theo
+
+                        if (itemsToShow.length > 0) {
+                            itemsToShow.fadeIn(); // Hiển thị chúng
+                        }
+
+                        if ($(".booking-item:hidden").length === 0) {
+                            $("#loadMore").hide(); // Ẩn nút nếu không còn feedback nào
+                        }
                     });
                 });
             </script>
