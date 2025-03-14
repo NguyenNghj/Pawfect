@@ -208,35 +208,6 @@
                             </c:choose>
                         </div>
 
-                        <c:if test="${totalPages >= 1}">
-                            <nav aria-label="Page navigation" style="display: flex; justify-content: center">
-                                <ul class="pagination mb-4">
-                                    <!-- Nút Previous -->
-                                    <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
-                                        <a class="page-link" href="javascript:updatePage(${currentPage - 1})">Previous</a>
-                                    </li>
-
-                                    <!-- Hiển thị số trang -->
-                                    <c:forEach var="i" begin="1" end="${totalPages}">
-                                        <li class="page-item ${i == currentPage ? 'active' : ''}">
-                                            <a class="page-link" href="javascript:updatePage(${i})">${i}</a>
-                                        </li>
-                                    </c:forEach>
-
-                                    <!-- Nút Next -->
-                                    <li class="page-item ${currentPage >= Math.floor(totalPages) ? 'disabled' : ''}">
-                                        <a class="page-link" href="javascript:updatePage(${currentPage + 1})">Next</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </c:if>
-                        <script>
-                            function updatePage(page) {
-                                let urlParams = new URLSearchParams(window.location.search);
-                                urlParams.set('page', page); // Cập nhật số trang
-                                window.location.search = urlParams.toString();
-                            }
-                        </script>
                     </div>
                 </div>
 

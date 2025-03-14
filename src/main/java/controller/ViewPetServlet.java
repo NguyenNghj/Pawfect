@@ -87,7 +87,7 @@ public class ViewPetServlet extends HttpServlet {
         List<Pet> pets;
         PetDAO petDAO = new PetDAO();
         if (pettype != null && !pettype.trim().isEmpty()) {
-            pets = petDAO.filterPet(pettype);
+            pets = petDAO.filterPet(pettype, Integer.parseInt(customerId));
         } else {
             pets = petDAO.getAllPets(customerId);
         }

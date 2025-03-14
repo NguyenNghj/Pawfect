@@ -62,44 +62,54 @@
 
                                 </ul>
 
-
-                            <c:choose>
-                                <c:when test="${empty pets}">
-                                    <div>
-                                        <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px;">
-                                            Không tìm thấy!
-                                        </h5>
-                                    </div>
-                                </c:when>
-                                <c:otherwise>
-                                    <c:forEach items="${pets}" var="pro">
-                                        <div class="card mb-3 hover-card pet-item" data-type="${pro.petType}">
-                                            <a href="petviewdetail?petId=${pro.petId}" style="text-decoration: none; color: inherit;">
-                                                <div class="card-body">
-                                                    <div class="row align-items-center">
-                                                        <div class="col">
-                                                            <div class="d-flex align-items-center gap-4">
-                                                                <img class="rounded" src="/img/pet/${pro.petImg != null ? pro.petImg : 'default.jpg'}" 
-                                                                     alt="" width="90" height="90" style ="object-fit: cover;">
-                                                                <div class="d-grid gap-1">
-                                                                    <h6 style="font-size: 18px;">
-                                                                        <c:choose>
-                                                                            <c:when test="${pro.petStatus == 'booking'}">Đã đặt lịch</c:when>
-                                                                            <c:otherwise>Chưa đặt lịch</c:otherwise>
-                                                                        </c:choose>
-                                                                    </h6>
-                                                                    <span class="text-secondary">Tên: ${pro.petname}</span>
-                                                                    <span class="text-secondary">Loại: ${pro.petType}</span>                                                       
+                                <div class="reviews-list">
+                                <c:choose>
+                                    <c:when test="${empty pets}">
+                                        <div>
+                                            <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px;">
+                                                Không tìm thấy!
+                                            </h5>
+                                        </div>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:forEach items="${pets}" var="pro" varStatus="loop">
+                                            <div class="card mb-3 hover-card pet-item" data-type="${pro.petType}" style="<c:if test='${loop.index >= 4}'>display: none;</c:if>" >
+                                                <a href="petviewdetail?petId=${pro.petId}" style="text-decoration: none; color: inherit;">
+                                                    <div class="card-body">
+                                                        <div class="row align-items-center">
+                                                            <div class="col">
+                                                                <div class="d-flex align-items-center gap-4">
+                                                                    <img class="rounded" src="/img/pet/${pro.petImg != null ? pro.petImg : 'default.jpg'}" 
+                                                                         alt="" width="90" height="90" style="object-fit: cover;">
+                                                                    <div class="d-grid gap-1">
+                                                                        <h6 style="font-size: 18px;">
+                                                                            <c:choose>
+                                                                                <c:when test="${pro.petStatus == 'booking'}">Đã đặt lịch</c:when>
+                                                                                <c:otherwise>Chưa đặt lịch</c:otherwise>
+                                                                            </c:choose>
+                                                                        </h6>
+                                                                        <span class="text-secondary">Tên: ${pro.petname}</span>
+                                                                        <span class="text-secondary">Loại: ${pro.petType}</span>                                                       
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </a>                                                         
-                                        </div>  
-                                    </c:forEach>
-                                </c:otherwise>
-                            </c:choose>      
+                                                </a>                                                         
+                                            </div>
+                                        </c:forEach>
+                                    </c:otherwise>
+                                </c:choose>      
+                            </div>
+
+                            <div style="text-align: center">
+                                <!-- Nút Xem thêm -->
+                                <button id="loadMore" class="btn btn-success"
+                                        style="--bs-btn-padding-y: .45rem; --bs-btn-padding-x: 1.7rem; --bs-btn-font-size: 1.1rem;">
+                                    Xem thêm thú cưng
+                                </button>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -141,6 +151,34 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            let initialPets = $(".pet-item").length; // Tổng số feedback có sẵn
+            let itemsToShow = 4; // Số feedback hiển thị ban đầu
+
+            $(".pet-item").slice(itemsToShow).hide(); // Ẩn feedback vượt quá số quy định
+
+            // Ẩn nút "Xem thêm" nếu tổng feedback nhỏ hơn hoặc bằng itemsToShow
+            if (initialPets <= itemsToShow) {
+                $("#loadMore").hide();
+            }
+
+
+            $(document).ready(function () {
+                $("#loadMore").click(function () {
+                    let hiddenPets = $(".pet-item:hidden"); // Lấy feedback chưa hiển thị
+                    let itemsToShow = hiddenPets.slice(0, 4); // Lấy số feedback muốn hiển thị tiếp theo
+
+                    if (itemsToShow.length > 0) {
+                        itemsToShow.fadeIn(); // Hiển thị chúng
+                    }
+
+                    if ($(".pet-item:hidden").length === 0) {
+                        $("#loadMore").hide(); // Ẩn nút nếu không còn feedback nào
+                    }
+                });
+            });
+        </script>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>

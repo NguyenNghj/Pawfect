@@ -33,7 +33,6 @@
                 <!-- Main Content -->
                 <div class="col-md-8">
                     <!-- Top Cards -->
-
                     <%
                         String message = (String) session.getAttribute("message");
                         String messageType = (String) session.getAttribute("messageType");
@@ -47,34 +46,23 @@
                             session.removeAttribute("messageType");
                         }
                     %>
-
                     <!-- Orders Section -->
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title mb-4 justify-content-center text-center">Thông tin tài khoản</h5>                 
                             <div class="container">
                                 <div class="row">
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-12">
                                         <div class="card mb-4">
-                                            <div class="card-body text-center">
-                                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
-                                                     class="rounded-circle img-fluid" style="width: 150px;">
-                                                <h5 class="my-3">${empty customer.fullName ? 'Chưa có thông tin' : customer.fullName}</h5>
-                                                <button type="button" class="btn btn-success" 
-                                                        data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                                        >
-                                                    Chỉnh sửa thông tin
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-8">
-                                        <div class="card mb-4">
-                                            <div class="card-body">                                                     
+                                            <div class="card-body">
                                                 <div class="row">
-                                                    <div class="col-sm-3 account-info-title"><p class="mb-0">Email</p></div>
-                                                    <div class="col-sm-9">
+                                                    <div class="col-sm-2 account-info-title"><p class="mb-0">Họ tên</p></div>
+                                                    <div class="col-sm-10"><p class="mb-0">${empty customer.fullName ? 'Chưa có thông tin' : customer.fullName}</p></div>
+                                                </div>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-sm-2 account-info-title"><p class="mb-0">Email</p></div>
+                                                    <div class="col-sm-10">
                                                         <c:choose>
                                                             <c:when test="${not empty customer.email and fn:contains(customer.email, '@')}">
                                                                 <p class="mb-0">${customer.email}</p>
@@ -87,21 +75,26 @@
                                                 </div>
                                                 <hr>
                                                 <div class="row">
-                                                    <div class="col-sm-3 account-info-title"><p class="mb-0">Điện thoại</p></div>
-                                                    <div class="col-sm-9"><p class="mb-0">${empty customer.phoneNumber ? 'Chưa có thông tin' : customer.phoneNumber}</p></div>
+                                                    <div class="col-sm-2 account-info-title"><p class="mb-0">Điện thoại</p></div>
+                                                    <div class="col-sm-10"><p class="mb-0">${empty customer.phoneNumber ? 'Chưa có thông tin' : customer.phoneNumber}</p></div>
                                                 </div>
                                                 <hr>
                                                 <div class="row">
-                                                    <div class="col-sm-3 account-info-title"><p class="mb-0">Ngày sinh</p></div>
-                                                    <div class="col-sm-9"><p class="mb-0">${empty customer.birthDate ? 'Chưa có thông tin' : customer.birthDate}</p></div>
+                                                    <div class="col-sm-2 account-info-title"><p class="mb-0">Ngày sinh</p></div>
+                                                    <div class="col-sm-10"><p class="mb-0">${empty customer.birthDate ? 'Chưa có thông tin' : customer.birthDate}</p></div>
                                                 </div>
                                                 <hr>
                                                 <div class="row">
-                                                    <div class="col-sm-3 account-info-title"><p class="mb-0">Địa chỉ</p></div>
-                                                    <div class="col-sm-9"><p class="mb-0">${empty customer.address ? 'Chưa có thông tin' : customer.address}</p></div>
+                                                    <div class="col-sm-2 account-info-title"><p class="mb-0">Địa chỉ</p></div>
+                                                    <div class="col-sm-10"><p class="mb-0">${empty customer.address ? 'Chưa có thông tin' : customer.address}</p></div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <button type="button" class="btn btn-success" 
+                                                data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                                >
+                                            Chỉnh sửa thông tin
+                                        </button>
                                     </div>
                                 </div>
                             </div>            
