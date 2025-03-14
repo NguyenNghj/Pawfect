@@ -9,6 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="../../css/dashboard.css">
@@ -65,7 +66,7 @@
                                             <i class="fa-solid fa-repeat"></i>
                                             <a class="dropdown-item" style="padding: 0;" href="/dashboard/admin/dashboard.jsp">Đổi sang Admin</a>
                                         </li>
-                                        <% } %>
+                                        <% }%>
                                         <li class="profile-img-switch-store d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-store"></i>
                                             <a class="dropdown-item" style="padding: 0;" href="#">Tới cửa hàng</a>
@@ -165,9 +166,9 @@
                                 </table>
                             </div>
                         </div>
-                         <nav class="navbar navbar-light d-flex gap-2" style="background-color: #EEEEEE;">
-                                <a href="customers" class="btn btn-primary">Danh Sách Khách Hàng</a>
-                            </nav>
+                        <nav class="navbar navbar-light d-flex gap-2" style="background-color: #EEEEEE;">
+                            <a href="customers" class="btn btn-primary">Danh Sách Khách Hàng</a>
+                        </nav>
 
                         <div class="col-4 pe-0 main-dashboard-table">
                             <div class="d-flex justify-content-around align-items-center main-dashboard-table-header">

@@ -589,5 +589,7 @@ tr:hover {
     border-bottom: 3px solid #673AB7;
 }
 
-
+h1 {
+    font-weight: bold;
+}
 

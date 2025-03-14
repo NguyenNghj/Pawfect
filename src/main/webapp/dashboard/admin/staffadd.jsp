@@ -29,31 +29,31 @@
 
         <title>Thêm Nhân Viên</title>
         <style>
-            
-            
+
+
             /* Thiết kế cơ bản cho nút */
-       .form-control {
-    width: 100% !important; /* Giảm chiều rộng xuống 60% */
-    display: block; /* Đảm bảo input không bị inline */
-    margin: 0 auto; /* Căn giữa nếu cần */
-}
-.container {
-    width: 70%; /* Thu nhỏ còn 60% màn hình */
-    margin: 0 auto; /* Căn giữa form */
-}
+            .form-control {
+                width: 100% !important; /* Giảm chiều rộng xuống 60% */
+                display: block; /* Đảm bảo input không bị inline */
+                margin: 0 auto; /* Căn giữa nếu cần */
+            }
+            .container {
+                width: 70%; /* Thu nhỏ còn 60% màn hình */
+                margin: 0 auto; /* Căn giữa form */
+            }
 
-form {
-    background: #f8f9fa; /* Màu nền nhẹ */
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
+            form {
+                background: #f8f9fa; /* Màu nền nhẹ */
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            }
 
-input, select, button {
-    width: 100%; /* Để các ô nhập kéo dài theo form */
-    margin-bottom: 10px;
-    padding: 8px;
-}
+            input, select, button {
+                width: 100%; /* Để các ô nhập kéo dài theo form */
+                margin-bottom: 10px;
+                padding: 8px;
+            }
 
         </style>
     </head>
@@ -93,13 +93,13 @@ input, select, button {
                     <div class="card">
                         <div class="card-body">
                             <form action="staffadd" method="post">
-                          <div class="mb-3">
-    <label class="form-label">Vai Trò</label>
-    <select class="form-control" name="roleName">
-        <option value="Admin" ${staff.roleName eq 'Admin' ? 'selected' : ''}>Admin</option>
-        <option value="Staff" ${staff.roleName eq 'Staff' ? 'selected' : ''}>Staff</option>
-    </select>
-</div>
+                                <div class="mb-3">
+                                    <label class="form-label">Vai Trò</label>
+                                    <select class="form-control" name="roleName">
+                                        <option value="Admin" ${staff.roleName eq 'Admin' ? 'selected' : ''}>Admin</option>
+                                        <option value="Staff" ${staff.roleName eq 'Staff' ? 'selected' : ''}>Staff</option>
+                                    </select>
+                                </div>
 
 
                                 <div class="mb-3">
@@ -164,7 +164,7 @@ input, select, button {
                 </div>
             </div>
         </div>
-         <!-- Thêm Bootstrap JS -->
+        <!-- Thêm Bootstrap JS -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
