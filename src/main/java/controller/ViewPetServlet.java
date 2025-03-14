@@ -95,6 +95,7 @@ public class ViewPetServlet extends HttpServlet {
         ProfileDAO profileDAO = new ProfileDAO();
         User user = profileDAO.getUser(customerId);
         request.setAttribute("customer", user);
+        request.setAttribute("pettype", pettype);
         request.getRequestDispatcher("mypet.jsp").forward(request, response);
     }
 

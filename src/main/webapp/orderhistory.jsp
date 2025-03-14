@@ -76,94 +76,77 @@
                                 </c:when>
                                 <c:otherwise>
 
-                                    <c:set var="itemsPerPage" value="5" />
-                                    <c:set var="totalOrders" value="${fn:length(orders)}" />
-                                    <c:set var="totalPages" value="${(totalOrders + itemsPerPage - 1) / itemsPerPage}"/>
-
-                                    <!-- Ensure currentPage is set correctly -->
-                                    <c:set var="currentPage">
-                                        <c:choose>
-                                            <c:when test="${not empty param.page}">
-                                                ${param.page}
-                                            </c:when>
-                                            <c:otherwise>1</c:otherwise>
-                                        </c:choose>
-                                    </c:set>
-
-                                    <c:set var="start" value="${(currentPage - 1) * itemsPerPage}" />
-                                    <c:set var="end" value="${start + itemsPerPage}" />
-
                                     <!-- TH2: Khách hàng 'có' đơn hàng  -->
                                     <c:forEach items="${orders}" var="o" varStatus="loop">
-                                        <c:if test="${loop.index >= start and loop.index < end}">
-                                            <!-- Order Item -->                           
-                                            <div class="card mb-3 hover-card">
-                                                <a href="order?&action=viewdetail&orderId=${o.orderId}" style="text-decoration: none; color: inherit;">
-                                                    <div class="card-body">
-                                                        <div class="row">
-                                                            <div class="col">
-                                                                <h6 class="mb-3">
-                                                                    #${o.orderId + 2500000} -
-                                                                    <c:choose>
-                                                                        <c:when test="${o.status == 'Chờ xác nhận'}"><span class="text-warning fw-bold">${o.status}</span></c:when>
-                                                                        <c:when test="${o.status == 'Chờ lấy hàng'}"><span class="text-secondary fw-bold">${o.status}</span></c:when>
-                                                                        <c:when test="${o.status == 'Chờ giao hàng'}"><span class="text-primary fw-bold">${o.status}</span></c:when>
-                                                                        <c:when test="${o.status == 'Hoàn thành'}"><span class="text-success fw-bold">${o.status}</span></c:when>
-                                                                        <c:when test="${o.status == 'Yêu cầu huỷ...'}"><span class="text-danger fw-bold">${o.status}</span></c:when>
-                                                                        <c:otherwise><span class="text-danger fw-bold">${o.status}</span></c:otherwise> 
-                                                                    </c:choose>
-                                                                </h6>
-                                                                <p class="text-secondary mb-2">
-                                                                    Địa chỉ: ${o.address}
-                                                                </p>
-                                                                <p class="text-secondary">Ngày đặt: ${o.orderDate}</p>
-                                                            </div>
-                                                            <div class="col-auto text-end">
-                                                                <h5 class="mb-3 text-primary fw-bold">
-                                                                    <c:choose>
-                                                                        <c:when test="${o.discountAmount != 0}">
-                                                                            <f:formatNumber value="${o.discountAmount}" pattern="#,##0" />đ
-                                                                        </c:when>
-                                                                        <c:otherwise>
-                                                                            <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
-                                                                        </c:otherwise>
-                                                                    </c:choose>                                               
-                                                                </h5>
 
-                                                                <%--<c:choose>--%>
-                                                                <c:if test="${o.status == 'Chờ xác nhận'}">
-                                                                    <!-- Đơn hàng có trạng thái "Chờ xác nhận" thì mới được huỷ đơn -->
-                                                                    <button class="btn-cancel btn btn-danger btn-sm"
-                                                                            data-bs-toggle="modal" data-bs-target="#cancelModal"
-                                                                            style="padding: 6px 15px;"
-                                                                            data-type="cancel"
-                                                                            data-order-id="${o.orderId}"
-                                                                            data-request="${o.requestCancel}"
-                                                                            onclick="huyDon(event)"
-                                                                            >
-                                                                        <span id="cancelType">Huỷ đơn</span>
-                                                                    </button>
-
-                                                                </c:if>
-                                                                <c:if test="${o.status == 'Chờ lấy hàng' && o.requestCancel == false}">
-                                                                    <button class="btn btn-danger btn-sm btn-cancel"
-                                                                            data-bs-toggle="modal" data-bs-target="#cancelModal"
-                                                                            data-type="request"
-                                                                            data-order-id="${o.orderId}"
-                                                                            data-request="${o.requestCancel}"
-                                                                            style="padding: 6px 15px;"
-                                                                            onclick="huyDon(event)"
-                                                                            >
-                                                                        <span id="cancelType">Yêu cầu huỷ đơn</span>
-                                                                    </button>
-                                                                </c:if>
-
-                                                            </div>                                                                                                                 
+                                        <!-- Order Item -->                           
+                                        <div class="card mb-3 hover-card order-item" style="<c:if test='${loop.index >= 4}'>display: none;</c:if>">
+                                            <a href="order?&action=viewdetail&orderId=${o.orderId}" style="text-decoration: none; color: inherit;">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <h6 class="mb-3">
+                                                                #${o.orderId + 2500000} -
+                                                                <c:choose>
+                                                                    <c:when test="${o.status == 'Chờ xác nhận'}"><span class="text-warning fw-bold">${o.status}</span></c:when>
+                                                                    <c:when test="${o.status == 'Chờ lấy hàng'}"><span class="text-secondary fw-bold">${o.status}</span></c:when>
+                                                                    <c:when test="${o.status == 'Chờ giao hàng'}"><span class="text-primary fw-bold">${o.status}</span></c:when>
+                                                                    <c:when test="${o.status == 'Hoàn thành'}"><span class="text-success fw-bold">${o.status}</span></c:when>
+                                                                    <c:when test="${o.status == 'Yêu cầu huỷ...'}"><span class="text-danger fw-bold">${o.status}</span></c:when>
+                                                                    <c:otherwise><span class="text-danger fw-bold">${o.status}</span></c:otherwise> 
+                                                                </c:choose>
+                                                            </h6>
+                                                            <p class="text-secondary mb-2">
+                                                                Địa chỉ: ${o.address}
+                                                            </p>
+                                                            <p class="text-secondary">Ngày đặt: ${o.orderDate}</p>
                                                         </div>
+                                                        <div class="col-auto text-end">
+                                                            <h5 class="mb-3 text-primary fw-bold">
+                                                                <c:choose>
+                                                                    <c:when test="${o.discountAmount != 0}">
+                                                                        <f:formatNumber value="${o.discountAmount}" pattern="#,##0" />đ
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
+                                                                    </c:otherwise>
+                                                                </c:choose>                                               
+                                                            </h5>
+
+                                                            <%--<c:choose>--%>
+                                                            <c:if test="${o.status == 'Chờ xác nhận'}">
+                                                                <!-- Đơn hàng có trạng thái "Chờ xác nhận" thì mới được huỷ đơn -->
+                                                                <button class="btn-cancel btn btn-danger btn-sm"
+                                                                        data-bs-toggle="modal" data-bs-target="#cancelModal"
+                                                                        style="padding: 6px 15px;"
+                                                                        data-type="cancel"
+                                                                        data-order-id="${o.orderId}"
+                                                                        data-request="${o.requestCancel}"
+                                                                        onclick="huyDon(event)"
+                                                                        >
+                                                                    <span id="cancelType">Huỷ đơn</span>
+                                                                </button>
+
+                                                            </c:if>
+                                                            <c:if test="${o.status == 'Chờ lấy hàng' && o.requestCancel == false}">
+                                                                <button class="btn btn-danger btn-sm btn-cancel"
+                                                                        data-bs-toggle="modal" data-bs-target="#cancelModal"
+                                                                        data-type="request"
+                                                                        data-order-id="${o.orderId}"
+                                                                        data-request="${o.requestCancel}"
+                                                                        style="padding: 6px 15px;"
+                                                                        onclick="huyDon(event)"
+                                                                        >
+                                                                    <span id="cancelType">Yêu cầu huỷ đơn</span>
+                                                                </button>
+                                                            </c:if>
+
+                                                        </div>                                                                                                                 
                                                     </div>
-                                                </a>                                           
-                                            </div> 
-                                        </c:if>
+                                                </div>
+                                            </a>                                           
+                                        </div> 
+
                                     </c:forEach>
                                     <!-- Modal Cancel -->
                                     <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
@@ -206,7 +189,16 @@
                                     </div>
                                 </c:otherwise>
                             </c:choose>
+                            <div style="text-align: center">
+                                <!-- Nút Xem thêm -->
+                                <button id="loadMore" class="btn btn-success"
+                                        style="--bs-btn-padding-y: .45rem; --bs-btn-padding-x: 1.7rem; --bs-btn-font-size: 1.1rem;">
+                                    Xem thêm đơn hàng
+                                </button>
+                            </div>
                         </div>
+
+
 
                     </div>
                 </div>
@@ -255,94 +247,124 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
-                            function huyDon(event) {
-                                event.preventDefault();
-                                let button = event.currentTarget; // Lấy nút được nhấn
-                                let orderId = button.getAttribute("data-order-id");
-                                let requestCancel = button.getAttribute("data-request");
+                                                                            function huyDon(event) {
+                                                                                event.preventDefault();
+                                                                                let button = event.currentTarget; // Lấy nút được nhấn
+                                                                                let orderId = button.getAttribute("data-order-id");
+                                                                                let requestCancel = button.getAttribute("data-request");
 
-                                console.log("Gia tri order: ", orderId);
-                                console.log("Gia tri request: ", requestCancel);
+                                                                                console.log("Gia tri order: ", orderId);
+                                                                                console.log("Gia tri request: ", requestCancel);
 
-                                document.querySelector("#modalOrderId").value = orderId;
+                                                                                document.querySelector("#modalOrderId").value = orderId;
 
-                                // Kiểm tra điều kiện
-                                if (requestCancel === "false") {
-                                    document.querySelector("#modalOrderRequest").value = "Đã huỷ"; // Nếu requestCancel = false → Gán "Đã huỷ"
-                                } else {
-                                    document.querySelector("#modalOrderRequest").value = "Yêu cầu huỷ"; // Nếu requestCancel = true → Gán "Yêu cầu huỷ"
-                                }
-                            }
-
-
-                            document.addEventListener("DOMContentLoaded", function () {
-                                document.querySelectorAll(".btn-cancel").forEach(button => {
-                                    button.addEventListener("click", function () {
-                                        let cancelType = this.getAttribute("data-type"); // Lấy loại nút (cancel/request)
-                                        let modalTitle = document.getElementById("cancelModalLabel");
-                                        let cancelMessage = document.getElementById("cancelMessage");
-                                        let confirmCancelInput = document.querySelector("input[name='confirmCancel']");
-                                        let confirmButton = document.getElementById("confirmCancelBtn"); // Lấy nút xác nhận
-
-                                        if (cancelType === "cancel") {
-                                            modalTitle.textContent = "Xác Nhận Huỷ Đơn Hàng";
-                                            cancelMessage.innerHTML = "<b>Lưu ý:</b> Nếu bạn xác nhận huỷ, toàn bộ đơn hàng sẽ được huỷ. Trường hợp bạn đã thanh toán đơn hàng, tiền sẽ được hoàn về tài khoản trong vòng 24 giờ và lâu hơn đối với các phương thức thanh toán khác.";
-                                            confirmCancelInput.value = "Đã huỷ";
-                                            confirmButton.textContent = "Huỷ đơn"; // Thay đổi text nút xác nhận
-                                        } else {
-                                            modalTitle.textContent = "Yêu Cầu Huỷ Đơn Hàng";
-                                            cancelMessage.innerHTML = "<b>Lưu ý:</b> Bạn đang gửi yêu cầu huỷ, cần người bán xác nhận. Chúng tôi sẽ thông báo cho bạn biết sau khi xử lý yêu cầu.";
-                                            confirmCancelInput.value = "Yêu cầu huỷ";
-                                            confirmButton.textContent = "Gửi yêu cầu"; // Thay đổi text nút xác nhận
-                                        }
-                                    });
-                                });
-                            });
+                                                                                // Kiểm tra điều kiện
+                                                                                if (requestCancel === "false") {
+                                                                                    document.querySelector("#modalOrderRequest").value = "Đã huỷ"; // Nếu requestCancel = false → Gán "Đã huỷ"
+                                                                                } else {
+                                                                                    document.querySelector("#modalOrderRequest").value = "Yêu cầu huỷ"; // Nếu requestCancel = true → Gán "Yêu cầu huỷ"
+                                                                                }
+                                                                            }
 
 
-                            document.getElementById("cancelForm").addEventListener("submit", function (event) {
-                                event.preventDefault(); // Ngăn form gửi đi ngay lập tức
+                                                                            document.addEventListener("DOMContentLoaded", function () {
+                                                                                document.querySelectorAll(".btn-cancel").forEach(button => {
+                                                                                    button.addEventListener("click", function () {
+                                                                                        let cancelType = this.getAttribute("data-type"); // Lấy loại nút (cancel/request)
+                                                                                        let modalTitle = document.getElementById("cancelModalLabel");
+                                                                                        let cancelMessage = document.getElementById("cancelMessage");
+                                                                                        let confirmCancelInput = document.querySelector("input[name='confirmCancel']");
+                                                                                        let confirmButton = document.getElementById("confirmCancelBtn"); // Lấy nút xác nhận
 
-                                var reason = document.getElementById("reason").value;
-                                let text = $("#cancelType").text();
+                                                                                        if (cancelType === "cancel") {
+                                                                                            modalTitle.textContent = "Xác Nhận Huỷ Đơn Hàng";
+                                                                                            cancelMessage.innerHTML = "<b>Lưu ý:</b> Nếu bạn xác nhận huỷ, toàn bộ đơn hàng sẽ được huỷ. Trường hợp bạn đã thanh toán đơn hàng, tiền sẽ được hoàn về tài khoản trong vòng 24 giờ và lâu hơn đối với các phương thức thanh toán khác.";
+                                                                                            confirmCancelInput.value = "Đã huỷ";
+                                                                                            confirmButton.textContent = "Huỷ đơn"; // Thay đổi text nút xác nhận
+                                                                                        } else {
+                                                                                            modalTitle.textContent = "Yêu Cầu Huỷ Đơn Hàng";
+                                                                                            cancelMessage.innerHTML = "<b>Lưu ý:</b> Bạn đang gửi yêu cầu huỷ, cần người bán xác nhận. Chúng tôi sẽ thông báo cho bạn biết sau khi xử lý yêu cầu.";
+                                                                                            confirmCancelInput.value = "Yêu cầu huỷ";
+                                                                                            confirmButton.textContent = "Gửi yêu cầu"; // Thay đổi text nút xác nhận
+                                                                                        }
+                                                                                    });
+                                                                                });
+                                                                            });
 
-                                if (reason === "") {
-                                    Swal.fire({
-                                        icon: "warning",
-                                        title: "Lỗi!",
-                                        text: "Vui lòng chọn lý do huỷ đơn hàng.",
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        icon: "info",
-                                        title: "Đang xử lý...",
-                                        text: "Vui lòng chờ trong giây lát.",
-                                        timer: 1400,
-                                        timerProgressBar: true,
-                                        allowOutsideClick: false,
-                                        showConfirmButton: false // Ẩn nút OK
-                                    }).then(() => {
-                                        if (text === "Yêu cầu huỷ đơn") {
-                                            Swal.fire({
-                                                icon: "success",
-                                                title: "Yêu cầu huỷ đơn thành công!",
-                                                text: "Chúng tôi sẽ xem xét yêu cầu huỷ đơn của bạn.",
-                                            }).then(() => {
-                                                document.getElementById("cancelForm").submit(); // Gửi form sau khi hiển thị thông báo thành công
-                                            });
-                                        } else {
-                                            Swal.fire({
-                                                icon: "success",
-                                                title: "Huỷ đơn thành công!",
-                                                text: "Chúng tôi sẽ xử lý đơn huỷ và hoàn tiền nếu bạn đã thanh toán.",
-                                            }).then(() => {
-                                                document.getElementById("cancelForm").submit(); // Gửi form sau khi hiển thị thông báo thành công
-                                            });
-                                        }
-                                    });
-                                }
-                            });
 
+                                                                            document.getElementById("cancelForm").addEventListener("submit", function (event) {
+                                                                                event.preventDefault(); // Ngăn form gửi đi ngay lập tức
+
+                                                                                var reason = document.getElementById("reason").value;
+                                                                                let text = $("#cancelType").text();
+
+                                                                                if (reason === "") {
+                                                                                    Swal.fire({
+                                                                                        icon: "warning",
+                                                                                        title: "Lỗi!",
+                                                                                        text: "Vui lòng chọn lý do huỷ đơn hàng.",
+                                                                                    });
+                                                                                } else {
+                                                                                    Swal.fire({
+                                                                                        icon: "info",
+                                                                                        title: "Đang xử lý...",
+                                                                                        text: "Vui lòng chờ trong giây lát.",
+                                                                                        timer: 1400,
+                                                                                        timerProgressBar: true,
+                                                                                        allowOutsideClick: false,
+                                                                                        showConfirmButton: false // Ẩn nút OK
+                                                                                    }).then(() => {
+                                                                                        if (text === "Yêu cầu huỷ đơn") {
+                                                                                            Swal.fire({
+                                                                                                icon: "success",
+                                                                                                title: "Yêu cầu huỷ đơn thành công!",
+                                                                                                text: "Chúng tôi sẽ xem xét yêu cầu huỷ đơn của bạn.",
+                                                                                            }).then(() => {
+                                                                                                document.getElementById("cancelForm").submit(); // Gửi form sau khi hiển thị thông báo thành công
+                                                                                            });
+                                                                                        } else {
+                                                                                            Swal.fire({
+                                                                                                icon: "success",
+                                                                                                title: "Huỷ đơn thành công!",
+                                                                                                text: "Chúng tôi sẽ xử lý đơn huỷ và hoàn tiền nếu bạn đã thanh toán.",
+                                                                                            }).then(() => {
+                                                                                                document.getElementById("cancelForm").submit(); // Gửi form sau khi hiển thị thông báo thành công
+                                                                                            });
+                                                                                        }
+                                                                                    });
+                                                                                }
+                                                                            });
+
+        </script>
+
+
+        <%-- Xu ly xem them product feedback --%>
+        <script>
+            let initialFeedbacks = $(".order-item").length; // Tổng số feedback có sẵn
+            let itemsToShow = 4; // Số feedback hiển thị ban đầu
+
+            $(".order-item").slice(itemsToShow).hide(); // Ẩn feedback vượt quá số quy định
+
+            // Ẩn nút "Xem thêm" nếu tổng feedback nhỏ hơn hoặc bằng itemsToShow
+            if (initialFeedbacks <= itemsToShow) {
+                $("#loadMore").hide();
+            }
+
+
+            $(document).ready(function () {
+                $("#loadMore").click(function () {
+                    let hiddenFeedbacks = $(".order-item:hidden"); // Lấy feedback chưa hiển thị
+                    let itemsToShow = hiddenFeedbacks.slice(0, 4); // Lấy số feedback muốn hiển thị tiếp theo
+
+                    if (itemsToShow.length > 0) {
+                        itemsToShow.fadeIn(); // Hiển thị chúng
+                    }
+
+                    if ($(".order-item:hidden").length === 0) {
+                        $("#loadMore").hide(); // Ẩn nút nếu không còn feedback nào
+                    }
+                });
+            });
         </script>
     </body>
 </html>
