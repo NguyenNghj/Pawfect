@@ -148,11 +148,14 @@ public class EditProductServlet extends HttpServlet {
             int categoryId = Integer.parseInt(categoryIdParam.trim());
             double productPrice = Double.parseDouble(productPriceParam.trim());
             int stock = Integer.parseInt(stockParam.trim());
-
+            boolean productActive = false;
+            if (stock != 0) {
+                productActive = Boolean.parseBoolean(request.getParameter("productActive"));
+            }
+            String description = request.getParameter("description");
             String productName = request.getParameter("productName");
             String productPetType = request.getParameter("productPetType");
-            String description = request.getParameter("description");
-            boolean productActive = Boolean.parseBoolean(request.getParameter("productActive"));
+
             String existingImage = request.getParameter("existingImage");
 
             // Xử lý đường dẫn lưu ảnh
@@ -197,7 +200,6 @@ public class EditProductServlet extends HttpServlet {
                 request.setAttribute("errorMessage", "Cập nhật sản phẩm thất bại!");
                 request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
             }
-
         } catch (NumberFormatException e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Lỗi định dạng số! Vui lòng nhập dữ liệu hợp lệ.");

@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import model.Customers;
 import model.Voucher;
 import util.Email;
@@ -81,6 +82,7 @@ public class SendVoucherServlet extends HttpServlet {
         // Lấy dữ liệu từ form
         String customerId = request.getParameter("customerId");
         String voucherCode = request.getParameter("voucherCode");
+
         // Kiểm tra dữ liệu hợp lệ
         if (customerId == null || customerId.isEmpty() || voucherCode == null || voucherCode.isEmpty()) {
             request.setAttribute("errorMessage", "Vui lòng chọn khách hàng và voucher.");
@@ -90,27 +92,27 @@ public class SendVoucherServlet extends HttpServlet {
 
         try {
             // Gửi voucher mail code ở đây
-            
-            
+
             Customers customers;
             // Lay thong tin email cua khach dat hang
             customers = CustomersDAO.getCustomerById(Integer.parseInt(customerId));
             String customerEmail = customers.getEmail();
             System.out.println("customerEmail: " + customerEmail);
-            
             String customerName = customers.getFullName();
+
             VoucherDAO voucherDAO = new VoucherDAO();
             Voucher voucher = voucherDAO.getVoucherByCode(voucherCode);
             double discountPrice = 0;
-            if(voucher.getDiscountAmount() != 0){
+            if (voucher.getDiscountAmount() != 0) {
                 discountPrice = voucher.getDiscountAmount();
             } else {
                 discountPrice = voucher.getDiscountPercentage();
             }
+
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
             String voucherFrom = sdf.format(voucher.getStartDate());
             String voucherTo = sdf.format(voucher.getEndDate());
-            
+
             String shopLink = "http://localhost:9999/pawfect";
 
             // Chuyen doi jsp sang String
@@ -119,32 +121,33 @@ public class SendVoucherServlet extends HttpServlet {
 
             ExecutorService executor = Executors.newFixedThreadPool(10); // Tạo một ExecutorService với 10 luồng         
 
-            // Gui email cho khach hang
-            executor.submit(() -> {
+            // Thay vì trực tiếp gửi email trong thread, chúng ta sử dụng Future để kiểm tra kết quả
+            Future<Boolean> future = executor.submit(() -> {
                 try {
-                    Email.sendEmail(customerEmail, "Ưu đãi khách hàng", finalContentEmail);
+                    return Email.sendEmail(customerEmail, "Ưu đãi khách hàng", finalContentEmail);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    return false;
                 }
             });
 
             executor.shutdown();
 
-//            boolean success= ;
-//
-//            if (success) {
-//                request.setAttribute("message", "Gửi voucher thành công!");
-            response.sendRedirect("/dashboard/staff/viewcustomersforStaff");
-//            } else {
-//                request.setAttribute("errorMessage", "Gửi voucher thất bại!");
-//            }
+            boolean success = future.get();  // Đợi task hoàn thành và lấy kết quả trả về
+
+            if (success) {
+                request.setAttribute("message", "Gửi voucher thành công!");
+                response.sendRedirect("/dashboard/staff/viewcustomersforStaff");
+            } else {
+                request.setAttribute("errorMessage", "Gửi voucher thất bại!");
+                request.getRequestDispatcher("/dashboard/staff/viewcustomersforStaff").forward(request, response);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
+            request.getRequestDispatcher("/dashboard/staff/viewcustomersforStaff").forward(request, response);
         }
-
-        // Chuyển hướng về trang quản lý hoặc thông báo kết quả
-        request.getRequestDispatcher("/dashboard/staff/viewcustomersforStaff");
     }
 
     /**
