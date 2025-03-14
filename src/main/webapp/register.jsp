@@ -34,7 +34,7 @@
                     <div class="register-form">
                         <h1 class="h4 mb-2 text-center title" style="font-weight: bold;">Pawfect - Đăng ký</h1>
                         <p style="text-align: center;">Xin chào, vui lòng nhập thông tin đăng ký</p>
-                        <form action="register" method="POST"class="needs-validation" novalidate>
+                        <form action="register" method="POST"class="needs-validation" novalidate  onsubmit="return validateForm()">
                             <!-- Họ tên -->
                             <div class="mb-3">
                                 <label for="fullName" class="form-label">Họ tên</label>
@@ -82,7 +82,7 @@
                                 <i class="bi bi-eye-slash password-toggle" id="toggleConfirmPassword"></i>
                                 <div class="form-text">Mật khẩu phải có ít nhất 6 ký tự.</div>
                                 <div class="invalid-feedback">
-                                    Vui lòng nhập mật khẩu.
+                                 Mật khẩu nhập lại không khớp
                                 </div>
 
                             </div>
@@ -146,116 +146,75 @@
 
         <!-- Custom JavaScript -->
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-    "use strict";
-    var forms = document.querySelectorAll(".needs-validation");
+           function validateForm() {
+    let isValid = true;
 
-    Array.prototype.slice.call(forms).forEach(function (form) {
-        form.addEventListener("submit", function (event) {
-            document.querySelectorAll("input").forEach((input) => {
-                input.value = input.value.trim();
-            });
+    // Lấy giá trị từ các input
+    let fullName = document.getElementById("fullName").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let password = document.getElementById("password").value.trim();
+    let confirmPassword = document.getElementById("confirmPassword").value.trim();
+    let phoneNumber = document.getElementById("phone").value.trim();
+    let birthDate = document.getElementById("birthdate").value;
+    let address = document.getElementById("address").value.trim();
 
-            const fullName = document.getElementById("fullName");
-            const password = document.getElementById("password");
-            const confirmPassword = document.getElementById("confirmPassword");
+    // Xóa thông báo lỗi trước đó
+    document.getElementById("fullName").classList.remove("is-invalid");
+    document.getElementById("email").classList.remove("is-invalid");
+    document.getElementById("password").classList.remove("is-invalid");
+    document.getElementById("confirmPassword").classList.remove("is-invalid");
+    document.getElementById("phone").classList.remove("is-invalid");
+    document.getElementById("birthdate").classList.remove("is-invalid");
+    document.getElementById("address").classList.remove("is-invalid");
 
-            // Kiểm tra full name không được toàn dấu cách
-            if (fullName.value.trim() === "") {
-                fullName.setCustomValidity("Họ tên không được để trống hoặc chỉ có dấu cách.");
-            } else {
-                fullName.setCustomValidity("");
-            }
-
-            // Kiểm tra mật khẩu không tính dấu cách
-            if (password.value.replace(/\s/g, "") !== confirmPassword.value.replace(/\s/g, "")) {
-                confirmPassword.setCustomValidity("Mật khẩu không khớp");
-            } else {
-                confirmPassword.setCustomValidity("");
-            }
-
-            if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-
-            form.classList.add("was-validated");
-        }, false);
-    });
-
-    // Kiểm tra full name khi nhập
-    document.getElementById("fullName").addEventListener("input", function () {
-        if (this.value.trim() === "") {
-            this.setCustomValidity("Họ tên không được để trống hoặc chỉ có dấu cách.");
-        } else {
-            this.setCustomValidity("");
-        }
-        this.reportValidity();
-    });
-
-    document.getElementById("confirmPassword").addEventListener("input", function () {
-        const password = document.getElementById("password").value.replace(/\s/g, "");
-        const confirmPassword = this.value.replace(/\s/g, "");
-
-        if (password !== confirmPassword) {
-            this.setCustomValidity("Mật khẩu không khớp");
-        } else {
-            this.setCustomValidity("");
-        }
-        this.reportValidity();
-    });
-
-    document.getElementById("togglePassword")?.addEventListener("click", function () {
-        togglePasswordVisibility("password", this);
-    });
-    document.getElementById("toggleConfirmPassword")?.addEventListener("click", function () {
-        togglePasswordVisibility("confirmPassword", this);
-    });
-
-    function togglePasswordVisibility(inputId, toggleIcon) {
-        const inputField = document.getElementById(inputId);
-        if (!inputField) return;
-        const type = inputField.getAttribute("type") === "password" ? "text" : "password";
-        inputField.setAttribute("type", type);
-        toggleIcon.classList.toggle("bi-eye");
-        toggleIcon.classList.toggle("bi-eye-slash");
+    // Kiểm tra họ tên
+    if (fullName === "") {
+        document.getElementById("fullName").classList.add("is-invalid");
+        isValid = false;
     }
-});
-document.addEventListener("DOMContentLoaded", function () {
-    "use strict";
-    var forms = document.querySelectorAll(".needs-validation");
 
-    Array.prototype.slice.call(forms).forEach(function (form) {
-        form.addEventListener("submit", function (event) {
-            document.querySelectorAll("input, textarea").forEach((input) => {
-                input.value = input.value.trim();
-                if (!input.value.trim()) {
-                    input.setCustomValidity("Không được để trống hoặc chỉ chứa dấu cách.");
-                } else {
-                    input.setCustomValidity("");
-                }
-            });
+    // Kiểm tra email
+    let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailPattern.test(email)) {
+        document.getElementById("email").classList.add("is-invalid");
+        isValid = false;
+    }
 
-            if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
+    // Kiểm tra mật khẩu (tối thiểu 6 ký tự)
+    if (password.length < 6) {
+        document.getElementById("password").classList.add("is-invalid");
+        isValid = false;
+    }
 
-            form.classList.add("was-validated");
-        }, false);
-    });
+    // Kiểm tra nhập lại mật khẩu
+    if (confirmPassword !== password) {
+        document.getElementById("confirmPassword").classList.add("is-invalid");
+        isValid = false;
+    }
 
-    document.querySelectorAll("input, textarea").forEach((input) => {
-        input.addEventListener("input", function () {
-            if (!this.value.trim()) {
-                this.setCustomValidity("Không được để trống hoặc chỉ chứa dấu cách.");
-            } else {
-                this.setCustomValidity("");
-            }
-            this.reportValidity();
-        });
-    });
-});
+    // Kiểm tra số điện thoại (chỉ cho phép số và 10-11 chữ số)
+    let phonePattern = /^[0-9]{10,11}$/;
+    if (!phonePattern.test(phoneNumber)) {
+        document.getElementById("phone").classList.add("is-invalid");
+        isValid = false;
+    }
+
+    // Kiểm tra ngày sinh (không được lớn hơn ngày hiện tại)
+    let today = new Date().toISOString().split("T")[0];
+    if (birthDate === "" || birthDate > today) {
+        document.getElementById("birthdate").classList.add("is-invalid");
+        isValid = false;
+    }
+
+    // Kiểm tra địa chỉ
+    if (address === "") {
+        document.getElementById("address").classList.add("is-invalid");
+        isValid = false;
+    }
+
+    return isValid;
+}
+
 
         </script>
     </body>

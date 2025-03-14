@@ -40,15 +40,15 @@ public class GoogleLoginServlet extends HttpServlet {
         System.out.print(accessToken);
         GoogleAccount acc = gg.getUserInfo(accessToken);
         UserDAO userDAO = new UserDAO();
-        if (userDAO.checkGoogleExists(acc.getId())) {
-            String customer = userDAO.getCustomerId(acc.getId());
+        if (userDAO.checkGoogleExists(acc.getEmail())) {
+            String customer = userDAO.getCustomerId(acc.getEmail());
             Cookie customerId = new Cookie("customerId", customer);
             customerId.setMaxAge(60 * 60 * 24 * 1);
             response.addCookie(customerId);
             response.sendRedirect("/pawfect");
         } else {
              HttpSession session = request.getSession();
-    session.setAttribute("ggId", acc.getId());
+    session.setAttribute("ggEmail", acc.getEmail());
      session.setAttribute("ggName", acc.getName());
     response.sendRedirect("/registergoogle");
 //            userDAO.insertGoogleAcc(acc);

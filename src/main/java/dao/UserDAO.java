@@ -80,7 +80,7 @@ public class UserDAO {
 
     public boolean checkGoogleExists(String Email) {
         boolean isValid = false;
-        String sql = "SELECT * FROM Customers WHERE email = ? AND password = 'GG' ";
+        String sql = "SELECT * FROM Customers WHERE email = ?  ";
         try {
             conn = new DBContext().getConnection();
             pt = conn.prepareStatement(sql);
