@@ -5,8 +5,10 @@
 --%>
 
 <%@page import="model.Customers"%>
-<%@page import="model.Customers"%>
 <%@page import="java.util.List"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -136,10 +138,8 @@
                                     <tbody>
                                         <%
                                             List<Customers> customerList = (List<Customers>) request.getAttribute("customerList");
-
                                             for (Customers customer : customerList) {
                                         %>
-
                                         <tr>
                                             <td><%= customer.getCustomerId()%></td>
                                             <td><%= customer.getFullName()%></td>
@@ -150,30 +150,19 @@
                                             <td><%= customer.getBirthDate()%></td>
 
                                             <td>
-                                                <% if ("admin".equalsIgnoreCase(staffRole)) { %> 
                                                 <% if (customer.isActive()) {%>
-                                                <form action="customersban" method="get" onsubmit="return confirm('Bạn có chắc muốn cấm khách hàng này?');">
-
-                                                    <input type="hidden" name="id" value="<%= customer.getCustomerId()%>">
-                                                    <input type="hidden" name="action" value="ban">
-                                                    <button type="submit" class="btn btn-danger" style=" display: flex;
-                                                            justify-content: center; /* Căn giữa theo chiều ngang */
-                                                            align-items: center; /* Căn giữa theo chiều dọc */
-                                                            height: 100%; /* Đảm bảo chiều cao full của ô */">Cấm</button>
-
+                                                <form action="sendDiscountCode" method="post">
+                                                    <input type="hidden" name="customerId" value="<%= customer.getCustomerId()%>">
+                                                    <!-- Nút gửi mã giảm giá -->
+                                                    <button type="button" class="btn btn-success openVoucherModal" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#sendVoucherModal" 
+                                                            data-customer-id="<%= customer.getCustomerId()%>">
+                                                        Gửi mã giảm giá
+                                                    </button>
                                                 </form>
-                                                <% } else {%>
-                                                <form action="customersban" method="get" onsubmit="return confirm('Bạn có chắc muốn gỡ cấm khách hàng này?');">
-                                                    <input type="hidden" name="id" value="<%= customer.getCustomerId()%>">
-                                                    <input type="hidden" name="action" value="unban">
-                                                    <button type="submit" class="btn btn-success"style="">Mở</button>
-                                                </form>
-                                                <% } %>
-                                                <% } else { %>
-                                                <span class="text-muted">Không có quyền</span>
                                                 <% } %>
                                             </td>
-
                                         </tr>
                                         <%
                                             }
@@ -190,10 +179,46 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
+            </div>
+        </div>
 
+        <!-- Modal Gửi Mã Giảm Giá -->
+        <div class="modal fade" id="sendVoucherModal" tabindex="-1" aria-labelledby="sendVoucherModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="sendVoucherModalLabel">Gửi Mã Giảm Giá</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="sendVoucherForm" action="sendvoucher" method="post">
+                            <input type="hidden" name="customerId" id="customerIdInput">
+
+                            <div class="mb-3">
+                                <label for="voucherCode" class="form-label">Chọn Voucher:</label>
+                                <select class="form-control" id="voucherCode" name="voucherCode" required>
+                                    <option value="">-- Chọn voucher --</option>
+                                    <c:forEach var="voucher" items="${vouchers}">
+                                        <option value="${voucher.code}">
+                                            ${voucher.code} - 
+                                            <c:choose>
+                                                <c:when test="${voucher.discountAmount > 0}">
+                                                    Giảm ${voucher.discountAmount}đ
+                                                </c:when>
+                                                <c:when test="${voucher.discountPercentage > 0}">
+                                                    Giảm ${voucher.discountPercentage}%
+                                                </c:when>
+                                            </c:choose>
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">Gửi Voucher</button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -201,25 +226,52 @@
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
         <script>
-                                                    const exampleModal = document.getElementById('exampleModal')
-                                                    if (exampleModal) {
-                                                        exampleModal.addEventListener('show.bs.modal', event => {
-                                                            // Button that triggered the modal
-                                                            const button = event.relatedTarget
-                                                            // Extract info from data-bs-* attributes
-                                                            const recipient = button.getAttribute('data-bs-whatever')
-                                                            // If necessary, you could initiate an Ajax request here
-                                                            // and then do the updating in a callback.
+            document.addEventListener("DOMContentLoaded", function () {
+                var sendVoucherModal = document.getElementById("sendVoucherModal");
 
-                                                            // Update the modal's content.
-                                                            const modalTitle = exampleModal.querySelector('.modal-title')
-                                                            const modalBodyInput = exampleModal.querySelector('.modal-body input')
+                sendVoucherModal.addEventListener("show.bs.modal", function (event) {
+                    var button = event.relatedTarget; // Button kích hoạt modal
+                    var customerId = button.getAttribute("data-customer-id"); // Lấy customerId từ data attribute
+                    document.getElementById("customerIdInput").value = customerId; // Gán vào input ẩn
+                });
+            });
 
-                                                            modalTitle.textContent = `New message to ${recipient}`
-                                                            modalBodyInput.value = recipient
-                                                        })
-                                                    }
+        </script>
+
+        <script>
+            const exampleModal = document.getElementById('exampleModal')
+            if (exampleModal) {
+                exampleModal.addEventListener('show.bs.modal', event => {
+                    // Button that triggered the modal
+                    const button = event.relatedTarget
+                    // Extract info from data-bs-* attributes
+                    const recipient = button.getAttribute('data-bs-whatever')
+                    // If necessary, you could initiate an Ajax request here
+                    // and then do the updating in a callback.
+
+                    // Update the modal's content.
+                    const modalTitle = exampleModal.querySelector('.modal-title')
+                    const modalBodyInput = exampleModal.querySelector('.modal-body input')
+
+                    modalTitle.textContent = `New message to ${recipient}`
+                    modalBodyInput.value = recipient
+                })
+            }
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var errorMessage = "<c:out value='${errorMessage}' />";
+                if (errorMessage && errorMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi!",
+                        text: errorMessage,
+                        confirmButtonText: "OK"
+                    });
+                }
+            });
         </script>
     </body>
 </html>

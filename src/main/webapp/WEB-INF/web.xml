@@ -260,6 +260,10 @@
         <servlet-name>ViewCustomersForStaffServlet</servlet-name>
         <servlet-class>controller.ViewCustomersForStaffServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SendVoucherServlet</servlet-name>
+        <servlet-class>controller.SendVoucherServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>PetHotelServlet</servlet-name>
         <url-pattern>/pethotel</url-pattern>
@@ -503,6 +507,10 @@
     <servlet-mapping>
         <servlet-name>ViewCustomersForStaffServlet</servlet-name>
         <url-pattern>/dashboard/staff/viewcustomersforStaff</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SendVoucherServlet</servlet-name>
+        <url-pattern>/dashboard/staff/sendvoucher</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
