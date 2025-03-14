@@ -230,41 +230,49 @@
             </div>
         </div>
         <script>
-            function validateStaffForm() {
+           function validateForm() {
                 let isValid = true;
 
-                let name = document.getElementsByName("name")[0].value.trim();
-                let phone = document.getElementsByName("phone")[0].value.trim();
+                // Lấy giá trị input và loại bỏ khoảng trắng đầu cuối
+                let fullName = document.getElementsByName("name")[0].value.trim();
+                let birthDate = document.getElementsByName("birthdate")[0].value.trim();
+                let phoneNumber = document.getElementsByName("phone")[0].value.trim();
                 let address = document.getElementsByName("address")[0].value.trim();
-                let birthdate = document.getElementsByName("birthdate")[0].value.trim();
 
+                // Định dạng kiểm tra
+                let phonePattern = /^[0-9]{10,11}$/;
+                let today = new Date().toISOString().split("T")[0];
+
+                // Xóa thông báo lỗi cũ
                 document.getElementById("nameError").innerHTML = "";
+                document.getElementById("birthdateError").innerHTML = "";
                 document.getElementById("phoneError").innerHTML = "";
                 document.getElementById("addressError").innerHTML = "";
-                document.getElementById("birthdateError").innerHTML = "";
 
-                // Kiểm tra Họ và Tên
-                if (name === "") {
-                    document.getElementById("nameError").innerHTML = "Vui lòng nhập họ và tên!";
-                    isValid = false;
-                }
-
-                // Kiểm tra Số điện thoại (chỉ chấp nhận số, ít nhất 10 số)
-                let phonePattern = /^[0-9]{10,11}$/;
-                if (!phonePattern.test(phone)) {
-                    document.getElementById("phoneError").innerHTML = "Số điện thoại không hợp lệ!";
-                    isValid = false;
-                }
-
-                // Kiểm tra Địa chỉ
-                if (address === "") {
-                    document.getElementById("addressError").innerHTML = "Vui lòng nhập địa chỉ!";
+                // Kiểm tra Họ tên (không được chỉ có khoảng trắng và phải có ít nhất 3 ký tự)
+                if (fullName.length < 3 || fullName.replace(/\s/g, "").length === 0) {
+                    document.getElementById("nameError").innerHTML = "Họ tên phải có ít nhất 3 ký tự và không được chỉ có khoảng trắng!";
                     isValid = false;
                 }
 
                 // Kiểm tra Ngày sinh
-                if (birthdate === "") {
+                if (!birthDate) {
                     document.getElementById("birthdateError").innerHTML = "Vui lòng chọn ngày sinh!";
+                    isValid = false;
+                } else if (birthDate > today) {
+                    document.getElementById("birthdateError").innerHTML = "Ngày sinh không thể lớn hơn ngày hiện tại!";
+                    isValid = false;
+                }
+
+                // Kiểm tra Số điện thoại (phải có 10-11 chữ số)
+                if (!phonePattern.test(phoneNumber)) {
+                    document.getElementById("phoneError").innerHTML = "Số điện thoại không hợp lệ!";
+                    isValid = false;
+                }
+
+                // Kiểm tra Địa chỉ (không được chỉ có khoảng trắng và phải có ít nhất 5 ký tự)
+                if (address.length < 5 || address.replace(/\s/g, "").length === 0) {
+                    document.getElementById("addressError").innerHTML = "Địa chỉ phải có ít nhất 5 ký tự và không được chỉ có khoảng trắng!";
                     isValid = false;
                 }
 

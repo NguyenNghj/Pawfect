@@ -147,57 +147,115 @@
         <!-- Custom JavaScript -->
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-            "use strict";
-            // Lấy tất cả các form cần kiểm tra
-            var forms = document.querySelectorAll(".needs-validation");
-            // Lặp qua từng form và thêm sự kiện submit
-            Array.prototype.slice.call(forms).forEach(function (form) {
-            form.addEventListener("submit", function (event) {
-            // Kiểm tra xem form có hợp lệ không
-            if (!form.checkValidity()) {
-            event.preventDefault();
-            event.stopPropagation();
-            }
+    "use strict";
+    var forms = document.querySelectorAll(".needs-validation");
 
-            // Kiểm tra mật khẩu có khớp không
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener("submit", function (event) {
+            document.querySelectorAll("input").forEach((input) => {
+                input.value = input.value.trim();
+            });
+
+            const fullName = document.getElementById("fullName");
             const password = document.getElementById("password");
             const confirmPassword = document.getElementById("confirmPassword");
-            if (password.value !== confirmPassword.value) {
-            confirmPassword.setCustomValidity("Mật khẩu không khớp");
+
+            // Kiểm tra full name không được toàn dấu cách
+            if (fullName.value.trim() === "") {
+                fullName.setCustomValidity("Họ tên không được để trống hoặc chỉ có dấu cách.");
             } else {
-            confirmPassword.setCustomValidity("");
+                fullName.setCustomValidity("");
+            }
+
+            // Kiểm tra mật khẩu không tính dấu cách
+            if (password.value.replace(/\s/g, "") !== confirmPassword.value.replace(/\s/g, "")) {
+                confirmPassword.setCustomValidity("Mật khẩu không khớp");
+            } else {
+                confirmPassword.setCustomValidity("");
+            }
+
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
             }
 
             form.classList.add("was-validated");
-            }, false);
-            });
-            // Kiểm tra mật khẩu có khớp khi nhập
-            document.getElementById("confirmPassword").addEventListener("input", function () {
-            const password = document.getElementById("password").value;
-            const confirmPassword = this.value;
-            if (password !== confirmPassword) {
-            this.setCustomValidity("Mật khẩu không khớp");
-            } else {
+        }, false);
+    });
+
+    // Kiểm tra full name khi nhập
+    document.getElementById("fullName").addEventListener("input", function () {
+        if (this.value.trim() === "") {
+            this.setCustomValidity("Họ tên không được để trống hoặc chỉ có dấu cách.");
+        } else {
             this.setCustomValidity("");
+        }
+        this.reportValidity();
+    });
+
+    document.getElementById("confirmPassword").addEventListener("input", function () {
+        const password = document.getElementById("password").value.replace(/\s/g, "");
+        const confirmPassword = this.value.replace(/\s/g, "");
+
+        if (password !== confirmPassword) {
+            this.setCustomValidity("Mật khẩu không khớp");
+        } else {
+            this.setCustomValidity("");
+        }
+        this.reportValidity();
+    });
+
+    document.getElementById("togglePassword")?.addEventListener("click", function () {
+        togglePasswordVisibility("password", this);
+    });
+    document.getElementById("toggleConfirmPassword")?.addEventListener("click", function () {
+        togglePasswordVisibility("confirmPassword", this);
+    });
+
+    function togglePasswordVisibility(inputId, toggleIcon) {
+        const inputField = document.getElementById(inputId);
+        if (!inputField) return;
+        const type = inputField.getAttribute("type") === "password" ? "text" : "password";
+        inputField.setAttribute("type", type);
+        toggleIcon.classList.toggle("bi-eye");
+        toggleIcon.classList.toggle("bi-eye-slash");
+    }
+});
+document.addEventListener("DOMContentLoaded", function () {
+    "use strict";
+    var forms = document.querySelectorAll(".needs-validation");
+
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener("submit", function (event) {
+            document.querySelectorAll("input, textarea").forEach((input) => {
+                input.value = input.value.trim();
+                if (!input.value.trim()) {
+                    input.setCustomValidity("Không được để trống hoặc chỉ chứa dấu cách.");
+                } else {
+                    input.setCustomValidity("");
+                }
+            });
+
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            form.classList.add("was-validated");
+        }, false);
+    });
+
+    document.querySelectorAll("input, textarea").forEach((input) => {
+        input.addEventListener("input", function () {
+            if (!this.value.trim()) {
+                this.setCustomValidity("Không được để trống hoặc chỉ chứa dấu cách.");
+            } else {
+                this.setCustomValidity("");
             }
             this.reportValidity();
-            });
-            // Bật/tắt hiển thị mật khẩu
-            document.getElementById("togglePassword")?.addEventListener("click", function () {
-            togglePasswordVisibility("password", this);
-            });
-            document.getElementById("toggleConfirmPassword")?.addEventListener("click", function () {
-            togglePasswordVisibility("confirmPassword", this);
-            });
-            function togglePasswordVisibility(inputId, toggleIcon) {
-            const inputField = document.getElementById(inputId);
-            if (!inputField) return;
-            const type = inputField.getAttribute("type") === "password" ? "text" : "password";
-            inputField.setAttribute("type", type);
-            toggleIcon.classList.toggle("bi-eye");
-            toggleIcon.classList.toggle("bi-eye-slash");
-            }
-            });
+        });
+    });
+});
 
         </script>
     </body>
