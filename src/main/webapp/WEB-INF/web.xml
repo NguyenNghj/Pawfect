@@ -162,7 +162,7 @@
     </servlet>
     <servlet>
         <servlet-name>AddPetServlet</servlet-name>
-        <servlet-class>controller.AddPetServlet</servlet-class>
+        <servlet-class>controller.CreatePetServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>LogoutStaffServlet</servlet-name>
