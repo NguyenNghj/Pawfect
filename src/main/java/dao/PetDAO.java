@@ -53,6 +53,37 @@ public class PetDAO {
         return petList;
     }
 
+    public List<Pet> filterPet(String petType) {
+        List<Pet> petList = new ArrayList<>();
+        String query = "SELECT * FROM Pets WHERE pet_type = ?";
+
+        try {
+            conn = new DBContext().getConnection();
+            pt = conn.prepareStatement(query);
+            pt.setString(1, petType);
+            rs = pt.executeQuery();
+
+            while (rs.next()) {
+                Pet pet = new Pet(
+                        rs.getString("pet_id"),
+                        rs.getString("customer_id"),
+                        rs.getString("pet_name"),
+                        rs.getString("pet_type"),
+                        rs.getString("pet_breed"),
+                        rs.getString("pet_sex"),
+                        rs.getString("pet_weigth"),
+                        rs.getDate("pet_dob"),
+                        rs.getString("pet_status"),
+                        rs.getString("pet_image")
+                );
+                petList.add(pet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return petList;
+    }
+
     public Pet getPetId(String petId, String customerId) {
         Pet pet = new Pet();
         String query = "SELECT * FROM Pets where pet_id=? and customer_id=?";

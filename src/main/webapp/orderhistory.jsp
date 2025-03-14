@@ -26,6 +26,7 @@
                 <nav padding: 0 5px;" aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0" style ="font-weight: bold;">
                         <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="profile" class="text-decoration-none">Tài khoản</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Lịch sử đơn hàng</li>
                     </ol>
                 </nav>
@@ -69,7 +70,7 @@
                                     <!-- TH1: Khách hàng 'không' có đơn hàng -->
                                     <div>
                                         <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px;">
-                                            Bạn không có đơn hàng nào!
+                                            Không tìm thấy!
                                         </h5>
                                     </div>
                                 </c:when>
