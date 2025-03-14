@@ -4,16 +4,19 @@
  */
 package controller;
 
+import dao.CartDAO;
 import dao.PetHotelDAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
+import model.CartItem;
 import model.PetHotel;
 
 /**
@@ -75,11 +78,45 @@ public class PetHotelServlet extends HttpServlet {
         // Gọi DAO để lấy danh sách phòng phù hợp với bộ lọc
         List<PetHotel> roomList = PetHotelDAO.filterPetRooms(sizeFilter, roomTypeFilter);
 
+        
+        // Lấy customerId từ Cookie
+        String username = getCookieValue(request, "customerId");
+        if (username == null) {
+            System.out.println("Không tìm thấy customerId!");
+            username = "0";
+        }
+
+        int totalQuantity = 0;
+        int customerId = Integer.parseInt(username);
+
+        // Lay tong so san pham trong gio hang (header)
+        List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+        if (!cartItems.isEmpty()) {
+            for (CartItem cartItem : cartItems) {
+                totalQuantity += cartItem.getQuantity();
+            }
+        }
+        request.setAttribute("totalQuantity", totalQuantity);
+
+        
         // Gửi danh sách phòng về JSP
         request.setAttribute("roomList", roomList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("pethotel.jsp");
         dispatcher.forward(request, response);
 
+    }
+
+    // Hàm lấy giá trị Cookie theo tên
+    private String getCookieValue(HttpServletRequest request, String name) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (name.equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 
     /**

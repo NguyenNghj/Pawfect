@@ -4,15 +4,18 @@
  */
 package controller;
 
+import dao.CartDAO;
 import dao.PetHotelDAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import model.CartItem;
 import model.PetHotel;
 
 /**
@@ -77,6 +80,25 @@ public class PetHotelDetailServlet extends HttpServlet {
                 List<PetHotel> similarRooms = PetHotelDAO.getSimilarRooms(room.getRoomType(), roomId);
                 request.setAttribute("similarRooms", similarRooms);
 
+                // Lấy customerId từ Cookie
+                String username = getCookieValue(request, "customerId");
+                if (username == null) {
+                    System.out.println("Không tìm thấy customerId!");
+                    username = "0";
+                }
+
+                int totalQuantity = 0;
+                int customerId = Integer.parseInt(username);
+
+                // Lay tong so san pham trong gio hang (header)
+                List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+                if (!cartItems.isEmpty()) {
+                    for (CartItem cartItem : cartItems) {
+                        totalQuantity += cartItem.getQuantity();
+                    }
+                }
+                request.setAttribute("totalQuantity", totalQuantity);
+
                 RequestDispatcher dispatcher = request.getRequestDispatcher("pethoteldetail.jsp");
                 dispatcher.forward(request, response);
             } else {
@@ -85,6 +107,19 @@ public class PetHotelDetailServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             response.sendRedirect("pethotel?error=invalid_id");
         }
+    }
+
+    // Hàm lấy giá trị Cookie theo tên
+    private String getCookieValue(HttpServletRequest request, String name) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (name.equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 
     /**

@@ -24,6 +24,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import model.CartItem;
 import model.Customers;
 import model.DiscountOrder;
 import model.Order;
@@ -400,6 +401,16 @@ public class OrderServlet extends HttpServlet {
         // Lay don hang cu the
         List<Order> orders = OrderDAO.getOrderByOrderId(orderId);
 
+        int totalQuantity = 0;
+        // Lay tong so san pham trong gio hang
+        List<CartItem> cartItems = CartDAO.getCartByCustomerId(Integer.parseInt(customerId));
+        if (!cartItems.isEmpty()) {
+            for (CartItem cartItem : cartItems) {
+                totalQuantity += cartItem.getQuantity();
+            }
+        }
+        request.setAttribute("totalQuantity", totalQuantity);
+
         request.setAttribute("basicPrice", basicPrice);
         request.setAttribute("orderitems", orderitems);
         request.setAttribute("orders", orders);
@@ -443,6 +454,16 @@ public class OrderServlet extends HttpServlet {
                 default:
                     orders = OrderDAO.getOrderByCustomerId(intCustomerId);
             }
+
+            int totalQuantity = 0;
+            // Lay tong so san pham trong gio hang
+            List<CartItem> cartItems = CartDAO.getCartByCustomerId(Integer.parseInt(customerId));
+            if (!cartItems.isEmpty()) {
+                for (CartItem cartItem : cartItems) {
+                    totalQuantity += cartItem.getQuantity();
+                }
+            }
+            request.setAttribute("totalQuantity", totalQuantity);
 
             request.setAttribute("orderStatus", status);
             request.setAttribute("orders", orders);

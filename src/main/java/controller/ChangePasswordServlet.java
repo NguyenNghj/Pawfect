@@ -5,6 +5,7 @@
 package controller;
 
 import static controller.ChangeAdminPasswordServlet.hashMD5;
+import dao.CartDAO;
 import dao.ChangePasswordDAO;
 import dao.ProfileDAO;
 import java.io.IOException;
@@ -14,6 +15,8 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.CartItem;
 import model.User;
 
 /**
@@ -70,6 +73,17 @@ public class ChangePasswordServlet extends HttpServlet {
                 }
             }
         }
+
+        int totalQuantity = 0;
+        // Lay tong so san pham trong gio hang
+        List<CartItem> cartItems = CartDAO.getCartByCustomerId(Integer.parseInt(customerId));
+        if (!cartItems.isEmpty()) {
+            for (CartItem cartItem : cartItems) {
+                totalQuantity += cartItem.getQuantity();
+            }
+        }
+        request.setAttribute("totalQuantity", totalQuantity);
+
         ProfileDAO profileDAO = new ProfileDAO();
         User user = profileDAO.getUser(customerId);
         request.setAttribute("customer", user);
