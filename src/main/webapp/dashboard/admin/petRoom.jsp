@@ -109,7 +109,7 @@
 
                         <!-- Form Tìm Kiếm -->
                         <div class="col-md-6">
-                            <form action="product" method="get" class="d-flex mb-3 align-items-center" 
+                            <form action="pethotel" method="get" class="d-flex mb-3 align-items-center" 
                                   style="max-width: 400px; margin: 0 auto; border-radius: 25px; background: #f8f9fa; padding: 5px;">
 
                                 <input type="search" name="search" class="form-control" id="inputName" placeholder="Nhập từ khóa..."
@@ -128,9 +128,7 @@
                                         </button>-->
 
 
-                    <%
-                        List<PetHotel> petRooms = (List<PetHotel>) request.getAttribute("petRooms");
-                    %>
+
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <div class="main-dashboard-table">
@@ -157,47 +155,45 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <% if (petRooms != null && !petRooms.isEmpty()) {
-                                                for (PetHotel room : petRooms) {%>
-                                        <tr>
-                                            <td> <img src="<%= room.getRoomImage()%>" alt="Hình ảnh phòng" width="150" height="150"> </td>
-                                            <td style="text-align: center; width: 12%;"><%= room.getRoomName()%></td>
-                                            <td style="text-align: center; width: 9%;"><%= room.getRoomType()%></td>
-                                            <td style="text-align: center;"><%= room.getMinWeight()%></td>
-                                            <td style="text-align: center;"><%= room.getMaxWeight()%></td>
-                                            <%
-                                                NumberFormat formatter = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
-                                            %>
-                                            <td style="text-align: center;"><%= formatter.format(room.getPricePerNight())%></td>
-                                            <td><%= room.getDescription()%></td>
-                                            <td style="width: 8%; text-align: center;"><%= room.getAvailableQuantity()%>/<%= room.getQuantity()%></td>
-                                            <td style="width: 10%;">
-                                                <span style="font-weight: bold; color: white; padding: 5px; color: <%= room.getStatus().equals("Còn phòng") ? "green" : "red"%>;">
-                                                    <%= room.getStatus()%>
-                                                </span>
-                                            </td>
-
-                                            <td style="width: 12%;">
-                                                <button type="button" class="btn btn-primary" onclick="editRoom(<%= room.getRoomId()%>)">Chỉnh sửa</button>
-                                                <script>
-                                                    function editRoom(roomId) {
-                                                        window.location.href = 'editpethotel?room_id=' + roomId;
-                                                    }
-                                                </script>
-                                            </td>
-
-                                        </tr>
-                                        <% }
-                                        } else { %>
-                                        <tr>
-                                            <td colspan="10" class="text-center w-100">
-                                                <div class="alert alert-warning" role="alert">
-                                                    Không có phòng nào được tìm thấy.
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <% }%>
+                                        <c:choose>
+                                            <c:when test="${not empty petRooms}">
+                                                <c:forEach var="room" items="${petRooms}">
+                                                    <tr>
+                                                        <td>
+                                                            <img src="${room.roomImage}" alt="Hình ảnh phòng" width="150" height="150">
+                                                        </td>
+                                                        <td style="text-align: center; width: 12%;">${room.roomName}</td>
+                                                        <td style="text-align: center; width: 9%;">${room.roomType}</td>
+                                                        <td style="text-align: center;">${room.minWeight}</td>
+                                                        <td style="text-align: center;">${room.maxWeight}</td>
+                                                        <td style="text-align: center;">
+                                                <fmt:formatNumber value="${room.pricePerNight}" type="currency" currencyCode="VND"/>
+                                                </td>
+                                                <td>${room.description}</td>
+                                                <td style="width: 8%; text-align: center;">${room.availableQuantity}/${room.quantity}</td>
+                                                <td style="width: 10%;">
+                                                    <span style="font-weight: bold; padding: 5px; color: ${room.status eq 'Còn phòng' ? 'green' : 'red'};">
+                                                        ${room.status}
+                                                    </span>
+                                                </td>
+                                                <td style="width: 12%;">
+                                                    <button type="button" class="btn btn-primary" onclick="editRoom(${room.roomId})">Chỉnh sửa</button>
+                                                </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <tr>
+                                                <td colspan="10" class="text-center w-100">
+                                                    <div class="alert alert-warning" role="alert">
+                                                        Không có phòng nào được tìm thấy.
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </c:otherwise>
+                                    </c:choose>
                                     </tbody>
+
                                 </table>
                             </div>
                         </div>

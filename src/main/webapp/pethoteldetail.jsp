@@ -8,13 +8,15 @@
 <%@page import="java.text.NumberFormat"%>
 <%@page import="java.util.Locale"%>
 <%@page import="model.PetHotel"%>
-<%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@include file="./components/header.jsp" %>
 <!DOCTYPE html>
 
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="UTF-8">
         <title>Phòng ${room.roomName} dành cho ${room.roomType}</title>
         <link rel="stylesheet" href="./css/pethoteldetail_v1.css">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
@@ -26,127 +28,87 @@
             <li><a class="trang-chu" href="/pethotel">Khách sạn thú cưng</a></li>
             <li>Phòng ${room.roomName} dành cho ${room.roomType}</li>
         </ol>
-        <%-- Lấy dữ liệu phòng từ request attribute --%>
-        <%
-            PetHotel room = (PetHotel) request.getAttribute("room");
-            List<PetHotel> similarRooms = (List<PetHotel>) request.getAttribute("similarRooms");
 
-            if (room == null) {
-        %>
-        <p>Phòng không tồn tại hoặc có lỗi xảy ra.</p>
-        <a href="pethotel" class="back-btn">Quay lại</a>
-        <%
-        } else {
-        %>
-
-        <h3>Chi tiết phòng <%= room.getRoomName()%> dành cho <%= room.getRoomType()%></h3>
-        <div class="detail-container">
-            <div class="image-container">
-                <img src="<%= room.getRoomImage()%>" alt="<%= room.getRoomName()%>">
-            </div>
-
-            <div class="info-container">
-                <h2>Phòng <%= room.getRoomName()%></h2>
-                <div class="detail">
-                    <p class="room-type"><i></i> Dành cho <%= room.getRoomType()%></p>
-                    <p class="room-price"><i></i> Giá: <%= NumberFormat.getInstance(new Locale("vi", "VN")).format(room.getPricePerNight())%> đ/đêm</p>
-                    <p class="room-weight"><i></i> Cân nặng phù hợp: <%= room.getMinWeight()%> - <%= room.getMaxWeight()%> kg</p>
-                    <p class="room-quantity"><i></i> Số lượng phòng trống: <%= room.getAvailableQuantity()%>/<%= room.getQuantity()%> phòng</p>
-                    <p class="room-status"><i></i> Trạng thái: <%= room.getStatus()%></p>
-                    <hr class="divider">
-                    <p class="room-description"><i></i> <%= room.getDescription()%></p>
-                </div>
-                <div class="button-container">
-                    <a href="bookingform?id=<%= room.getRoomId()%>" class="booking-btn" data-status="<%= room.getStatus()%>"><i></i> Đặt lịch ngay</a>
-                    <a href="pethotel" class="back-btn"><i></i> Quay lại</a>
-                </div>
-            </div>
-
-        </div>
-
-        <%-- Danh sách phòng tương tự --%>
-        <h3>Phòng tương tự</h3>
-        <div class="hotel-container">
-            <button id="scrollLeft" class="scroll-btn">&#10094;</button>
-            <div class="hotel-list">
-                <%
-                    if (similarRooms != null && !similarRooms.isEmpty()) {
-                        for (PetHotel similarRoom : similarRooms) {
-                %>
-                <div class="pethotel-card">
-                    <img src="<%= similarRoom.getRoomImage()%>" alt="<%= similarRoom.getRoomName()%>" 
-                         onclick="window.location.href = 'pethoteldetail?id=<%= similarRoom.getRoomId()%>'">
-                    <div class="pethotel-name"><%= similarRoom.getRoomName()%></div>
-                    <div class="pethotel-type">Dành cho <%= similarRoom.getRoomType()%></div>
-                    <div class="pethotel-price"><%= NumberFormat.getInstance(new Locale("vi", "VN")).format(similarRoom.getPricePerNight())%> đ/đêm</div>
-                    <div class="pethotel-weight">
-                        Cân nặng: <%= similarRoom.getMinWeight()%> - <%= similarRoom.getMaxWeight()%> kg
+        <c:choose>
+            <c:when test="${empty room}">
+                <p>Phòng không tồn tại hoặc có lỗi xảy ra.</p>
+                <a href="pethotel" class="back-btn">Quay lại</a>
+            </c:when>
+            <c:otherwise>
+                <h3>Chi tiết phòng ${room.roomName} dành cho ${room.roomType}</h3>
+                <div class="detail-container">
+                    <div class="image-container">
+                        <img src="${room.roomImage}" alt="${room.roomName}">
                     </div>
-                    <a href="bookingform?id=<%= similarRoom.getRoomId()%>" class="booking" data-status="<%= similarRoom.getStatus()%>">Đặt lịch ngay</a>
+                    <div class="info-container">
+                        <h2>Phòng ${room.roomName}</h2>
+                        <div class="detail">
+                            <p class="room-type">Dành cho ${room.roomType}</p>
+                            <p class="room-price">Giá: <fmt:formatNumber value="${room.pricePerNight}" type="currency" currencyCode="VND"/></p>
+                            <p class="room-weight">Cân nặng phù hợp: ${room.minWeight} - ${room.maxWeight} kg</p>
+                            <p class="room-quantity">Số lượng phòng trống: ${room.availableQuantity}/${room.quantity} phòng</p>
+                            <p class="room-status">Trạng thái: ${room.status}</p>
+                            <hr class="divider">
+                            <p class="room-description">${room.description}</p>
+                        </div>
+                        <div class="button-container">
+                            <a href="bookingform?id=${room.roomId}" class="booking-btn" data-status="${room.status}">Đặt lịch ngay</a>
+                            <a href="pethotel" class="back-btn">Quay lại</a>
+                        </div>
+                    </div>
                 </div>
 
-                <%
-                    }
-                } else {
-                %>
-                <p>Không có phòng tương tự.</p>
-                <%
-                    }
-                %>
-                <button id="scrollRight" class="scroll-btn">&#10095;</button>
+                <h3>Phòng tương tự</h3>
+                <div class="hotel-container">
+                    <button id="scrollLeft" class="scroll-btn">&#10094;</button>
+                    <div class="hotel-list">
+                        <c:choose>
+                            <c:when test="${not empty similarRooms}">
+                                <c:forEach var="similarRoom" items="${similarRooms}">
+                                    <div class="pethotel-card">
+                                        <img src="${similarRoom.roomImage}" alt="${similarRoom.roomName}" onclick="window.location.href = 'pethoteldetail?id=${similarRoom.roomId}'">
+                                        <div class="pethotel-name">${similarRoom.roomName}</div>
+                                        <div class="pethotel-type">Dành cho ${similarRoom.roomType}</div>
+                                        <div class="pethotel-price">
+                                            <fmt:formatNumber value="${similarRoom.pricePerNight}" type="currency" currencyCode="VND"/>/đêm
+                                        </div>
+                                        <div class="pethotel-weight">Cân nặng: ${similarRoom.minWeight} - ${similarRoom.maxWeight} kg</div>
+                                        <a href="bookingform?id=${similarRoom.roomId}" class="booking" data-status="${similarRoom.status}">Đặt lịch ngay</a>
+                                    </div>
+                                </c:forEach>
+                            </c:when>
+                            <c:otherwise>
+                                <p>Không có phòng tương tự.</p>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                    <button id="scrollRight" class="scroll-btn">&#10095;</button>
+                </div>
+            </c:otherwise>
+        </c:choose>
 
-            </div>
-        </div>
-        <% }%> <%-- Kết thúc kiểm tra room null --%>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const hotelList = document.querySelector(".hotel-list");
-                const btnLeft = document.getElementById("scrollLeft");
-                const btnRight = document.getElementById("scrollRight");
-                const scrollAmount = 320; // Di chuyển đúng bằng 1 card
-
-                function checkScrollButtons() {
-                    btnLeft.style.display = hotelList.scrollLeft > 0 ? "block" : "block";
-                    btnRight.style.display = hotelList.scrollLeft < (hotelList.scrollWidth - hotelList.clientWidth) ? "block" : "block";
-                }
-
-                btnLeft.addEventListener("click", function () {
-                    hotelList.scrollBy({left: -scrollAmount, behavior: "smooth"});
-                });
-
-                btnRight.addEventListener("click", function () {
-                    hotelList.scrollBy({left: scrollAmount, behavior: "smooth"});
-                });
-
-                hotelList.addEventListener("scroll", checkScrollButtons);
-                checkScrollButtons();
-            });
-        </script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const bookRoomBtns = document.querySelectorAll(".booking-btn");
-
-                bookRoomBtns.forEach(button => {
-                    button.addEventListener("click", function (event) {
-                        event.preventDefault();
-                        const roomStatus = button.getAttribute("data-status").trim().toLowerCase();
-
-                        if (roomStatus === "hết phòng") {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Phòng đã hết!',
-                                text: 'Vui lòng chọn phòng khác. Xin cảm ơn!',
-                                confirmButtonText: 'OK',
-                                confirmButtonColor: '#8B4513' // Màu nâu (SaddleBrown)
-                            });
-                        } else {
-                            window.location.href = button.getAttribute("href");
-                        }
-                    });
-                });
-            });
+                                            document.addEventListener("DOMContentLoaded", function () {
+                                                const bookRoomBtns = document.querySelectorAll(".booking-btn");
+                                                bookRoomBtns.forEach(button => {
+                                                    button.addEventListener("click", function (event) {
+                                                        event.preventDefault();
+                                                        const roomStatus = button.getAttribute("data-status").trim().toLowerCase();
+                                                        if (roomStatus === "hết phòng") {
+                                                            Swal.fire({
+                                                                icon: 'error',
+                                                                title: 'Phòng đã hết!',
+                                                                text: 'Vui lòng chọn phòng khác. Xin cảm ơn!',
+                                                                confirmButtonText: 'OK',
+                                                                confirmButtonColor: '#8B4513'
+                                                            });
+                                                        } else {
+                                                            window.location.href = button.getAttribute("href");
+                                                        }
+                                                    });
+                                                });
+                                            });
         </script>
-
     </body>
 </html>

@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Comparator;
 import java.util.List;
 import model.PetHotelBooking;
 
@@ -71,8 +72,10 @@ public class PetHotelBookingManagementServlet extends HttpServlet {
             bookings = PetHotelBookingDAO.searchBookingsByCustomerName(searchQuery);
         } else {
             bookings = PetHotelBookingDAO.getAllBookings();
-        }
 
+        }
+        // Sắp xếp danh sách theo ngày đặt từ mới nhất đến cũ nhất
+        bookings.sort((b1, b2) -> b2.getBookingDate().compareTo(b1.getBookingDate()));
         request.setAttribute("bookings", bookings);
         request.setAttribute("searchQuery", searchQuery); // Truyền lại giá trị tìm kiếm cho JSP
         request.getRequestDispatcher("booking.jsp").forward(request, response);

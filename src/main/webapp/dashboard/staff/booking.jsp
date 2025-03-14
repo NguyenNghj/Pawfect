@@ -9,6 +9,9 @@
 <%@ page import="java.text.NumberFormat, java.util.Locale" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Date" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -157,99 +160,97 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th scope="col" style="text-align: center; vertical-align: middle;">Tên khách hàng</th>
-                                                <th scope="col" style="text-align: center; vertical-align: middle;">Tên thú cưng</th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;">Khách hàng</th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;">Thú cưng</th>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;">Tên phòng</th>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;">Check in</th>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;">Check out</th>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;">Tổng tiền (VND)</th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;">Ngày đặt</th>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;">Trạng thái</th>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;">Hành động</th>
                                             </tr>
 
                                         </thead>
                                         <tbody id="bookingTable">
-                                            <%
-                                                String searchQuery = request.getParameter("search");
-                                                List<PetHotelBooking> bookings;
-
-                                                if (searchQuery != null && !searchQuery.trim().isEmpty()) {
-                                                    bookings = PetHotelBookingDAO.searchBookingsByCustomerName(searchQuery.trim());
-                                                } else {
-                                                    bookings = PetHotelBookingDAO.getAllBookings();
-                                                }
-
-                                                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
-                                                NumberFormat formatter = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
-                                                for (PetHotelBooking booking : bookings) {
-                                            %>
-                                            <tr class="booking-row" data-status="<%= booking.getStatus()%>">
-                                                <td style="width: 160px; text-align: center; vertical-align: middle;">
-                                                    <%= booking.getCustomerName()%>
-                                                </td>
-                                                <td style="width: 140px; text-align: center; vertical-align: middle;"><%= booking.getPetName()%></td>
-                                                <td style="width: 140px; text-align: center; vertical-align: middle;"><%= booking.getRoomName()%></td>
-                                                <td style="text-align: center; vertical-align: middle;"><%= sdf.format(booking.getCheckIn())%></td>
-                                                <td style="text-align: center; vertical-align: middle;"><%= sdf.format(booking.getCheckOut())%></td>
-                                                <td style="width: 140px; text-align: center; vertical-align: middle;"><%= formatter.format(booking.getTotalPrice())%></td>
-                                                <td style="width: 135px; text-align: center; vertical-align: middle;">
-                                                    <span style="font-weight: bold; padding: 5px; color:
-                                                          <%= booking.getStatus().equals("Đã duyệt") ? "green"
-                                                                  : booking.getStatus().equals("Đã hủy") ? "red"
-                                                                  : booking.getStatus().equals("Đã nhận phòng") ? "blue"
-                                                                  : booking.getStatus().equals("Đã trả phòng") ? "secondary"
-                                                                  : "orange"%>;">
-                                                        <%= booking.getStatus()%>
-                                                    </span>
-                                                </td>
-                                                <td style="width: 120px; text-align: center; vertical-align: middle;">
-                                                    <% if ("Chờ xác nhận".equals(booking.getStatus())) {%>
-                                                    <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
-                                                        <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
-                                                        <input type="hidden" name="action" value="approve">
-                                                        <button type="button" class="btn btn-sm btn-primary" data-action="approve" onclick="confirmAction(this)">
-                                                            Duyệt
-                                                        </button>
-                                                    </form>
-                                                    <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
-                                                        <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
-                                                        <input type="hidden" name="action" value="cancel">
-                                                        <button type="button" class="btn btn-sm btn-danger" data-action="cancel" onclick="confirmAction(this)">
-                                                            Hủy
-                                                        </button>
-                                                    </form>
-                                                    <% } else if ("Đã duyệt".equals(booking.getStatus())) {%>
-                                                    <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
-                                                        <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
-                                                        <input type="hidden" name="action" value="checkin">
-                                                        <button type="button" class="btn btn-sm btn-info" data-action="checkin" onclick="confirmAction(this)">
-                                                            Check-in
-                                                        </button>
-                                                    </form>
-                                                    <% } else if ("Đã nhận phòng".equals(booking.getStatus())) {%>
-                                                    <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
-                                                        <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
-                                                        <input type="hidden" name="action" value="checkout">
-                                                        <button type="button" class="btn btn-sm btn-secondary" data-action="checkout" onclick="confirmAction(this)">
-                                                            Check-out
-                                                        </button>
-                                                    </form>
-                                                    <% } %>
-                                                </td>
-                                            </tr>
-                                            <%
-                                                }
-                                            %>
+                                            <c:forEach var="booking" items="${bookings}">
+                                                <tr class="booking-row" data-status="${booking.status}">
+                                                    <td style="font-size: 15px; width: 120px; text-align: center; vertical-align: middle;">
+                                                        ${booking.customerName}
+                                                    </td>
+                                                    <td style="font-size: 15px; width: 100px; text-align: center; vertical-align: middle;">
+                                                        ${booking.petName}
+                                                    </td>
+                                                    <td style="font-size: 15px; width: 110px; text-align: center; vertical-align: middle;">
+                                                        ${booking.roomName}
+                                                    </td>
+                                                    <td style="font-size: 15px; width: 110px; text-align: center; vertical-align: middle;">
+                                                        <fmt:formatDate value="${booking.checkIn}" pattern="HH:mm dd/MM/yy"/>
+                                                    </td>
+                                                    <td style="font-size: 15px; width: 110px; text-align: center; vertical-align: middle;">
+                                                        <fmt:formatDate value="${booking.checkOut}" pattern="HH:mm dd/MM/yy"/>
+                                                    </td>
+                                                    <td style="font-size: 15px; width: 110px; text-align: center; vertical-align: middle;">
+                                                        <fmt:formatNumber value="${booking.totalPrice}" type="currency" currencySymbol="₫"/>
+                                                    </td>
+                                                    <td style="font-size: 15px; width: 110px; text-align: center; vertical-align: middle;">
+                                                        <fmt:formatDate value="${booking.bookingDate}" pattern="HH:mm dd/MM/yy"/>
+                                                    </td>
+                                                    <td style="font-size: 15px; width: 110px; text-align: center; vertical-align: middle;">
+                                                        <span style="font-weight: bold; padding: 2px; font-size: 13px; color:
+                                                              <c:choose>
+                                                                  <c:when test="${booking.status eq 'Đã duyệt'}">green</c:when>
+                                                                  <c:when test="${booking.status eq 'Đã hủy'}">red</c:when>
+                                                                  <c:when test="${booking.status eq 'Đã nhận phòng'}">blue</c:when>
+                                                                  <c:when test="${booking.status eq 'Đã trả phòng'}">gray</c:when>
+                                                                  <c:otherwise>orange</c:otherwise>
+                                                              </c:choose>;">
+                                                            ${booking.status}
+                                                        </span>
+                                                    </td>
+                                                    <td style="font-size: 15px; width: 100px; text-align: center; vertical-align: middle;">
+                                                        <c:choose>
+                                                            <c:when test="${booking.status eq 'Chờ xác nhận'}">
+                                                                <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
+                                                                    <input type="hidden" name="bookingId" value="${booking.bookingId}">
+                                                                    <input type="hidden" name="action" value="approve">
+                                                                    <button type="button" class="btn btn-sm btn-primary" data-action="approve" onclick="confirmAction(this)" style="font-size: 12px; padding: 3px 5px;">
+                                                                        Duyệt
+                                                                    </button>
+                                                                </form>
+                                                                <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
+                                                                    <input type="hidden" name="bookingId" value="${booking.bookingId}">
+                                                                    <input type="hidden" name="action" value="cancel">
+                                                                    <button type="button" class="btn btn-sm btn-danger" data-action="cancel" onclick="confirmAction(this)" style="font-size: 12px; padding: 3px 5px;">
+                                                                        Hủy
+                                                                    </button>
+                                                                </form>
+                                                            </c:when>
+                                                            <c:when test="${booking.status eq 'Đã duyệt'}">
+                                                                <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
+                                                                    <input type="hidden" name="bookingId" value="${booking.bookingId}">
+                                                                    <input type="hidden" name="action" value="checkin">
+                                                                    <button type="button" class="btn btn-sm btn-info" data-action="checkin" onclick="confirmAction(this)" style="font-size: 12px; padding: 3px 5px;">
+                                                                        Check-in
+                                                                    </button>
+                                                                </form>
+                                                            </c:when>
+                                                            <c:when test="${booking.status eq 'Đã nhận phòng'}">
+                                                                <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
+                                                                    <input type="hidden" name="bookingId" value="${booking.bookingId}">
+                                                                    <input type="hidden" name="action" value="checkout">
+                                                                    <button type="button" class="btn btn-sm btn-secondary" data-action="checkout" onclick="confirmAction(this)" style="font-size: 12px; padding: 3px 5px;">
+                                                                        Check-out
+                                                                    </button>
+                                                                </form>
+                                                            </c:when>
+                                                        </c:choose>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
                                         </tbody>
 
                                     </table>
-                                    <c:if test="${empty bookings}">                     
-                                        <div>
-                                            <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
-                                                Không tìm thấy!
-                                            </h5>
-                                        </div>
-                                    </c:if>
                                 </div>
                             </div>
                         </div>

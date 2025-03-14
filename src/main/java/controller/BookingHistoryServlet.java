@@ -93,8 +93,6 @@ public class BookingHistoryServlet extends HttpServlet {
         PetHotelBookingDAO bookingDAO = new PetHotelBookingDAO();
         List<PetHotelBooking> allBookings = bookingDAO.getBookingsByCustomerId(id);
 
-        // Sắp xếp danh sách theo ngày đặt từ mới nhất đến cũ nhất
-        allBookings.sort((b1, b2) -> b2.getBookingDate().compareTo(b1.getBookingDate()));
         
         // Xử lý phân trang
         int currentPage = 1;
