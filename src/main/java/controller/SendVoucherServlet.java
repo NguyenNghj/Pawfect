@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.CustomersDAO;
 import dao.VoucherDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,6 +12,13 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import model.Customers;
+import model.Voucher;
+import util.Email;
 
 /**
  *
@@ -82,6 +90,45 @@ public class SendVoucherServlet extends HttpServlet {
 
         try {
             // Gửi voucher mail code ở đây
+            
+            
+            Customers customers;
+            // Lay thong tin email cua khach dat hang
+            customers = CustomersDAO.getCustomerById(Integer.parseInt(customerId));
+            String customerEmail = customers.getEmail();
+            System.out.println("customerEmail: " + customerEmail);
+            
+            String customerName = customers.getFullName();
+            VoucherDAO voucherDAO = new VoucherDAO();
+            Voucher voucher = voucherDAO.getVoucherByCode(voucherCode);
+            double discountPrice = 0;
+            if(voucher.getDiscountAmount() != 0){
+                discountPrice = voucher.getDiscountAmount();
+            } else {
+                discountPrice = voucher.getDiscountPercentage();
+            }
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+            String voucherFrom = sdf.format(voucher.getStartDate());
+            String voucherTo = sdf.format(voucher.getEndDate());
+            
+            String shopLink = "http://localhost:9999/pawfect";
+
+            // Chuyen doi jsp sang String
+            String contentEmail = Email.emailSendVoucher;
+            String finalContentEmail = String.format(contentEmail, customerName, voucherCode, discountPrice, voucherFrom, voucherTo, shopLink);
+
+            ExecutorService executor = Executors.newFixedThreadPool(10); // Tạo một ExecutorService với 10 luồng         
+
+            // Gui email cho khach hang
+            executor.submit(() -> {
+                try {
+                    Email.sendEmail(customerEmail, "Ưu đãi khách hàng", finalContentEmail);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+
+            executor.shutdown();
 
 //            boolean success= ;
 //
