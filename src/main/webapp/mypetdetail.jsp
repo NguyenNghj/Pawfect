@@ -53,90 +53,7 @@
                     </div>                              
 
 
-                    <!-- Modal sửa thông tin thú cưng -->
-                    <form action="editpet" method="post" enctype="multipart/form-data" onsubmit="return validateEditPetForm()">
-                        <div class="modal fade" id="editPetModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editPetModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="editPetModalLabel">Sửa thông tin thú cưng</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body edit-pet-detail">
-                                        <input type="hidden" name="petId" value="${pet.petId}">
-                                        <input type="hidden" name="existingImage" value="${pet.petImg}">
-
-
-
-                                        <!-- Input chọn ảnh -->
-                                        <div class="mb-3">
-                                            <label for="editProductImage" class="form-label">Hình ảnh</label>
-                                            <div style="display: flex; gap: 10px;">
-                                                <img id="previewImage" class="img-thumbnail" style="width: 220px; height: 220px; display: ${not empty pet.petImg ? 'block' : 'none'};" src="/img/pet/${pet.petImg}" alt="Ảnh sản phẩm">
-                                                <input type="file" id="editPetImage" name="petImage" accept="image/*" style="display: none;" onchange="previewFile()">
-                                                <div class="image-box" onclick="document.getElementById('editPetImage').click()" style="cursor: pointer; border: 1px dashed #ccc; padding: 20px; text-align: center; width: 220px; height: 220px; display: flex; align-items: center; justify-content: center;">
-                                                    <span id="uploadText">Thêm ảnh</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <!-- Tên thú cưng -->
-                                            <div class="col-md-9">
-                                                <label class="form-label">Tên thú cưng</label>
-                                                <input type="text" name="petName" value="${pet.petname}" class="form-control">
-                                                <span id="petNameError" class="text-danger"></span>
-                                            </div>
-
-                                            <!-- Loài -->
-                                            <div class="col-md">
-                                                <label class="form-label">Loài</label>
-                                                <select class="form-select" name="petType">
-                                                    <option value="Chó" ${pet.petType == 'Chó' ? "selected" : ""}>Chó</option>
-                                                    <option value="Mèo" ${pet.petType == 'Mèo' ? "selected" : ""}>Mèo</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- Giống thú cưng -->
-                                        <div class="mb-3">
-                                            <label class="form-label">Giống thú cưng</label>
-                                            <input type="text" name="petBreed" value="${pet.petBreed}" class="form-control">
-                                            <span id="petBreedError" class="text-danger"></span>
-                                        </div>
-
-                                        <!-- Giới tính -->
-                                        <div class="mb-3">
-                                            <label class="form-label">Giới tính</label>
-                                            <select class="form-select" name="petSex">
-                                                <option value="Đực" ${pet.petSex == 'Đực' ? "selected" : ""}>Đực</option>
-                                                <option value="Cái" ${pet.petSex == 'Cái' ? "selected" : ""}>Cái</option>
-                                            </select>
-                                        </div>
-
-                                        <!-- Cân nặng -->
-                                        <div class="mb-3">
-                                            <label class="form-label">Cân nặng (kg)</label>
-                                            <input type="number" name="petWeight" value="${pet.petWeight}" class="form-control" step="0.01">
-                                            <span id="petWeightError" class="text-danger"></span>
-                                        </div>
-
-                                        <!-- Sinh nhật -->
-                                        <div class="mb-3">
-                                            <label class="form-label">Sinh nhật</label>
-                                            <input type="date" name="petDob" value="${pet.petDob}" class="form-control">
-                                            <span id="petDobError" class="text-danger"></span>
-                                        </div>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                        <button type="submit" class="btn btn-success">Lưu</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                   
 
 
                     <!-- Modal xác nhận xoá thú cưng -->
@@ -170,9 +87,9 @@
                                         <div class="card-body text-center">
                                             <img src="/img/pet/${pet.petImg}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
                                             <h5 class="my-3">${empty pet.petname ? 'Chưa có thông tin' : pet.petname}</h5>
-                                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editPetModal">
-                                                Chỉnh sửa thông tin
-                                            </button>
+                                           <button type="button" class="btn btn-success" onclick="window.location.href='editpet?petId=${pet.petId}'">
+    Chỉnh sửa thông tin
+</button>
                                         </div>
                                     </div>
                                 </div>
