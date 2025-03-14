@@ -55,19 +55,23 @@ public class DeletePetServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       String petId = request.getParameter("petId");
-          String petStatus= request.getParameter("petStatus");
-         
-         if (petStatus.equals("booking")) {
-   request.setAttribute("errorMessage", "Không thể xóa thú cưng vì đang trong trạng thái booking.");
-    RequestDispatcher dispatcher = request.getRequestDispatcher("petviewdetail");
-    dispatcher.forward(request, response);
-}else{
-       PetDAO petDAO = new PetDAO();
-       petDAO.deletePet(petId);
-       RequestDispatcher dispatcher = request.getRequestDispatcher("viewpet");
-        dispatcher.forward(request, response);
-        }
+      try {
+    String petId = request.getParameter("petId");
+    String petStatus = request.getParameter("petStatus");
+    
+    if ("booking".equals(petStatus)) {
+        request.setAttribute("errorMessage", "Không thể xóa thú cưng vì đang trong trạng thái booking.");
+        request.getRequestDispatcher("petviewdetail").forward(request, response);
+    } else {
+        PetDAO petDAO = new PetDAO();
+        petDAO.deletePet(petId);
+        response.sendRedirect("viewpet");
+    }
+} catch (Exception e) {
+    e.printStackTrace(); // Log lỗi ra console
+    response.sendRedirect("viewpet?err=true");
+}
+
     } 
 
     /** 

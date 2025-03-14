@@ -63,38 +63,54 @@ public class PetViewDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String petId = request.getParameter("petId");
-        PetDAO petDAO = new PetDAO();
-        String customerId = null;
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("customerId".equals(cookie.getName())) {
-                    customerId = cookie.getValue();
-                    break;
+        try {
+            String petId = request.getParameter("petId");
+            PetDAO petDAO = new PetDAO();
+            String customerId = null;
+
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("customerId".equals(cookie.getName())) {
+                        customerId = cookie.getValue();
+                        break;
+                    }
                 }
             }
-        }
 
-        int totalQuantity = 0;
-        // Lay tong so san pham trong gio hang
-        List<CartItem> cartItems = CartDAO.getCartByCustomerId(Integer.parseInt(customerId));
-        if (!cartItems.isEmpty()) {
-            for (CartItem cartItem : cartItems) {
-                totalQuantity += cartItem.getQuantity();
+            if (customerId == null) {
+                response.sendRedirect("mypetdetail.jsp?error=Vui lòng đăng nhập!");
+                return;
             }
-        }
-        request.setAttribute("totalQuantity", totalQuantity);
 
-        Pet pet = petDAO.getPetId(petId, customerId);
-        if (!Pet.isEmpty(pet)) {
-            request.setAttribute("pet", pet);
-            ProfileDAO profileDAO = new ProfileDAO();
-            User user = profileDAO.getUser(customerId);
-            request.setAttribute("customer", user);
-            request.getRequestDispatcher("mypetdetail.jsp").forward(request, response);
-        } else {
-            response.sendRedirect("viewpet");
+            int totalQuantity = 0;
+            List<CartItem> cartItems = CartDAO.getCartByCustomerId(Integer.parseInt(customerId));
+            if (cartItems != null && !cartItems.isEmpty()) {
+                for (CartItem cartItem : cartItems) {
+                    totalQuantity += cartItem.getQuantity();
+                }
+            }
+            request.setAttribute("totalQuantity", totalQuantity);
+
+            Pet pet = petDAO.getPetId(petId, customerId);
+            if (!Pet.isEmpty(pet)) {
+                request.setAttribute("pet", pet);
+                ProfileDAO profileDAO = new ProfileDAO();
+                User user = profileDAO.getUser(customerId);
+                request.setAttribute("customer", user);
+                request.getRequestDispatcher("mypetdetail.jsp").forward(request, response);
+            } else {
+                response.sendRedirect("viewpet");
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            response.sendRedirect("mypetdetail.jsp?error=Định dạng ID khách hàng không hợp lệ!");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            response.sendRedirect("mypetdetail.jsp?error=Dữ liệu không hợp lệ hoặc bị thiếu!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("mypetdetail.jsp?error=Đã xảy ra lỗi, vui lòng thử lại sau!");
         }
     }
 

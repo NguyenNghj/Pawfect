@@ -17,6 +17,53 @@
         <link rel="stylesheet" href="./css/account.css">
     </head>
     <body>
+        <% if (request.getParameter("error") != null) { %>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Đã có lỗi xảy ra khi thêm thú cưng!',
+            footer: ''
+        });
+    </script>
+<% } %>
+<% if (request.getParameter("erro") != null) { %>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Không thể tải thông tin thú cưng!',
+            footer: ''
+        });
+    </script>
+<% } %>
+<% if (request.getParameter("err") != null) { %>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: 'Không thể xóa thú cưng!',
+            footer: ''
+        });
+    </script>
+<% } %>
+<% 
+    String errorMessage = request.getParameter("error");
+    if (errorMessage != null) { 
+%>
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Lỗi!',
+            text: '<%= errorMessage %>',
+            confirmButtonText: 'OK'
+        });
+    </script>
+<% } %>
+
         <div class="container py-4">
             <!-- Breadcrumb -->
             <div class="row mt-2 bg-white p-3 mb-4 d-flex align-items-center justify-content-center" 
