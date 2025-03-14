@@ -204,13 +204,9 @@ public class OrderManagementServlet extends HttpServlet {
 
                 ExecutorService executor = Executors.newFixedThreadPool(10); // Tạo một ExecutorService với 10 luồng
 
-                // Lay customerId tu Cookie
-                String customerIdStr = getCustomerIdFromCookies(request);
-                int customerId = Integer.parseInt(customerIdStr);
-
                 Customers customers;
                 // Lay thong tin email cua khach dat hang
-                customers = CustomersDAO.getCustomerById(customerId);
+                customers = CustomersDAO.getCustomerById(orders.get(0).getCustomerId());
                 String customerEmail = customers.getEmail();
                 System.out.println("customerEmail: " + customerEmail);
 

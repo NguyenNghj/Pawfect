@@ -51,7 +51,7 @@
                             <!-- Order Tabs -->
                             <ul class="nav nav-tabs mb-4">
                                 <li class="nav-item">
-                                    <a class="nav-link <c:if test="${pettype == 'tc'}">active</c:if>" href="viewpet?&pettype" style="font-weight: bold; border-width: 2px;">Tất cả</a>
+                                    <a class="nav-link <c:if test="${pettype == ''}">active</c:if>" href="viewpet?&pettype" style="font-weight: bold; border-width: 2px;">Tất cả</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link <c:if test="${pettype == 'Chó'}">active</c:if>" href="viewpet?&pettype=Chó" style="font-weight: bold; border-width: 2px;">Chó</a>
@@ -151,7 +151,8 @@
                 </div>
             </div>
         </div>
-
+                                    
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
             let initialPets = $(".pet-item").length; // Tổng số feedback có sẵn
             let itemsToShow = 4; // Số feedback hiển thị ban đầu
