@@ -71,30 +71,36 @@ public class EditPetServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-      String petId = request.getParameter("petId");
-        PetDAO petDAO = new PetDAO(); 
-         String customerId = null;   
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {            
-                if ("customerId".equals(cookie.getName())) {
-                         customerId  = cookie.getValue();
-                    break;
+        try {
+            String petId = request.getParameter("petId");
+            PetDAO petDAO = new PetDAO();
+            String customerId = null;
+
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("customerId".equals(cookie.getName())) {
+                        customerId = cookie.getValue();
+                        break;
+                    }
                 }
             }
+
+            Pet pet = petDAO.getPetId(petId, customerId);
+            if (pet != null) {
+                request.setAttribute("pet", pet);
+                ProfileDAO profileDAO = new ProfileDAO();
+                User user = profileDAO.getUser(customerId);
+                request.setAttribute("customer", user);
+                request.getRequestDispatcher("editpet.jsp").forward(request, response);
+            } else {
+                response.sendRedirect("viewpet?error=true");
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Log lỗi ra console
+            response.sendRedirect("viewpet?erro=true");
         }
 
-        Pet pet = petDAO.getPetId(petId,customerId);
-       if(!Pet.isEmpty(pet)) {
-       request.setAttribute("pet", pet);
-        ProfileDAO profileDAO = new ProfileDAO();
-User user = profileDAO.getUser(customerId);
-request.setAttribute("customer", user);
-        request.getRequestDispatcher("editpet.jsp").forward(request, response);
-       }
-       else{
-        response.sendRedirect("viewpet");
-       }
     }
 
     /**
