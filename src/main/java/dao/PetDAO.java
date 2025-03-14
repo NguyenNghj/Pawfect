@@ -53,14 +53,15 @@ public class PetDAO {
         return petList;
     }
 
-    public List<Pet> filterPet(String petType) {
+    public List<Pet> filterPet(String petType, int customerId) {
         List<Pet> petList = new ArrayList<>();
-        String query = "SELECT * FROM Pets WHERE pet_type = ?";
+        String query = "SELECT * FROM Pets WHERE pet_type = ? AND customer_id=?";
 
         try {
             conn = new DBContext().getConnection();
             pt = conn.prepareStatement(query);
             pt.setString(1, petType);
+            pt.setInt(2, customerId);
             rs = pt.executeQuery();
 
             while (rs.next()) {

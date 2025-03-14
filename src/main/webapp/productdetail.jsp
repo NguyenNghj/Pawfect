@@ -209,7 +209,7 @@
 
                             </div>
 
-                            <!-- Reviews List -->
+           
                             <div class="reviews-list">
 
                             <c:if test="${empty feedbacks}">
