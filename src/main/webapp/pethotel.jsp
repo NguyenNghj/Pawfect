@@ -72,7 +72,7 @@
                 <button id="scrollRight" class="scroll-btn">&#10095;</button>
             </div>
         </div>
-        <!--        <script>
+                <script>
                     document.addEventListener("DOMContentLoaded", function () {
                         const hotelList = document.querySelector(".hotel-list");
                         const btnLeft = document.getElementById("scrollLeft");
@@ -159,7 +159,7 @@
                             localStorage.removeItem("scrollPosition"); // Xóa dữ liệu sau khi cuộn
                         }
                     };
-                </script>-->
+                </script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </body>
 </html>

@@ -9,7 +9,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Đặt Phòng Khách Sạn Thú Cưng</title>
-        <link rel="stylesheet" href="./css/bookingforcustomer_v1.css">
+        <link rel="stylesheet" href="./css/bookingforcustomer.css">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
         <script>
             function setMinDateTime() {
@@ -136,7 +136,13 @@
                         <c:choose>
                             <c:when test="${empty petList}">
                                 <p style="color: red;">Bạn chưa có thú cưng. Vui lòng thêm thú cưng trước khi đặt phòng!</p>
-                                <a href="viewpet" class="add-pet-btn">➕ Thêm thú cưng</a>
+                                <a href="viewpet" 
+                                   style="display: inline-block; padding: 5px 8px; background: #8c6e63; color: white; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 14px; white-space: nowrap; width: max-content; text-align: left; margin-left: 0;">
+                                    🐶 Thêm thú cưng
+                                </a>
+
+
+
                             </c:when>
                             <c:otherwise>
                                 <select name="petId" id="petId" required onchange="checkPetStatus();">

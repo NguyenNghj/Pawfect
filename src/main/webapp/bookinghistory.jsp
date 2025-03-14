@@ -48,8 +48,8 @@
                         <div class="card-body">
                             <h5 class="card-title mb-4">Lịch đã đặt của bạn</h5>
 
-
-                            <!-- Bộ lọc trạng thái -->
+<!--
+                             Bộ lọc trạng thái 
                             <ul class="nav nav-tabs mb-4">
                                 <li class="nav-item">
                                     <a class="nav-link active" data-status="all" style="cursor: pointer; font-weight: bold; border-width: 2px;">Tất cả</a>
@@ -69,7 +69,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link" data-status="Đã trả phòng" style="cursor: pointer; font-weight: bold; border-width: 2px;">Đã trả phòng</a>
                                 </li>
-                            </ul>
+                            </ul>-->
 
                             <c:choose>
                                 <c:when test="${not empty booking}">
@@ -117,6 +117,28 @@
                                     </c:otherwise>
                                 </c:choose>
                             </div>
+                            <c:if test="${totalPages > 1}">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination justify-content-center">
+                                        <!-- Nút Previous -->
+                                        <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                            <a class="page-link" href="javascript:updatePage(${currentPage - 1})">Trước</a>
+                                        </li>
+
+                                        <!-- Hiển thị danh sách số trang -->
+                                        <c:forEach var="i" begin="1" end="${totalPages}">
+                                            <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                                <a class="page-link" href="javascript:updatePage(${i})">${i}</a>
+                                            </li>
+                                        </c:forEach>
+
+                                        <!-- Nút Next -->
+                                        <li class="page-item ${currentPage >= totalPages ? 'disabled' : ''}">
+                                            <a class="page-link" href="javascript:updatePage(${currentPage + 1})">Tiếp</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </c:if>
                         </div>
                     </div>
 
@@ -158,6 +180,13 @@
 
                 </div>
             </div>
+            <script>
+                function updatePage(page) {
+                    let urlParams = new URLSearchParams(window.location.search);
+                    urlParams.set('page', page); // Cập nhật số trang
+                    window.location.search = urlParams.toString();
+                }
+            </script>
             <script>
                 function validateForm() {
                     let isValid = true;
