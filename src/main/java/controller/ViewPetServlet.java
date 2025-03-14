@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package controller;
 
+import dao.CartDAO;
 import dao.PetDAO;
 import dao.ProfileDAO;
 import java.io.IOException;
@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import model.CartItem;
 import model.Pet;
 import model.User;
 
@@ -23,34 +24,37 @@ import model.User;
  * @author LENOVO
  */
 public class ViewPetServlet extends HttpServlet {
-   
-    /** 
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try ( PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ViewPetServlet</title>");  
+            out.println("<title>Servlet ViewPetServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ViewPetServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ViewPetServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    } 
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /** 
+    /**
      * Handles the HTTP <code>GET</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -58,29 +62,40 @@ public class ViewPetServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-         String customerId = null;   
+            throws ServletException, IOException {
+        String customerId = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
-            for (Cookie cookie : cookies) {            
+            for (Cookie cookie : cookies) {
                 if ("customerId".equals(cookie.getName())) {
-                         customerId  = cookie.getValue();
+                    customerId = cookie.getValue();
                     break;
                 }
             }
         }
-        
-         PetDAO petDAO = new PetDAO();
+
+        int totalQuantity = 0;
+        // Lay tong so san pham trong gio hang
+        List<CartItem> cartItems = CartDAO.getCartByCustomerId(Integer.parseInt(customerId));
+        if (!cartItems.isEmpty()) {
+            for (CartItem cartItem : cartItems) {
+                totalQuantity += cartItem.getQuantity();
+            }
+        }
+        request.setAttribute("totalQuantity", totalQuantity);
+
+        PetDAO petDAO = new PetDAO();
         List<Pet> pets = petDAO.getAllPets(customerId);
         request.setAttribute("pets", pets);
-         ProfileDAO profileDAO = new ProfileDAO();
-User user = profileDAO.getUser(customerId);
-request.setAttribute("customer", user);
+        ProfileDAO profileDAO = new ProfileDAO();
+        User user = profileDAO.getUser(customerId);
+        request.setAttribute("customer", user);
         request.getRequestDispatcher("mypet.jsp").forward(request, response);
-    } 
+    }
 
-    /** 
+    /**
      * Handles the HTTP <code>POST</code> method.
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -88,12 +103,13 @@ request.setAttribute("customer", user);
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-         
+            throws ServletException, IOException {
+
     }
 
-    /** 
+    /**
      * Returns a short description of the servlet.
+     *
      * @return a String containing servlet description
      */
     @Override

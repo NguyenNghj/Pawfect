@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.CartDAO;
 import dao.ProfileDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,6 +14,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.Date;
+import java.util.List;
+import model.CartItem;
 import model.User;
 
 /**
@@ -58,8 +61,8 @@ public class ProfileServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-        String customerId = null;   
+            throws ServletException, IOException {
+        String customerId = null;
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -69,6 +72,19 @@ public class ProfileServlet extends HttpServlet {
                 }
             }
         }
+        
+        
+        int totalQuantity = 0;
+        // Lay tong so san pham trong gio hang
+        List<CartItem> cartItems = CartDAO.getCartByCustomerId(Integer.parseInt(customerId));
+        if (!cartItems.isEmpty()) {
+            for (CartItem cartItem : cartItems) {
+                totalQuantity += cartItem.getQuantity();
+            }
+        }
+        request.setAttribute("totalQuantity", totalQuantity);
+
+        
         ProfileDAO profileDAO = new ProfileDAO();
         User user = profileDAO.getUser(customerId);
         request.setAttribute("customer", user);

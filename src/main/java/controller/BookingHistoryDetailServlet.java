@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.CartDAO;
 import dao.CustomersDAO;
 import dao.PetHotelBookingDAO;
 import java.io.IOException;
@@ -13,6 +14,8 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import model.CartItem;
 import model.Customers;
 import model.PetHotelBooking;
 
@@ -72,6 +75,17 @@ public class BookingHistoryDetailServlet extends HttpServlet {
         }
 
         int id = Integer.parseInt(customerId);
+
+        int totalQuantity = 0;
+        // Lay tong so san pham trong gio hang
+        List<CartItem> cartItems = CartDAO.getCartByCustomerId(id);
+        if (!cartItems.isEmpty()) {
+            for (CartItem cartItem : cartItems) {
+                totalQuantity += cartItem.getQuantity();
+            }
+        }
+        request.setAttribute("totalQuantity", totalQuantity);
+
         // Lấy thông tin khách hàng
         Customers customer = CustomersDAO.getCustomerById(id);
         try {
