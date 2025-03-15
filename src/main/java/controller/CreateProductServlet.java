@@ -73,7 +73,6 @@ public class CreateProductServlet extends HttpServlet {
             request.getRequestDispatcher("/dashboard/admin/createproduct.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace(); // Ghi log lỗi để debug (nên thay bằng Logger trong hệ thống lớn)
-
             // Thông báo lỗi để hiển thị trên giao diện
             request.setAttribute("errorMessage", "Đã xảy ra lỗi khi tải danh mục sản phẩm.");
             request.getRequestDispatcher("/dashboard/admin/createproduct.jsp").forward(request, response);
@@ -145,9 +144,9 @@ public class CreateProductServlet extends HttpServlet {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Tạo sản phẩm thất bại!");
             request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
-        }
-    }
+        }    }
 
+    
     /**
      * Returns a short description of the servlet.
      *

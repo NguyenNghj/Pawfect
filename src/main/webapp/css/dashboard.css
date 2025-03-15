@@ -379,24 +379,6 @@ h5 {
     margin-bottom: 15px;
 }
 
-.revenue-box {
-    border: 2px solid #795548; /* Viền nâu */
-    border-radius: 8px; /* Bo góc */
-    padding: 12px; /* Khoảng cách nội dung với viền */
-    background-color: #FFFFFF; /* Màu nền nhẹ */
-    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2); /* Hiệu ứng bóng */
-    width: fit-content; /* Kích thước phù hợp với nội dung */
-    max-width: 300px; /* Giới hạn chiều rộng tối đa */
-}
-
-.revenue-box h7 {
-    display: block;
-    margin: 8px 0;
-    color: #333;
-    font-size: 12px; /* Thu nhỏ chữ */
-    font-weight: normal; /* Không quá đậm */
-}
-
 /* Biểu đồ */
 .chart-container {
     display: flex;
@@ -484,18 +466,7 @@ canvas {
     text-align: center;
 }
 
-.revenue-chart-container canvas {
-    width: 100%;
-    height: auto;
-}
-.revenue-box h7 {
-    display: block;
-    margin: 8px 0;
-    color: #333;
-    font-size: 12px; /* Thu nhỏ chữ */
-    font-weight: normal; /* Không quá đậm */
 
-}
 .chart-container {
     display: flex;
     align-items: center;  /* Căn giữa theo chiều dọc */
@@ -506,16 +477,7 @@ canvas {
     flex: 2;  /* Biểu đồ chiếm 2 phần */
 }
 
-.revenue-box {
-    flex: 1;  /* Hộp doanh thu chiếm 1 phần */
-    display: flex;
-    flex-direction: column;  /* Xếp các h7 theo chiều dọc */
-    align-items: flex-start;  /* Căn trái */
-    background-color: #fff;  /* Nền xám nhẹ */
-    padding: 10px;
-    border-radius: 8px;
-    border-left: 4px solid #819830; /* Viền xanh lá */
-}
+
 h1 {
     text-align: center; /* Căn giữa */
     margin-bottom: 20px; /* Tạo khoảng cách dưới */
@@ -581,15 +543,85 @@ tr:hover {
     transition: 0.3s;
 }
 
-/* Tiêu đề bảng */
-
-
-/* Tiêu đề bảng Top Nhân Viên */
-.top-staff-title {
-    border-bottom: 3px solid #673AB7;
+.summary-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
-h1 {
+/* Nhóm thẻ VND, SP, VND để canh trái */
+.summary-group {
+    display: flex;
+    gap: 15px;
+}
+
+/* Style chung cho tất cả thẻ */
+.summary-card {
+    background-color: #FFFFFF;
+    color: black;
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 18px;
     font-weight: bold;
+    width: 200px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-in-out;
+}
+
+.summary-card:hover {
+    transform: scale(1.05);
+}
+
+/* Cỡ chữ cho số liệu */
+.value {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* Cỡ chữ cho đơn vị (VND, SP) */
+.unit {
+    font-size: 12px;
+    font-weight: normal;
+    margin-left: 5px;
+}
+
+/* Doanh thu tháng này/tháng trước - nhỏ hơn và gọn hơn */
+.revenue-box2 {
+    width: 250px;
+    font-size: 14px;
+    text-align: left;
+    padding: 15px;
+}
+
+.revenue-box2 p {
+    margin: 5px 0;
+}
+
+.revenue-value {
+    font-size: 13px;
+    font-weight: bold;
+}
+.row {
+    margin: 0;
+}
+
+.col-md-8 {
+    width: 100%; /* Chiếm toàn bộ màn hình */
+}
+
+.card {
+    width: 100%; /* Đảm bảo mỗi card bên trong col-md-6 chiếm hết chiều rộng */
+    min-height: 350px; /* Đặt chiều cao tối thiểu để cân đối */
+    padding: 20px;
+    text-align: center;
+}
+
+#bar-chart, #line-chart {
+    width: 100%;
+    height: 300px; /* Điều chỉnh chiều cao cho biểu đồ */
 }
 
