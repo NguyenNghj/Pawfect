@@ -236,7 +236,7 @@
                                             </c:forEach>
 
                                             <!-- Nút Next -->
-                                            <li class="page-item ${currentPage >= totalPages ? 'disabled' : ''}">
+                                            <li class="page-item ${currentPage >= totalPages -1 ? 'disabled' : ''}">
                                                 <a class="page-link" href="javascript:updatePage(${currentPage + 1})">Next</a>
                                             </li>
                                         </ul>

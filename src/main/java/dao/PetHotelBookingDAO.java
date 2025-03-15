@@ -309,6 +309,46 @@ public class PetHotelBookingDAO {
         return list;
     }
 
+    public static List<PetHotelBooking> getStatusBookingsByCustomerId(int customerId, String status) {
+        List<PetHotelBooking> list = new ArrayList<>();
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Get_Bookings_By_Customer + "AND p.status = ?");
+            ps.setInt(1, customerId);
+            ps.setString(2, status);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                PetHotelBooking booking = new PetHotelBooking(
+                        rs.getInt("booking_id"),
+                        rs.getInt("room_id"),
+                        rs.getString("room_name"),
+                        rs.getInt("customer_id"),
+                        rs.getString("customer_name"),
+                        rs.getObject("staff_id") != null ? rs.getInt("staff_id") : null, // Xử lý null
+                        rs.getString("staff_name"),
+                        rs.getInt("pet_id"),
+                        rs.getString("pet_name"),
+                        rs.getTimestamp("check_in"),
+                        rs.getTimestamp("check_out"),
+                        rs.getBigDecimal("total_price"),
+                        rs.getString("note"),
+                        rs.getString("status"),
+                        rs.getTimestamp("booking_date"),
+                        rs.getBoolean("is_active")
+                );
+                list.add(booking);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
+        }
+        return list;
+    }
+
     public static boolean deleteBooking(int bookingId) {
         boolean success = false;
         try {

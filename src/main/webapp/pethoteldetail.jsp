@@ -70,7 +70,6 @@
                         <a href="pethotel" class="back-btn"><i></i> Quay lại</a>
                     </div>
                 </div>
-
             </div>
         </div>
         <%-- Danh sách phòng tương tự --%>

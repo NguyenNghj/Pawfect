@@ -40,7 +40,7 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="card-title fs-5" id="editPetModalLabel">Thêm thông tin thú cưng</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
                                         </div>
                                         <div class="modal-body edit-pet-detail">
                                             <input type="hidden" name="petId" >
