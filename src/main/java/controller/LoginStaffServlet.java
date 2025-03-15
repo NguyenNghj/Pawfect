@@ -128,7 +128,7 @@ public class LoginStaffServlet extends HttpServlet {
                 staffName.setMaxAge(60 * 60 * 24 * 1);
                 response.addCookie(staffName);
                 if (account.getRole().equals("Admin")) {
-                    response.sendRedirect("dashboard/admin/dashboard.jsp");
+                    response.sendRedirect("dashboard/admin/statistics");
                 } else {
                     response.sendRedirect("dashboard/staff/dashboard.jsp");
                 }
