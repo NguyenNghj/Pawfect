@@ -1,0 +1,141 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container-order-success {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    transition: transform 0.3s ease;
+}
+
+.container-order-success:hover {
+    transform: translateY(-5px);
+}
+
+.success-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(45deg, #7ac142, #5fa731);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.success-icon i {
+    font-size: 2.5rem;
+    color: #fff;
+}
+
+.failure-icon {
+    background: linear-gradient(45deg, #dc3545, #c82333);
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.text-muted {
+    font-size: 1.1rem;
+    color: #6c757d;
+    margin-bottom: 30px;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 30px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table th, .table td {
+    padding: 12px;
+    border: none;
+    font-size: 1rem;
+    color: #444;
+}
+
+.table th {
+    background: #e9ecef;
+    font-weight: 600;
+    width: 40%;
+}
+
+.table td {
+    background: #fff;
+}
+
+.btn-custom {
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary-custom {
+    background: #007bff;
+    border: none;
+    color: #fff;
+}
+
+.btn-primary-custom:hover {
+    background: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+    color: #F8F9FA;
+}
+
+.btn-secondary-custom {
+    background: #6c757d;
+    border: none;
+    color: #fff;
+}
+
+.btn-secondary-custom:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(108, 117, 125, 0.3);
+    color: #fff;
+}
+
+@media (max-width: 768px) {
+    .container-order-success {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .text-muted {
+        font-size: 0.9rem;
+    }
+
+    .btn-custom {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+
+    .table th, .table td {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+}
