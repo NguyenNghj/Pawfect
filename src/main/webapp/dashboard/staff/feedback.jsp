@@ -220,12 +220,12 @@
                                                                     </button>
                                                                 </c:otherwise>
                                                             </c:choose>
-                                                            <button type="button" class="btn btn-danger hideButton3"
+<!--                                                            <button type="button" class="btn btn-danger hideButton3"
                                                                     data-feedback-id="${f.feedbackId}"
                                                                     data-status="${param.status}"
                                                                     >
                                                                 Xoá
-                                                            </button>
+                                                            </button>-->
                                                         </td>
                                                     </tr>
                                                 </c:if>
