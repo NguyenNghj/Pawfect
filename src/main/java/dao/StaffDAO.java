@@ -90,29 +90,13 @@ public class StaffDAO {
             ps.setString(6, staff.getAddress());
             ps.setString(7, staff.getGender());
             ps.setDate(8, staff.getBirthDate());
-
 // Xử lý image null đúng cách
             if (staff.getImage() != null && !staff.getImage().trim().isEmpty()) {
                 ps.setString(9, staff.getImage());
             } else {
                 ps.setNull(9, Types.VARCHAR);
             }
-
-
             // Debug log
-            System.out.println("Executing SQL: " + sql);
-            System.out.println("With values: "
-                    + staff.getRoleName() + ", "
-                    + staff.getPassword() + ", "
-                    + staff.getFullName() + ", "
-                    + staff.getEmail() + ", "
-                    + staff.getPhone() + ", "
-                    + staff.getAddress() + ", "
-                    + staff.getGender() + ", "
-                    + staff.getBirthDate() + ", "
-                    + (staff.getImage() != null ? staff.getImage() : "NULL") + ", "
-                    + staff.isActive());
-
             int affectedRows = ps.executeUpdate();
             return affectedRows > 0;
 

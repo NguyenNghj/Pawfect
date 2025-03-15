@@ -11,6 +11,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">       
@@ -194,174 +195,203 @@
                             </div>
                         </div>-->
 
-                    <div class="container">
-                        <h1 class="text-center mb-4">Tổng Hợp Biểu Đồ Thống Kê</h1>
+                    <h1 class="text-center mb-4">Tổng Hợp Biểu Đồ Thống Kê</h1>
 
-                        <div class="chart-container">
-                            <div class="revenue-chart-container">
-                                <h2>Doanh Thu</h2>
-                                <canvas id="revenue-chart"></canvas>
+
+                    <div class="summary-container">
+                        <!-- Thẻ doanh thu / sản phẩm -->
+                        <div class="summary-group">
+                            <div class="summary-card revenue-summary">
+                                <p>Doanh Thu<br>
+                                    <span class="revenue-value"><%= request.getAttribute("currentRevenue")%></span> 
+                                    <span class="unit">VND</span>
                             </div>
-                            <div class="revenue-box">
-                                <h7>Doanh thu tháng này: <%= request.getAttribute("currentRevenue")%> VNĐ</h7>
-                                <h7>Doanh thu tháng trước: <%= request.getAttribute("previousRevenue")%> VNĐ</h7>
-                                <h7>Thay đổi doanh thu: <%= request.getAttribute("revenueChangePercent")%></h7>
+                            <div class="summary-card sales-summary">
+                                <p>Tổng sản phẩm<br>
+                                    <span class="value">${requestScope.totalSalesThisMonth}</span> 
+                                    <span class="unit">SP</span>
                             </div>
-
-
-                            <div class="chart-container">
-                                <!-- Biểu đồ Lượng Đơn Hàng -->
-                                <div class="chart-box">
-                                    <h5>Lượng Đơn Hàng</h5>
-                                    <canvas id="sale-revenue"></canvas>
-                                </div>
-
-                                <!-- Biểu đồ Doanh Thu Pet Hotel -->
-                                <div class="chart-box">
-                                    <h5>Doanh Thu Pet Hotel</h5>
-                                    <canvas id="pet-hotel-revenue"></canvas>
+                            <div class="summary-card hotel-revenue-summary">
+                                <p>PetHotel<br>
+                                    <span class="value">${requestScope.totalPetHotelRevenue}</span> 
+                                    <span class="unit">VND</span>
+                            </div>
+                            <!-- Cột thẻ doanh thu (30%) -->
+                            <div class="col-md-4">
+                                <div class="summary-card revenue-box2">
+                                    <p>Doanh thu tháng này: 
+                                        <span class="revenue-value"><%= request.getAttribute("currentRevenue")%></span> 
+                                        <span class="unit">VNĐ</span>
+                                    </p>
+                                    <p>Doanh thu tháng trước: 
+                                        <span class="revenue-value"><%= request.getAttribute("previousRevenue")%></span> 
+                                        <span class="unit">VNĐ</span>
+                                    </p>
+                                    <p>Thay đổi doanh thu: 
+                                        <span class="revenue-value"><%= request.getAttribute("revenueChangePercent")%></span>
+                                    </p>
                                 </div>
                             </div>
                         </div>
-                        <h5>Top 5 Sản Phẩm Bán Chạy</h5>
-                        <table border="1">
-                            <tr>
-                                <th>ID</th>
-                                <th>Tên Sản Phẩm</th>
-                                <th>Giá</th>
-                                <th>Ảnh</th>
-                                <th>Đã Bán</th>
-                            </tr>
-                            <c:forEach var="p" items="${topProducts}">
-                                <tr>
-                                    <td>${p.productId}</td>
-                                    <td>${p.productName}</td>
-                                    <td>${p.productPrice} VND</td>
-                                    <td><img src="${p.productImage}" width="50"></td>
-                                    <td>${p.stock}</td> <!-- total_sold gán vào stock -->
-                                </tr>
-                            </c:forEach>
-                        </table>
-
-                        <!-- 🟢 Bảng top 5 nhân viên bán hàng -->
-                        <h5>Top 5 Nhân Viên Bán Hàng</h5>
-                        <table border="1">
-                            <tr>
-                                <th>ID</th>
-                                <th>Họ và Tên</th>
-                                <th>Tổng số sản phẩm đã bán</th>
-                                <th>Tổng doanh thu</th>
-                            </tr>
-                            <c:forEach var="staff" items="${topStaffs}">
-                                <tr>
-                                    <td>${staff.staffId}</td>
-                                    <td>${staff.fullName}</td>
-                                    <td>${staff.totalSold}</td>
-                                    <td>${staff.totalRevenue} VND</td>
-                                </tr>
-                            </c:forEach>
-                        </table>
-
-                        <!-- 🟢 Biểu đồ -->
-                        <script>
-                            var ctx1 = document.getElementById("sale-revenue").getContext("2d");
-                            var myChart1 = new Chart(ctx1, {
-                                type: "bar",
-                                data: {
-                                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                                    datasets: [{
-                                            label: "Sản phẩm",
-                                            data: [${requestScope.Month1}, ${requestScope.Month2}, ${requestScope.Month3}, ${requestScope.Month4}, ${requestScope.Month5},
-                            ${requestScope.Month6}, ${requestScope.Month7}, ${requestScope.Month8}, ${requestScope.Month9}, ${requestScope.Month10},
-                            ${requestScope.Month11}, ${requestScope.Month12}],
-                                            backgroundColor: "rgba(121, 85, 72, 0.5)",
-                                            borderColor: "#5d4037",
-                                            borderWidth: 2,
-                                            pointBackgroundColor: "#3e2723",
-                                            pointBorderColor: "#ffccbc"
-                                        }]
-                                },
-                                options: {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true
-                                        }
-                                    }
-                                }
-                            });
-
-                            var ctx2 = document.getElementById("revenue-chart").getContext("2d");
-                            var myChart2 = new Chart(ctx2, {
-                                type: "line",
-                                data: {
-                                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                                    datasets: [{
-                                            label: "Doanh thu (VND)",
-                                            data: [${requestScope.Monthh1}, ${requestScope.Monthh2}, ${requestScope.Monthh3}, ${requestScope.Monthh4}, ${requestScope.Monthh5},
-                            ${requestScope.Monthh6}, ${requestScope.Monthh7}, ${requestScope.Monthh8}, ${requestScope.Monthh9}, ${requestScope.Monthh10},
-                            ${requestScope.Monthh11}, ${requestScope.Monthh12}],
-                                            backgroundColor: "rgba(255, 223, 128, 0.5)",
-                                            borderColor: "#FFD700",
-                                            borderWidth: 2,
-                                            pointBackgroundColor: "#FFD700",
-                                            pointBorderColor: "#FFCC00"
-                                        }]
-                                },
-                                options: {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true
-                                        }
-                                    }
-                                }
-                            });
-
-                            // 🟢 Biểu đồ Pet Hotel Booking
-                            var ctx3 = document.getElementById("pet-hotel-revenue").getContext("2d");
-                            var myChart3 = new Chart(ctx3, {
-                                type: "line",
-                                data: {
-                                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                                    datasets: [{
-                                            label: "Doanh thu Pet Hotel (VND)",
-                                            data: [
-                            ${requestScope.Monthhh1}, ${requestScope.Monthhh2}, ${requestScope.Monthhh3}, ${requestScope.Monthhh4}, ${requestScope.Monthhh5},
-                            ${requestScope.Monthhh6}, ${requestScope.Monthhh7}, ${requestScope.Monthhh8}, ${requestScope.Monthhh9}, ${requestScope.Monthhh10},
-                            ${requestScope.Monthhh11}, ${requestScope.Monthhh12}
-                                            ],
-                                            backgroundColor: "rgba(255, 165, 0, 0.5)", // Màu cam nhạt
-                                            borderColor: "#FFA500", // Màu cam đậm
-                                            borderWidth: 2,
-                                            pointBackgroundColor: "#FF8C00", // Cam đậm hơn
-                                            pointBorderColor: "#FF4500" // Cam đỏ
-                                        }]
-                                },
-                                options: {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true
-                                        }
-                                    }
-                                }
-                            });
-
-                        </script>
                     </div>
-                    <!-- comment -->
-                </div>
-            </div>
-        </div>
 
 
-        <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 
-    </body>
-</html>
+
+                    <div class="revenue-chart-container2">
+                        <div class="row mt-4">
+                            <!-- Cột chứa cả hai biểu đồ -->
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <!-- Biểu đồ Doanh Thu (50%) -->
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <h6>Doanh Thu và Pethotel</h6>
+                                            <div id="line-chart"></div> <!-- Biểu đồ doanh thu -->
+                                        </div>
+                                    </div>
+
+                                    <!-- Biểu đồ Tổng Sản Phẩm (50%) -->
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <h6>Tổng Sản Phẩm</h6>
+                                            <h2><span class="value">${requestScope.totalSalesThisMonth} SP</span></h2>
+                                            <div id="bar-chart"></div> <!-- Biểu đồ cột -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <!-- Recent Orders Table -->
+                        <div class="col-md-8">
+                            <h5>Sản Phẩm Bán Chạy</h5>
+                            <div class="card p-3">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Tên Sản Phẩm</th>
+                                            <th>Giá</th>
+                                            <th>Ảnh</th>
+                                            <th>Đã Bán</th>
+                                            <th>Tiến độ</th>  
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="p" items="${topProducts}">
+                                            <tr>
+                                                <td>${p.productId}</td>
+                                                <td>${p.productName}</td>
+                                                <td>${p.productPrice} VND</td>
+                                                <td><img src="${p.productImage}" width="50"></td>
+                                                <td>${p.stock}</td>
+                                                <td>
+                                                    <div class="progress-bar">
+                                                        <div class="in-time" style="width: ${p.inTimePercentage}%"></div>
+                                                        <div class="late" style="width: ${p.latePercentage}%"></div>
+                                                        <div class="completed" style="width: ${p.completedPercentage}%"></div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    <tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <!-- Recent Orders Table -->
+                            <div class="col-md-8">
+                                <h5>Nhân Viên Bán Hàng </h5>
+                                <div class="card p-3">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Họ Và Tên</th>
+                                                <th>Đã Bán</th>
+                                                <th>Doanh Thu</th>
+                                                <th>Trạng Thái</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach var="staff" items="${topStaffs}">
+                                                <tr>
+                                                    <td>${staff.staffId}</td>
+                                                    <td>${staff.fullName}</td>
+                                                    <td class="blue">${staff.totalSold}</td>
+                                                    <td>${staff.totalRevenue} VND</td>
+                                                    <td class="${staff.status == 'Hoàn thành' ? 'green' : 'red'}">${staff.status}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+
+                            <!-- 🟢 Biểu đồ -->
+                            <script>
+
+
+                                document.querySelectorAll('.toggle-group button').forEach(button => {
+                                    button.addEventListener('click', () => {
+                                        document.querySelectorAll('.toggle-group button').forEach(btn => btn.classList.remove('active'));
+                                        button.classList.add('active');
+                                    });
+                                });
+                                // 🔹 Biểu đồ Doanh thu (bar chart)
+                                // 🔹 Biểu đồ Page Views (area chart)
+                                var options1 = {
+                                    chart: {type: 'area', height: 250},
+                                    series: [{
+                                            name: 'doanh thu',
+                                            data: [${requestScope.Monthh1}, ${requestScope.Monthh2}, ${requestScope.Monthh3}, ${requestScope.Monthh4}, ${requestScope.Monthh5},
+                                ${requestScope.Monthh6}, ${requestScope.Monthh7}, ${requestScope.Monthh8}, ${requestScope.Monthh9}, ${requestScope.Month10},
+                                ${requestScope.Month11}, ${requestScope.Month12}]},
+                                        {name: 'pethotel',
+                                            data: [${requestScope.Monthhh1}, ${requestScope.Monthhh2}, ${requestScope.Monthhh3}, ${requestScope.Monthhh4}, ${requestScope.Monthhh5},
+                                ${requestScope.Monthhh6}, ${requestScope.Monthhh7}, ${requestScope.Monthhh8}, ${requestScope.Monthhh9}, ${requestScope.Monthhh10},
+                                ${requestScope.Monthhh11}, ${requestScope.Monthhh12}]}
+                                    ],
+                                    xaxis: {categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']},
+                                     colors: ['#007bff', '#17a2b8'],
+          
+                                    fill: {type: 'gradient'}
+                                };
+                                new ApexCharts(document.querySelector("#line-chart"), options1).render();
+
+
+                                // 🔹 Biểu đồ Doanh thu Pet Hotel (line chart)
+                                var options2 = {
+                                    chart: {type: 'bar', height: 250},
+                                    series: [{
+                                            name: 'Sản phẩm',
+                                            data: [${requestScope.Month1}, ${requestScope.Month2}, ${requestScope.Month3}, ${requestScope.Month4}, ${requestScope.Month5},
+                                ${requestScope.Month6}, ${requestScope.Month7}, ${requestScope.Month8}, ${requestScope.Month9}, ${requestScope.Month10},
+                                ${requestScope.Month11}, ${requestScope.Month12}]
+
+                                        }],
+                                    xaxis: {categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']},
+                                    colors: ['#17a2b8']
+                                };
+                                new ApexCharts(document.querySelector("#bar-chart"), options2).render();
+
+
+
+                            </script>
+
+                            <!-- comment -->
+
+
+                        </div>
+                    </div>
+
+
+                    <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
+                    </body>
+                    </html>

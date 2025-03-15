@@ -97,16 +97,11 @@
 
                         <!-- Form Tìm Kiếm -->
                         <div class="col-md-6">
-                            <form action="staff" method="get" class="d-flex mb-3 align-items-center" 
-                                  style="max-width: 400px; margin: 0 auto; border-radius: 25px; background: #f8f9fa; padding: 5px;">
-                                <input type="search" name="search" class="form-control" id="inputName" placeholder="Nhập từ khóa..."
+     <form action="staff" method="get" class="d-flex mb-3">
+    <input type="search" name="search" class="form-control" id="inputName" placeholder="Nhập từ khóa...">
+   
+</form>
 
-                                       style="flex: 1; border: none; outline: none; padding: 8px 12px; border-radius: 20px; font-size: 14px;">
-                                <button type="submit" class="btn btn-primary" 
-                                        style="border-radius: 20px; padding: 6px 15px; font-size: 14px; font-weight: bold; background-color: #007bff; border: none; transition: 0.3s;">
-                                    Tìm Kiếm
-                                </button>
-                            </form>
                         </div>
 
                     </div>
@@ -124,6 +119,7 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
+                                            <th>Hình ảnh</th>
                                             <th>Vai trò</th>
                                             <th>Mật khẩu</th>
                                             <th>Họ và Tên</th>
@@ -144,6 +140,7 @@
                                         %>
                                         <tr>
                                             <td><%= staff.getStaffId()%></td>
+                                             <td><%= staff.getImage()%></td>
                                             <td><%= staff.getRoleName()%></td>
                                             <td>********</td> 
                                             <td><%= staff.getFullName()%></td>
@@ -169,7 +166,7 @@
                                         %>
                                     </tbody>
                                 </table>
-                                <c:if test="${empty staffList}">                     
+                                    <c:if test="${empty staffList}">                     
                                     <div>
                                         <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
                                             Không tìm thấy!
