@@ -1,0 +1,150 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.card {
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: none;
+    text-align: left;
+}
+
+.card h6 {
+    color: #6c757d;
+    text-transform: uppercase;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.card h2 {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.increase {
+    background-color: #e6f4ea;
+    color: #28a745;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.decrease {
+    background-color: #f8d7da;
+    color: #dc3545;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.neutral {
+    background-color: #fff3cd;
+    color: #ffc107;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.toggle-group {
+    display: inline-flex;
+    border-radius: 5px;
+    background-color: #e9ecef;
+    padding: 3px;
+}
+
+.toggle-group button {
+    border: none;
+    background: none;
+    padding: 5px 15px;
+    cursor: pointer;
+    color: #007bff;
+    font-weight: bold;
+}
+
+.toggle-group .active {
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+}
+
+.status-rejected {
+    color: red;
+}
+.status-pending {
+    color: orange;
+}
+.status-approved {
+    color: green;
+}
+
+.transaction-history {
+    max-width: 400px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+}
+
+.transaction-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    background-color: #f1f1f1;
+}
+
+.transaction-item .icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-right: 12px;
+    font-size: 18px;
+}
+
+.icon.success {
+    background: #d4f8d4;
+    color: #28a745;
+}
+.icon.warning {
+    background: #eaf2ff;
+    color: #007bff;
+}
+.icon.danger {
+    background: #ffe5e5;
+    color: #dc3545;
+}
+
+.transaction-details {
+    flex-grow: 1;
+}
+
+.transaction-details h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.transaction-details p {
+    margin: 2px 0;
+    font-size: 12px;
+    color: #666;
+}
+
+.transaction-amount {
+    text-align: right;
+    font-weight: bold;
+}
+
+.transaction-amount.positive {
+    color: #28a745;
+}
+.transaction-amount.negative {
+    color: #dc3545;
+}
