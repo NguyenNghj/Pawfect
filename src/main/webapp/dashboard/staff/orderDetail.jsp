@@ -70,8 +70,7 @@
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
                                 <li class="breadcrumb-item">Dashboard</li>
-                                <li class="breadcrumb-item">Nhân viên</li>
-                                <li class="breadcrumb-item">Đơn hàng</li>
+                                <li class="breadcrumb-item"><a href="ordermanagement?&action=view&status=tc">Quản lí đơn hàng</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Chi tiết đơn hàng</li>
                             </ol>
                         </nav>
