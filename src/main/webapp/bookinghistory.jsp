@@ -47,30 +47,6 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title mb-4">Lịch đã đặt của bạn</h5>
-
-
-                            <!-- Bộ lọc trạng thái -->
-                            <!--                            <ul class="nav nav-tabs mb-4">
-                                                            <li class="nav-item">
-                                                                <a class="nav-link active" data-status="all" style="cursor: pointer; font-weight: bold; border-width: 2px;">Tất cả</a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" data-status="Đã duyệt" style="cursor: pointer; font-weight: bold; border-width: 2px;">Đã duyệt</a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" data-status="Chờ xác nhận"style="cursor: pointer; font-weight: bold; border-width: 2px;">Chờ xác nhận</a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link " data-status="Đã hủy" style="cursor: pointer; font-weight: bold; border-width: 2px;">Đã hủy</a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" data-status="Đã nhận phòng" style="cursor: pointer; font-weight: bold; border-width: 2px;">Đã nhận phòng</a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" data-status="Đã trả phòng" style="cursor: pointer; font-weight: bold; border-width: 2px;">Đã trả phòng</a>
-                                                            </li>
-                                                        </ul>-->
-
                             <ul class="nav nav-tabs mb-4">
                                 <li class="nav-item">
                                     <a class="nav-link <c:if test="${status == 'tc'}">active</c:if>" href="bookinghistory?status=tc" style="font-weight: bold; border-width: 2px;">Tất cả</a>
@@ -146,7 +122,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>  
 
                     <!-- Sidebar -->
                     <div class="col-md-4">
@@ -172,7 +148,7 @@
                                 <i class="bi bi-clipboard-check fs-4" style="color: #008080;"></i>
                                 <span>Lịch sử đơn hàng</span>
                             </a>
-                            <a href="bookinghistory" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                            <a href="bookinghistory?status=tc" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                                 <i class="bi bi-calendar-date fs-4" style="color: #808000;"></i>
                                 <span style="color: #D3A376;"><b>Lịch sử đặt lịch</b></span>
                             </a>
@@ -252,33 +228,7 @@
                     });
                 });
             </script>
-            <!--
-                        <script>
-                            document.addEventListener("DOMContentLoaded", function () {
-                                const filterTabs = document.querySelectorAll(".nav-tabs .nav-link"); // Chọn tất cả các tab
-                                const bookingCards = document.querySelectorAll(".hover-card");
-            
-                                filterTabs.forEach(tab => {
-                                    tab.addEventListener("click", function () {
-                                        // Loại bỏ lớp active khỏi tất cả tab
-                                        filterTabs.forEach(btn => btn.classList.remove("active"));
-                                        this.classList.add("active");
-            
-                                        const filterStatus = this.getAttribute("data-status");
-            
-                                        bookingCards.forEach(card => {
-                                            const cardStatus = card.getAttribute("data-status");
-            
-                                            if (filterStatus === "all" || cardStatus === filterStatus) {
-                                                card.style.display = "block"; // Hiển thị
-                                            } else {
-                                                card.style.display = "none"; // Ẩn
-                                            }
-                                        });
-                                    });
-                                });
-                            });
-                        </script>-->
+
 
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
             <script>

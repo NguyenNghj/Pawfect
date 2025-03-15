@@ -75,7 +75,9 @@ public class BookingHistoryServlet extends HttpServlet {
         }
 
         int id = Integer.parseInt(customerId);
+
         String status = request.getParameter("status");
+
         PetHotelBookingDAO bookingDAO = new PetHotelBookingDAO();
         List<PetHotelBooking> booking; // Lấy danh sách đặt phòng
         switch (status) {
@@ -101,7 +103,6 @@ public class BookingHistoryServlet extends HttpServlet {
                 break;
             default:
                 booking = bookingDAO.getBookingsByCustomerId(id);
-                status = "tc";
         }
         int totalQuantity = 0;
         // Lay tong so san pham trong gio hang
