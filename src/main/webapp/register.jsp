@@ -145,77 +145,106 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
         <!-- Custom JavaScript -->
-        <script>
-           function validateForm() {
-    let isValid = true;
+         <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const form = document.querySelector("form");
+                                form.addEventListener("submit", function (event) {
+                                    let isValid = true;
 
-    // Lấy giá trị từ các input
-    let fullName = document.getElementById("fullName").value.trim();
-    let email = document.getElementById("email").value.trim();
-    let password = document.getElementById("password").value.trim();
-    let confirmPassword = document.getElementById("confirmPassword").value.trim();
-    let phoneNumber = document.getElementById("phone").value.trim();
-    let birthDate = document.getElementById("birthdate").value;
-    let address = document.getElementById("address").value.trim();
+                                    // Kiểm tra họ tên
+                                    const fullName = document.getElementById("fullName");
+                                    if (fullName.value.trim() === "") {
+                                        fullName.classList.add("is-invalid");
+                                        isValid = false;
+                                    } else {
+                                        fullName.classList.remove("is-invalid");
+                                    }
 
-    // Xóa thông báo lỗi trước đó
-    document.getElementById("fullName").classList.remove("is-invalid");
-    document.getElementById("email").classList.remove("is-invalid");
-    document.getElementById("password").classList.remove("is-invalid");
-    document.getElementById("confirmPassword").classList.remove("is-invalid");
-    document.getElementById("phone").classList.remove("is-invalid");
-    document.getElementById("birthdate").classList.remove("is-invalid");
-    document.getElementById("address").classList.remove("is-invalid");
+                                    // Kiểm tra email hợp lệ
+                                    const email = document.getElementById("email");
+                                    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                                    if (!emailPattern.test(email.value)) {
+                                        email.classList.add("is-invalid");
+                                        isValid = false;
+                                    } else {
+                                        email.classList.remove("is-invalid");
+                                    }
 
-    // Kiểm tra họ tên
-    if (fullName === "") {
-        document.getElementById("fullName").classList.add("is-invalid");
-        isValid = false;
-    }
+                                    // Kiểm tra số điện thoại
+                                    const phone = document.getElementById("phone");
+                                    const phonePattern = /^[0-9]{10,11}$/;
+                                    if (!phonePattern.test(phone.value)) {
+                                        phone.classList.add("is-invalid");
+                                        isValid = false;
+                                    } else {
+                                        phone.classList.remove("is-invalid");
+                                    }
 
-    // Kiểm tra email
-    let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailPattern.test(email)) {
-        document.getElementById("email").classList.add("is-invalid");
-        isValid = false;
-    }
+                                    // Kiểm tra mật khẩu
+                                    const password = document.getElementById("password");
+                                    if (password.value.length < 6) {
+                                        password.classList.add("is-invalid");
+                                        isValid = false;
+                                    } else {
+                                        password.classList.remove("is-invalid");
+                                    }
 
-    // Kiểm tra mật khẩu (tối thiểu 6 ký tự)
-    if (password.length < 6) {
-        document.getElementById("password").classList.add("is-invalid");
-        isValid = false;
-    }
+                                    // Kiểm tra nhập lại mật khẩu
+                                    const confirmPassword = document.getElementById("confirmPassword");
+                                    if (confirmPassword.value !== password.value) {
+                                        confirmPassword.classList.add("is-invalid");
+                                        isValid = false;
+                                    } else {
+                                        confirmPassword.classList.remove("is-invalid");
+                                    }
 
-    // Kiểm tra nhập lại mật khẩu
-    if (confirmPassword !== password) {
-        document.getElementById("confirmPassword").classList.add("is-invalid");
-        isValid = false;
-    }
+                                    // Kiểm tra ngày sinh
+                                    const birthDate = document.getElementById("birthdate");
+                                    const today = new Date().toISOString().split("T")[0]; // Lấy ngày hiện tại theo định dạng YYYY-MM-DD
 
-    // Kiểm tra số điện thoại (chỉ cho phép số và 10-11 chữ số)
-    let phonePattern = /^[0-9]{10,11}$/;
-    if (!phonePattern.test(phoneNumber)) {
-        document.getElementById("phone").classList.add("is-invalid");
-        isValid = false;
-    }
+                                    if (birthDate.value.trim() === "" || birthDate.value > today) {
+                                        birthDate.classList.add("is-invalid");
+                                        isValid = false;
+                                    } else {
+                                        birthDate.classList.remove("is-invalid");
+                                    }
 
-    // Kiểm tra ngày sinh (không được lớn hơn ngày hiện tại)
-    let today = new Date().toISOString().split("T")[0];
-    if (birthDate === "" || birthDate > today) {
-        document.getElementById("birthdate").classList.add("is-invalid");
-        isValid = false;
-    }
+                                    // Kiểm tra địa chỉ
+                                    const address = document.getElementById("address");
+                                    if (address.value.trim() === "") {
+                                        address.classList.add("is-invalid");
+                                        isValid = false;
+                                    } else {
+                                        address.classList.remove("is-invalid");
+                                    }
 
-    // Kiểm tra địa chỉ
-    if (address === "") {
-        document.getElementById("address").classList.add("is-invalid");
-        isValid = false;
-    }
+                                    if (!isValid) {
+                                        event.preventDefault(); // Ngăn form submit nếu có lỗi
+                                    }
+                                });
 
-    return isValid;
-}
+                                // Hiện/ẩn mật khẩu
+                                document.getElementById("togglePassword").addEventListener("click", function () {
+                                    togglePasswordVisibility("password", this);
+                                });
 
+                                document.getElementById("toggleConfirmPassword").addEventListener("click", function () {
+                                    togglePasswordVisibility("confirmPassword", this);
+                                });
 
+                                function togglePasswordVisibility(inputId, icon) {
+                                    const input = document.getElementById(inputId);
+                                    if (input.type === "password") {
+                                        input.type = "text";
+                                        icon.classList.remove("bi-eye-slash");
+                                        icon.classList.add("bi-eye");
+                                    } else {
+                                        input.type = "password";
+                                        icon.classList.remove("bi-eye");
+                                        icon.classList.add("bi-eye-slash");
+                                    }
+                                }
+                            });
         </script>
     </body>
 </html>
