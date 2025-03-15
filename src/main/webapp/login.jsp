@@ -46,7 +46,7 @@
 
                 <div class="col-md-6 form-side">
                     <div class="login-form">
-                        <h1 class="title">Pawfect - Đăng nhập</h1>
+                            <h1 class="title">Pawfect - Đăng nhập</h1>
                         <p style="text-align: center;">Xin chào, vui lòng nhập thông tin đăng nhập</p>
 
                         <% if (request.getAttribute("error") != null) {%>

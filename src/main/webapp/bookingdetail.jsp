@@ -45,7 +45,7 @@
                         </li>
                         <li class="breadcrumb-item"><a href="profile" class="text-decoration-none">Tài khoản</a></li>
                         <li class="breadcrumb-item">
-                            <a href="bookinghistory" class="text-decoration-none">Lịch sử đặt lịch</a>
+                            <a href="bookinghistory?status=tc" class="text-decoration-none">Lịch sử đặt lịch</a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">
                             <span>Đơn hàng:  ${param.orderId + 2500000}</span>
@@ -127,7 +127,7 @@
 
                                 <!-- Nút điều hướng -->
                                 <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
-                                    <a href="bookinghistory" style="padding: 10px 15px; border-radius: 5px; font-size: 14px; font-weight: bold; text-decoration: none; text-align: center; background-color: #6c757d; color: white; border: none;">Quay lại</a>
+                                    <a href="bookinghistory?status=tc" style="padding: 10px 15px; border-radius: 5px; font-size: 14px; font-weight: bold; text-decoration: none; text-align: center; background-color: #6c757d; color: white; border: none;">Quay lại</a>
 
                                     <c:if test="${booking.status eq 'Chờ xác nhận'}">
                                         <form id="cancelForm-${booking.bookingId}" action="cancelbooking" method="post">
@@ -172,7 +172,7 @@
                                 <i class="bi bi-clipboard-check fs-4" style="color: #008080;"></i>
                                 <span>Lịch sử đơn hàng</span>
                             </a>
-                            <a href="bookinghistory" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                            <a href="bookinghistory?status=tc" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                                 <i class="bi bi-calendar-date fs-4" style="color: #808000;"></i>
                                 <span style="color: #D3A376;"><b>Lịch sử đặt lịch</b></span>
                             </a>

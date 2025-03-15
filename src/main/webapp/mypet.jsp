@@ -184,7 +184,7 @@
                             <i class="bi bi-clipboard-check fs-4" style="color: #008080;"></i>
                             <span>Lịch sử đơn hàng</span>
                         </a>
-                        <a href="bookinghistory" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                        <a href="bookinghistory?status=tc" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
                             <i class="bi bi-calendar-date fs-4" style="color: #808000;"></i>
                             <span>Lịch sử đặt lịch</span>
                         </a>
