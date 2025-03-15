@@ -48,9 +48,11 @@
 
                             <!-- Dropdown Sản phẩm cho Chó -->
                             <div class="col-auto dropdown">
-                                <a class="btn dropdown-toggle" href="products?pettype=1&page=1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="btn dropdown-toggle" href="products?pettype=1&page=1" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownMenuLinkDog">
                                     Sản phẩm cho Chó
                                 </a>
+
+
                                 <ul class="dropdown-menu">
                                     <%
                                         for (Category category : categories) {
@@ -68,9 +70,24 @@
 
                             <!-- Dropdown Sản phẩm cho Mèo -->
                             <div class="col-auto dropdown">
-                                <a class="btn dropdown-toggle" href="products?pettype=2&page=1" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="btn dropdown-toggle" href="products?pettype=2&page=1" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownMenuLinkCat">
                                     Sản phẩm cho Mèo
                                 </a>
+                                <script>
+                                    // Select both elements by their IDs
+                                    const dropdownLinks = ['dropdownMenuLinkCat', 'dropdownMenuLinkDog'];
+
+                                    // Loop through each element and add event listeners
+                                    dropdownLinks.forEach(function (linkId) {
+                                        document.getElementById(linkId).addEventListener('click', function (e) {
+                                            e.preventDefault(); // Ngừng hành động mặc định của thẻ <a>
+                                            const dropdown = new bootstrap.Dropdown(this); // Kích hoạt dropdown thủ công
+                                            dropdown.toggle(); // Đổi trạng thái dropdown
+                                        });
+                                    });
+                                </script>
+
+
                                 <ul class="dropdown-menu">
                                     <%
                                         for (Category category : categories) {

@@ -100,8 +100,11 @@ public class CreateProductServlet extends HttpServlet {
             String productPetType = request.getParameter("productPetType");
             double productPrice = Double.parseDouble(request.getParameter("productPrice"));
             int stock = Integer.parseInt(request.getParameter("stock"));
+            boolean productActive = false;
+            if (stock != 0) {
+                productActive = Boolean.parseBoolean(request.getParameter("productActive"));
+            }
             String description = request.getParameter("description");
-            boolean productActive = Boolean.parseBoolean(request.getParameter("productActive"));
 
             // Xử lý ảnh tải lên
             String[] context = request.getServletContext().getRealPath("").split("target");
