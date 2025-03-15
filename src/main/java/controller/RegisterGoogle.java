@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.RegisterDAO;
 import dao.UserDAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -78,8 +79,8 @@ public class RegisterGoogle extends HttpServlet {
             throws ServletException, IOException {
         try {
             HttpSession session = request.getSession();
-            String email = (String) session.getAttribute("ggId");
-            String password = "GG";
+            String email = (String) session.getAttribute("ggEmail");
+            String password = request.getParameter("password");
             String fullName = request.getParameter("fullName");
             String birthDateStr = request.getParameter("birthDate");
             Date birthDate = null;
@@ -96,9 +97,9 @@ public class RegisterGoogle extends HttpServlet {
             String phoneNumber = request.getParameter("phoneNumber");
 
             UserDAO userDAO = new UserDAO();
-
+RegisterDAO registerDAO = new RegisterDAO();
             try {
-                userDAO.insertGoogleAcc(new User(email, password, fullName, phoneNumber, address, gender, birthDate));
+               registerDAO.register(new User(email, password, fullName, phoneNumber, address, gender, birthDate));
                 String customer = userDAO.getCustomerId(email);
 
                 Cookie customerId = new Cookie("customerId", customer);
