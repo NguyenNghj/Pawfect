@@ -96,12 +96,18 @@ public class SendVoucherServlet extends HttpServlet {
             Customers customers;
             // Lay thong tin email cua khach dat hang
             customers = CustomersDAO.getCustomerById(Integer.parseInt(customerId));
+            
+            // Lay email khach hang
             String customerEmail = customers.getEmail();
             System.out.println("customerEmail: " + customerEmail);
+            
+            // Lay ten khach hang
             String customerName = customers.getFullName();
-
+            
+            // Lay thong tin ma giam gia
             VoucherDAO voucherDAO = new VoucherDAO();
             Voucher voucher = voucherDAO.getVoucherByCode(voucherCode);
+            
             double discountPrice = 0;
             if (voucher.getDiscountAmount() != 0) {
                 discountPrice = voucher.getDiscountAmount();

@@ -25,6 +25,10 @@ public class OrderDAO {
 
     protected static Connection Con = null;
 
+    protected static String Delete_Order = "DELETE FROM Orders WHERE order_id = ?";
+
+    protected static String Delete_Order_Item = "DELETE FROM OrderItems WHERE order_id = ?";
+
     protected static String Get_Last_Complete_Order = "SELECT TOP 1 oi.order_id\n"
             + "FROM Orders o\n"
             + "JOIN OrderItems oi ON o.order_id = oi.order_id\n"
@@ -171,6 +175,52 @@ public class OrderDAO {
             + "    Orders AS o ON oi.order_id = o.order_id\n"
             + "WHERE\n"
             + "    oi.order_id = ?";
+
+    public static boolean deleteOrderItem(int orderId) {
+        boolean rs = false;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Delete_Order_Item);
+            ps.setInt(1, orderId);
+            rs = ps.executeUpdate() > 0;
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return rs;
+    }
+
+    public static boolean deleteOrder(int orderId) {
+        boolean rs = false;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Delete_Order);
+            ps.setInt(1, orderId);
+            rs = ps.executeUpdate() > 0;
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (Con != null) {
+                    Con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return rs;
+    }
 
     public static int getLastCompleteOrder(int customerId, int productId) {
         try {

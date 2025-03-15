@@ -102,10 +102,10 @@
                                         <div class="d-flex gap-3">
                                             <input class="form-check-input" type="radio" name="payment-method" id="payment-vnpay">
                                             <label class="form-check-label" for="payment-vnpay">
-                                                Thanh toán qua VietQR
+                                                Thanh toán qua VNPAY
                                             </label>
                                         </div>                      
-                                        <img src="./images/logos/vnpay-logo-vinadesign.jpg" alt="">        
+                                        <img src="./img/vnpay-logo-vinadesign.jpg" alt="">        
                                     </div>
                                     <div class="form-check d-flex justify-content-between align-items-center">
                                         <div class="d-flex gap-3">
@@ -114,7 +114,7 @@
                                                 Thanh toán tiền mặt (COD)
                                             </label>
                                         </div>                      
-                                        <img src="./images/icons/cash.png" alt="">        
+                                        <img src="./img/cash-payment-outline-color-icon-vector.jpg" alt="">        
                                     </div>
                                 </div>
                             </div>
@@ -411,6 +411,9 @@
                 const shippingMethod = $('input[name="shipping-method"]:checked').attr('id');
                 const paymentMethod = $('input[name="payment-method"]:checked').attr('id');
 
+                let ajaxUrl = (paymentMethod === "payment-vnpay") ? "vnpay" : "order";
+                console.log("Lay gia tri ajaxUrl: " + email);
+
                 console.log("Gui du lieu email: " + email);
                 console.log("Gui du lieu name: " + name);
                 console.log("Gui du lieu phone: " + phone);
@@ -425,7 +428,7 @@
 
                 // 3. Gọi AJAX
                 $.ajax({
-                    url: 'order',
+                    url: ajaxUrl,
                     type: 'POST',
                     data: {
                         action: "order",
@@ -445,6 +448,12 @@
                     success: function (response) {
                         if (response.status === "success") {
                             console.log("Đã gửi dữ liệu thành công, đợi chuyển hướng từ server...");
+                            // Neu khach hang chon thanh toan = vnpay
+                            if (ajaxUrl === "vnpay") {
+                                window.location.href = response.vnpayUrl;
+                                return;
+                            }
+                            // Neu khach hang chon thanh toan = tien mat
                             window.location.href = "checkoutsuccess.jsp";
                         } else if (response.status === "error-data-email-empty") {
                             Swal.fire({
@@ -563,14 +572,14 @@
                 console.log("Total price: " + totalPrice);
                 console.log(``);
 
-                // 'totalPriceElement' se tro toi thanh phan co id 'total-price-value'
+                // 'shippingCostElement' se tro toi thanh phan co id 'shipping-cost-value'
                 let shippingCostElement = document.getElementById('shipping-cost-value');
-                // Thay noi dung 'shippingCost' vao bien 'shippingCostElement' da co toi id tuong ung
+                // Thay noi dung 'shippingCost' vao bien 'shippingCostElement' da tro toi id tuong ung
                 shippingCostElement.textContent = formatCurrency(shippingCost);
 
                 // 'totalPriceElement' se tro toi thanh phan co id 'total-price-value'
                 let totalPriceElement = document.getElementById('total-price-value');
-                // Thay noi dung 'totalPrice' vao bien 'totalPriceElement' da co toi id tuong ung
+                // Thay noi dung 'totalPrice' vao bien 'totalPriceElement' da tro toi id tuong ung
                 totalPriceElement.textContent = formatCurrency(totalPrice);
 
             }

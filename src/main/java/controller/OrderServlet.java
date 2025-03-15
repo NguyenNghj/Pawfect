@@ -95,8 +95,11 @@ public class OrderServlet extends HttpServlet {
                 case "order":
                     submitOrder(request, response);
                     break;
-                default:
-                    // listNhanVien(request, response);
+                case "delete":
+                    deleteOrder(request, response);
+                    break;
+                case "sendEmail":
+                    sendEmailAfterSuccessVNPAY(request, response);
                     break;
             }
         } catch (ServletException | IOException | SQLException e) {
@@ -118,6 +121,91 @@ public class OrderServlet extends HttpServlet {
         Pattern pattern = Pattern.compile(phoneRegex);
         Matcher matcher = pattern.matcher(phone);
         return matcher.matches();
+    }
+
+    private void sendEmailAfterSuccessVNPAY(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+
+        try {
+            // Lay customerId tu Cookie
+            String customerIdStr = getCustomerIdFromCookies(request);
+            int customerId = Integer.parseInt(customerIdStr);
+            
+            int orderId = Integer.parseInt(request.getParameter("orderId"));
+
+            List<Order> orders = OrderDAO.getOrderByOrderId(orderId);
+            List<OrderItem> orderitems = OrderDAO.getOrderItemsByOrderId(orderId);
+            double basicPrice = 0;
+            for (OrderItem orderitem : orderitems) {
+                basicPrice += orderitem.getSubtotal();
+            }
+
+            // Gui data qua email sau khi dat hang
+            request.setAttribute("basicPrice", basicPrice);
+            request.setAttribute("orderitems", orderitems);
+            request.setAttribute("orders", orders);
+
+            // Chuyen doi jsp sang String
+            String emailContent = Email.renderJSPToString(request, response, "sendemail.jsp");
+
+            ExecutorService executor = Executors.newFixedThreadPool(10); // Tạo một ExecutorService với 10 luồng
+
+            Customers customers;
+            // Lay thong tin email cua khach dat hang
+            customers = CustomersDAO.getCustomerById(customerId);
+            String customerEmail = customers.getEmail();
+            System.out.println("customerEmail: " + customerEmail);
+
+            // Gui email cho khach hang
+            executor.submit(() -> {
+                try {
+                    Email.sendEmail(customerEmail, "Xác nhận đơn hàng", emailContent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+            executor.shutdown();
+
+        } catch (NumberFormatException e) {
+            System.out.println("Error: " + e);
+        }
+
+    }
+
+    private void deleteOrder(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+
+        try {
+            int orderId = Integer.parseInt(request.getParameter("orderId"));
+            System.out.println("orderId: " + orderId);
+
+            ProductDAO productDAO = new ProductDAO();
+            List<OrderItem> orderitems = OrderDAO.getOrderItemsByOrderId(orderId);
+            for (OrderItem orderitem : orderitems) {
+                Product product = productDAO.getProductById(orderitem.getProductId());
+                product.setStock(product.getStock() + orderitem.getQuantity());
+                productDAO.updateProduct(product);
+            }
+
+            boolean deleteOrderItem = OrderDAO.deleteOrderItem(orderId);
+            if (deleteOrderItem) {
+                System.out.println("Xoa cac order item thanh cong.");
+
+                boolean deleteOrder = OrderDAO.deleteOrder(orderId);
+
+                if (deleteOrder) {
+                    System.out.println("Xoa don hang thanh cong.");
+                    return;
+                }
+                System.out.println("Xoa don hang that bai!");
+                return;
+            }
+            System.out.println("Xoa cac order item that bai!");
+
+        } catch (NumberFormatException e) {
+            System.out.println("Error: " + e);
+        }
+
     }
 
     private void submitOrder(HttpServletRequest request, HttpServletResponse response)
@@ -365,6 +453,7 @@ public class OrderServlet extends HttpServlet {
                             e.printStackTrace();
                         }
                     });
+                    executor.shutdown();
                     if (actionBack.equals("viewdetail")) {
                         response.sendRedirect("order?action=" + actionBack + "&orderId=" + orderId);
                     } else {
