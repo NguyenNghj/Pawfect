@@ -18,51 +18,51 @@
     </head>
     <body>
         <% if (request.getParameter("error") != null) { %>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Đã có lỗi xảy ra khi thêm thú cưng!',
-            footer: ''
-        });
-    </script>
-<% } %>
-<% if (request.getParameter("erro") != null) { %>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi!',
-            text: 'Không thể tải thông tin thú cưng!',
-            footer: ''
-        });
-    </script>
-<% } %>
-<% if (request.getParameter("err") != null) { %>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi!',
-            text: 'Không thể xóa thú cưng!',
-            footer: ''
-        });
-    </script>
-<% } %>
-<% 
-    String errorMessage = request.getParameter("error");
-    if (errorMessage != null) { 
-%>
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Lỗi!',
-            text: '<%= errorMessage %>',
-            confirmButtonText: 'OK'
-        });
-    </script>
-<% } %>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Đã có lỗi xảy ra khi thêm thú cưng!',
+                footer: ''
+            });
+        </script>
+        <% } %>
+        <% if (request.getParameter("erro") != null) { %>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Không thể tải thông tin thú cưng!',
+                footer: ''
+            });
+        </script>
+        <% } %>
+        <% if (request.getParameter("err") != null) { %>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: 'Không thể xóa thú cưng!',
+                footer: ''
+            });
+        </script>
+        <% } %>
+        <%
+            String errorMessage = request.getParameter("error");
+            if (errorMessage != null) {
+        %>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Lỗi!',
+                text: '<%= errorMessage%>',
+                confirmButtonText: 'OK'
+            });
+        </script>
+        <% }%>
 
         <div class="container py-4">
             <!-- Breadcrumb -->
@@ -101,10 +101,10 @@
                                     <a class="nav-link <c:if test="${pettype == ''}">active</c:if>" href="viewpet?&pettype" style="font-weight: bold; border-width: 2px;">Tất cả</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link <c:if test="${petType == 'Chó'}">active</c:if>" href="viewpet?&pettype=Chó" style="font-weight: bold; border-width: 2px;">Chó</a>
+                                        <a class="nav-link <c:if test="${pettype == 'Chó'}">active</c:if>" href="viewpet?&pettype=Chó" style="font-weight: bold; border-width: 2px;">Chó</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link <c:if test="${petType == 'Mèo'}">active</c:if>" href="viewpet?&pettype=Mèo" style="font-weight: bold; border-width: 2px;">Mèo</a>
+                                        <a class="nav-link <c:if test="${pettype == 'Mèo'}">active</c:if>" href="viewpet?&pettype=Mèo" style="font-weight: bold; border-width: 2px;">Mèo</a>
                                     </li>
                                 </ul>
 
@@ -197,7 +197,7 @@
                 </div>
             </div>
         </div>
-                                    
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
             let initialPets = $(".pet-item").length; // Tổng số feedback có sẵn

@@ -42,13 +42,14 @@
         <div class="container-fluid p-0">
             <div class="row g-0 login-container">
                 <div class="col-md-6 illustration-side">
-            </div>
+                </div>
                 <div class="col-md-6 form-side d-flex align-items-center justify-content-center">
-                    <h1 class="mb-4">Đăng nhập cho nhân viên</h1>
+                    <h1 class="title">Pawfect - Đăng nhập cho nhân viên</h1>
+                    <p style="text-align: center;">Xin chào, vui lòng nhập thông tin đăng nhập</p>
                     <div class="login-form text-center">                     
-                        <% if (request.getParameter("error") != null) { %>
+                        <% if (request.getParameter("error") != null) { %>  
                         <p class="text-danger">Sai email hoặc mật khẩu. Vui lòng thử lại.</p>
-                        <% } %>
+                        <% }%>
                         <form action="loginstaff" method="POST" onsubmit="return validateForm()">
                             <div class="mb-3">
                                 <input type="text" id="email" name="email" class="form-control" placeholder="Email">

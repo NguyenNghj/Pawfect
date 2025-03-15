@@ -132,7 +132,16 @@ h5 {
     height: 200px;
     border-radius: 10px;
     object-fit: cover;
+    cursor: pointer;
 }
+
+
+.pethotel-card:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease-in-out;
+    border-radius: 10px;
+}
+
 
 .pethotel-name {
     font-size: 30px;
