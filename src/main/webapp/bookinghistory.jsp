@@ -50,26 +50,47 @@
 
 
                             <!-- Bộ lọc trạng thái -->
+                            <!--                            <ul class="nav nav-tabs mb-4">
+                                                            <li class="nav-item">
+                                                                <a class="nav-link active" data-status="all" style="cursor: pointer; font-weight: bold; border-width: 2px;">Tất cả</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" data-status="Đã duyệt" style="cursor: pointer; font-weight: bold; border-width: 2px;">Đã duyệt</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" data-status="Chờ xác nhận"style="cursor: pointer; font-weight: bold; border-width: 2px;">Chờ xác nhận</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link " data-status="Đã hủy" style="cursor: pointer; font-weight: bold; border-width: 2px;">Đã hủy</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" data-status="Đã nhận phòng" style="cursor: pointer; font-weight: bold; border-width: 2px;">Đã nhận phòng</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" data-status="Đã trả phòng" style="cursor: pointer; font-weight: bold; border-width: 2px;">Đã trả phòng</a>
+                                                            </li>
+                                                        </ul>-->
+
                             <ul class="nav nav-tabs mb-4">
                                 <li class="nav-item">
-                                    <a class="nav-link active" data-status="all" style="cursor: pointer; font-weight: bold; border-width: 2px;">Tất cả</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-status="Đã duyệt" style="cursor: pointer; font-weight: bold; border-width: 2px;">Đã duyệt</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-status="Chờ xác nhận"style="cursor: pointer; font-weight: bold; border-width: 2px;">Chờ xác nhận</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link " data-status="Đã hủy" style="cursor: pointer; font-weight: bold; border-width: 2px;">Đã hủy</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-status="Đã nhận phòng" style="cursor: pointer; font-weight: bold; border-width: 2px;">Đã nhận phòng</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-status="Đã trả phòng" style="cursor: pointer; font-weight: bold; border-width: 2px;">Đã trả phòng</a>
-                                </li>
-                            </ul>
+                                    <a class="nav-link <c:if test="${status == 'tc'}">active</c:if>" href="bookinghistory?status=tc" style="font-weight: bold; border-width: 2px;">Tất cả</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link <c:if test="${status == 'dd'}">active</c:if>" href="bookinghistory?status=dd" style="font-weight: bold; border-width: 2px;">Đã duyệt</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link <c:if test="${status == 'cxn'}">active</c:if>" href="bookinghistory?status=cxn" style="font-weight: bold; border-width: 2px;">Chờ xác nhận</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link <c:if test="${status == 'dh'}">active</c:if>" href="bookinghistory?status=dh" style="font-weight: bold; border-width: 2px;">Đã hủy</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link <c:if test="${status == 'dnp'}">active</c:if>" href="bookinghistory?status=dnp" style="font-weight: bold; border-width: 2px;">Đã nhận phòng</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link <c:if test="${status == 'dtp'}">active</c:if>" href="bookinghistory?status=dtp" style="font-weight: bold; border-width: 2px;">Đã trả phòng</a>
+                                    </li>
+                                </ul>
 
                             <c:choose>
                                 <c:when test="${not empty booking}">
@@ -231,33 +252,33 @@
                     });
                 });
             </script>
-
-            <script>
-                document.addEventListener("DOMContentLoaded", function () {
-                    const filterTabs = document.querySelectorAll(".nav-tabs .nav-link"); // Chọn tất cả các tab
-                    const bookingCards = document.querySelectorAll(".hover-card");
-
-                    filterTabs.forEach(tab => {
-                        tab.addEventListener("click", function () {
-                            // Loại bỏ lớp active khỏi tất cả tab
-                            filterTabs.forEach(btn => btn.classList.remove("active"));
-                            this.classList.add("active");
-
-                            const filterStatus = this.getAttribute("data-status");
-
-                            bookingCards.forEach(card => {
-                                const cardStatus = card.getAttribute("data-status");
-
-                                if (filterStatus === "all" || cardStatus === filterStatus) {
-                                    card.style.display = "block"; // Hiển thị
-                                } else {
-                                    card.style.display = "none"; // Ẩn
-                                }
+            <!--
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const filterTabs = document.querySelectorAll(".nav-tabs .nav-link"); // Chọn tất cả các tab
+                                const bookingCards = document.querySelectorAll(".hover-card");
+            
+                                filterTabs.forEach(tab => {
+                                    tab.addEventListener("click", function () {
+                                        // Loại bỏ lớp active khỏi tất cả tab
+                                        filterTabs.forEach(btn => btn.classList.remove("active"));
+                                        this.classList.add("active");
+            
+                                        const filterStatus = this.getAttribute("data-status");
+            
+                                        bookingCards.forEach(card => {
+                                            const cardStatus = card.getAttribute("data-status");
+            
+                                            if (filterStatus === "all" || cardStatus === filterStatus) {
+                                                card.style.display = "block"; // Hiển thị
+                                            } else {
+                                                card.style.display = "none"; // Ẩn
+                                            }
+                                        });
+                                    });
+                                });
                             });
-                        });
-                    });
-                });
-            </script>
+                        </script>-->
 
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
             <script>

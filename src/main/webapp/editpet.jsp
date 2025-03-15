@@ -239,13 +239,15 @@
                 petWeightError.innerText = "";
                 petDobError.innerText = "";
 
-                if (petName === "") {
-                    petNameError.innerText = "Tên thú cưng không được để trống.";
+                let whitespaceRegex = /^\s*$/;
+
+                if (petName === "" || whitespaceRegex.test(petName)) {
+                    petNameError.innerText = "Tên thú cưng không được để trống hoặc chỉ chứa khoảng trắng.";
                     isValid = false;
                 }
 
-                if (petBreed === "") {
-                    petBreedError.innerText = "Giống thú cưng không được để trống.";
+                if (petBreed === "" || whitespaceRegex.test(petBreed)) {
+                    petBreedError.innerText = "Giống thú cưng không được để trống hoặc chỉ chứa khoảng trắng.";
                     isValid = false;
                 }
 
@@ -263,7 +265,7 @@
                     isValid = false;
                 }
 
-                // Kiểm tra ảnh khi THÊM MỚI, không yêu cầu khi CHỈNH SỬA
+              
                 if (petImage === 0 && existingImage === "") {
                     alert("Vui lòng chọn một ảnh cho thú cưng.");
                     isValid = false;

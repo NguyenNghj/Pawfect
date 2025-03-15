@@ -75,7 +75,34 @@ public class BookingHistoryServlet extends HttpServlet {
         }
 
         int id = Integer.parseInt(customerId);
-
+        String status = request.getParameter("status");
+        PetHotelBookingDAO bookingDAO = new PetHotelBookingDAO();
+        List<PetHotelBooking> booking; // Lấy danh sách đặt phòng
+        switch (status) {
+            case "dd":
+                booking = bookingDAO.getStatusBookingsByCustomerId(id, "Đã duyệt");
+                status = "dd";
+                break;
+            case "cxn":
+                booking = bookingDAO.getStatusBookingsByCustomerId(id, "Chờ xác nhận");
+                status = "cxn";
+                break;
+            case "dh":
+                booking = bookingDAO.getStatusBookingsByCustomerId(id, "Đã hủy");
+                status = "dh";
+                break;
+            case "dnp":
+                booking = bookingDAO.getStatusBookingsByCustomerId(id, "Đã nhận phòng");
+                status = "dnp";
+                break;
+            case "dtp":
+                booking = bookingDAO.getStatusBookingsByCustomerId(id, "Đã trả phòng");
+                status = "dtp";
+                break;
+            default:
+                booking = bookingDAO.getBookingsByCustomerId(id);
+                status = "tc";
+        }
         int totalQuantity = 0;
         // Lay tong so san pham trong gio hang
         List<CartItem> cartItems = CartDAO.getCartByCustomerId(id);
@@ -89,8 +116,7 @@ public class BookingHistoryServlet extends HttpServlet {
         // Lấy thông tin khách hàng
         Customers customer = CustomersDAO.getCustomerById(id);
         //Lấy thông tin booking
-        PetHotelBookingDAO bookingDAO = new PetHotelBookingDAO();
-        List<PetHotelBooking> booking = bookingDAO.getBookingsByCustomerId(id); // Lấy danh sách đặt phòng
+        request.setAttribute("status", status);
         request.setAttribute("customer", customer);
         request.setAttribute("booking", booking);
         request.getRequestDispatcher("bookinghistory.jsp").forward(request, response); // Chuyển dữ liệu sang JSP

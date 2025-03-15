@@ -245,6 +245,9 @@
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 var errorMessage = "<c:out value='${errorMessage}' />";
+                var message = "<c:out value='${message                                                                                                                                 }' />";
+
+
                 if (errorMessage && errorMessage.trim() !== "") {
                     Swal.fire({
                         icon: "error",
@@ -253,7 +256,17 @@
                         confirmButtonText: "OK"
                     });
                 }
+
+
+                if (message && message.trim() !== "") {
+                    Swal.fire({
+                        title: message,
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    });
+                }
             });
+
         </script>
     </body>
 </html>

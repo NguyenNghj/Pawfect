@@ -15,7 +15,6 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
-
         <link rel="stylesheet" href="./css/cart.css">       
         <title>JSP Page</title>
     </head>
@@ -23,11 +22,12 @@
         <div class="container-fluid">
 
             <!-- Breadcrumb -->
-            <div class="row bread" style="background-color: white;">
+            <div class="mt-4 bg-white p-3 mb-4 d-flex align-items-center justify-content-left" 
+                 style="border-radius: 20px; height: 60px;">
                 <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="/pawfect" class ="trangchu">Trang chủ</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
+                    <ol class="breadcrumb mb-0" style ="font-weight: bold;">
+                        <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Giỏ hàng</li>    
                     </ol>
                 </nav>
             </div>

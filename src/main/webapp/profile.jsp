@@ -210,29 +210,25 @@
             function validateForm() {
                 let isValid = true;
 
-                // Lấy giá trị input
+                // Lấy giá trị input và loại bỏ khoảng trắng đầu cuối
                 let fullName = document.getElementsByName("fullName")[0].value.trim();
-                let birthDate = document.getElementsByName("birthDate")[0].value;
-
-                let password = document.getElementsByName("password")[0].value;
+                let birthDate = document.getElementsByName("birthDate")[0].value.trim();
                 let phoneNumber = document.getElementsByName("phoneNumber")[0].value.trim();
                 let address = document.getElementsByName("address")[0].value.trim();
 
                 // Định dạng kiểm tra
-
                 let phonePattern = /^[0-9]{9,}$/;
                 let today = new Date().toISOString().split("T")[0];
 
                 // Xóa thông báo lỗi cũ
                 document.getElementById("fullNameError").innerHTML = "";
                 document.getElementById("birthDateError").innerHTML = "";
-
                 document.getElementById("phoneError").innerHTML = "";
                 document.getElementById("addressError").innerHTML = "";
 
-                // Kiểm tra Họ tên
-                if (fullName.length < 3) {
-                    document.getElementById("fullNameError").innerHTML = "Họ tên phải có ít nhất 3 ký tự!";
+                // Kiểm tra Họ tên (không được chỉ có khoảng trắng và phải có ít nhất 3 ký tự)
+                if (fullName.length < 3 || fullName.replace(/\s/g, "").length === 0) {
+                    document.getElementById("fullNameError").innerHTML = "Họ tên phải có ít nhất 3 ký tự và không được chỉ có khoảng trắng!";
                     isValid = false;
                 }
 
@@ -245,18 +241,15 @@
                     isValid = false;
                 }
 
-                // Kiểm tra Email
-
-
-                // Kiểm tra Số điện thoại
+                // Kiểm tra Số điện thoại (phải có ít nhất 9 chữ số)
                 if (!phonePattern.test(phoneNumber)) {
                     document.getElementById("phoneError").innerHTML = "Số điện thoại phải có ít nhất 9 chữ số!";
                     isValid = false;
                 }
 
-                // Kiểm tra Địa chỉ
-                if (address.length < 5) {
-                    document.getElementById("addressError").innerHTML = "Địa chỉ phải có ít nhất 5 ký tự!";
+                // Kiểm tra Địa chỉ (không được chỉ có khoảng trắng và phải có ít nhất 5 ký tự)
+                if (address.length < 5 || address.replace(/\s/g, "").length === 0) {
+                    document.getElementById("addressError").innerHTML = "Địa chỉ phải có ít nhất 5 ký tự và không được chỉ có khoảng trắng!";
                     isValid = false;
                 }
 

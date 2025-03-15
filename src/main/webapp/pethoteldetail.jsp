@@ -11,59 +11,67 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@include file="./components/header.jsp" %>
 <!DOCTYPE html>
-
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Phòng ${room.roomName} dành cho ${room.roomType}</title>
-        <link rel="stylesheet" href="./css/pethoteldetail_v1.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="./css/pethoteldetail_v1.css">
     </head>
     <body>
-        <ol class="breadcrumb">
-            <li><a class="trang-chu" href="/pawfect">Trang chủ</a></li>
-            <li><a class="trang-chu" href="/pethotel">Khách sạn thú cưng</a></li>
-            <li>Phòng ${room.roomName} dành cho ${room.roomType}</li>
-        </ol>
-        <%-- Lấy dữ liệu phòng từ request attribute --%>
-        <%
-            PetHotel room = (PetHotel) request.getAttribute("room");
-            List<PetHotel> similarRooms = (List<PetHotel>) request.getAttribute("similarRooms");
 
-            if (room == null) {
-        %>
-        <p>Phòng không tồn tại hoặc có lỗi xảy ra.</p>
-        <a href="pethotel" class="back-btn">Quay lại</a>
-        <%
-        } else {
-        %>
-
-        <h3>Chi tiết phòng <%= room.getRoomName()%> dành cho <%= room.getRoomType()%></h3>
-        <div class="detail-container">
-            <div class="image-container">
-                <img src="<%= room.getRoomImage()%>" alt="<%= room.getRoomName()%>">
+        <div class ="all">
+            <div class="mt-4 bg-white p-3 mb-4 d-flex align-items-center justify-content-left" 
+                 style="border-radius: 20px; height: 60px;">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0" style ="font-weight: bold;">
+                        <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="pethotel?sizeFilter=all&roomTypeFilter=all" class="text-decoration-none">Khách sạn thú cưng</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"> Phòng ${room.roomName} dành cho ${room.roomType}</li>
+                    </ol>
+                </nav>
             </div>
 
-            <div class="info-container">
-                <h2>Phòng <%= room.getRoomName()%></h2>
-                <div class="detail">
-                    <p class="room-type"><i></i> Dành cho <%= room.getRoomType()%></p>
-                    <p class="room-price"><i></i> Giá: <%= NumberFormat.getInstance(new Locale("vi", "VN")).format(room.getPricePerNight())%> đ/đêm</p>
-                    <p class="room-weight"><i></i> Cân nặng phù hợp: <%= room.getMinWeight()%> - <%= room.getMaxWeight()%> kg</p>
-                    <p class="room-quantity"><i></i> Số lượng phòng trống: <%= room.getAvailableQuantity()%>/<%= room.getQuantity()%> phòng</p>
-                    <p class="room-status"><i></i> Trạng thái: <%= room.getStatus()%></p>
-                    <hr class="divider">
-                    <p class="room-description"><i></i> <%= room.getDescription()%></p>
+
+            <%-- Lấy dữ liệu phòng từ request attribute --%>
+            <%
+                PetHotel room = (PetHotel) request.getAttribute("room");
+                List<PetHotel> similarRooms = (List<PetHotel>) request.getAttribute("similarRooms");
+
+                if (room == null) {
+            %>
+            <p>Phòng không tồn tại hoặc có lỗi xảy ra.</p>
+            <a href="pethotel" class="back-btn">Quay lại</a>
+            <%
+            } else {
+            %>
+
+            <h3>Chi tiết phòng <%= room.getRoomName()%> dành cho <%= room.getRoomType()%></h3>
+            <div class="detail-container">
+                <div class="image-container">
+                    <img src="<%= room.getRoomImage()%>" alt="<%= room.getRoomName()%>">
                 </div>
-                <div class="button-container">
-                    <a href="bookingform?id=<%= room.getRoomId()%>" class="booking-btn" data-status="<%= room.getStatus()%>"><i></i> Đặt lịch ngay</a>
-                    <a href="pethotel" class="back-btn"><i></i> Quay lại</a>
+
+                <div class="info-container">
+                    <h2>Phòng <%= room.getRoomName()%></h2>
+                    <div class="detail">
+                        <p class="room-type"><i></i> Dành cho <%= room.getRoomType()%></p>
+                        <p class="room-price"><i></i> Giá: <%= NumberFormat.getInstance(new Locale("vi", "VN")).format(room.getPricePerNight())%> đ/đêm</p>
+                        <p class="room-weight"><i></i> Cân nặng phù hợp: <%= room.getMinWeight()%> - <%= room.getMaxWeight()%> kg</p>
+                        <p class="room-quantity"><i></i> Số lượng phòng trống: <%= room.getAvailableQuantity()%>/<%= room.getQuantity()%> phòng</p>
+                        <p class="room-status"><i></i> Trạng thái: <%= room.getStatus()%></p>
+                        <hr class="divider">
+                        <p class="room-description"><i></i> <%= room.getDescription()%></p>
+                    </div>
+                    <div class="button-container">
+                        <a href="bookingform?id=<%= room.getRoomId()%>" class="booking-btn" data-status="<%= room.getStatus()%>"><i></i> Đặt lịch ngay</a>
+                        <a href="pethotel" class="back-btn"><i></i> Quay lại</a>
+                    </div>
                 </div>
             </div>
-
         </div>
-
         <%-- Danh sách phòng tương tự --%>
         <h3>Phòng tương tự</h3>
         <div class="hotel-container">

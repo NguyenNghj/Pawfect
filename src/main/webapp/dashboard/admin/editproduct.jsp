@@ -141,15 +141,15 @@
                                     <option value="Chó và Mèo" ${product.productPetType == 'Chó và Mèo' ? 'selected' : ''}>Chó và Mèo</option>
                                 </select>
                             </div>
-
                             <div class="mb-3">
                                 <label for="editProductPrice" class="form-label">Giá</label>
-                                <input type="number" class="form-control" name="productPrice" value="${product.productPrice}" required>
+                                <input type="number" class="form-control" name="productPrice" value="${product.productPrice}" min="1" required>
                             </div>
+
 
                             <div class="mb-3">
                                 <label for="editProductStock" class="form-label">Tồn kho</label>
-                                <input type="number" class="form-control" name="stock" value="${product.stock}" required>
+                                <input type="number" class="form-control" name="stock" value="${product.stock}" min="0" required>
                             </div>
 
                             <div class="mb-3">

@@ -68,6 +68,11 @@
                         } else if (selectedPetTypes === "3") {
                             // Nếu đang chọn "3" (Chó + Mèo), bỏ bớt giá trị được click
                             selectedPetTypes = filterValue.toString();
+                            if (selectedPetTypes === "1") {
+                                selectedPetTypes = "2"
+                            } else {
+                                selectedPetTypes = "1"
+                            }
                             urlParams.set("pettype", selectedPetTypes);
                         } else if (selectedPetTypes) {
                             // Nếu đang chọn 1 giá trị khác, chọn cả Chó và Mèo
@@ -87,7 +92,6 @@
                     urlParams.set('page', 1);
                     window.location.search = urlParams.toString();
                 }
-
             </script>
 
             <div class="row">
@@ -232,7 +236,7 @@
                                             </c:forEach>
 
                                             <!-- Nút Next -->
-                                            <li class="page-item ${currentPage >= totalPages ? 'disabled' : ''}">
+                                            <li class="page-item ${currentPage >= totalPages -1 ? 'disabled' : ''}">
                                                 <a class="page-link" href="javascript:updatePage(${currentPage + 1})">Next</a>
                                             </li>
                                         </ul>
