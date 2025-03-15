@@ -53,6 +53,20 @@ public class PetHotel {
         this.isActive = isActive;
     }
 
+    public PetHotel(int roomId, String roomName, String roomImage, String roomType, double minWeight, double maxWeight, int quantity, int availableQuantity, double pricePerNight, String description, String status) {
+        this.roomId = roomId;
+        this.roomName = roomName;
+        this.roomImage = roomImage;
+        this.roomType = roomType;
+        this.minWeight = minWeight;
+        this.maxWeight = maxWeight;
+        this.quantity = quantity;
+        this.availableQuantity = availableQuantity;
+        this.pricePerNight = pricePerNight;
+        this.description = description;
+        this.status = status;
+    }
+
     // Getters và Setters
     public int getRoomId() {
         return roomId;

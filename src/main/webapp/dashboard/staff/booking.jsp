@@ -261,6 +261,7 @@
         <%            String filterParam = request.getParameter("filter");
             String currentFilter = (filterParam != null) ? URLDecoder.decode(filterParam, StandardCharsets.UTF_8.toString()) : "all";
         %>
+
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 // Lấy trạng thái filter từ URL (nếu có)
@@ -298,11 +299,37 @@
 
             // Hàm lọc danh sách theo trạng thái
             function filterBookings(filter) {
-                document.querySelectorAll(".booking-row").forEach(row => {
+                let rows = document.querySelectorAll(".booking-row");
+                let hasVisibleRow = false;
+
+                rows.forEach(row => {
                     let status = row.getAttribute("data-status");
-                    row.style.display = (filter === "all" || status === filter) ? "" : "none";
+                    if (filter === "all" || status === filter) {
+                        row.style.display = "";
+                        hasVisibleRow = true;
+                    } else {
+                        row.style.display = "none";
+                    }
                 });
+
+                // Kiểm tra nếu không có hàng nào hiển thị thì thêm thông báo
+                let tableBody = document.getElementById("bookingTable");
+                let noDataRow = document.getElementById("noDataRow");
+
+                if (!hasVisibleRow) {
+                    if (!noDataRow) {
+                        noDataRow = document.createElement("tr");
+                        noDataRow.id = "noDataRow";
+                        noDataRow.innerHTML = `<td colspan="9" style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">Không có đặt lịch nào!</td>`;
+                        tableBody.appendChild(noDataRow);
+                    }
+                } else {
+                    if (noDataRow) {
+                        noDataRow.remove();
+                    }
+                }
             }
+
         </script>
         <script>
             function setFilterBeforeSubmit(button) {

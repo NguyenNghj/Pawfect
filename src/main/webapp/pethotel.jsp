@@ -49,7 +49,7 @@
                         <c:when test="${not empty requestScope.roomList}">
                             <c:forEach var="room" items="${requestScope.roomList}">
                                 <div class="pethotel-card">
-                                    <img src="${room.roomImage}" alt="${room.roomName}" 
+                                    <img src="<%= request.getContextPath()%>/img/pethotel/${room.roomImage}" alt="${room.roomName}" 
                                          onclick="window.location.href = 'pethoteldetail?id=${room.roomId}'">
                                     <div class="pethotel-name">${room.roomName}</div>
                                     <div class="pethotel-type">Dành cho ${room.roomType}</div>
@@ -60,7 +60,15 @@
                                     <div class="pethotel-weight">
                                         Cân nặng: ${room.minWeight} - ${room.maxWeight} kg
                                     </div>
-                                    <a href="bookingform?id=${room.roomId}" class="booking" data-status="${room.status}">Đặt lịch ngay</a>
+                                    <c:choose>
+                                        <c:when test="${room.status == 'Còn phòng'}">
+                                            <a href="bookingform?id=${room.roomId}" class="booking">Đặt lịch ngay</a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <a href="bookingform?id=${room.roomId}" class="booking" data-status="${room.status}">Hết phòng</a>
+                                        </c:otherwise>
+                                    </c:choose>
+
                                 </div>
                             </c:forEach>
                         </c:when>
@@ -72,7 +80,19 @@
                 <button id="scrollRight" class="scroll-btn">&#10095;</button>
             </div>
         </div>
-
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var errorMessage = "<c:out value='${errorMessage}' />";
+                if (errorMessage && errorMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi!",
+                        text: errorMessage,
+                        confirmButtonText: "OK"
+                    });
+                }
+            });
+        </script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="./js/pethotel.js"></script>
     </body>

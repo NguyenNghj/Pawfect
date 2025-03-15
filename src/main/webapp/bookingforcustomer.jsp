@@ -110,7 +110,7 @@
                     </ul>
                 </div>
                 <h2 class="title">Phòng ${room.roomName} dành cho ${room.roomType}</h2>
-                <img src="${room.roomImage}" alt="Hình ảnh phòng ${room.roomName}" class="room-image">
+                <img src="<%= request.getContextPath()%>/img/pethotel/${room.roomImage}" alt="Hình ảnh phòng ${room.roomName}" class="room-image">
             </div>
 
             <div class="form-container">
@@ -168,7 +168,32 @@
                         <input type="text" name="totalPrice" id="totalPrice" readonly>
                     </div>
 
-                    <button type="submit">Đặt lịch</button>
+                    <div class="button-group" style="display: flex; gap: 10px; align-items: center;">
+                        <!-- Nút Đặt lịch -->
+                        <button type="submit" style="
+                                background-color: #8c6e63;
+                                color: white;
+                                padding: 10px 15px;
+                                border: none;
+                                border-radius: 5px;
+                                cursor: pointer;
+                                width: 70%;">
+                            Đặt lịch
+                        </button>
+                        <!-- Nút Quay lại -->
+                        <button type="button" onclick="history.back();" style="
+                                background-color: gray;
+                                color: white;
+                                padding: 10px 15px;
+                                border: none;
+                                border-radius: 5px;
+                                cursor: pointer;
+                                width: 30%;">
+                             Quay lại
+                        </button>
+                    </div>
+
+
                 </form>
             </div>
         </div>

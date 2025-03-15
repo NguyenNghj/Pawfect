@@ -171,24 +171,24 @@
             <div class="hinhanh">
                 <div class="hinhanh-hang1">
                     <div class="hinhanhne">
-                        <img src="./img/pethotel/dog/VIP/VIPdog1.jpg">
+                        <img src="./img/pethotel/VIPdog1.jpg">
                     </div>
                     <div class="hinhanhne">
-                        <img src="./img/pethotel/dog/VIP/VIPdog2.jpg">
+                        <img src="./img/pethotel/tieuchuandog1.jpg">
                     </div>
                     <div class="hinhanhne">
-                        <img src="./img/pethotel/dog/Luxury/Luxurydog1.jpg">
+                        <img src="./img/pethotel//Luxurydog1.jpg">
                     </div>
                 </div>
                 <div class="hinhanh-hang2">
                     <div class="hinhanhne">
-                        <img src="./img/pethotel/dog/Luxury/Luxurydog2.jpg">
+                        <img src="./img/pethotel/Luxurycat1.jpg">
                     </div>
                     <div class="hinhanhne">
-                        <img src="./img/pethotel/cat/Luxury/Luxurycat1.jpg">
+                        <img src="./img/pethotel/tieuchuancat1.jpg">
                     </div>
                     <div class="hinhanhne">
-                        <img src="./img/pethotel/cat/Luxury/Luxurycat2.jpg">
+                        <img src="./img/pethotel/VIPcat1.jpg">
                     </div>
                 </div>
             </div>

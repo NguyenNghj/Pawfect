@@ -100,42 +100,120 @@
                         <h4 class="mb-0">Thêm phòng mới</h4>
                     </div>
 
-                    <div class="addroom" style="background-color: white;" method="post">
-                        <br>
-                        <form id="addRoomForm" action="createpethotel" method="post" style="max-width: 400px; margin:  auto;" >
-                            <label>Tên phòng:</label>
-                            <input type="text" name="roomName" class="form-control" required style="margin-bottom: 10px;">
-                            <label>Hình ảnh:</label>
-                            <input type="text" name="roomImage" class="form-control" required style="margin-bottom: 10px;">
-                            <label>Loại phòng:</label><br>
-                            <input type="radio" name="roomType" value="Chó" /> Chó <br>
-                            <input type="radio" name="roomType" value="Mèo" /> Mèo <br>
-                            <label>Cân nặng tối thiểu (kg):</label>
-                            <input type="number" name="minWeight" step="0.1" class="form-control" required style="margin-bottom: 10px;">
+                    <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
+                        <form id="createpethotel" action="createpethotel" method="post" enctype="multipart/form-data">
+                            <!-- Hình ảnh -->
+                            <div class="mb-3">
+                                <label for="petHotelImage" class="form-label">Hình ảnh</label>
+                                <div style="display: flex; gap: 10px;">
+                                    <img id="previewImage" class="img-thumbnail" style="width: 220px; height: 220px; display: none;" src="#" alt="Ảnh phòng">
+                                    <input type="file" id="petHotelImage" name="petHotelImage" accept="image/*" style="display: none;" onchange="previewFile()">
+                                    <div class="image-box" onclick="document.getElementById('petHotelImage').click()" style="cursor: pointer; border: 1px dashed #ccc; padding: 20px; text-align: center; width: 220px; height: 220px; display: flex; align-items: center; justify-content: center;">
+                                        <span id="uploadText">Thêm ảnh</span>
+                                    </div>
+                                </div>
+                            </div>
 
-                            <label>Cân nặng tối đa (kg):</label>
-                            <input type="number" name="maxWeight" step="0.1" class="form-control" required style="margin-bottom: 10px;">
+                            <!-- Tên phòng -->
+                            <div class="mb-3">
+                                <label for="roomName" class="form-label">Tên phòng</label>
+                                <input type="text" id="roomName" name="roomName" class="form-control" required>
+                            </div>
 
-                            <label>Số lượng:</label>
-                            <input type="number" name="quantity" class="form-control" required min="1" style="margin-bottom: 10px;">
+                            <!-- Loại phòng -->
+                            <div class="mb-3">
+                                <label class="form-label">Loại phòng</label>
+                                <select class="form-select" name="roomType" required>
+                                    <option value="Chó">Chó</option>
+                                    <option value="Mèo">Mèo</option>
+                                </select>
+                            </div>
 
+                            <!-- Cân nặng tối thiểu -->
+                            <div class="mb-3">
+                                <label for="minWeight" class="form-label">Cân nặng tối thiểu (kg)</label>
+                                <input type="number" id="minWeight" name="minWeight" step="0.1" class="form-control" required>
+                            </div>
 
-                            <label>Giá mỗi đêm (VNĐ):</label>
-                            <input type="number" name="pricePerNight" step="0.01" class="form-control" required min="1" style="margin-bottom: 10px;">
-                            <label>Mô tả:</label>
-                            <input type="text" name="description" class="form-control" required style="margin-bottom: 10px;">
+                            <!-- Cân nặng tối đa -->
+                            <div class="mb-3">
+                                <label for="maxWeight" class="form-label">Cân nặng tối đa (kg)</label>
+                                <input type="number" id="maxWeight" name="maxWeight" step="0.1" class="form-control" required>
+                            </div>
 
+                            <!-- Số lượng -->
+                            <div class="mb-3">
+                                <label for="quantity" class="form-label">Số lượng</label>
+                                <input type="number" id="quantity" name="quantity" class="form-control" required min="1">
+                            </div>
 
-                            <button type="submit" class="btn btn-success mt-3">Thêm phòng</button>
-                            <button type="button" class="btn btn-secondary mt-3" onclick="location.href = 'pethotel'">Quay lại</button>
-                        </form>
-                        <br>
+                            <!-- Giá mỗi đêm -->
+                            <div class="mb-3">
+                                <label for="pricePerNight" class="form-label">Giá mỗi đêm (VNĐ)</label>
+                                <input type="number" id="pricePerNight" name="pricePerNight" step="0.01" class="form-control" required min="1">
+                            </div>
 
+                            <!-- Mô tả -->
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Mô tả</label>
+                                <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                            </div>
+
+                            <!-- Nút hành động -->
+                            <button type="submit" class="btn btn-primary">Thêm phòng</button>
+                            <a href="pethotel" class="btn btn-secondary">Quay lại</a>
+
+                        </form>                       
                     </div>
+
                 </div>
             </div>
         </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var errorMessage = "${errorMessage}";
+                if (errorMessage && errorMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi!",
+                        text: errorMessage,
+                        confirmButtonText: "OK"
+                    });
+                }
+            });
+        </script>
+        <script>
+            function previewFile() {
+                const fileInput = document.getElementById('petHotelImage');
+                const previewImage = document.getElementById('previewImage');
+                const uploadText = document.getElementById('uploadText');
 
+                const file = fileInput.files[0];
+
+                if (file) {
+                    // Kiểm tra nếu file lớn hơn 5MB
+                    const maxSize = 5 * 1024 * 1024; // 5MB
+                    if (file.size > maxSize) {
+                        alert("File ảnh quá lớn! Vui lòng chọn ảnh nhỏ hơn 5MB.");
+                        fileInput.value = ""; // Xóa file đã chọn
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        previewImage.src = e.target.result;
+                        previewImage.style.display = "block";
+                        uploadText.innerText = "Đổi ảnh";
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    previewImage.src = "#";
+                    previewImage.style.display = "none";
+                    uploadText.innerText = "Thêm ảnh";
+                }
+            }
+        </script>
+        
 
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

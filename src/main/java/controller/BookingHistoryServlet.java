@@ -14,6 +14,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.Comparator;
 import java.util.List;
 import model.CartItem;
 import model.Customers;
@@ -93,7 +94,9 @@ public class BookingHistoryServlet extends HttpServlet {
         PetHotelBookingDAO bookingDAO = new PetHotelBookingDAO();
         List<PetHotelBooking> allBookings = bookingDAO.getBookingsByCustomerId(id);
 
-        
+        // Sắp xếp danh sách theo thời gian đặt phòng mới nhất trước
+        allBookings.sort(Comparator.comparing(PetHotelBooking::getBookingDate).reversed());
+
         // Xử lý phân trang
         int currentPage = 1;
         String pageParam = request.getParameter("page");

@@ -38,7 +38,7 @@
                 <h3>Chi tiết phòng ${room.roomName} dành cho ${room.roomType}</h3>
                 <div class="detail-container">
                     <div class="image-container">
-                        <img src="${room.roomImage}" alt="${room.roomName}">
+                        <img src="<%= request.getContextPath()%>/img/pethotel/${room.roomImage}" alt="${room.roomName}">
                     </div>
                     <div class="info-container">
                         <h2>Phòng ${room.roomName}</h2>
@@ -52,7 +52,14 @@
                             <p class="room-description">${room.description}</p>
                         </div>
                         <div class="button-container">
-                            <a href="bookingform?id=${room.roomId}" class="booking-btn" data-status="${room.status}">Đặt lịch ngay</a>
+                            <c:choose>
+                                <c:when test="${room.status eq 'Còn phòng'}">
+                                    <a href="bookingform?id=${room.roomId}" class="booking-btn" data-status="${room.status}">Đặt lịch ngay</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <button href="bookingform?id=${room.roomId}" class="booking-btn" data-status="${room.status}">Hết phòng</button>
+                                </c:otherwise>
+                            </c:choose>
                             <a href="pethotel" class="back-btn">Quay lại</a>
                         </div>
                     </div>
@@ -66,14 +73,22 @@
                             <c:when test="${not empty similarRooms}">
                                 <c:forEach var="similarRoom" items="${similarRooms}">
                                     <div class="pethotel-card">
-                                        <img src="${similarRoom.roomImage}" alt="${similarRoom.roomName}" onclick="window.location.href = 'pethoteldetail?id=${similarRoom.roomId}'">
+                                        <img src="<%= request.getContextPath()%>/img/pethotel/${similarRoom.roomImage}" alt="${similarRoom.roomName}" onclick="window.location.href = 'pethoteldetail?id=${similarRoom.roomId}'">
                                         <div class="pethotel-name">${similarRoom.roomName}</div>
                                         <div class="pethotel-type">Dành cho ${similarRoom.roomType}</div>
                                         <div class="pethotel-price">
                                             <fmt:formatNumber value="${similarRoom.pricePerNight}" type="currency" currencyCode="VND"/>/đêm
                                         </div>
                                         <div class="pethotel-weight">Cân nặng: ${similarRoom.minWeight} - ${similarRoom.maxWeight} kg</div>
-                                        <a href="bookingform?id=${similarRoom.roomId}" class="booking" data-status="${similarRoom.status}">Đặt lịch ngay</a>
+                                        <c:choose>
+                                            <c:when test="${similarRoom.status == 'Còn phòng'}">
+                                                <a href="bookingform?id=${similarRoom.roomId}" class="booking">Đặt lịch ngay</a>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <a href="bookingform?id=${similarRoom.roomId}" class="booking" data-status="${similarRoom.status}">Hết phòng</a>
+                                            </c:otherwise>
+                                        </c:choose>
+
                                     </div>
                                 </c:forEach>
                             </c:when>
@@ -90,7 +105,7 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
                                             document.addEventListener("DOMContentLoaded", function () {
-                                                const bookRoomBtns = document.querySelectorAll(".booking-btn");
+                                                const bookRoomBtns = document.querySelectorAll(".booking-btn, .booking"); // Chọn cả hai loại nút
                                                 bookRoomBtns.forEach(button => {
                                                     button.addEventListener("click", function (event) {
                                                         event.preventDefault();

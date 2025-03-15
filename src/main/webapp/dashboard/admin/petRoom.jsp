@@ -28,6 +28,7 @@
 
                 <!-- SIDEBAR -->
                 <jsp:include page="sidebar.jsp"/>
+
                 <%
                     Cookie[] cookies = request.getCookies();
                     String staffRole = "";
@@ -160,7 +161,7 @@
                                                 <c:forEach var="room" items="${petRooms}">
                                                     <tr>
                                                         <td>
-                                                            <img src="${room.roomImage}" alt="Hình ảnh phòng" width="150" height="150">
+                                                            <img src="<%= request.getContextPath()%>/img/pethotel/${room.roomImage}" alt="Hình ảnh phòng" width="150" height="150">
                                                         </td>
                                                         <td style="text-align: center; width: 12%;">${room.roomName}</td>
                                                         <td style="text-align: center; width: 9%;">${room.roomType}</td>
@@ -177,7 +178,7 @@
                                                     </span>
                                                 </td>
                                                 <td style="width: 12%;">
-                                                    <button type="button" class="btn btn-primary" onclick="editRoom(${room.roomId})">Chỉnh sửa</button>
+                                                    <button type="button" class="btn btn-primary" onclick="editpethotel(${room.roomId})">Chỉnh sửa</button>
                                                 </td>
                                                 </tr>
                                             </c:forEach>
@@ -223,6 +224,16 @@
                 </div>
             </div>
         </div>
+        <script>
+            function editpethotel(roomId) {
+                if (!roomId) {
+                    alert("Lỗi: Không tìm thấy ID phòng!");
+                    return;
+                }
+                // Chuyển trang đến editpethotel.jsp với roomId
+                window.location.href = "editpethotel?roomId=" + roomId;
+            }
+        </script>
 
         <script>
             function updatePage(page) {
@@ -231,6 +242,72 @@
                 window.location.search = urlParams.toString();
             }
         </script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Lấy thông báo lỗi từ request
+                var errorMessage = "<c:out value='${errorMessage}' />";
+                if (errorMessage && errorMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi!",
+                        text: errorMessage,
+                        confirmButtonText: "OK"
+                    });
+                }
+
+                // Lấy thông báo thành công từ session
+                var successMessage = "<c:out value='${sessionScope.successMessage}' />";
+                if (successMessage && successMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Thành công!",
+                        text: successMessage,
+                        confirmButtonText: "OK"
+                    });
+
+                    // Xóa thông báo sau khi hiển thị để tránh lặp lại khi refresh trang
+                    fetch('clear-session.jsp');
+                }
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Lấy thông báo thành công từ session
+                var successMessage = "<c:out value='${sessionScope.successMessage}' />";
+                if (successMessage && successMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Thành công!",
+                        text: successMessage,
+                        confirmButtonText: "OK"
+                    });
+
+                    // Xóa session sau khi hiển thị
+                    fetch('clear-session.jsp');
+                }
+
+                // Lấy thông báo lỗi từ session
+                var errorMessage = "<c:out value='${sessionScope.errorMessage}' />";
+                if (errorMessage && errorMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi!",
+                        text: errorMessage,
+                        confirmButtonText: "OK"
+                    });
+
+                    // Xóa session sau khi hiển thị
+                    fetch('clear-session.jsp');
+                }
+            });
+        </script>
+        <%
+            session.removeAttribute("successMessage");
+            session.removeAttribute("errorMessage");
+        %>
+
 
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
