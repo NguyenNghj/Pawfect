@@ -58,14 +58,53 @@ public class StatisticManagement extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+//        StatisticDAO statisticDAO = new StatisticDAO();
+//        double mondayOrder = statisticDAO.getTotalOrderByDayOfWeek("Monday");
+//        double tuesdayOrder = statisticDAO.getTotalOrderByDayOfWeek("Tuesday");
+//        double wednesdayOrder = statisticDAO.getTotalOrderByDayOfWeek("Wednesday");
+//        double thursdayOrder = statisticDAO.getTotalOrderByDayOfWeek("Thursday");
+//        double fridayOrder = statisticDAO.getTotalOrderByDayOfWeek("Friday");
+//        double saturdayOrder = statisticDAO.getTotalOrderByDayOfWeek("Saturday");
+//        double sundayOrder = statisticDAO.getTotalOrderByDayOfWeek("Sunday");
+//        double totalOrder = mondayOrder + tuesdayOrder + wednesdayOrder + thursdayOrder + fridayOrder + saturdayOrder + sundayOrder;
+//
+//        double mondayBooking = statisticDAO.getTotalBookingByDayOfWeek("Monday");
+//        double tuesdayBooking = statisticDAO.getTotalBookingByDayOfWeek("Tuesday");
+//        double wednesdayBooking = statisticDAO.getTotalBookingByDayOfWeek("Wednesday");
+//        double thursdayBooking = statisticDAO.getTotalBookingByDayOfWeek("Thursday");
+//        double fridayBooking = statisticDAO.getTotalBookingByDayOfWeek("Friday");
+//        double saturdayBooking = statisticDAO.getTotalBookingByDayOfWeek("Saturday");
+//        double sundayBooking = statisticDAO.getTotalBookingByDayOfWeek("Sunday");
+//        double totalBooking = mondayBooking + tuesdayBooking + wednesdayBooking + thursdayBooking + fridayBooking + saturdayBooking + sundayBooking;
+//
+//        double totalRevenue = totalOrder + totalBooking;
+//
+//        request.setAttribute("totalOrder", totalOrder);
+//         request.setAttribute("totalBooking", totalBooking);
+//        request.setAttribute("totalRevenue", totalRevenue);
+//
+//        request.getRequestDispatcher("/dashboard/admin/statistic.jsp").forward(request, response);
+
         StatisticDAO statisticDAO = new StatisticDAO();
-        double monday = statisticDAO.getTotalOrderByDayOfWeek("Monday");
-        double tuesday = statisticDAO.getTotalOrderByDayOfWeek("Tuesday");
-        double wednesday = statisticDAO.getTotalOrderByDayOfWeek("Wednesday");
-        double thursday = statisticDAO.getTotalOrderByDayOfWeek("Thursday");
-        double friday = statisticDAO.getTotalOrderByDayOfWeek("Friday");
-        double saturday = statisticDAO.getTotalOrderByDayOfWeek("saturday");
-        double sunday = statisticDAO.getTotalOrderByDayOfWeek("Sunday");
+
+        double[] orders = new double[7];
+        double[] bookings = new double[7];
+        String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+        double totalOrder = 0;
+        double totalBooking = 0;
+
+        for (int i = 0; i < 7; i++) {
+            orders[i] = statisticDAO.getTotalOrderByDayOfWeek(days[i]);
+            totalOrder += orders[i];
+            bookings[i] = statisticDAO.getTotalBookingByDayOfWeek(days[i]);
+            totalBooking += bookings[i];
+        }
+        double totalRevenue = totalOrder + totalBooking;
+        request.setAttribute("totalOrder", totalOrder);
+        request.setAttribute("totalBooking", totalBooking);
+        request.setAttribute("totalRevenue", totalRevenue);
+        request.setAttribute("orders", orders);
+        request.setAttribute("bookings", bookings);
 
         request.getRequestDispatcher("/dashboard/admin/statistic.jsp").forward(request, response);
     }

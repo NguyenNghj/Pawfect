@@ -4,6 +4,7 @@
     Author     : Vu Quang Duc - CE181221
 --%>
 
+<%@page import="java.util.Arrays"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -92,19 +93,19 @@
                             <div class="col-md-3">
                                 <div class="card">
                                     <h6>TỔNG DOANH THU</h6>
-                                    <h2>4,42,236</h2>
+                                    <h2><fmt:formatNumber value="${totalRevenue}" type="number" groupingUsed="true" />đ</h2>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="card">
                                     <h6>DOANH THU SẢN PHẨM</h6>
-                                    <h2>78,250</h2>
+                                    <h2><fmt:formatNumber value="${totalOrder}" type="number" groupingUsed="true" />đ</h2>
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <div class="card">
                                     <h6>DOANH THU KHÁCH SẠN THÚ CƯNG</h6>
-                                    <h2>18,800</h2>
+                                    <h2><fmt:formatNumber value="${totalBooking}" type="number" groupingUsed="true" />đ</h2>
                                 </div>
                             </div>
                             <div class="col-md-3">
@@ -128,6 +129,7 @@
                                     <div id="line-chart"></div>
                                 </div>
                             </div>
+
                             <div class="col-md-4">
                                 <h6>SỐ LƯỢNG ĐƠN HOÀN THÀNH</h6>
                                 <div class="card">
@@ -211,7 +213,7 @@
 
                                 </div>
                             </div>            
-                            
+
                             <div class="col-md-8">
                                 <h5>TOP 5 LOẠI PHÒNG THÚ CƯNG</h5>
                                 <div class="card p-3">
@@ -251,7 +253,7 @@
                                     </table>
                                 </div>
                             </div>
-                            
+
                         </div>
 
                     </div> 
@@ -279,35 +281,55 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 
-        <script>
-                        document.querySelectorAll('.toggle-group button').forEach(button => {
-                            button.addEventListener('click', () => {
-                                document.querySelectorAll('.toggle-group button').forEach(btn => btn.classList.remove('active'));
-                                button.classList.add('active');
-                            });
-                        });
+        <!--        <script>
+                                document.querySelectorAll('.toggle-group button').forEach(button => {
+                                    button.addEventListener('click', () => {
+                                        document.querySelectorAll('.toggle-group button').forEach(btn => btn.classList.remove('active'));
+                                        button.classList.add('active');
+                                    });
+                                });
+        
+        
+                                var options1 = {
+                                    chart: {type: 'area', height: 250},
+                                    series: [
+                                        {name: 'Page Views', data: [30, 40, 28, 50, 60, 120, 100]},
+                                        {name: 'Sessions', data: [10, 30, 40, 35, 45, 70, 60]}
+                                    ],
+                                    xaxis: {categories: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN']},
+                                    colors: ['#007bff', '#17a2b8'],
+                                    fill: {type: 'gradient'}
+                                };
+                                new ApexCharts(document.querySelector("#line-chart"), options1).render();
+        
+                                var options2 = {
+                                    chart: {type: 'bar', height: 250},
+                                    series: [{name: 'Income', data: [60, 90, 70, 50, 65, 55, 75]}],
+                                    xaxis: {categories: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']},
+                                    colors: ['#17a2b8']
+                                };
+                                new ApexCharts(document.querySelector("#bar-chart"), options2).render();
+                </script>-->
 
+
+        <script>
+                        var ordersData = <%= Arrays.toString((double[]) request.getAttribute("orders"))%>;
+                        var bookingsData = <%= Arrays.toString((double[]) request.getAttribute("bookings"))%>;
+                        var revenueData = <%= Arrays.toString((double[]) request.getAttribute("revenue"))%>; // Thêm dữ liệu doanh thu
 
                         var options1 = {
                             chart: {type: 'area', height: 250},
                             series: [
-                                {name: 'Page Views', data: [30, 40, 28, 50, 60, 120, 100]},
-                                {name: 'Sessions', data: [10, 30, 40, 35, 45, 70, 60]}
+                                {name: 'Đơn hàng', data: ordersData},
+                                {name: 'Đặt phòng', data: bookingsData}
                             ],
-                            xaxis: {categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']},
+                            xaxis: {categories: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN']},
                             colors: ['#007bff', '#17a2b8'],
                             fill: {type: 'gradient'}
                         };
                         new ApexCharts(document.querySelector("#line-chart"), options1).render();
-
-                        var options2 = {
-                            chart: {type: 'bar', height: 250},
-                            series: [{name: 'Income', data: [60, 90, 70, 50, 65, 55, 75]}],
-                            xaxis: {categories: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']},
-                            colors: ['#17a2b8']
-                        };
-                        new ApexCharts(document.querySelector("#bar-chart"), options2).render();
         </script>
+
 
         <script>
             var ctx = document.getElementById('financeChart').getContext('2d');
