@@ -21,12 +21,6 @@
     </div>
 
     <div class="row">                  
-        <nav class="navbar bg-body-tertiary" id="dashboard">                                    
-            <a class="navbar-brand d-flex align-items-center gap-3" href="dashboard">
-                <i class="fa-solid fa-chart-line fa-lg"></i> 
-                <span>Thống kê</span>
-            </a>
-        </nav>
         <nav class="navbar bg-body-tertiary" id="customer">                                            
             <a class="navbar-brand d-flex align-items-center gap-3" href="viewcustomersforStaff">
                 <i class="fa-solid fa-box fa-lg"></i>
@@ -95,7 +89,7 @@
         // Xóa lớp 'active' khỏi tất cả các navbar
         document.querySelectorAll(".navbar").forEach(nav => {
             nav.classList.remove("active");
-  
+
         });
 
         // Kiểm tra và áp dụng lớp 'active' nếu có trang khớp

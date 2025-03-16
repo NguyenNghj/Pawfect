@@ -56,7 +56,7 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Chỉnh sửa thông tin sản phẩm</h1>
+                                <h1>Chỉnh sửa danh mục</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
                                 <span style = "color: #D3A376; font-weight: bold;"><%= staffName%></span>
@@ -75,12 +75,13 @@
                         </div>
                     </div>
 
-                    <div class="row mt-2">
+                    <div class="row mt-2 bg-white p-3 d-flex align-items-center justify-content-center" 
+                         style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item" style="color: #6c757d;">Dashboard</li>
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Product</li>
+                            <ol class="breadcrumb mb-0" style ="font-weight: bold;">
+                                <li class="breadcrumb-item">Dashboard</li>
+                                <li class="breadcrumb-item"><a href="/dashboard/admin/category">Quản lý danh danh mục</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">${category.categoryName}</li>
                             </ol>
                         </nav>
                     </div>   
