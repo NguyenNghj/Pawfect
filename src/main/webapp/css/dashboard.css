@@ -546,3 +546,9 @@ tr:hover {
 h1{
     font-weight: bold;
 }
+
+.form-label{
+    font-size: 18px;
+    font-weight: bold !important;
+    color: #D3A376;
+}

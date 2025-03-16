@@ -78,15 +78,16 @@
                         </div>
                     </div>
 
-                    <div class="row mt-2">
+                    <div class="row mt-2 bg-white p-3 d-flex align-items-center justify-content-center" 
+                         style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
-                            <ol class="breadcrumb">
+                            <ol class="breadcrumb mb-0" style ="font-weight: bold;">
                                 <li class="breadcrumb-item">Dashboard</li>
-                                <li class="breadcrumb-item"><a href="/dashboard/admin/product">Quản lý mã giảm giá</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Thêm sản phẩm mới</li>
+                                <li class="breadcrumb-item"><a href="/dashboard/admin/product">Quản lý sản phẩm</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Tạo sản phẩm</li>
                             </ol>
                         </nav>
-                    </div>    
+                    </div>      
 
                     <!--                    <div class="row">
                                             <div class="col-3 p-0" style="margin-top: 60px;">
@@ -113,7 +114,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="createProductCategory">Thể loại</label>
+                                <label for="createProductCategory" class="form-label">Thể loại</label>
                                 <select class="form-select" name="categoryId" id="categoryId" onchange="updateProductStatusOptions()">
                                     <c:forEach var="category" items="${categories}">
                                         <option value="${category.categoryId}" data-is-active="${category.active}">
@@ -129,7 +130,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="createProductPetType">Dành cho</label>
+                                <label for="createProductPetType" class="form-label">Dành cho</label>
                                 <select class="form-select" name="productPetType">
                                     <option value="Chó">Chó</option>
                                     <option value="Mèo">Mèo</option>
@@ -148,7 +149,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="createProductStatus">Trạng thái</label>
+                                <label for="createProductStatus" class="form-label">Trạng thái</label>
                                 <select class="form-select" name="productActive" id="productActive">
                                     <option value="true">Đang bán</option>
                                     <option value="false">Ngừng bán</option>
