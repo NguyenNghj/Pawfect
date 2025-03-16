@@ -77,11 +77,15 @@
 
                     <div class="row d-flex align-items-center" style="margin-top: 30px;">
                         <div class="col-md-6 text-start">
-                            <form action="ordermanagement?&action=search&status=${param.status}" method="post" class="d-flex mb-3 align-items-center"
+                            <form action="ordermanagement" method="get" class="d-flex mb-3 align-items-center" 
                                   style="max-width: 400px; border-radius: 25px; background: #f8f9fa; padding: 5px;">
-                                <input type="search" name="searchContent" class="form-control" id="searchInput" placeholder="Nhập từ khóa..."
+
+                                <input type="search" name="search" class="form-control" id="inputName" placeholder="Nhập từ khóa..."
+
                                        style="flex: 1; border: none; outline: none; padding: 8px 12px; border-radius: 20px; font-size: 14px;">
-                                <button type="submit" class="btn btn-primary"
+                                <input type="hidden" name="action" value="search">
+                                <input type="hidden" name="status" value="${param.status}">
+                                <button type="submit" class="btn btn-primary" 
                                         style="border-radius: 20px; padding: 6px 15px; font-size: 14px; font-weight: bold; background-color: #007bff; border: none; transition: 0.3s;">
                                     Tìm Kiếm
                                 </button>

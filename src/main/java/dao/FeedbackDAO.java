@@ -46,7 +46,7 @@ public class FeedbackDAO {
             + "    Products p ON f.product_id = p.product_id\n"
             + "WHERE\n"
             + "    p.product_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ?\n"
-            + "    OR c.full_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ?";
+            + "    OR c.full_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? ";
 
     protected static String Check_Order_Feedback = "SELECT COUNT(*) \n"
             + "FROM Feedbacks \n"
@@ -197,11 +197,33 @@ public class FeedbackDAO {
             + "JOIN\n"
             + "    Products p ON f.product_id = p.product_id";
 
-    public static List<Feedback> searchFeedback(String search) {
+    public static List<Feedback> searchFeedback(String search, String star) {
         List<Feedback> list = new ArrayList<>();
+        
+        String searchRating = "";
+        
+        switch (star) {
+            case "1":
+                searchRating = "AND f.rating = '1'";
+                break;
+            case "2":
+                searchRating = "AND f.rating = '2'";
+                break;
+            case "3":
+                searchRating = "AND f.rating = '3'";
+                break;
+            case "4":
+                searchRating = "AND f.rating = '4'";
+                break;
+            case "5":
+                searchRating = "AND f.rating = '5'";
+                break;
+            
+        }
+        
         try {
             Con = new DBContext().getConnection();
-            PreparedStatement ps = Con.prepareStatement(Search_Feedback);
+            PreparedStatement ps = Con.prepareStatement(Search_Feedback + searchRating + "\nORDER BY f.feedback_id DESC;");
             ps.setString(1, "%" + search + "%");
             ps.setString(2, "%" + search + "%");
             ResultSet rs = ps.executeQuery();

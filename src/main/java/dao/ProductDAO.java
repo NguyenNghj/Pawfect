@@ -249,7 +249,7 @@ public class ProductDAO {
                 + "                p.product_price, p.product_image, p.stock, p.description, p.is_active \n"
                 + "                FROM Products p \n"
                 + "               JOIN Category c ON p.category_id = c.category_id \n"
-                + "                WHERE p.product_name LIKE ? OR p.product_petType LIKE  ? OR c.category_name LIKE  ?";
+                + "                WHERE p.product_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? OR p.product_petType COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? OR c.category_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ?";
         try {
             conn = new DBContext().getConnection();
             ps = conn.prepareStatement(query);

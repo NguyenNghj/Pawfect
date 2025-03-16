@@ -110,11 +110,12 @@ public class OrderManagementServlet extends HttpServlet {
     private void searchOrder(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         String status = request.getParameter("status");
-        String searchContent = request.getParameter("searchContent").trim();
+        String searchContent = request.getParameter("search").trim();
 
+        System.out.println("status: " + status);
         System.out.println("searchContent: " + searchContent);
 
-        List<Order> orders = OrderDAO.searchOrder(searchContent);
+        List<Order> orders = OrderDAO.searchOrder(searchContent, status);
 
         request.setAttribute("orderStatus", status);
         request.setAttribute("orders", orders);
