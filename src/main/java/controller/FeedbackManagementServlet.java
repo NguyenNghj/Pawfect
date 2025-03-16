@@ -71,7 +71,6 @@ public class FeedbackManagementServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        System.out.println("Action: " + action);
         try {
             switch (action) {
                 case "view":
@@ -162,11 +161,12 @@ public class FeedbackManagementServlet extends HttpServlet {
     private void searchFeedback(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         String status = request.getParameter("status");
-        String searchContent = request.getParameter("searchContent").trim();
+        String searchContent = request.getParameter("search").trim();
 
+        System.out.println("status: " + status);
         System.out.println("searchContent: " + searchContent);
 
-        List<Feedback> feedbacks = FeedbackDAO.searchFeedback(searchContent);
+        List<Feedback> feedbacks = FeedbackDAO.searchFeedback(searchContent, status);
 
         request.setAttribute("feedbackStatus", status);
         request.setAttribute("feedbacks", feedbacks);

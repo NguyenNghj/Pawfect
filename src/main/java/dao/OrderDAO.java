@@ -51,7 +51,7 @@ public class OrderDAO {
             + "LEFT JOIN PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
             + "LEFT JOIN ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
             + "LEFT JOIN DiscountOrders do ON o.order_id = do.order_id\n"
-            + "WHERE c.full_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ?";
+            + "WHERE c.full_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? ";
 
     protected static String Approval_Order = "UPDATE Orders\n"
             + "SET status = ?, \n"
@@ -242,11 +242,35 @@ public class OrderDAO {
         return 0;
     }
 
-    public static List<Order> searchOrder(String search) {
+    public static List<Order> searchOrder(String search, String status) {
         List<Order> list = new ArrayList<>();
+
+        String searchStatus = "";
+        
+        switch (status) {
+            case "cxn":
+                searchStatus = "AND o.status = N'Chờ xác nhận'";
+                break;
+            case "cln":
+                searchStatus = "AND o.status = N'Chờ lấy hàng'";
+                break;
+            case "cgh":
+                searchStatus = "AND o.status = N'Chờ giao hàng'";
+                break;
+            case "ht":
+                searchStatus = "AND o.status = N'Hoàn thành'";
+                break;
+            case "ych":
+                searchStatus = "AND o.status = N'Yêu cầu huỷ...'";
+                break;
+            case "dh":
+                searchStatus = "AND o.status = N'Đã huỷ'";
+                break;
+        }
+
         try {
             Con = new DBContext().getConnection();
-            PreparedStatement ps = Con.prepareStatement(Search_Order);
+            PreparedStatement ps = Con.prepareStatement(Search_Order + searchStatus + "\nORDER BY o.order_id DESC;");
             ps.setString(1, "%" + search + "%");
             ResultSet rs = ps.executeQuery();
 
