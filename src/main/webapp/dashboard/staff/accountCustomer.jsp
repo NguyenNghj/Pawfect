@@ -27,44 +27,77 @@
                 <!-- SIDEBAR -->
                 <jsp:include page="sidebar.jsp"/>
 
-                <%
-                    Cookie[] cookies = request.getCookies();
-                    String staffRole = "";
-                    String staffName = "";
-
-                    if (cookies != null) {
-                        for (Cookie cookie : cookies) {
-                            String name = cookie.getName();
-                            String value = cookie.getValue();
-
-                            if ("staffRole".equals(name)) {
-                                staffRole = value;
-                            } else if ("staffName".equals(name)) {
-                                staffName = value;
-                            }
-
-                            // Nếu đã lấy được cả hai giá trị thì thoát vòng lặp
-                            if (!staffRole.isEmpty() && !staffName.isEmpty()) {
-                                break;
-                            }
-                        }
-                    }
-                %>
+        
                 <!-- MAIN -->
                 <div class="col" id="main" style="padding: 0 40px;">
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
                                 <h1>Quản lí khách hàng</h1>
+                                <%
+                                    Cookie[] cookies = request.getCookies();
+                                    String staffRole = "";
+                                    String staffName = "";
+
+                                    if (cookies != null) {
+                                        for (Cookie cookie : cookies) {
+                                            if ("staffRole".equals(cookie.getName())) {
+                                                staffRole = cookie.getValue();
+                                            } else if ("staffName".equals(cookie.getName())) {
+                                                staffName = cookie.getValue();
+                                            }
+
+                                            if (!staffRole.isEmpty() && !staffName.isEmpty()) {
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    // Đặt vào request scope
+                                    request.setAttribute("staffRole", staffRole);
+                                    request.setAttribute("staffName", staffName);
+                                %>
                             </div>
-                            <div class="dropdown d-flex align-items-center gap-2">
-                                <span style = "color: #D3A376; font-weight: bold;"><%= staffName%></span>
-                                <a href="staffprofile">
-                                    <button class="btn" type="button">
-                                        <img class="profile-img" src="${staff.image}" alt="">
-                                    </button>
-                                </a>
-                            </div>                                                              
+                          
+      <c:choose>
+    <c:when test="${staffRole eq 'Admin'}">
+        <div class="dropdown d-flex align-items-center gap-2">
+            <span style="color: #D3A376; font-weight: bold;"><%= staffName %></span>
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                   <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li>
+                    <a class="dropdown-item" href="staffprofile">
+                        <i class="fa-solid fa-user"></i> Hồ sơ cá nhân
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item d-flex align-items-center gap-2" href="/dashboard/admin/statistics">
+                        <i class="fa-solid fa-repeat"></i> Chuyển qua giao diện quản lí
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </c:when>
+    <c:otherwise>
+        <div class="dropdown d-flex align-items-center gap-2">
+            <span style="color: #D3A376; font-weight: bold;"><%= staffName %></span>
+            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <img class="profile-img" src="${staff.image}" alt="">
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li>
+                    <a class="dropdown-item" href="staffprofile">
+                        <i class="fa-solid fa-user"></i> Hồ sơ cá nhân
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </c:otherwise>
+</c:choose>
+
+                                                         
                         </div>
                     </div>
 
