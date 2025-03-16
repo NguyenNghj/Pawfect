@@ -3,6 +3,7 @@ package model;
 import java.sql.Date;
 
 public class Staff {
+
     private int staffId;
     private String roleName;
     private String password;
@@ -14,13 +15,13 @@ public class Staff {
     private Date birthDate;
     private String image;
     private boolean isActive;
-      private int totalOrders;   // Thêm biến totalOrders
-    private int totalSold;     // Thêm biến totalSold
+    private double totalOrder;
+    private double totalBooking;
     private double totalRevenue;
 
     // Constructor đầy đủ
     public Staff(int staffId, String roleName, String password, String fullName, String email, String phone, String address,
-                 String gender, Date birthDate, String image, boolean isActive) {
+            String gender, Date birthDate, String image, boolean isActive) {
         this.staffId = staffId;
         this.roleName = roleName;
         this.password = password;
@@ -32,12 +33,11 @@ public class Staff {
         this.birthDate = birthDate;
         this.image = image;
         this.isActive = isActive;
-        
     }
 
     // Constructor không có staffId (dùng khi thêm mới)
     public Staff(String roleName, String password, String fullName, String email, String phone, String address,
-                 String gender, Date birthDate, String image, boolean isActive) {
+            String gender, Date birthDate, String image, boolean isActive) {
         this.roleName = roleName;
         this.password = password;
         this.fullName = fullName;
@@ -49,15 +49,14 @@ public class Staff {
         this.image = image;
         this.isActive = isActive;
     }
-     public Staff(int staffId, String fullName, int totalOrders, int totalSold, double totalRevenue) {
-        this.staffId = staffId;
+
+    public Staff(String fullName, String image, double totalOrder, double totalBooking, double totalRevenue) {
         this.fullName = fullName;
-        this.totalOrders = totalOrders;
-        this.totalSold = totalSold;
+        this.image = image;
+        this.totalOrder = totalOrder;
+        this.totalBooking = totalBooking;
         this.totalRevenue = totalRevenue;
     }
-
-
 
     // Getters và Setters
     public int getStaffId() {
@@ -147,22 +146,29 @@ public class Staff {
     public void setActive(boolean active) {
         isActive = active;
     }
-    
-    // Getters và Setters cho các thuộc tính mới
-    public int getTotalOrders() {
-        return totalOrders;
+
+    public boolean isIsActive() {
+        return isActive;
     }
 
-    public void setTotalOrders(int totalOrders) {
-        this.totalOrders = totalOrders;
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
-    public int getTotalSold() {
-        return totalSold;
+    public double getTotalOrder() {
+        return totalOrder;
     }
 
-    public void setTotalSold(int totalSold) {
-        this.totalSold = totalSold;
+    public void setTotalOrder(double totalOrder) {
+        this.totalOrder = totalOrder;
+    }
+
+    public double getTotalBooking() {
+        return totalBooking;
+    }
+
+    public void setTotalBooking(double totalBooking) {
+        this.totalBooking = totalBooking;
     }
 
     public double getTotalRevenue() {

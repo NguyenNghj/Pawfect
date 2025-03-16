@@ -4,6 +4,7 @@
     Author     : Vu Quang Duc - CE181221
 --%>
 
+<%@page import="com.google.gson.Gson"%>
 <%@page import="java.util.Arrays"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -108,18 +109,18 @@
                                     <h2><fmt:formatNumber value="${totalBooking}" type="number" groupingUsed="true" />đ</h2>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="card">
-                                    <h6>Total Sales</h6>
-                                    <h2>$35,078</h2>
-                                </div>
-                            </div>
+                            <!--                            <div class="col-md-3">
+                                                            <div class="card">
+                                                                <h6>Total Sales</h6>
+                                                                <h2>$35,078</h2>
+                                                            </div>
+                                                        </div>-->
                         </div>
 
                         <div class="row mt-4">
-                            <div class="col-md-8">
+                            <div class="col-md-12">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <h6>BIỂU ĐỒ DOANH THU SẢN PHẨM VÀ KHÁCH SẠN THÚ CƯNG</h6>
+                                    <h5>BIỂU ĐỒ DOANH THU SẢN PHẨM VÀ KHÁCH SẠN THÚ CƯNG</h5>
                                     <div class="toggle-group">
                                         <button id="month-btn">Month</button>
                                         <button id="week-btn" class="active">Week</button>
@@ -129,133 +130,129 @@
                                     <div id="line-chart"></div>
                                 </div>
                             </div>
-
-                            <div class="col-md-4">
-                                <h6>SỐ LƯỢNG ĐƠN HOÀN THÀNH</h6>
-                                <div class="card">
-                                    <h2>$7,650</h2>
-                                    <div id="bar-chart"></div>
-                                </div>
-                            </div>
                         </div>
-
 
                         <div class="row mt-4">
-                            <!-- Recent Orders Table -->
-                            <div class="col-md-8">
-                                <h5>TOP 5 SẢN PHẨM BÁN CHẠY</h5>
-                                <div class="card p-3">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Tracking No</th>
-                                                <th>Product Name</th>
-                                                <th>Total Order</th>
-                                                <th>Status</th>
-                                                <th>Total Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>84564564</td>
-                                                <td>Camera Lens</td>
-                                                <td>40</td>
-                                                <td class="status-rejected">Rejected</td>
-                                                <td>$40,570</td>
-                                            </tr>
-                                            <tr>
-                                                <td>84564564</td>
-                                                <td>Laptop</td>
-                                                <td>300</td>
-                                                <td class="status-pending">Pending</td>
-                                                <td>$180,139</td>
-                                            </tr>
-                                            <tr>
-                                                <td>84564564</td>
-                                                <td>Mobile</td>
-                                                <td>355</td>
-                                                <td class="status-approved">Approved</td>
-                                                <td>$180,139</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                            <div class="col-md-6">
+                                <h5>SỐ LƯỢNG ĐƠN HOÀN THÀNH</h5>
+                                <div class="card">
+                                    <h2>Tổng ${totalCountOrder} đơn</h2>
+                                    <div id="order-chart"></div>
                                 </div>
                             </div>
 
-                            <!-- Analytics Report -->
-                            <div class="col-md-4">
-                                <h3>TOP NHÂN VIÊN</h3>
-                                <div class="transaction-history">
-
-                                    <div class="transaction-item">
-                                        <div class="icon success">🎁</div>
-                                        <div class="transaction-details">
-                                            <h4>Order #002434</h4>
-                                        </div>
-                                        <div class="transaction-amount positive">+ $1,430</div>
-                                    </div>
-
-                                    <div class="transaction-item">
-                                        <div class="icon warning">💬</div>
-                                        <div class="transaction-details">
-                                            <h4>Order #984947</h4>
-                                        </div>
-                                        <div class="transaction-amount negative">- $302</div>
-                                    </div>
-
-                                    <div class="transaction-item">
-                                        <div class="icon danger">⚙️</div>
-                                        <div class="transaction-details">
-                                            <h4>Order #988784</h4>
-                                        </div>
-                                        <div class="transaction-amount negative">- $682</div>
-                                    </div>
-
-                                </div>
-                            </div>            
-
-                            <div class="col-md-8">
-                                <h5>TOP 5 LOẠI PHÒNG THÚ CƯNG</h5>
-                                <div class="card p-3">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Tracking No</th>
-                                                <th>Product Name</th>
-                                                <th>Total Order</th>
-                                                <th>Status</th>
-                                                <th>Total Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>84564564</td>
-                                                <td>Camera Lens</td>
-                                                <td>40</td>
-                                                <td class="status-rejected">Rejected</td>
-                                                <td>$40,570</td>
-                                            </tr>
-                                            <tr>
-                                                <td>84564564</td>
-                                                <td>Laptop</td>
-                                                <td>300</td>
-                                                <td class="status-pending">Pending</td>
-                                                <td>$180,139</td>
-                                            </tr>
-                                            <tr>
-                                                <td>84564564</td>
-                                                <td>Mobile</td>
-                                                <td>355</td>
-                                                <td class="status-approved">Approved</td>
-                                                <td>$180,139</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                            <div class="col-md-6">
+                                <h5>SỐ LƯỢNG PHÒNG CHECK OUT</h5>
+                                <div class="card">
+                                    <h2>Tổng ${totalCountBooking} phòng</h2>
+                                    <div id="booking-chart"></div>
                                 </div>
                             </div>
-
                         </div>
 
+                        <div class="row mt-4" style ="display: flex">
+                            <!-- Recent Orders Table -->
+                            <div class = "col-md-8" style ="display: flex; flex-direction: column">
+                                <div class="col">
+                                    <h5>THỐNG KÊ SẢN PHẨM BÁN CHẠY</h5>
+                                    <div class="card p-3">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Id</th>
+                                                    <th>Tên sản phẩm</th>
+                                                    <th>Số lượng đã bán</th>
+                                                    <th>Tổng tiền</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach var="product" items="${top5Product}">
+                                                    <tr>
+                                                        <td>${product.productId}</td>
+                                                        <td>${product.productName}</td>
+                                                        <td>${product.totalOrder}</td>
+                                                        <td><fmt:formatNumber value="${product.totalAmount}" type="number" groupingUsed="true" />đ</td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                        <c:if test="${empty top5Product}">                     
+                                            <div>
+                                                <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
+                                                    Không tìm thấy!
+                                                </h5>
+                                            </div>
+                                        </c:if>
+                                    </div>
+                                </div>
+
+                                <div class="col mt-4">
+                                    <h5>THỐNG KÊ PHÒNG THÚ CƯNG ƯA THÍCH</h5>
+                                    <div class="card p-3">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Id</th>
+                                                    <th>Tên phòng</th>
+                                                    <th>Số lần được đặt</th>
+                                                    <th>Thành tiền</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach var="hotel" items="${topPetHotel}">
+                                                    <tr>
+                                                        <td>${hotel.roomId}</td>
+                                                        <td>${hotel.roomName}</td>
+                                                        <td>${hotel.timeBooking}</td>
+                                                        <td><fmt:formatNumber value="${hotel.totalRenueve}" type="number" groupingUsed="true" />đ</td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                        <c:if test="${empty topPetHotel}">                     
+                                            <div>
+                                                <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
+                                                    Không tìm thấy!
+                                                </h5>
+                                            </div>
+                                        </c:if>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Analytics Report -->
+                            <div class="col-md-4">
+                                <h5>TOP NHÂN VIÊN</h5>
+                                <div class="transaction-history">
+                                    <c:choose>
+                                        <c:when test="${not empty topStaff}">
+                                            <c:forEach var="staff" items="${topStaff}">
+                                                <div class="transaction-item">
+                                                    <div class="icon success">
+                                                        <img src="./img/staffs/${staff.image}" alt="${staff.fullName}" style="width: 50px; height: 50px; object-fit: cover;" />
+                                                    </div>
+
+                                                    <div class="transaction-details">
+                                                        <h4>${staff.fullName}</h4>
+                                                    </div>
+                                                    <div style="display: flex; flex-direction: column">
+                                                        <div class="transaction-amount total">Tổng: + <fmt:formatNumber value="${staff.totalRevenue}" type="currency" currencySymbol="đ"/></div>
+                                                        <div class="transaction-amount order">Đơn hàng: + <fmt:formatNumber value="${staff.totalOrder}" type="currency" currencySymbol="đ"/></div>
+                                                        <div class="transaction-amount booking">Phòng: + <fmt:formatNumber value="${staff.totalBooking}" type="currency" currencySymbol="đ"/></div>
+                                                    </div>  
+                                                </div>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div>
+                                                <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
+                                                    Không tìm thấy!
+                                                </h5>
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </div> 
+                        </div>
                     </div> 
 
 
@@ -281,53 +278,74 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 
-        <!--        <script>
-                                document.querySelectorAll('.toggle-group button').forEach(button => {
-                                    button.addEventListener('click', () => {
-                                        document.querySelectorAll('.toggle-group button').forEach(btn => btn.classList.remove('active'));
-                                        button.classList.add('active');
-                                    });
-                                });
-        
-        
-                                var options1 = {
-                                    chart: {type: 'area', height: 250},
-                                    series: [
-                                        {name: 'Page Views', data: [30, 40, 28, 50, 60, 120, 100]},
-                                        {name: 'Sessions', data: [10, 30, 40, 35, 45, 70, 60]}
-                                    ],
-                                    xaxis: {categories: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN']},
-                                    colors: ['#007bff', '#17a2b8'],
-                                    fill: {type: 'gradient'}
-                                };
-                                new ApexCharts(document.querySelector("#line-chart"), options1).render();
-        
-                                var options2 = {
-                                    chart: {type: 'bar', height: 250},
-                                    series: [{name: 'Income', data: [60, 90, 70, 50, 65, 55, 75]}],
-                                    xaxis: {categories: ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']},
-                                    colors: ['#17a2b8']
-                                };
-                                new ApexCharts(document.querySelector("#bar-chart"), options2).render();
-                </script>-->
+        <script>
+                        document.querySelectorAll('.toggle-group button').forEach(button => {
+                            button.addEventListener('click', () => {
+                                document.querySelectorAll('.toggle-group button').forEach(btn => btn.classList.remove('active'));
+                                button.classList.add('active');
+                            });
+                        });
 
+//                        var options2 = {
+//                            chart: {type: 'bar', height: 250},
+//                            series: [{name: 'Income', data: [60, 90, 70, 50, 65, 55, 75]}],
+//                            xaxis: {categories: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN']},
+//                            colors: ['#17a2b8']
+//                        };
+//                        new ApexCharts(document.querySelector("#bar-chart"), options2).render();
+        </script>
+
+        <%
+            double[] orders = (double[]) request.getAttribute("orders");
+            int[] countOrder = (int[]) request.getAttribute("countOrder");
+            int[] countBooking = (int[]) request.getAttribute("countBooking");
+            String[] days = {"T2", "T3", "T4", "T5", "T6", "T7", "CN"};
+        %>
+
+
+        <<script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Dữ liệu từ JSP sang JavaScript
+                var days = <%= new Gson().toJson(days)%>;
+                var countOrder = <%= new Gson().toJson(countOrder)%>;
+                var countBooking = <%= new Gson().toJson(countBooking)%>;
+
+                // Vẽ biểu đồ đơn hàng hoàn thành
+                var orderOptions = {
+                    chart: {type: 'bar', height: 250},
+                    series: [{name: 'Số lượng đơn', data: countOrder}],
+                    xaxis: {categories: days},
+                    colors: ['#28a745']
+                };
+                new ApexCharts(document.querySelector("#order-chart"), orderOptions).render();
+
+                // Vẽ biểu đồ phòng check-out
+                var bookingOptions = {
+                    chart: {type: 'bar', height: 250},
+                    series: [{name: 'Số lượng phòng', data: countBooking}],
+                    xaxis: {categories: days},
+                    colors: ['#dc3545']
+                };
+                new ApexCharts(document.querySelector("#booking-chart"), bookingOptions).render();
+            });
+        </script>
 
         <script>
-                        var ordersData = <%= Arrays.toString((double[]) request.getAttribute("orders"))%>;
-                        var bookingsData = <%= Arrays.toString((double[]) request.getAttribute("bookings"))%>;
-                        var revenueData = <%= Arrays.toString((double[]) request.getAttribute("revenue"))%>; // Thêm dữ liệu doanh thu
+            var ordersData = <%= Arrays.toString((double[]) request.getAttribute("orders"))%>;
+            var bookingsData = <%= Arrays.toString((double[]) request.getAttribute("bookings"))%>;
+            var revenueData = <%= Arrays.toString((double[]) request.getAttribute("revenue"))%>; // Thêm dữ liệu doanh thu
 
-                        var options1 = {
-                            chart: {type: 'area', height: 250},
-                            series: [
-                                {name: 'Đơn hàng', data: ordersData},
-                                {name: 'Đặt phòng', data: bookingsData}
-                            ],
-                            xaxis: {categories: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN']},
-                            colors: ['#007bff', '#17a2b8'],
-                            fill: {type: 'gradient'}
-                        };
-                        new ApexCharts(document.querySelector("#line-chart"), options1).render();
+            var options1 = {
+                chart: {type: 'area', height: 250},
+                series: [
+                    {name: 'Đơn hàng', data: ordersData},
+                    {name: 'Đặt phòng', data: bookingsData}
+                ],
+                xaxis: {categories: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN']},
+                colors: ['#007bff', '#17a2b8'],
+                fill: {type: 'gradient'}
+            };
+            new ApexCharts(document.querySelector("#line-chart"), options1).render();
         </script>
 
 
