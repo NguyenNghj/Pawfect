@@ -83,7 +83,7 @@ public class FeedbackDAO {
             + "JOIN\n"
             + "    Products p ON f.product_id = p.product_id\n"
             + "WHERE\n"
-            + "    f.product_id = ?"
+            + "    f.product_id = ?\n"
             + "ORDER BY\n"
             + "     f.feedback_date DESC";
 
