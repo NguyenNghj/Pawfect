@@ -20,6 +20,9 @@ public class Product {
     private int stock;
     private String description;
     private boolean active;
+    
+    private int totalOrder;
+    private double totalAmount;
 
     public Product(int productId, int categoryId, String categoryName, String productName, String productPetType, double productPrice, String productImage, int stock, String description, boolean active) {
         this.productId = productId;
@@ -66,6 +69,14 @@ public class Product {
         this.active = active;
     }
 
+    public Product(int productId, String productName, int totalOrder, double totalAmount) {
+        this.productId = productId;
+        this.productName = productName;
+        this.totalOrder = totalOrder;
+        this.totalAmount = totalAmount;
+    }
+   
+    
     public int getProductId() {
         return productId;
     }
@@ -145,5 +156,23 @@ public class Product {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    public int getTotalOrder() {
+        return totalOrder;
+    }
+
+    public void setTotalOrder(int totalOrder) {
+        this.totalOrder = totalOrder;
+    }
+
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+    
+    
 
 }

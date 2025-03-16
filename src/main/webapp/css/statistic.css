@@ -1,6 +1,3 @@
-body {
-    background-color: #f8f9fa;
-}
 
 .card {
     border-radius: 10px;
@@ -142,9 +139,26 @@ body {
     font-weight: bold;
 }
 
-.transaction-amount.positive {
+.transaction-amount.total {
+    font-size: 20px;
     color: #28a745;
+}
+.transaction-amount.order {
+    color: blue;
+}
+.transaction-amount.booking {
+    color: orange;
 }
 .transaction-amount.negative {
     color: #dc3545;
+}
+
+h5{
+    font-size:22px;
+    font-weight: bold;
+    color: #D3A376;
+}
+
+h6{
+    font-weight: bold;
 }

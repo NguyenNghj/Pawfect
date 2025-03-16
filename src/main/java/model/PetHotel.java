@@ -19,6 +19,9 @@ public class PetHotel {
     private String status;
     private boolean isActive;
 
+    private int timeBooking;
+    private double totalRenueve;
+
     // Constructor không có `status` và `isActive`
     public PetHotel(String roomName, String roomImage, String roomType, double minWeight, double maxWeight, int quantity, int availableQuantity, double pricePerNight, String description) {
         this.roomName = roomName;
@@ -51,6 +54,13 @@ public class PetHotel {
         this.description = description;
         this.status = status;
         this.isActive = isActive;
+    }
+
+    public PetHotel(int roomId, String roomName, int timeBooking, double totalRenueve) {
+        this.roomId = roomId;
+        this.roomName = roomName;
+        this.timeBooking = timeBooking;
+        this.totalRenueve = totalRenueve;
     }
 
     // Getters và Setters
@@ -149,4 +159,29 @@ public class PetHotel {
     public void setActive(boolean isActive) {
         this.isActive = isActive;
     }
+
+    public boolean isIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    public int getTimeBooking() {
+        return timeBooking;
+    }
+
+    public void setTimeBooking(int timeBooking) {
+        this.timeBooking = timeBooking;
+    }
+
+    public double getTotalRenueve() {
+        return totalRenueve;
+    }
+
+    public void setTotalRenueve(double totalRenueve) {
+        this.totalRenueve = totalRenueve;
+    }
+
 }

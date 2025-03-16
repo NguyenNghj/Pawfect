@@ -13,6 +13,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
+import model.PetHotel;
+import model.Product;
+import model.Staff;
 
 /**
  *
@@ -58,54 +61,50 @@ public class StatisticManagement extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        StatisticDAO statisticDAO = new StatisticDAO();
-//        double mondayOrder = statisticDAO.getTotalOrderByDayOfWeek("Monday");
-//        double tuesdayOrder = statisticDAO.getTotalOrderByDayOfWeek("Tuesday");
-//        double wednesdayOrder = statisticDAO.getTotalOrderByDayOfWeek("Wednesday");
-//        double thursdayOrder = statisticDAO.getTotalOrderByDayOfWeek("Thursday");
-//        double fridayOrder = statisticDAO.getTotalOrderByDayOfWeek("Friday");
-//        double saturdayOrder = statisticDAO.getTotalOrderByDayOfWeek("Saturday");
-//        double sundayOrder = statisticDAO.getTotalOrderByDayOfWeek("Sunday");
-//        double totalOrder = mondayOrder + tuesdayOrder + wednesdayOrder + thursdayOrder + fridayOrder + saturdayOrder + sundayOrder;
-//
-//        double mondayBooking = statisticDAO.getTotalBookingByDayOfWeek("Monday");
-//        double tuesdayBooking = statisticDAO.getTotalBookingByDayOfWeek("Tuesday");
-//        double wednesdayBooking = statisticDAO.getTotalBookingByDayOfWeek("Wednesday");
-//        double thursdayBooking = statisticDAO.getTotalBookingByDayOfWeek("Thursday");
-//        double fridayBooking = statisticDAO.getTotalBookingByDayOfWeek("Friday");
-//        double saturdayBooking = statisticDAO.getTotalBookingByDayOfWeek("Saturday");
-//        double sundayBooking = statisticDAO.getTotalBookingByDayOfWeek("Sunday");
-//        double totalBooking = mondayBooking + tuesdayBooking + wednesdayBooking + thursdayBooking + fridayBooking + saturdayBooking + sundayBooking;
-//
-//        double totalRevenue = totalOrder + totalBooking;
-//
-//        request.setAttribute("totalOrder", totalOrder);
-//         request.setAttribute("totalBooking", totalBooking);
-//        request.setAttribute("totalRevenue", totalRevenue);
-//
-//        request.getRequestDispatcher("/dashboard/admin/statistic.jsp").forward(request, response);
-
         StatisticDAO statisticDAO = new StatisticDAO();
 
         double[] orders = new double[7];
+        int[] countOrder = new int[7];
+
         double[] bookings = new double[7];
+        int[] countBooking = new int[7];
         String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+
         double totalOrder = 0;
+        int totalCountOrder = 0;
         double totalBooking = 0;
+        int totalCountBooking = 0;
 
         for (int i = 0; i < 7; i++) {
             orders[i] = statisticDAO.getTotalOrderByDayOfWeek(days[i]);
+            countOrder[i] = statisticDAO.getOrderCountByDayOfWeek(days[i]);
             totalOrder += orders[i];
+            totalCountOrder += countOrder[i];
+
             bookings[i] = statisticDAO.getTotalBookingByDayOfWeek(days[i]);
+            countBooking[i] = statisticDAO.getBookingCountByDayOfWeek(days[i]);
             totalBooking += bookings[i];
+            totalCountBooking += countBooking[i];
         }
+
+        List<Product> top5Product = statisticDAO.getTop5BestSellingProductsInWeek();
+        List<Staff> topStaff = statisticDAO.getStaffRevenueInWeek();
+        List<PetHotel> topPetHotel = statisticDAO.getTop5BestBookingHotelInWeek();
+        
         double totalRevenue = totalOrder + totalBooking;
         request.setAttribute("totalOrder", totalOrder);
         request.setAttribute("totalBooking", totalBooking);
         request.setAttribute("totalRevenue", totalRevenue);
         request.setAttribute("orders", orders);
         request.setAttribute("bookings", bookings);
+        request.setAttribute("countOrder", countOrder);
+        request.setAttribute("countBooking", countBooking);
+        request.setAttribute("totalCountOrder", totalCountOrder);
+        request.setAttribute("totalCountBooking", totalCountBooking);
 
+        request.setAttribute("top5Product", top5Product);
+        request.setAttribute("topPetHotel", topPetHotel);
+        request.setAttribute("topStaff", topStaff);
         request.getRequestDispatcher("/dashboard/admin/statistic.jsp").forward(request, response);
     }
 
