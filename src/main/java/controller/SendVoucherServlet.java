@@ -108,6 +108,7 @@ public class SendVoucherServlet extends HttpServlet {
             VoucherDAO voucherDAO = new VoucherDAO();
             Voucher voucher = voucherDAO.getVoucherByCode(voucherCode);
             
+            // Lay giam gia theo % hoac gia tien de show len email
             double discountPrice = 0;
             if (voucher.getDiscountAmount() != 0) {
                 discountPrice = voucher.getDiscountAmount();
@@ -115,10 +116,12 @@ public class SendVoucherServlet extends HttpServlet {
                 discountPrice = voucher.getDiscountPercentage();
             }
 
+            // Dinh dang lai han su dung cua voucher
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
             String voucherFrom = sdf.format(voucher.getStartDate());
             String voucherTo = sdf.format(voucher.getEndDate());
 
+            // Url dan toi PawFect
             String shopLink = "http://localhost:9999/pawfect";
 
             // Chuyen doi jsp sang String
