@@ -82,10 +82,10 @@ public class LoginStaffServlet extends HttpServlet {
 
         if (role != null && staffName != null && staffId != null) {
             if ("Staff".equals(role)) {
-                response.sendRedirect("dashboard/staff/dashboard.jsp");
+                response.sendRedirect("dashboard/staff/viewcustomersforStaff");
                 return;
             } else if ("Admin".equals(role)) {
-                response.sendRedirect("dashboard/admin/dashboard.jsp");
+                response.sendRedirect("/dashboard/admin/statistics");
                 return;
             }
         }
@@ -130,7 +130,7 @@ public class LoginStaffServlet extends HttpServlet {
                 if (account.getRole().equals("Admin")) {
                     response.sendRedirect("dashboard/admin/statistics");
                 } else {
-                    response.sendRedirect("dashboard/staff/dashboard.jsp");
+                    response.sendRedirect("dashboard/staff/viewcustomersforStaff");
                 }
             } else {
                 response.sendRedirect("loginadmin.jsp?error=Invalid Credentials");
