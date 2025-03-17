@@ -107,22 +107,6 @@ public class OrderServlet extends HttpServlet {
         }
     }
 
-    // Phương thức kiểm tra email hợp lệ
-    private boolean isValidEmail(String email) {
-        String emailRegex = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
-    // Phương thức kiểm tra số điện thoại hợp lệ (10-11 chữ số)
-    private boolean isValidPhone(String phone) {
-        String phoneRegex = "^\\d{10,11}$"; // Chỉ chấp nhận số và có độ dài từ 10-11 chữ số
-        Pattern pattern = Pattern.compile(phoneRegex);
-        Matcher matcher = pattern.matcher(phone);
-        return matcher.matches();
-    }
-
     private void sendEmailAfterSuccessVNPAY(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
 
@@ -130,7 +114,7 @@ public class OrderServlet extends HttpServlet {
             // Lay customerId tu Cookie
             String customerIdStr = getCustomerIdFromCookies(request);
             int customerId = Integer.parseInt(customerIdStr);
-            
+
             int orderId = Integer.parseInt(request.getParameter("orderId"));
 
             List<Order> orders = OrderDAO.getOrderByOrderId(orderId);
@@ -191,14 +175,23 @@ public class OrderServlet extends HttpServlet {
             if (deleteOrderItem) {
                 System.out.println("Xoa cac order item thanh cong.");
 
-                boolean deleteOrder = OrderDAO.deleteOrder(orderId);
-
-                if (deleteOrder) {
-                    System.out.println("Xoa don hang thanh cong.");
+                DiscountOrderDAO discountOrderDAO = new DiscountOrderDAO();
+                // XOA DON HANG GIAM GIA KHI THANH TOAN THAT BAI
+                boolean deleteDiscountOrder = discountOrderDAO.deleteDiscountOrder(orderId);
+                if (!deleteDiscountOrder) {
+                    System.out.println("Xoa don hang giam gia that bai!");
                     return;
                 }
-                System.out.println("Xoa don hang that bai!");
-                return;
+                System.out.println("Xoa don hang giam gia thanh cong.");
+
+                // XOA DON HANG KHI THANH TOAN THAT BAI
+                boolean deleteOrder = OrderDAO.deleteOrder(orderId);
+                if (!deleteOrder) {
+                    System.out.println("Xoa don hang that bai!");
+                    return;
+                }
+                System.out.println("Xoa don hang thanh cong.");
+
             }
             System.out.println("Xoa cac order item that bai!");
 
@@ -260,23 +253,10 @@ public class OrderServlet extends HttpServlet {
                 return;
             }
 
-            String status = "";
-            int shippingMethod_id = 0;
-            int paymentMethod_id = 0;
-
-            if (shippingMethod.equals("shipping-hoatoc")) {
-                shippingMethod_id = 2;
-            } else {
-                shippingMethod_id = 1;
-            }
-
-            if (paymentMethod.equals("payment-cash")) {
-                paymentMethod_id = 1;
-                status = "Chờ xác nhận";
-            } else {
-                paymentMethod_id = 2;
-                status = "Chờ lấy hàng";
-            }
+            // Lay phuong thuc dat hang, thanh toan va trang thai don hang
+            int shippingMethod_id = shippingMethod.equals("shipping-hoatoc") ? 2 : 1;
+            int paymentMethod_id = paymentMethod.equals("payment-cash") ? 1 : 2;
+            String status = paymentMethod.equals("payment-cash") ? "Chờ xác nhận" : "Chờ lấy hàng";
 
             Order order = new Order(customerId, paymentMethod_id, shippingMethod_id, name, phone, address, note, totalCartPrice + salePrice, status);
             int orderId = 0;
@@ -292,10 +272,9 @@ public class OrderServlet extends HttpServlet {
                     DiscountOrderDAO discountOrderDAO = new DiscountOrderDAO();
                     DiscountOrder discountOrder = new DiscountOrder(orderId, voucherId, totalCartPrice);
                     boolean check = discountOrderDAO.addDiscountOrder(discountOrder);
-                    if (check) {
-                        System.out.println("Them DiscountOrder thanh cong.");
-                    } else {
-                        System.out.println("Them DiscountOrder that bai!");
+                    System.out.println("Them DiscountOrder " + (check ? "thanh cong." : "that bai!"));
+                    if (!check) {
+                        return;
                     }
                 }
 
@@ -382,22 +361,23 @@ public class OrderServlet extends HttpServlet {
                 if (requestCancel) {
                     System.out.println("Yeu cau huy don hang thanh cong.");
 
-                    String customerName = orders.get(0).getCustomerName();
-                    String orderDate = orders.get(0).getOrderDate();
-                    String supportLink = "https://example.com/support";
-
-                    String contentEmail = Email.emailRequsetCancel;
-                    String finalContentEmail = String.format(contentEmail, customerName, (orderId + 2500000), orderDate, supportLink);
-
-                    ExecutorService executor = Executors.newFixedThreadPool(10); // Tạo một ExecutorService với 10 luồng
-
-                    executor.submit(() -> {
-                        try {
+//                    String customerName = orders.get(0).getCustomerName();
+//                    String orderDate = orders.get(0).getOrderDate();
+//                    String supportLink = "https://example.com/support";
+//
+//                    String contentEmail = Email.emailRequsetCancel;
+//                    String finalContentEmail = String.format(contentEmail, customerName, (orderId + 2500000), orderDate, supportLink);
+//
+//                    ExecutorService executor = Executors.newFixedThreadPool(10); // Tạo một ExecutorService với 10 luồng
+//
+//                    executor.submit(() -> {
+//                        try {
 //                        Email.sendEmail("vuquangduc1404@gmail.com", "Xác nhận đơn hàng", finalContentEmail);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    });
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                    });
+//                    executor.shutdown();
                     if (actionBack.equals("viewdetail")) {
                         response.sendRedirect("order?action=" + actionBack + "&orderId=" + orderId);
                     } else {
@@ -454,6 +434,7 @@ public class OrderServlet extends HttpServlet {
                         }
                     });
                     executor.shutdown();
+
                     if (actionBack.equals("viewdetail")) {
                         response.sendRedirect("order?action=" + actionBack + "&orderId=" + orderId);
                     } else {
@@ -563,6 +544,7 @@ public class OrderServlet extends HttpServlet {
 
     }
 
+    // PHUONG THUC LAY CUSTOMER ID CUA KHACH HANG
     public static String getCustomerIdFromCookies(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -573,6 +555,28 @@ public class OrderServlet extends HttpServlet {
             }
         }
         return null;
+    }
+
+    // Phương thức kiểm tra fullname hợp lệ
+    private boolean isValidName(String name) {
+        String nameRegex = "^[A-Za-zÀ-Ỹà-ỹ\\s]+$"; // Chỉ cho phép chữ cái và khoảng trắng
+        return name.matches(nameRegex);
+    }
+
+    // Phương thức kiểm tra email hợp lệ
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    // Phương thức kiểm tra số điện thoại hợp lệ (10-11 chữ số)
+    private boolean isValidPhone(String phone) {
+        String phoneRegex = "^\\d{10,11}$"; // Chỉ chấp nhận số và có độ dài từ 10-11 chữ số
+        Pattern pattern = Pattern.compile(phoneRegex);
+        Matcher matcher = pattern.matcher(phone);
+        return matcher.matches();
     }
 
     /**
