@@ -78,7 +78,8 @@
                          style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
-                                <li class="breadcrumb-item">Dashboard</li>
+                                <li class="breadcrumb-item">Bảng điều khiển</li>
+                                <li class="breadcrumb-item">Quản trị viên</li>
                                 <li class="breadcrumb-item"><a href="/dashboard/admin/category">Quản lý danh mục</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Tạo danh mục</li>
                             </ol>
@@ -99,7 +100,7 @@
                         <form id="createCategoryForm" action="/dashboard/admin/createcategory" method="post">
 
                             <div class="mb-3">
-                                <label for="categoryName" class="form-label">Tên thể loại</label>
+                                <label for="categoryName" class="form-label">Tên danh mục</label>
                                 <input type="text" class="form-control" name="categoryName" required>
                             </div>
 
@@ -111,7 +112,7 @@
                                 </select>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Thêm thể loại</button>
+                            <button type="submit" class="btn btn-primary">Thêm danh mục</button>
                             <a href="<c:url value='/dashboard/admin/category'/>" class="btn btn-secondary">Trở về</a>
                         </form>
                     </div>

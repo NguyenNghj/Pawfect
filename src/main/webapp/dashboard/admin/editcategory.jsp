@@ -79,8 +79,9 @@
                          style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
-                                <li class="breadcrumb-item">Dashboard</li>
-                                <li class="breadcrumb-item"><a href="/dashboard/admin/category">Quản lý danh danh mục</a></li>
+                                <li class="breadcrumb-item">Bảng điều khiển</li>
+                                <li class="breadcrumb-item">Quản trị viên</li>
+                                <li class="breadcrumb-item"><a href="/dashboard/admin/category">Quản lý danh mục</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">${category.categoryName}</li>
                             </ol>
                         </nav>
@@ -102,7 +103,7 @@
                             <input type="hidden" name="categoryId" value="${category.categoryId}">
 
                             <div class="mb-3">
-                                <label for="editCategoryName" class="form-label">Tên thể loại</label>
+                                <label for="editCategoryName" class="form-label">Tên danh mục</label>
                                 <input type="text" class="form-control" name="categoryName" value="${category.categoryName}" required>
                             </div>
 
@@ -127,7 +128,7 @@
                                     if (event.target.value === "false") {
                                         Swal.fire({
                                             title: "Xác nhận!",
-                                            text: "Bạn có chắc chắn muốn ngừng bán thể loại này không? Tất cả sản phẩm của thể loại này sẽ ngừng bán",
+                                            text: "Bạn có chắc chắn muốn ngừng bán danh mục này không? Tất cả sản phẩm của danh mục này sẽ ngừng bán",
                                             icon: "warning",
                                             showCancelButton: true,
                                             confirmButtonColor: "#d33",

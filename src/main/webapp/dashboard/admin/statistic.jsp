@@ -57,7 +57,7 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Quản lý sản phẩm</h1>
+                                <h1>Thống kê</h1>
                             </div>
 
                             <div class="dropdown d-flex align-items-center gap-2">
@@ -83,8 +83,9 @@
                          style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
-                                <li class="breadcrumb-item">Dashboard</li>
-                                <li class="breadcrumb-item active" aria-current="page">Quản lý sản phẩm</li>
+                                <li class="breadcrumb-item">Bảng điều khiển</li>
+                                <li class="breadcrumb-item">Quản trị viên</li>
+                                <li class="breadcrumb-item active" aria-current="page">Thống kê</li>
                             </ol>
                         </nav>
                     </div>   

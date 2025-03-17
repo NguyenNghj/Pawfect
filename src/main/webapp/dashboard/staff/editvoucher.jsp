@@ -48,6 +48,8 @@
                             }
                         }
                     }
+                    request.setAttribute("staffRole", staffRole);
+                    request.setAttribute("staffName", staffName);
                 %>
                 <!-- MAIN -->
                 <div class="col" id="main" style="padding: 0 40px;">

@@ -68,11 +68,6 @@
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <li>
-                                                <a class="dropdown-item" href="staffprofile">
-                                                    <i class="fa-solid fa-user"></i> Hồ sơ cá nhân
-                                                </a>
-                                            </li>
-                                            <li>
                                                 <a class="dropdown-item d-flex align-items-center gap-2" href="/dashboard/admin/statistics">
                                                     <i class="fa-solid fa-repeat"></i> Chuyển qua giao diện quản lí
                                                 </a>
@@ -82,17 +77,12 @@
                                 </c:when>
                                 <c:otherwise>
                                     <div class="dropdown d-flex align-items-center gap-2">
-                                        <span style="color: #D3A376; font-weight: bold;"><%= staffName%></span>
-                                        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <img class="profile-img" src="${staff.image}" alt="">
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <li>
-                                                <a class="dropdown-item" href="staffprofile">
-                                                    <i class="fa-solid fa-user"></i> Hồ sơ cá nhân
-                                                </a>
-                                            </li>
-                                        </ul>
+                                        <span style = "color: #D3A376; font-weight: bold;"><%= staffName%></span>
+                                        <a href="staffprofile">
+                                            <button class="btn" type="button">
+                                                <img class="profile-img" src="${staff.image}" alt="">
+                                            </button>
+                                        </a>
                                     </div>
                                 </c:otherwise>
                             </c:choose>
@@ -105,7 +95,8 @@
                          style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
-                                <li class="breadcrumb-item">Dashboard</li>
+                                <li class="breadcrumb-item">Bảng điều khiển</li>
+                                <li class="breadcrumb-item">Nhân viên</li>
                                 <li class="breadcrumb-item active" aria-current="page">Quản lí khách hàng</li>
                             </ol>
                         </nav>
