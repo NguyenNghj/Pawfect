@@ -20,6 +20,21 @@ public class DiscountOrderDAO {
     PreparedStatement ps = null;
     ResultSet rs = null;
     
+    
+    public boolean deleteDiscountOrder(int orderId) {
+        String query = "DELETE FROM DiscountOrders WHERE order_id = ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, orderId);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    
     public DiscountOrder getDiscountOrdersById(int orderId) {
         String query = "SELECT * FROM DiscountOrders WHERE order_id = ?";
         try {
