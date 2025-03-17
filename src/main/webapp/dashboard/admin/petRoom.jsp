@@ -20,7 +20,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="../../css/dashboard.css">
-        <title>Quản lý Pet Hotel</title>
+        <title>Quản lí Pet Hotel</title>
     </head>
     <body>
         <div class="container-fluid">
@@ -28,6 +28,7 @@
 
                 <!-- SIDEBAR -->
                 <jsp:include page="sidebar.jsp"/>
+
                 <%
                     Cookie[] cookies = request.getCookies();
                     String staffRole = "";
@@ -56,10 +57,10 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Quản lý khách sạn thú cưng</h1>
+                                <h1>Quản lí khách sạn thú cưng</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
-                                <span style = "color: #D3A376; font-weight: bold;"><%= staffName%></span>
+                                <span><%= staffName%></span>
                                 <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
                                 </button>
@@ -67,11 +68,24 @@
                                     <div class="d-grid gap-2">
                                         <li class="profile-img-switch-employee d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-repeat"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="/dashboard/staff/viewcustomersforStaff">Chuyển qua giao diện nhân viên</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="/dashboard/staff/dashboard.jsp">Switch to employee</a>
+                                        </li>
+                                        <li class="profile-img-switch-store d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
+                                            <i class="fa-solid fa-store"></i>
+                                            <a class="dropdown-item" style="padding: 0;" href="#">Go to store</a>
+                                        </li>
+                                        <hr style="margin: 0;">
+                                        <li class="profile-img-info1 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
+                                            <i class="fa-solid fa-user-pen"></i>
+                                            <a class="dropdown-item" style="padding: 0;" href="adminprofile">Profile</a>
+                                        </li>
+                                        <li class="profile-img-info2 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
+                                            <i class="fa-solid fa-right-from-bracket" style="font-size: 20px;"></i>
+                                            <a class="dropdown-item" style="padding: 0;" href="logoutadmin">Logout</a>
                                         </li>
                                     </div>
                                 </ul>
-                            </div>                                                              
+                            </div>                                                             
                         </div>
                     </div>
 
@@ -80,7 +94,7 @@
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
                                 <li class="breadcrumb-item">Dashboard</li>
-                                <li class="breadcrumb-item active" aria-current="page">Quản lý khách sạn thú cưng</li>
+                                <li class="breadcrumb-item active" aria-current="page">Quản lí khách sạn thú cưng</li>
                             </ol>
                         </nav>
                     </div> 
@@ -96,7 +110,7 @@
 
                         <!-- Form Tìm Kiếm -->
                         <div class="col-md-6">
-                            <form action="product" method="get" class="d-flex mb-3 align-items-center" 
+                            <form action="pethotel" method="get" class="d-flex mb-3 align-items-center" 
                                   style="max-width: 400px; margin: 0 auto; border-radius: 25px; background: #f8f9fa; padding: 5px;">
 
                                 <input type="search" name="search" class="form-control" id="inputName" placeholder="Nhập từ khóa..."
@@ -115,9 +129,7 @@
                                         </button>-->
 
 
-                    <%
-                        List<PetHotel> petRooms = (List<PetHotel>) request.getAttribute("petRooms");
-                    %>
+
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <div class="main-dashboard-table">
@@ -144,47 +156,45 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <% if (petRooms != null && !petRooms.isEmpty()) {
-                                                for (PetHotel room : petRooms) {%>
-                                        <tr>
-                                            <td> <img src="<%= room.getRoomImage()%>" alt="Hình ảnh phòng" width="150" height="150"> </td>
-                                            <td style="text-align: center; width: 12%;"><%= room.getRoomName()%></td>
-                                            <td style="text-align: center; width: 9%;"><%= room.getRoomType()%></td>
-                                            <td style="text-align: center;"><%= room.getMinWeight()%></td>
-                                            <td style="text-align: center;"><%= room.getMaxWeight()%></td>
-                                            <%
-                                                NumberFormat formatter = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
-                                            %>
-                                            <td style="text-align: center;"><%= formatter.format(room.getPricePerNight())%></td>
-                                            <td><%= room.getDescription()%></td>
-                                            <td style="width: 8%; text-align: center;"><%= room.getAvailableQuantity()%>/<%= room.getQuantity()%></td>
-                                            <td style="width: 10%;">
-                                                <span style="font-weight: bold; color: white; padding: 5px; color: <%= room.getStatus().equals("Còn phòng") ? "green" : "red"%>;">
-                                                    <%= room.getStatus()%>
-                                                </span>
-                                            </td>
-
-                                            <td style="width: 12%;">
-                                                <button type="button" class="btn btn-primary" onclick="editRoom(<%= room.getRoomId()%>)">Chỉnh sửa</button>
-                                                <script>
-                                                    function editRoom(roomId) {
-                                                        window.location.href = 'editpethotel?room_id=' + roomId;
-                                                    }
-                                                </script>
-                                            </td>
-
-                                        </tr>
-                                        <% }
-                                        } else { %>
-                                        <tr>
-                                            <td colspan="10" class="text-center w-100">
-                                                <div class="alert alert-warning" role="alert">
-                                                    Không có phòng nào được tìm thấy.
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <% }%>
+                                        <c:choose>
+                                            <c:when test="${not empty petRooms}">
+                                                <c:forEach var="room" items="${petRooms}">
+                                                    <tr>
+                                                        <td>
+                                                            <img src="<%= request.getContextPath()%>/img/pethotel/${room.roomImage}" alt="Hình ảnh phòng" width="150" height="150">
+                                                        </td>
+                                                        <td style="text-align: center; width: 12%;">${room.roomName}</td>
+                                                        <td style="text-align: center; width: 9%;">${room.roomType}</td>
+                                                        <td style="text-align: center;">${room.minWeight}</td>
+                                                        <td style="text-align: center;">${room.maxWeight}</td>
+                                                        <td style="text-align: center;">
+                                                <fmt:formatNumber value="${room.pricePerNight}" type="currency" currencyCode="VND"/>
+                                                </td>
+                                                <td>${room.description}</td>
+                                                <td style="width: 8%; text-align: center;">${room.availableQuantity}/${room.quantity}</td>
+                                                <td style="width: 10%;">
+                                                    <span style="font-weight: bold; padding: 5px; color: ${room.status eq 'Còn phòng' ? 'green' : 'red'};">
+                                                        ${room.status}
+                                                    </span>
+                                                </td>
+                                                <td style="width: 12%;">
+                                                    <button type="button" class="btn btn-primary" onclick="editpethotel(${room.roomId})">Chỉnh sửa</button>
+                                                </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <tr>
+                                                <td colspan="10" class="text-center w-100">
+                                                    <div class="alert alert-warning" role="alert">
+                                                        Không có phòng nào được tìm thấy.
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </c:otherwise>
+                                    </c:choose>
                                     </tbody>
+
                                 </table>
                             </div>
                         </div>
@@ -214,14 +224,121 @@
                 </div>
             </div>
         </div>
+        <script>
+            function editpethotel(roomId) {
+                if (!roomId) {
+                    alert("Lỗi: Không tìm thấy ID phòng!");
+                    return;
+                }
+                // Chuyển trang đến editpethotel.jsp với roomId
+                window.location.href = "editpethotel?roomId=" + roomId;
+            }
+        </script>
 
         <script>
             function updatePage(page) {
                 let urlParams = new URLSearchParams(window.location.search);
                 urlParams.set('page', page); // Cập nhật số trang
-                window.location.search = urlParams.toString();
+                localStorage.setItem("scrollPosition", window.scrollY); // Lưu vị trí cuộn
+                window.location.search = urlParams.toString(); // Chuyển trang với số trang cập nhật
             }
         </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Lấy thông báo lỗi từ request
+                var errorMessage = "<c:out value='${errorMessage}' />";
+                if (errorMessage && errorMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi!",
+                        text: errorMessage,
+                        confirmButtonText: "OK"
+                    });
+                }
+
+                // Lấy thông báo thành công từ session
+                var successMessage = "<c:out value='${sessionScope.successMessage}' />";
+                if (successMessage && successMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Thành công!",
+                        text: successMessage,
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        fetch('clear-session.jsp'); // Xóa session sau khi hiển thị
+                    });
+                }
+            });
+
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                let urlParams = new URLSearchParams(window.location.search);
+                let storedPage = localStorage.getItem("currentPage");
+
+                // Nếu không có `page` trên URL nhưng có trong `localStorage`, cập nhật lại URL
+                if (!urlParams.has("page") && storedPage) {
+                    urlParams.set("page", storedPage);
+                    window.history.replaceState({}, '', `${window.location.pathname}?${urlParams.toString()}`);
+                            }
+
+                            // Cuộn về vị trí cũ sau khi load lại trang
+                            let scrollPosition = localStorage.getItem("scrollPosition");
+                            if (scrollPosition) {
+                                window.scrollTo(0, scrollPosition);
+                                localStorage.removeItem("scrollPosition"); // Xóa sau khi cuộn xong
+                            }
+
+                            // Lưu số trang và vị trí cuộn khi bấm vào các phần tử có thể thay đổi nội dung trang
+                            document.querySelectorAll("a, button").forEach(element => {
+                                element.addEventListener("click", function () {
+                                    localStorage.setItem("currentPage", urlParams.get("page")); // Giữ trang hiện tại
+                                    localStorage.setItem("scrollPosition", window.scrollY); // Lưu vị trí cuộn
+                                });
+                            });
+                        });
+        </script>
+
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Lấy thông báo thành công từ session
+                var successMessage = "<c:out value='${sessionScope.successMessage}' />";
+                if (successMessage && successMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Thành công!",
+                        text: successMessage,
+                        confirmButtonText: "OK"
+                    });
+
+                    // Xóa session sau khi hiển thị
+                    fetch('clear-session.jsp');
+                }
+
+                // Lấy thông báo lỗi từ session
+                var errorMessage = "<c:out value='${sessionScope.errorMessage}' />";
+                if (errorMessage && errorMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi!",
+                        text: errorMessage,
+                        confirmButtonText: "OK"
+                    });
+
+                    // Xóa session sau khi hiển thị
+                    fetch('clear-session.jsp');
+                }
+            });
+        </script>
+        <%
+            session.removeAttribute("successMessage");
+            session.removeAttribute("errorMessage");
+        %>
+
 
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

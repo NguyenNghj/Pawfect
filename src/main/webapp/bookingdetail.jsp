@@ -118,7 +118,8 @@
 
                                           </p>
                                           <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #D3A376;">Ghi chú</h5>
-                                          <p>${booking.note}</p>
+                                          <p>${empty booking.note ? "Không có ghi chú" : booking.note}</p>
+
 
                                           <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #D3A376;">Tổng chi phí</h5>
                                           <p class="format-price" style="font-size: 20px; font-weight: bold; color: black;">${booking.totalPrice}</p>

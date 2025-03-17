@@ -55,7 +55,7 @@ public class PetHotelDAO {
         return list;
     }
 
-    public static List<PetHotel> filterPetRooms(String sizeFilter, String roomTypeFilter) {
+    public static List<PetHotel> filterPetHotels(String sizeFilter, String roomTypeFilter) {
         List<PetHotel> list = new ArrayList<>();
         String query = "SELECT * FROM PetHotel WHERE is_active = 1";
 

@@ -10,14 +10,13 @@
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Date" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="../../css/dashboard.css">
@@ -52,8 +51,6 @@
                             }
                         }
                     }
-                    request.setAttribute("staffRole", staffRole);
-                    request.setAttribute("staffName", staffName);
                 %> 
                 <!-- MAIN -->
                 <div class="col" id="main" style="padding: 0 40px;">
@@ -62,33 +59,35 @@
                             <div>
                                 <h1>Quản lí các yêu cầu đặt phòng</h1>
                             </div>
-                            <c:choose>
-                                <c:when test="${staffRole eq 'Admin'}">
-                                    <div class="dropdown d-flex align-items-center gap-2">
-                                        <span style="color: #D3A376; font-weight: bold;"><%= staffName%></span>
-                                        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <li>
-                                                <a class="dropdown-item d-flex align-items-center gap-2" href="/dashboard/admin/statistics">
-                                                    <i class="fa-solid fa-repeat"></i> Chuyển qua giao diện quản lí
-                                                </a>
-                                            </li>
-                                        </ul>
+                            <div class="dropdown d-flex align-items-center gap-2">
+                                <span><%= staffName%></span>
+                                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
+                                </button>
+                                <ul class="dropdown-menu ps-2 pe-2 pt-2 pb-2">
+                                    <div class="d-grid gap-2">
+                                        <% if ("Admin".equals(staffRole)) { %>
+                                        <li class="profile-img-switch-employee d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
+                                            <i class="fa-solid fa-repeat"></i>
+                                            <a class="dropdown-item" style="padding: 0;" href="/dashboard/admin/dashboard.jsp">Switch to admin</a>
+                                        </li>
+                                        <% }%>
+                                        <li class="profile-img-switch-store d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
+                                            <i class="fa-solid fa-store"></i>
+                                            <a class="dropdown-item" style="padding: 0;" href="#">Tới cửa hàng</a>
+                                        </li>
+                                        <hr style="margin: 0;">
+                                        <li class="profile-img-info1 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
+                                            <i class="fa-solid fa-user-pen"></i>
+                                            <a class="dropdown-item" style="padding: 0;" href="staffprofile">Hồ sơ</a>
+                                        </li>
+                                        <li class="profile-img-info2 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
+                                            <i class="fa-solid fa-right-from-bracket" style="font-size: 20px;"></i>
+                                            <a class="dropdown-item" style="padding: 0;" href="logoutstaff">Đăng xuất</a>
+                                        </li>
                                     </div>
-                                </c:when>
-                                <c:otherwise>
-                                    <div class="dropdown d-flex align-items-center gap-2">
-                                        <span style = "color: #D3A376; font-weight: bold;"><%= staffName%></span>
-                                        <a href="staffprofile">
-                                            <button class="btn" type="button">
-                                                <img class="profile-img" src="${staff.image}" alt="">
-                                            </button>
-                                        </a>
-                                    </div>
-                                </c:otherwise>
-                            </c:choose>                                                    
+                                </ul>
+                            </div>                                                             
                         </div>
                     </div>
 
@@ -96,8 +95,7 @@
                          style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
-                                <li class="breadcrumb-item">Bảng điều khiển</li>
-                                <li class="breadcrumb-item">Nhân viên</li>
+                                <li class="breadcrumb-item">Dashboard</li>
                                 <li class="breadcrumb-item active" aria-current="page">Quản lí yêu cầu đặt phòng</li>
                             </ol>
                         </nav>
@@ -162,99 +160,97 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
-                                                <th scope="col" style="text-align: center; vertical-align: middle;">Tên khách hàng</th>
-                                                <th scope="col" style="text-align: center; vertical-align: middle;">Tên thú cưng</th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;">Khách hàng</th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;">Thú cưng</th>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;">Tên phòng</th>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;">Check in</th>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;">Check out</th>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;">Tổng tiền (VND)</th>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;">Ngày đặt</th>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;">Trạng thái</th>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;">Hành động</th>
                                             </tr>
 
                                         </thead>
                                         <tbody id="bookingTable">
-                                            <%
-                                                String searchQuery = request.getParameter("search");
-                                                List<PetHotelBooking> bookings;
-
-                                                if (searchQuery != null && !searchQuery.trim().isEmpty()) {
-                                                    bookings = PetHotelBookingDAO.searchBookingsByCustomerName(searchQuery.trim());
-                                                } else {
-                                                    bookings = PetHotelBookingDAO.getAllBookings();
-                                                }
-
-                                                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
-                                                NumberFormat formatter = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
-                                                for (PetHotelBooking booking : bookings) {
-                                            %>
-                                            <tr class="booking-row" data-status="<%= booking.getStatus()%>">
-                                                <td style="width: 160px; text-align: center; vertical-align: middle;">
-                                                    <%= booking.getCustomerName()%>
-                                                </td>
-                                                <td style="width: 140px; text-align: center; vertical-align: middle;"><%= booking.getPetName()%></td>
-                                                <td style="width: 140px; text-align: center; vertical-align: middle;"><%= booking.getRoomName()%></td>
-                                                <td style="text-align: center; vertical-align: middle;"><%= sdf.format(booking.getCheckIn())%></td>
-                                                <td style="text-align: center; vertical-align: middle;"><%= sdf.format(booking.getCheckOut())%></td>
-                                                <td style="width: 140px; text-align: center; vertical-align: middle;"><%= formatter.format(booking.getTotalPrice())%></td>
-                                                <td style="width: 135px; text-align: center; vertical-align: middle;">
-                                                    <span style="font-weight: bold; padding: 5px; color:
-                                                          <%= booking.getStatus().equals("Đã duyệt") ? "green"
-                                                                  : booking.getStatus().equals("Đã hủy") ? "red"
-                                                                  : booking.getStatus().equals("Đã nhận phòng") ? "blue"
-                                                                  : booking.getStatus().equals("Đã trả phòng") ? "secondary"
-                                                                  : "orange"%>;">
-                                                        <%= booking.getStatus()%>
-                                                    </span>
-                                                </td>
-                                                <td style="width: 120px; text-align: center; vertical-align: middle;">
-                                                    <% if ("Chờ xác nhận".equals(booking.getStatus())) {%>
-                                                    <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
-                                                        <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
-                                                        <input type="hidden" name="action" value="approve">
-                                                        <button type="button" class="btn btn-sm btn-primary" data-action="approve" onclick="confirmAction(this)">
-                                                            Duyệt
-                                                        </button>
-                                                    </form>
-                                                    <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
-                                                        <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
-                                                        <input type="hidden" name="action" value="cancel">
-                                                        <button type="button" class="btn btn-sm btn-danger" data-action="cancel" onclick="confirmAction(this)">
-                                                            Hủy
-                                                        </button>
-                                                    </form>
-                                                    <% } else if ("Đã duyệt".equals(booking.getStatus())) {%>
-                                                    <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
-                                                        <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
-                                                        <input type="hidden" name="action" value="checkin">
-                                                        <button type="button" class="btn btn-sm btn-info" data-action="checkin" onclick="confirmAction(this)">
-                                                            Check-in
-                                                        </button>
-                                                    </form>
-                                                    <% } else if ("Đã nhận phòng".equals(booking.getStatus())) {%>
-                                                    <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
-                                                        <input type="hidden" name="bookingId" value="<%= booking.getBookingId()%>">
-                                                        <input type="hidden" name="action" value="checkout">
-                                                        <button type="button" class="btn btn-sm btn-secondary" data-action="checkout" onclick="confirmAction(this)">
-                                                            Check-out
-                                                        </button>
-                                                    </form>
-                                                    <% } %>
-                                                </td>
-                                            </tr>
-                                            <%
-                                                }
-                                            %>
+                                            <c:forEach var="booking" items="${bookings}">
+                                                <tr class="booking-row" data-status="${booking.status}">
+                                                    <td style="font-size: 15px; width: 120px; text-align: center; vertical-align: middle;">
+                                                        ${booking.customerName}
+                                                    </td>
+                                                    <td style="font-size: 15px; width: 100px; text-align: center; vertical-align: middle;">
+                                                        ${booking.petName}
+                                                    </td>
+                                                    <td style="font-size: 15px; width: 110px; text-align: center; vertical-align: middle;">
+                                                        ${booking.roomName}
+                                                    </td>
+                                                    <td style="font-size: 15px; width: 110px; text-align: center; vertical-align: middle;">
+                                                        <fmt:formatDate value="${booking.checkIn}" pattern="HH:mm dd/MM/yy"/>
+                                                    </td>
+                                                    <td style="font-size: 15px; width: 110px; text-align: center; vertical-align: middle;">
+                                                        <fmt:formatDate value="${booking.checkOut}" pattern="HH:mm dd/MM/yy"/>
+                                                    </td>
+                                                    <td style="font-size: 15px; width: 110px; text-align: center; vertical-align: middle;">
+                                                        <fmt:formatNumber value="${booking.totalPrice}" type="currency" currencySymbol="₫"/>
+                                                    </td>
+                                                    <td style="font-size: 15px; width: 110px; text-align: center; vertical-align: middle;">
+                                                        <fmt:formatDate value="${booking.bookingDate}" pattern="HH:mm dd/MM/yy"/>
+                                                    </td>
+                                                    <td style="font-size: 15px; width: 110px; text-align: center; vertical-align: middle;">
+                                                        <span style="font-weight: bold; padding: 2px; font-size: 13px; color:
+                                                              <c:choose>
+                                                                  <c:when test="${booking.status eq 'Đã duyệt'}">green</c:when>
+                                                                  <c:when test="${booking.status eq 'Đã hủy'}">red</c:when>
+                                                                  <c:when test="${booking.status eq 'Đã nhận phòng'}">blue</c:when>
+                                                                  <c:when test="${booking.status eq 'Đã trả phòng'}">gray</c:when>
+                                                                  <c:otherwise>orange</c:otherwise>
+                                                              </c:choose>;">
+                                                            ${booking.status}
+                                                        </span>
+                                                    </td>
+                                                    <td style="font-size: 15px; width: 100px; text-align: center; vertical-align: middle;">
+                                                        <c:choose>
+                                                            <c:when test="${booking.status eq 'Chờ xác nhận'}">
+                                                                <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
+                                                                    <input type="hidden" name="bookingId" value="${booking.bookingId}">
+                                                                    <input type="hidden" name="action" value="approve">
+                                                                    <button type="button" class="btn btn-sm btn-primary" data-action="approve" onclick="confirmAction(this)" style="font-size: 12px; padding: 3px 5px;">
+                                                                        Duyệt
+                                                                    </button>
+                                                                </form>
+                                                                <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
+                                                                    <input type="hidden" name="bookingId" value="${booking.bookingId}">
+                                                                    <input type="hidden" name="action" value="cancel">
+                                                                    <button type="button" class="btn btn-sm btn-danger" data-action="cancel" onclick="confirmAction(this)" style="font-size: 12px; padding: 3px 5px;">
+                                                                        Hủy
+                                                                    </button>
+                                                                </form>
+                                                            </c:when>
+                                                            <c:when test="${booking.status eq 'Đã duyệt'}">
+                                                                <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
+                                                                    <input type="hidden" name="bookingId" value="${booking.bookingId}">
+                                                                    <input type="hidden" name="action" value="checkin">
+                                                                    <button type="button" class="btn btn-sm btn-info" data-action="checkin" onclick="confirmAction(this)" style="font-size: 12px; padding: 3px 5px;">
+                                                                        Check-in
+                                                                    </button>
+                                                                </form>
+                                                            </c:when>
+                                                            <c:when test="${booking.status eq 'Đã nhận phòng'}">
+                                                                <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
+                                                                    <input type="hidden" name="bookingId" value="${booking.bookingId}">
+                                                                    <input type="hidden" name="action" value="checkout">
+                                                                    <button type="button" class="btn btn-sm btn-secondary" data-action="checkout" onclick="confirmAction(this)" style="font-size: 12px; padding: 3px 5px;">
+                                                                        Check-out
+                                                                    </button>
+                                                                </form>
+                                                            </c:when>
+                                                        </c:choose>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
                                         </tbody>
 
                                     </table>
-                                    <c:if test="${empty bookings}">                     
-                                        <div>
-                                            <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
-                                                Không tìm thấy!
-                                            </h5>
-                                        </div>
-                                    </c:if>
                                 </div>
                             </div>
                         </div>
@@ -262,9 +258,7 @@
                 </div>
             </div>
         </div>
-        <%            String filterParam = request.getParameter("filter");
-            String currentFilter = (filterParam != null) ? URLDecoder.decode(filterParam, StandardCharsets.UTF_8.toString()) : "all";
-        %>
+
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 // Lấy trạng thái filter từ URL (nếu có)
@@ -302,11 +296,37 @@
 
             // Hàm lọc danh sách theo trạng thái
             function filterBookings(filter) {
-                document.querySelectorAll(".booking-row").forEach(row => {
+                let rows = document.querySelectorAll(".booking-row");
+                let hasVisibleRow = false;
+
+                rows.forEach(row => {
                     let status = row.getAttribute("data-status");
-                    row.style.display = (filter === "all" || status === filter) ? "" : "none";
+                    if (filter === "all" || status === filter) {
+                        row.style.display = "";
+                        hasVisibleRow = true;
+                    } else {
+                        row.style.display = "none";
+                    }
                 });
+
+                // Kiểm tra nếu không có hàng nào hiển thị thì thêm thông báo
+                let tableBody = document.getElementById("bookingTable");
+                let noDataRow = document.getElementById("noDataRow");
+
+                if (!hasVisibleRow) {
+                    if (!noDataRow) {
+                        noDataRow = document.createElement("tr");
+                        noDataRow.id = "noDataRow";
+                        noDataRow.innerHTML = `<td colspan="9" style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">Không có đặt lịch nào!</td>`;
+                        tableBody.appendChild(noDataRow);
+                    }
+                } else {
+                    if (noDataRow) {
+                        noDataRow.remove();
+                    }
+                }
             }
+
         </script>
         <script>
             function setFilterBeforeSubmit(button) {
@@ -338,7 +358,22 @@
                     cancelButtonText: "Hủy"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        button.closest("form").submit(); // Gửi form nếu người dùng xác nhận
+                        const form = button.closest("form");
+
+                        // Lấy filter từ URL hiện tại
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const filter = urlParams.get("filter");
+
+                        // Thêm filter vào form nếu có
+                        if (filter) {
+                            let input = document.createElement("input");
+                            input.type = "hidden";
+                            input.name = "filter";
+                            input.value = filter;
+                            form.appendChild(input);
+                        }
+
+                        form.submit();
                     }
                 });
             }

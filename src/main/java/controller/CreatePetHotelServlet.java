@@ -9,11 +9,20 @@ import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.nio.file.Paths;
 import model.PetHotel;
 
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB trước khi lưu vào disk
+        maxFileSize = 1024 * 1024 * 10, // Tối đa 10MB
+        maxRequestSize = 1024 * 1024 * 50 // Tổng request tối đa 50MB
+)
 /**
  *
  * @author Nguyen Tien Thanh
@@ -54,13 +63,12 @@ public class CreatePetHotelServlet extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
-     * 
+     *
      */
-    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("addroom.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("createpethotel.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -76,25 +84,90 @@ public class CreatePetHotelServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        String roomName = request.getParameter("roomName");
-        String roomImage = request.getParameter("roomImage");
-        String roomType = request.getParameter("roomType");
-        double minWeight = Double.parseDouble(request.getParameter("minWeight"));
-        double maxWeight = Double.parseDouble(request.getParameter("maxWeight"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
-        int availableQuantity = Integer.parseInt(request.getParameter("quantity"));
-        double pricePerNight = Double.parseDouble(request.getParameter("pricePerNight"));
-        String description = request.getParameter("description");
+        response.setContentType("text/html;charset=UTF-8");
 
-        // Tạo object PetRoom mà KHÔNG yêu cầu status và isActive
-        PetHotel room = new PetHotel(roomName, roomImage, roomType, minWeight, maxWeight, quantity, availableQuantity, pricePerNight, description);
+        try {
+            // Lấy dữ liệu text từ form
+            String roomName = request.getParameter("roomName");
+            String roomType = request.getParameter("roomType");
+            String minWeightStr = request.getParameter("minWeight");
+            String maxWeightStr = request.getParameter("maxWeight");
+            String quantityStr = request.getParameter("quantity");
+            String pricePerNightStr = request.getParameter("pricePerNight");
+            String description = request.getParameter("description");
 
-        PetHotelDAO roomDAO = new PetHotelDAO();
-        if (roomDAO.addRoom(room)) {
-            response.sendRedirect("pethotel");
-        } else {
-            RequestDispatcher dispatcher = request.getRequestDispatcher("addroom.jsp");
-            dispatcher.forward(request, response);
+            // Kiểm tra dữ liệu null hoặc rỗng
+            if (roomName == null || roomName.trim().isEmpty()) {
+                request.setAttribute("errorMessage", "Tên phòng không được để trống.");
+                request.getRequestDispatcher("createpethotel.jsp").forward(request, response);
+                return;
+            }
+            if (roomType == null || roomType.trim().isEmpty()) {
+                request.setAttribute("errorMessage", "Vui lòng chọn loại phòng.");
+                request.getRequestDispatcher("createpethotel.jsp").forward(request, response);
+                return;
+            }
+            if (minWeightStr == null || minWeightStr.trim().isEmpty()
+                    || maxWeightStr == null || maxWeightStr.trim().isEmpty()
+                    || quantityStr == null || quantityStr.trim().isEmpty()
+                    || pricePerNightStr == null || pricePerNightStr.trim().isEmpty()) {
+                request.setAttribute("errorMessage", "Vui lòng nhập đầy đủ thông tin.");
+                request.getRequestDispatcher("createpethotel.jsp").forward(request, response);
+                return;
+            }
+
+            // Chuyển đổi dữ liệu số
+            double minWeight = Double.parseDouble(minWeightStr);
+            double maxWeight = Double.parseDouble(maxWeightStr);
+            int quantity = Integer.parseInt(quantityStr);
+            double pricePerNight = Double.parseDouble(pricePerNightStr);
+            int availableQuantity = quantity;
+
+            if (description == null) {
+                description = "Không có mô tả";
+            }
+
+            // Xử lý ảnh tải lên
+            String[] context = request.getServletContext().getRealPath("").split("target");
+            String realPath = context[0] + "src" + File.separator + "main" + File.separator + "webapp" + File.separator + "img" + File.separator + "pethotel";
+
+            File uploadDir = new File(realPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            String fileName = "default.jpg"; // Ảnh mặc định nếu không có ảnh tải lên
+            Part filePart = request.getPart("petHotelImage");
+
+            if (filePart != null && filePart.getSize() > 0) {
+                fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+                filePart.write(realPath + File.separator + fileName);
+            }
+
+            // Tạo object PetHotel
+            PetHotel room = new PetHotel(roomName, fileName, roomType, minWeight, maxWeight, quantity, availableQuantity, pricePerNight, description);
+
+            // Lưu vào database
+            PetHotelDAO roomDAO = new PetHotelDAO();
+            boolean createSuccess = roomDAO.addRoom(room);
+
+            if (createSuccess) {
+                request.getSession().setAttribute("successMessage", "Thêm phòng thành công!");
+                response.sendRedirect("pethotel");
+            } else {
+                throw new Exception("Thêm phòng thất bại!");
+            }
+
+        } catch (NumberFormatException e) {
+            request.setAttribute("errorMessage", "Dữ liệu số không hợp lệ! Vui lòng kiểm tra lại.");
+            request.getRequestDispatcher("createpethotel.jsp").forward(request, response);
+        } catch (IOException | ServletException e) {
+            request.setAttribute("errorMessage", "Lỗi hệ thống khi xử lý tệp ảnh.");
+            request.getRequestDispatcher("createpethotel.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Thêm phòng thất bại! Lỗi: " + e.getMessage());
+            request.getRequestDispatcher("createpethotel.jsp").forward(request, response);
         }
     }
 

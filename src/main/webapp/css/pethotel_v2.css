@@ -1,17 +1,10 @@
-* {
-    font-family: 'Baloo 2', sans-serif !important;
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
 
 .all {
-    max-width: 1329px;
     margin: auto;
 }
 
 body {
-    background-color: #F4F4F4 !important;
+    background-color: #F4F4F4;
     text-align: center;
 }
 
@@ -132,16 +125,7 @@ h5 {
     height: 200px;
     border-radius: 10px;
     object-fit: cover;
-    cursor: pointer;
 }
-
-
-.pethotel-card:hover {
-    transform: scale(1.1);
-    transition: transform 0.2s ease-in-out;
-    border-radius: 10px;
-}
-
 
 .pethotel-name {
     font-size: 30px;

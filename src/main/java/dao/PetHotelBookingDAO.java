@@ -388,7 +388,7 @@ public class PetHotelBookingDAO {
         return petStatus;
     }
 
-    public static List<PetHotelBooking> searchBookingsByCustomerName(String customerName) {
+        public static List<PetHotelBooking> searchBookingsByCustomerName(String customerName) {
         List<PetHotelBooking> list = new ArrayList<>();
         try {
             Con = new DBContext().getConnection();
