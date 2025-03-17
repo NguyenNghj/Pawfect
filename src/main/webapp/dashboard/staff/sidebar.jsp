@@ -58,12 +58,28 @@
     </div>
 
     <div class="row" style="display: flex; justify-content: center">
-        <nav class="navbar bg-body-tertiary" id="profile">                                            
-            <a class="navbar-brand d-flex align-items-center gap-3" href="staffprofile">
-                <i class="fa-solid fa-user"></i>
-                <span>Hồ sơ</span>
-            </a>
-        </nav>
+       <nav class="navbar bg-body-tertiary" id="profile">                                            
+    <a class="navbar-brand d-flex align-items-center gap-3" href="staffprofile">
+        <i class="fa-solid fa-user"></i>
+        <span>Hồ sơ</span>
+    </a>
+</nav>
+
+<script>
+    function getCookie(name) {
+        let cookies = document.cookie.split("; ");
+        for (let i = 0; i < cookies.length; i++) {
+            let cookie = cookies[i].split("=");
+            if (cookie[0] === name) {
+                return cookie[1];
+            }
+        }
+        return null;
+    }
+    if (getCookie("staffRole") === "Admin") {
+        document.getElementById("profile").style.display = "none";
+    }
+</script>
 
         <div class="row logout-container">
             <button type="button" class="btn btn btn-dark dangxuat" onclick="window.location.href = 'logoutstaff'">Đăng xuất</button>

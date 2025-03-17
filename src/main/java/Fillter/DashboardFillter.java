@@ -31,27 +31,38 @@ public class DashboardFillter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         String path = req.getRequestURI();
+        String contextPath = req.getContextPath();
 
-        if (path.startsWith(req.getContextPath() + "/css/")
-                || path.startsWith(req.getContextPath() + "/img/")
-                || path.startsWith(req.getContextPath() + "/dashboard/staff/feedbackmanagement")
-                || path.startsWith(req.getContextPath() + "/js/")) {
+        // Cho phép truy cập vào các tài nguyên tĩnh
+        if (path.startsWith(contextPath + "/css/") || path.startsWith(contextPath + "/img/")
+                || path.startsWith(contextPath + "/js/")) {
             chain.doFilter(request, response);
             return;
         }
+
         boolean hasStaffId = false;
+        String staffRole = null;
         Cookie[] cookies = req.getCookies();
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("staffId".equals(cookie.getName())) {
                     hasStaffId = true;
-                    break;
+                } else if ("staffRole".equals(cookie.getName())) {
+                    staffRole = cookie.getValue();
                 }
             }
         }
 
         if (!hasStaffId) {
-            res.sendRedirect(req.getContextPath() + "/loginstaff");
+            res.sendRedirect(contextPath + "/loginstaff");
+            return;
+        }
+        if ("Staff".equals(staffRole) && !path.startsWith(contextPath + "/dashboard/staff/")) {
+            res.sendRedirect(contextPath + "/dashboard/staff/viewcustomersforStaff");
+            return;
+        } else if (!"Admin".equals(staffRole) && path.startsWith(contextPath + "/dashboard/")
+                && !path.startsWith(contextPath + "/dashboard/staff/")) {
+            res.sendRedirect(contextPath + "/dashboard/staff/viewcustomersforStaff");
             return;
         }
 
