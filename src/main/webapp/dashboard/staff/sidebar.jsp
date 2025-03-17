@@ -27,6 +27,12 @@
                 <span>Khách hàng</span>
             </a>                          
         </nav>
+        <nav class="navbar bg-body-tertiary" id="voucher">                   
+            <a class="navbar-brand d-flex align-items-center gap-3" href="voucher">
+                <i class="fa-solid fa-ticket"></i>
+                <span>Mã giảm giá</span>
+            </a>
+        </nav>
         <nav class="navbar bg-body-tertiary" id="order">                                            
             <a class="navbar-brand d-flex align-items-center gap-3" href="ordermanagement?&action=view&status=tc">
                 <i class="fa-solid fa-cart-shopping"></i>
@@ -78,7 +84,7 @@
 
         // Danh sách các trang và ID tương ứng
         const navItems = {
-            "dashboard": "dashboard",
+            "voucher": "voucher",
             "ordermanagement": "order",
             "pethotelbooking": "pethotel",
             "feedbackmanagement": "feedback",

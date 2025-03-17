@@ -55,12 +55,6 @@
                 <span>Sản phẩm</span>
             </a>                          
         </nav>
-        <nav class="navbar bg-body-tertiary" id="voucher">                   
-            <a class="navbar-brand d-flex align-items-center gap-3" href="voucher">
-                <i class="fa-solid fa-ticket"></i>
-                <span>Mã giảm giá</span>
-            </a>
-        </nav>
         <nav class="navbar bg-body-tertiary" id="category">                   
             <a class="navbar-brand d-flex align-items-center gap-3" href="category">
                 <i class="fa-solid fa-boxes-stacked fa-lg"></i>
@@ -120,7 +114,6 @@
         const navItems = {
             "statistics": "statistics",
             "product": "product",
-            "voucher": "voucher",
             "category": "category",
             "pethotel": "pethotel",
             "profile": "profile",

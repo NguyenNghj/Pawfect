@@ -12,7 +12,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,7 +24,7 @@ import util.Email;
  *
  * @author Nguyen Tri Nghi - CE180897
  */
-public class SendVoucherServlet extends HttpServlet {
+public class SendVoucherAdminServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,10 +43,10 @@ public class SendVoucherServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet SendVoucherServlet</title>");
+            out.println("<title>Servlet SendVoucherAdminServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet SendVoucherServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet SendVoucherAdminServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -65,7 +64,7 @@ public class SendVoucherServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        System.out.println("Nice");
+        processRequest(request, response);
     }
 
     /**
@@ -86,7 +85,7 @@ public class SendVoucherServlet extends HttpServlet {
         // Kiểm tra dữ liệu hợp lệ
         if (customerId == null || customerId.isEmpty() || voucherCode == null || voucherCode.isEmpty()) {
             request.setAttribute("errorMessage", "Vui lòng chọn khách hàng và voucher.");
-            request.getRequestDispatcher("/dashboard/staff/viewcustomersforStaff").forward(request, response);
+            request.getRequestDispatcher("/dashboard/admin/customers").forward(request, response);
             return;
         }
 
@@ -145,17 +144,17 @@ public class SendVoucherServlet extends HttpServlet {
             boolean success = future.get();  // Đợi task hoàn thành và lấy kết quả trả về
 
             if (success) {
-                request.getSession().setAttribute("message", "Gửi voucher thành công!");
-                response.sendRedirect("/dashboard/staff/viewcustomersforStaff?success");
+                request.setAttribute("message", "Gửi voucher thành công!");
+                response.sendRedirect("/dashboard/admin/customers?success");
             } else {
-                request.getSession().setAttribute("errorMessage", "Gửi voucher thất bại!");
-                response.sendRedirect("/dashboard/staff/viewcustomersforStaff?success");
+                request.setAttribute("errorMessage", "Gửi voucher thất bại!");
+                request.getRequestDispatcher("/dashboard/admin/customers?error").forward(request, response);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
-            request.getRequestDispatcher("/dashboard/staff/viewcustomersforStaff").forward(request, response);
+            request.getRequestDispatcher("/dashboard/admin/customers").forward(request, response);
         }
     }
 

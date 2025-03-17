@@ -138,27 +138,32 @@
                                                 <% if ("admin".equalsIgnoreCase(staffRole)) { %> 
                                                 <% if (customer.isActive()) {%>
                                                 <form action="customersban" method="get" onsubmit="return confirm('Bạn có chắc muốn cấm khách hàng này?');">
-
                                                     <input type="hidden" name="id" value="<%= customer.getCustomerId()%>">
                                                     <input type="hidden" name="action" value="ban">
-                                                    <button type="submit" class="btn btn-danger" style=" display: flex;
-                                                            justify-content: center; /* Căn giữa theo chiều ngang */
-                                                            align-items: center; /* Căn giữa theo chiều dọc */
-                                                            height: 100%; /* Đảm bảo chiều cao full của ô */">Cấm</button>
+                                                    <button type="submit" class="btn btn-danger">Cấm</button>
 
                                                 </form>
                                                 <% } else {%>
                                                 <form action="customersban" method="get" onsubmit="return confirm('Bạn có chắc muốn gỡ cấm khách hàng này?');">
                                                     <input type="hidden" name="id" value="<%= customer.getCustomerId()%>">
                                                     <input type="hidden" name="action" value="unban">
-                                                    <button type="submit" class="btn btn-success"style="">Mở</button>
+                                                    <button type="submit" class="btn btn-primary"style="">Mở</button>
                                                 </form>
                                                 <% }%>
 
                                                 <!-- Nút gửi mã giảm giá -->
-                                                <form action="sendDiscountCode" method="post">
+                                                <form action="sendvoucher" method="post">
                                                     <input type="hidden" name="customerId" value="<%= customer.getCustomerId()%>">
-                                                    <button type="submit" class="btn btn-success">Gửi mã giảm giá</button>
+                                                    <form action="sendDiscountCode" method="post">
+                                                        <input type="hidden" name="customerId" value="<%= customer.getCustomerId()%>">
+                                                        <!-- Nút gửi mã giảm giá -->
+                                                        <button type="button" class="btn btn-success openVoucherModal" 
+                                                                data-bs-toggle="modal" 
+                                                                data-bs-target="#sendVoucherModal" 
+                                                                data-customer-id="<%= customer.getCustomerId()%>">
+                                                            Gửi mã giảm giá 
+                                                        </button>
+                                                    </form>
                                                 </form>
 
                                                 <% } else { %>
@@ -196,29 +201,117 @@
             </div>
         </div>
 
+        <div class="modal fade" id="sendVoucherModal" tabindex="-1" aria-labelledby="sendVoucherModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="sendVoucherModalLabel">Gửi Mã Giảm Giá</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="sendVoucherForm" action="sendvoucher" method="post">
+                            <input type="hidden" name="customerId" id="customerIdInput">
 
+                            <div class="mb-3">
+                                <label for="voucherCode" class="form-label">Chọn Voucher:</label>
+                                <select class="form-control" id="voucherCode" name="voucherCode" required>
+                                    <option value="">-- Chọn voucher --</option>
+                                    <c:forEach var="voucher" items="${vouchers}">
+                                        <option value="${voucher.code}">
+                                            ${voucher.code} - 
+                                            <c:choose>
+                                                <c:when test="${voucher.discountAmount > 0}">
+                                                    Giảm ${voucher.discountAmount}đ
+                                                </c:when>
+                                                <c:when test="${voucher.discountPercentage > 0}">
+                                                    Giảm ${voucher.discountPercentage}%
+                                                </c:when>
+                                            </c:choose>
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">Gửi Voucher</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var sendVoucherModal = document.getElementById("sendVoucherModal");
+                sendVoucherModal.addEventListener("show.bs.modal", function (event) {
+                    var button = event.relatedTarget; // Button kích hoạt modal
+                    var customerId = button.getAttribute("data-customer-id"); // Lấy customerId từ data attribute
+                    document.getElementById("customerIdInput").value = customerId; // Gán vào input ẩn
+                });
+            });
+        </script>
+
+
+        <!--        <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var errorMessage = "<c:out value='${errorMessage}' />";
+                        if (errorMessage && errorMessage.trim() !== "") {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Lỗi!",
+                                text: errorMessage,
+                                confirmButtonText: "OK"
+                            });
+                        }
+                    });
+                </script>-->
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const urlParams = new URLSearchParams(window.location.search);
+
+                if (urlParams.has("success")) {
+                    Swal.fire({
+                        title: "Thành công!",
+                        text: "Gửi voucher thành công!",
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    });
+                } else if (urlParams.has("error")) {
+                    Swal.fire({
+                        title: "Thất bại!",
+                        text: "Gửi voucher thất bại!",
+                        icon: "error",
+                        confirmButtonText: "Thử lại"
+                    });
+                }
+            });
+        </script>
+
+        <script>
+            const exampleModal = document.getElementById('exampleModal')
+            if (exampleModal) {
+                exampleModal.addEventListener('show.bs.modal', event => {
+                    // Button that triggered the modal
+                    const button = event.relatedTarget
+                    // Extract info from data-bs-* attributes
+                    const recipient = button.getAttribute('data-bs-whatever')
+                    // If necessary, you could initiate an Ajax request here
+                    // and then do the updating in a callback.
+
+                    // Update the modal's content.
+                    const modalTitle = exampleModal.querySelector('.modal-title')
+                    const modalBodyInput = exampleModal.querySelector('.modal-body input')
+
+                    modalTitle.textContent = `New message to ${recipient}`
+                    modalBodyInput.value = recipient
+                })
+            }
+        </script>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-        <script>
-                                                    const exampleModal = document.getElementById('exampleModal')
-                                                    if (exampleModal) {
-                                                        exampleModal.addEventListener('show.bs.modal', event => {
-                                                            // Button that triggered the modal
-                                                            const button = event.relatedTarget
-                                                            // Extract info from data-bs-* attributes
-                                                            const recipient = button.getAttribute('data-bs-whatever')
-                                                            // If necessary, you could initiate an Ajax request here
-                                                            // and then do the updating in a callback.
-
-                                                            // Update the modal's content.
-                                                            const modalTitle = exampleModal.querySelector('.modal-title')
-                                                            const modalBodyInput = exampleModal.querySelector('.modal-body input')
-
-                                                            modalTitle.textContent = `New message to ${recipient}`
-                                                            modalBodyInput.value = recipient
-                                                        })
-                                                    }
-        </script>
     </body>
 </html>
