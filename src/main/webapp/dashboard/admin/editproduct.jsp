@@ -83,13 +83,14 @@
                          style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
-                                <li class="breadcrumb-item">Dashboard</li>
+                                <li class="breadcrumb-item">Bảng điều khiển</li>
+                                <li class="breadcrumb-item">Quản trị viên</li>
                                 <li class="breadcrumb-item"><a href="/dashboard/admin/product">Quản lý sản phẩm</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">${product.productName}</li>
                             </ol>
                         </nav>
                     </div>
- 
+
 
                     <!--                    <div class="row">   
                                             <div class="col-3 p-0" style="margin-top: 60px;">
@@ -118,7 +119,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="editProductCategory" class ="form-label">Thể loại</label>
+                                <label for="editProductCategory" class ="form-label">Danh mục</label>
                                 <select class="form-select" name="categoryId" id="categoryId" onchange="updateProductStatusOptions()">
                                     <c:forEach var="category" items="${categories}">
                                         <option value="${category.categoryId}" 
@@ -197,19 +198,6 @@
                                     reader.readAsDataURL(file);
                                 }
                             }
-                        </script>
-
-                        <script>
-                            document.getElementById("productActive").addEventListener("change", function () {
-                                if (this.value === "false") {
-                                    Swal.fire({
-                                        title: "Cảnh báo!",
-                                        text: "Tất cả sản phẩm thuộc thể loại này sẽ ngừng bán!",
-                                        icon: "warning",
-                                        confirmButtonText: "OK"
-                                    });
-                                }
-                            });
                         </script>
 
                         <script>

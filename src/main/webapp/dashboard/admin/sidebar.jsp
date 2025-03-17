@@ -58,7 +58,7 @@
         <nav class="navbar bg-body-tertiary" id="category">                   
             <a class="navbar-brand d-flex align-items-center gap-3" href="category">
                 <i class="fa-solid fa-boxes-stacked fa-lg"></i>
-                <span>Thể loại sản phẩm</span>
+                <span>Danh mục sản phẩm</span>
             </a>
         </nav>
         <nav class="navbar bg-body-tertiary" id="pethotel">                                            

@@ -58,7 +58,7 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Thêm nhân viên mới</h1>
+                                <h1>Thêm nhân viên</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
                                 <span style="color: #D3A376; font-weight: bold;"><%= staffName%></span>
@@ -77,15 +77,17 @@
                         </div>
                     </div>
 
-                    <div class="row mt-2">
+                    <div class="row mt-2 bg-white p-3 d-flex align-items-center justify-content-center" 
+                         style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item">Dashboard</li>
+                            <ol class="breadcrumb mb-0" style ="font-weight: bold;">
+                                <li class="breadcrumb-item">Bảng điều khiển</li>
+                                <li class="breadcrumb-item">Quản trị viên</li>
                                 <li class="breadcrumb-item"><a href="/dashboard/admin/staff">Quản lý nhân viên</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Thêm nhân viên mới</li>
+                                <li class="breadcrumb-item active" aria-current="page">Thêm nhân viên</li>
                             </ol>
                         </nav>
-                    </div>
+                    </div>   
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <form id="createStaffForm" action="staffadd" method="post" enctype="multipart/form-data">

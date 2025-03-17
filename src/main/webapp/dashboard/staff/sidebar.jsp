@@ -42,7 +42,7 @@
         <nav class="navbar bg-body-tertiary" id="pethotel">                                            
             <a class="navbar-brand d-flex align-items-center gap-3" href="pethotelbooking">
                 <i class="fa-solid fa-hotel fa-lg"></i>  
-                <span>Khách sạn thú cưng</span>
+                <span>Đặt phòng thú cưng</span>
             </a>
         </nav>
         <nav class="navbar bg-body-tertiary" id="feedback">                                            

@@ -552,3 +552,7 @@ h1{
     font-weight: bold !important;
     color: #D3A376;
 }
+
+.account-info-title{
+    font-weight: bold;
+}

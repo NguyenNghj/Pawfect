@@ -82,7 +82,8 @@
                          style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
-                                <li class="breadcrumb-item">Dashboard</li>
+                                <li class="breadcrumb-item">Bảng điều khiển</li>
+                                <li class="breadcrumb-item">Quản trị viên</li>
                                 <li class="breadcrumb-item"><a href="/dashboard/admin/product">Quản lý sản phẩm</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Tạo sản phẩm</li>
                             </ol>

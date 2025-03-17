@@ -47,6 +47,8 @@
                             }
                         }
                     }
+                    request.setAttribute("staffRole", staffRole);
+                    request.setAttribute("staffName", staffName);
                 %>
                 <!-- MAIN -->
                 <div class="col-10" id="main" style="padding: 0 40px;">
@@ -55,20 +57,33 @@
                             <div>
                                 <h1>Quản lý mã giảm giá</h1>
                             </div>
-                            <div class="dropdown d-flex align-items-center gap-2">
-                                <span style = "color: #D3A376; font-weight: bold;"><%= staffName%></span>
-                                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
-                                </button>
-                                <ul class="dropdown-menu ps-2 pe-2 pt-2 pb-2">
-                                    <div class="d-grid gap-2">
-                                        <li class="profile-img-switch-employee d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
-                                            <i class="fa-solid fa-repeat"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="/dashboard/staff/viewcustomersforStaff">Chuyển qua giao diện nhân viên</a>
-                                        </li>
+                            <c:choose>
+                                <c:when test="${staffRole eq 'Admin'}">
+                                    <div class="dropdown d-flex align-items-center gap-2">
+                                        <span style="color: #D3A376; font-weight: bold;"><%= staffName%></span>
+                                        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center gap-2" href="/dashboard/admin/statistics">
+                                                    <i class="fa-solid fa-repeat"></i> Chuyển qua giao diện quản lí
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
-                                </ul>
-                            </div>                                                              
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="dropdown d-flex align-items-center gap-2">
+                                        <span style = "color: #D3A376; font-weight: bold;"><%= staffName%></span>
+                                        <a href="staffprofile">
+                                            <button class="btn" type="button">
+                                                <img class="profile-img" src="${staff.image}" alt="">
+                                            </button>
+                                        </a>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>                                                     
                         </div>
                     </div>
 
@@ -76,7 +91,8 @@
                          style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
-                                <li class="breadcrumb-item">Dashboard</li>
+                                <li class="breadcrumb-item">Bảng điều khiển</li>
+                                <li class="breadcrumb-item">Nhân viên</li>
                                 <li class="breadcrumb-item active" aria-current="page">Quản lý mã giảm giá</li>
                             </ol>
                         </nav>
