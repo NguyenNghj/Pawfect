@@ -74,28 +74,28 @@ public class EditVoucherServlet extends HttpServlet {
             }
 
             request.setAttribute("voucher", voucher);
-            request.getRequestDispatcher("/dashboard/admin/editvoucher.jsp").forward(request, response);
+            request.getRequestDispatcher("/dashboard/staff/editvoucher.jsp").forward(request, response);
 
         } catch (NumberFormatException e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Id mã giảm giá không hợp lệ!");
-            request.getRequestDispatcher("/dashboard/admin/voucher").forward(request, response);
+            request.getRequestDispatcher("/dashboard/staff/voucher").forward(request, response);
         } catch (NullPointerException e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Không tìm thấy mã giảm giá!");
-            request.getRequestDispatcher("/dashboard/admin/voucher").forward(request, response);
+            request.getRequestDispatcher("/dashboard/staff/voucher").forward(request, response);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", e.getMessage());
-            request.getRequestDispatcher("/dashboard/admin/voucher").forward(request, response);
+            request.getRequestDispatcher("/dashboard/staff/voucher").forward(request, response);
         } catch (IOException | ServletException e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
-            request.getRequestDispatcher("/dashboard/admin/voucher").forward(request, response);
+            request.getRequestDispatcher("/dashboard/staff/voucher").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Lỗi không xác định: " + e.getMessage());
-            request.getRequestDispatcher("/dashboard/admin/voucher").forward(request, response);
+            request.getRequestDispatcher("/dashboard/staff/voucher").forward(request, response);
         }
     }
 
@@ -150,7 +150,7 @@ public class EditVoucherServlet extends HttpServlet {
             if (voucherDAO.isCodeExists(code, voucherId)) {
                 request.setAttribute("errorMessage", "Mã giảm giá đã tồn tại!");
                 request.setAttribute("voucher", new Voucher(voucherId, code, description, discountPercentage, discountAmount, minOrderValue, maxDiscount, startDate, endDate, isActive));
-                request.getRequestDispatcher("/dashboard/admin/editvoucher.jsp").forward(request, response);
+                request.getRequestDispatcher("/dashboard/staff/editvoucher.jsp").forward(request, response);
                 return;
             }
 
@@ -158,31 +158,31 @@ public class EditVoucherServlet extends HttpServlet {
             boolean updateSuccess = voucherDAO.updateVoucher(voucher);
 
             if (updateSuccess) {
-                response.sendRedirect(request.getContextPath() + "/dashboard/admin/voucher");
+                response.sendRedirect(request.getContextPath() + "/dashboard/staff/voucher");
             } else {
                 request.setAttribute("errorMessage", "Cập nhật thất bại. Vui lòng thử lại!");
                 request.setAttribute("voucher", voucher);
-                request.getRequestDispatcher("/dashboard/admin/voucher").forward(request, response);
+                request.getRequestDispatcher("/dashboard/staff/voucher").forward(request, response);
             }
         } catch (NumberFormatException e) {
             e.printStackTrace(); // Log lỗi nếu cần
             request.setAttribute("errorMessage", "Dữ liệu nhập vào không hợp lệ. Vui lòng kiểm tra lại!");
-            request.getRequestDispatcher("/dashboard/admin/voucher").forward(request, response);
+            request.getRequestDispatcher("/dashboard/staff/voucher").forward(request, response);
 
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Lỗi dữ liệu: " + e.getMessage());
-            request.getRequestDispatcher("/dashboard/admin/voucher").forward(request, response);
+            request.getRequestDispatcher("/dashboard/staff/voucher").forward(request, response);
 
         } catch (IOException | ServletException e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Lỗi hệ thống trong quá trình xử lý.");
-            request.getRequestDispatcher("/dashboard/admin/voucher").forward(request, response);
+            request.getRequestDispatcher("/dashboard/staff/voucher").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("errorMessage", "Đã xảy ra lỗi không xác định.");
-            request.getRequestDispatcher("/dashboard/admin/voucher").forward(request, response);
+            request.getRequestDispatcher("/dashboard/staff/voucher").forward(request, response);
         }
     }
 

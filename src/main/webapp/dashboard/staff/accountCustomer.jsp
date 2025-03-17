@@ -27,7 +27,7 @@
                 <!-- SIDEBAR -->
                 <jsp:include page="sidebar.jsp"/>
 
-        
+
                 <!-- MAIN -->
                 <div class="col" id="main" style="padding: 0 40px;">
                     <div class="row pt-4">
@@ -58,46 +58,46 @@
                                     request.setAttribute("staffName", staffName);
                                 %>
                             </div>
-                          
-      <c:choose>
-    <c:when test="${staffRole eq 'Admin'}">
-        <div class="dropdown d-flex align-items-center gap-2">
-            <span style="color: #D3A376; font-weight: bold;"><%= staffName %></span>
-            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                   <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li>
-                    <a class="dropdown-item" href="staffprofile">
-                        <i class="fa-solid fa-user"></i> Hồ sơ cá nhân
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item d-flex align-items-center gap-2" href="/dashboard/admin/statistics">
-                        <i class="fa-solid fa-repeat"></i> Chuyển qua giao diện quản lí
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </c:when>
-    <c:otherwise>
-        <div class="dropdown d-flex align-items-center gap-2">
-            <span style="color: #D3A376; font-weight: bold;"><%= staffName %></span>
-            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                <img class="profile-img" src="${staff.image}" alt="">
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li>
-                    <a class="dropdown-item" href="staffprofile">
-                        <i class="fa-solid fa-user"></i> Hồ sơ cá nhân
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </c:otherwise>
-</c:choose>
 
-                                                         
+                            <c:choose>
+                                <c:when test="${staffRole eq 'Admin'}">
+                                    <div class="dropdown d-flex align-items-center gap-2">
+                                        <span style="color: #D3A376; font-weight: bold;"><%= staffName%></span>
+                                        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <li>
+                                                <a class="dropdown-item" href="staffprofile">
+                                                    <i class="fa-solid fa-user"></i> Hồ sơ cá nhân
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center gap-2" href="/dashboard/admin/statistics">
+                                                    <i class="fa-solid fa-repeat"></i> Chuyển qua giao diện quản lí
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="dropdown d-flex align-items-center gap-2">
+                                        <span style="color: #D3A376; font-weight: bold;"><%= staffName%></span>
+                                        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <img class="profile-img" src="${staff.image}" alt="">
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <li>
+                                                <a class="dropdown-item" href="staffprofile">
+                                                    <i class="fa-solid fa-user"></i> Hồ sơ cá nhân
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
+
+
                         </div>
                     </div>
 
@@ -166,7 +166,7 @@
 
                                             <td>
                                                 <% if (customer.isActive()) {%>
-                                                <form action="sendDiscountCode" method="post">
+                                                <form action="sendvoucher" method="post">
                                                     <input type="hidden" name="customerId" value="<%= customer.getCustomerId()%>">
                                                     <!-- Nút gửi mã giảm giá -->
                                                     <button type="button" class="btn btn-success openVoucherModal" 
@@ -237,7 +237,7 @@
             </div>
         </div>
 
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
@@ -275,12 +275,33 @@
                 })
             }
         </script>
+
+
+        <<script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const urlParams = new URLSearchParams(window.location.search);
+
+                if (urlParams.has("success")) {
+                    Swal.fire({
+                        title: "Thành công!",
+                        text: "Gửi voucher thành công!",
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    });
+                } else if (urlParams.has("error")) {
+                    Swal.fire({
+                        title: "Thất bại!",
+                        text: "Gửi voucher thất bại!",
+                        icon: "error",
+                        confirmButtonText: "Thử lại"
+                    });
+                }
+            });
+        </script>
+
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 var errorMessage = "<c:out value='${errorMessage}' />";
-                var message = "<c:out value='${message                                                                                                                                 }' />";
-
-
                 if (errorMessage && errorMessage.trim() !== "") {
                     Swal.fire({
                         icon: "error",
@@ -289,17 +310,9 @@
                         confirmButtonText: "OK"
                     });
                 }
-
-
-                if (message && message.trim() !== "") {
-                    Swal.fire({
-                        title: message,
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    });
-                }
             });
-
         </script>
+
+
     </body>
 </html>

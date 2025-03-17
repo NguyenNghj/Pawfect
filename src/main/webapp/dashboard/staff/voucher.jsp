@@ -170,7 +170,7 @@
                                                         </c:choose>
                                                     </td>
                                                     <td>
-                                                        <a href="/dashboard/admin/editvoucher?voucherId=${voucher.voucherId}" class="btn btn-primary">Chỉnh sửa</a>
+                                                        <a href="/dashboard/staff/editvoucher?voucherId=${voucher.voucherId}" class="btn btn-primary">Chỉnh sửa</a>
                                                     </td>
                                                 </tr>
                                             </c:if>

@@ -70,7 +70,7 @@ public class VoucherManagementServlet extends HttpServlet {
         }
 
         request.setAttribute("voucherList", vouchers);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard/admin/voucher.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard/staff/voucher.jsp");
         dispatcher.forward(request, response);
     }
 
