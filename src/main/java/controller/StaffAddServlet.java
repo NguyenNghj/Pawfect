@@ -8,6 +8,7 @@ import dao.StaffDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,6 +18,11 @@ import java.nio.file.Paths;
 import java.sql.Date;
 import model.Staff;
 
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB trước khi lưu vào disk
+        maxFileSize = 1024 * 1024 * 10, // Tối đa 10MB
+        maxRequestSize = 1024 * 1024 * 50 // Tổng request tối đa 50MB
+)
 /**
  *
  * @author ADMIN
@@ -61,13 +67,7 @@ public class StaffAddServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            request.getRequestDispatcher("/dashboard/admin/staffadd.jsp").forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace(); // Log lỗi để debug
-            request.setAttribute("errorMessage", "Đã xảy ra lỗi khi tải trang thêm nhân viên.");
-            request.getRequestDispatcher("/dashboard/admin/staffadd.jsp").forward(request, response);
-        }
+        request.getRequestDispatcher("staffadd.jsp").forward(request, response);
     }
 
     /**
@@ -81,81 +81,84 @@ public class StaffAddServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
+
         try {
-            // Nhận dữ liệu từ form
+            // Lấy dữ liệu từ form
             String roleName = request.getParameter("roleName");
-            String fullName = request.getParameter("fullName");
             String password = request.getParameter("password");
+            String fullName = request.getParameter("fullName");
             String email = request.getParameter("email");
             String phone = request.getParameter("phone");
             String address = request.getParameter("address");
             String gender = request.getParameter("gender");
             String birthDateStr = request.getParameter("birthDate");
+            String image = null; // Xử lý upload ảnh
 
             // Kiểm tra dữ liệu đầu vào
-            if (roleName == null || fullName == null || password == null || email == null || phone == null) {
-                throw new IllegalArgumentException("Thiếu thông tin bắt buộc.");
+            if (roleName == null || roleName.trim().isEmpty()
+                    || password == null || password.trim().isEmpty()
+                    || fullName == null || fullName.trim().isEmpty()
+                    || email == null || email.trim().isEmpty()
+                    || phone == null || phone.trim().isEmpty()) {
+
+                request.setAttribute("errorMessage", "Vui lòng nhập đầy đủ thông tin!");
+                request.getRequestDispatcher("staffadd.jsp").forward(request, response);
+                return;
             }
 
-            // Hash mật khẩu
+            // Mã hóa mật khẩu
             String hashPassword = StaffDAO.hashPasswordMD5(password);
 
             // Xử lý ngày sinh
-            Date birthDate = (birthDateStr != null && !birthDateStr.isEmpty()) ? Date.valueOf(birthDateStr) : null;
+            Date birthDate = null;
+            if (birthDateStr != null && !birthDateStr.isEmpty()) {
+                birthDate = Date.valueOf(birthDateStr);
+            }
 
-            // Xử lý ảnh tải lên
+            // Xử lý upload ảnh
             String[] context = request.getServletContext().getRealPath("").split("target");
-            String realPath = context[0] + "src" + File.separator + "main" + File.separator + "webapp" + File.separator + "img" + File.separator + "staffs";
+            String realPath = context[0] + "src" + File.separator + "main" + File.separator + "webapp" + File.separator + "img" + File.separator + "staff";
 
             File uploadDir = new File(realPath);
             if (!uploadDir.exists()) {
                 uploadDir.mkdirs();
             }
 
-            String fileName = "default.jpg"; // Ảnh mặc định nếu không có ảnh được tải lên
+            String fileName = "default.jpg"; // Ảnh mặc định nếu không có ảnh tải lên
             Part filePart = request.getPart("staffImage");
 
             if (filePart != null && filePart.getSize() > 0) {
                 fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
                 filePart.write(realPath + File.separator + fileName);
             }
-
-            // Debug log
-            System.out.println("=== DỮ LIỆU STAFF NHẬN ĐƯỢC ===");
-            System.out.println("Role: " + roleName);
-            System.out.println("Full Name: " + fullName);
-            System.out.println("Email: " + email);
-            System.out.println("Phone: " + phone);
-            System.out.println("Address: " + address);
-            System.out.println("Gender: " + gender);
-            System.out.println("Birth Date: " + birthDate);
-            System.out.println("Image File: " + fileName);
-            System.out.println("==============================");
+            image = fileName;
 
             // Tạo đối tượng Staff
-            Staff staff = new Staff(roleName, hashPassword, fullName, email, phone, address, gender, birthDate, fileName, true);
+            Staff staff = new Staff(roleName, hashPassword, fullName, email, phone, address, gender, birthDate, image, true);
 
             // Gọi DAO để thêm nhân viên vào database
             StaffDAO staffDAO = new StaffDAO();
-            boolean createSuccess = staffDAO.addStaff(staff);
+            boolean isAdded = staffDAO.addStaff(staff);
 
-            if (createSuccess) {
-                response.sendRedirect(request.getContextPath() + "/dashboard/admin/staff?success=1");
+            if (isAdded) {
+                request.getSession().setAttribute("successMessage", "Thêm nhân viên thành công!");
+                response.sendRedirect("staff");
             } else {
-                throw new Exception("Lỗi khi thêm nhân viên vào database.");
+                throw new Exception("Thêm nhân viên thất bại!");
             }
+
         } catch (NumberFormatException e) {
-            e.printStackTrace();
             request.setAttribute("errorMessage", "Dữ liệu số không hợp lệ! Vui lòng kiểm tra lại.");
-            request.getRequestDispatcher("/dashboard/admin/staff").forward(request, response);
+            request.getRequestDispatcher("staffadd.jsp").forward(request, response);
         } catch (IOException | ServletException e) {
-            e.printStackTrace();
             request.setAttribute("errorMessage", "Lỗi hệ thống khi xử lý tệp ảnh.");
-            request.getRequestDispatcher("/dashboard/admin/staff").forward(request, response);
+            request.getRequestDispatcher("staffadd.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "Tạo nhân viên thất bại! " + e.getMessage());
-            request.getRequestDispatcher("/dashboard/admin/staff").forward(request, response);
+            request.setAttribute("errorMessage", "Thêm nhân viên thất bại! Lỗi: " + e.getMessage());
+            request.getRequestDispatcher("staffadd.jsp").forward(request, response);
         }
     }
 

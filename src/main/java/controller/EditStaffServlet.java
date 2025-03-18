@@ -8,14 +8,23 @@ import dao.StaffDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import model.Staff;
 
+@MultipartConfig(
+        fileSizeThreshold = 1024 * 1024 * 2, // 2MB trước khi lưu vào disk
+        maxFileSize = 1024 * 1024 * 10, // Tối đa 10MB
+        maxRequestSize = 1024 * 1024 * 50 // Tổng request tối đa 50MB
+)
 /**
  *
  * @author ADMIN
@@ -88,59 +97,117 @@ public class EditStaffServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        StaffDAO StaffDAO = new StaffDAO(); // Khởi tạo DAO khi Servlet khởi động
-     try {
-        int staffId = Integer.parseInt(request.getParameter("staffId"));
-        String roleName = request.getParameter("roleName");
-        String password = request.getParameter("password");
-        String fullName = request.getParameter("fullName");
-        String email = request.getParameter("email");
-        String phone = request.getParameter("phone");
-        String address = request.getParameter("address");
-        String gender = request.getParameter("gender");
-        String birthDateStr = request.getParameter("birthDate"); // Lấy ngày sinh
-        String image = request.getParameter("image");
-        boolean isActive = request.getParameter("isActive") != null;
-        String hashPassword = StaffDAO.hashPasswordMD5(password);
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
 
-        // Debug xem dữ liệu nhận được
-        System.out.println("Received birthDate: " + birthDateStr);
+        StaffDAO staffDAO = new StaffDAO(); // Khởi tạo DAO
 
-        // Xử lý ngày tháng đúng định dạng
-        Date birthDate = null;
-        if (birthDateStr != null && !birthDateStr.isEmpty()) {
-            try {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                java.util.Date parsedDate = sdf.parse(birthDateStr);
-                birthDate = new Date(parsedDate.getTime()); // Chuyển sang java.sql.Date
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("Lỗi chuyển đổi birthDate: " + e.getMessage());
-                response.sendRedirect("editstaff.jsp?error=invalidDate");
+        try {
+            // Lấy dữ liệu từ request
+            String staffIdParam = request.getParameter("staffId");
+            String roleName = request.getParameter("roleName");
+            String password = request.getParameter("password");
+            String fullName = request.getParameter("fullName");
+            String email = request.getParameter("email");
+            String phone = request.getParameter("phone");
+            String address = request.getParameter("address");
+            String gender = request.getParameter("gender");
+            String birthDateStr = request.getParameter("birthDate");
+            String image = request.getParameter("image");
+            String isActiveParam = request.getParameter("isActive");
+            String existingImage = request.getParameter("existingImage");
+
+            // Kiểm tra dữ liệu đầu vào có null hoặc rỗng không
+            if (staffIdParam == null || staffIdParam.trim().isEmpty()
+                    || roleName == null || roleName.trim().isEmpty()
+                    || password == null || password.trim().isEmpty()
+                    || fullName == null || fullName.trim().isEmpty()
+                    || email == null || email.trim().isEmpty()
+                    || phone == null || phone.trim().isEmpty()) {
+
+                request.getSession().setAttribute("errorMessage", "Vui lòng nhập đầy đủ thông tin!");
+                response.sendRedirect("editstaff.jsp?staffId=" + staffIdParam);
                 return;
             }
-        }
 
-        // Cập nhật nhân viên
-        Staff staff = new Staff(staffId, roleName, hashPassword, fullName, email, phone, address, gender, birthDate, image, isActive);
-        boolean updateSuccess = StaffDAO.updateStaff(staff);
+            // Chuyển đổi dữ liệu số
+            int staffId = Integer.parseInt(staffIdParam.trim());
+            boolean isActive = "true".equals(isActiveParam);
 
-        if (updateSuccess) {
-            // Cập nhật thành công, load danh sách mới
-            List<Staff> staffList = StaffDAO.getAllStaffs();
-            request.setAttribute("staffList", staffList);
-            request.getRequestDispatcher("accountStaff.jsp?success=update").forward(request, response);
-        } else {
-            response.sendRedirect("editstaff.jsp?staffId=" + staffId + "&error=updateFailed");
+            // Mã hóa mật khẩu
+            String hashedPassword = staffDAO.hashPasswordMD5(password);
+
+            // Xử lý ngày sinh
+            Date birthDate = null;
+            if (birthDateStr != null && !birthDateStr.isEmpty()) {
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    java.util.Date parsedDate = sdf.parse(birthDateStr);
+                    birthDate = new Date(parsedDate.getTime()); // Chuyển sang java.sql.Date
+                } catch (Exception e) {
+                    request.getSession().setAttribute("errorMessage", "Ngày sinh không hợp lệ!");
+                    response.sendRedirect("editstaff.jsp?staffId=" + staffId);
+                    return;
+                }
+            }
+            // Xử lý đường dẫn lưu ảnh
+            String[] context = request.getServletContext().getRealPath("").split("target");
+            String realPath = context[0] + "src" + File.separator + "main" + File.separator
+                    + "webapp" + File.separator + "img" + File.separator + "staff";
+
+            File uploadDir = new File(realPath);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            // Xử lý file ảnh mới
+            Part filePart = request.getPart("petHotelImage");
+            String newFileName = null;
+
+            if (filePart != null && filePart.getSize() > 0) {
+                String submittedFileName = filePart.getSubmittedFileName();
+                if (submittedFileName != null && !submittedFileName.trim().isEmpty()) {
+                    newFileName = Paths.get(submittedFileName).getFileName().toString();
+                }
+            }
+
+            // Nếu có ảnh mới, lưu ảnh và cập nhật đường dẫn
+            if (newFileName != null) {
+                filePart.write(realPath + File.separator + newFileName);
+
+                // Xóa ảnh cũ nếu tồn tại
+                if (existingImage != null && !existingImage.isEmpty()) {
+                    File oldImageFile = new File(realPath + File.separator + existingImage);
+                    if (oldImageFile.exists()) {
+                        oldImageFile.delete();
+                    }
+                }
+            }
+
+            // Tạo object Staff
+            Staff staff = new Staff(staffId, roleName, hashedPassword, fullName, email, phone, address, gender, birthDate, newFileName != null ? newFileName : existingImage, isActive);
+
+            // Cập nhật nhân viên trong database
+            boolean updateSuccess = staffDAO.updateStaff(staff);
+
+            if (updateSuccess) {
+                request.getSession().setAttribute("successMessage", "Cập nhật nhân viên thành công!");
+            } else {
+                request.getSession().setAttribute("errorMessage", "Cập nhật thất bại, vui lòng thử lại!");
+            }
+
+            response.sendRedirect(request.getContextPath() + "/dashboard/admin/staff");
+
+        } catch (NumberFormatException e) {
+            request.getSession().setAttribute("errorMessage", "Dữ liệu số không hợp lệ! Vui lòng kiểm tra lại.");
+            response.sendRedirect("editstaff.jsp?staffId=" + request.getParameter("staffId"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.getSession().setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
+            response.sendRedirect("editstaff.jsp?staffId=" + request.getParameter("staffId"));
         }
-    } catch (NumberFormatException e) {
-        e.printStackTrace();
-        response.sendRedirect("editstaff.jsp?error=invalidData");
-    } catch (Exception e) {
-        e.printStackTrace();
-        response.sendRedirect("error.jsp");
     }
-}
+
     /**
      * Returns a short description of the servlet.
      *

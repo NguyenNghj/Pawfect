@@ -9,10 +9,8 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Đặt Phòng Khách Sạn Thú Cưng</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-        <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="./css/bookingforcustomer_v1.css">
+        <link rel="stylesheet" href="./css/bookingforcustomer.css">
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
         <script>
             function setMinDateTime() {
                 let now = new Date();
@@ -91,87 +89,112 @@
         </script>
     </head>
     <body>
-        <div class ="all">
-            <!-- Breadcrumb -->
-            <div class="mt-4 bg-white p-3 mb-4 d-flex align-items-center justify-content-left" 
-                 style="border-radius: 20px; height: 60px;">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb mb-0" style ="font-weight: bold;">
-                        <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
-                        <li class="breadcrumb-item"><a href="pethotel" class="text-decoration-none">Khách sạn thú cưng</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Phòng ${room.roomName} dành cho ${room.roomType}</li>
-                    </ol>
-                </nav>
+        <!-- Breadcrumb -->
+        <ol class="breadcrumb">
+            <li><a class="trang-chu" href="/pawfect">Trang chủ</a></li>
+            <li><a class="trang-chu" href="/pethotel">Khách sạn thú cưng</a></li>
+            <li><a class="trang-chu" href="/pethoteldetail?id=${room.roomId}">Phòng ${room.roomName} dành cho ${room.roomType}</a></li>
+            <li>Đặt lịch</li>
+        </ol>
+
+        <h3>THÔNG TIN ĐẶT LỊCH</h3>
+
+        <div class="container">
+            <div class="info-container">
+                <div class="info-box">
+                    <h3>Thông tin khách hàng</h3>
+                    <ul class="info-list">
+                        <li><strong>Họ và tên:</strong> ${customer.fullName}</li>
+                        <li><strong>Email:</strong> ${customer.email}</li>
+                        <li><strong>Số điện thoại:</strong> ${customer.phone}</li>
+                    </ul>
+                </div>
+                <h2 class="title">Phòng ${room.roomName} dành cho ${room.roomType}</h2>
+                <img src="<%= request.getContextPath()%>/img/pethotel/${room.roomImage}" alt="Hình ảnh phòng ${room.roomName}" class="room-image">
             </div>
 
-            <h3 style = "margin: 0">THÔNG TIN ĐẶT LỊCH</h3>
+            <div class="form-container">
+                <form action="bookingform" method="post" onsubmit="return validateCheckInOut()">
+                    <input type="hidden" name="customerId" value="${customer.customerId}">
+                    <input type="hidden" name="roomId" value="${room.roomId}">
+                    <input type="hidden" id="pricePerNight" value="${room.pricePerNight}">
+                    <input type="hidden" name="totalPriceHidden" id="totalPriceHidden">
 
-            <div class="container">
-                <div class="info-container">
-                    <div class="info-box">
-                        <h3>Thông tin khách hàng</h3>
-                        <ul class="info-list">
-                            <li><strong>Họ và tên:</strong> ${customer.fullName}</li>
-                            <li><strong>Email:</strong> ${customer.email}</li>
-                            <li><strong>Số điện thoại:</strong> ${customer.phone}</li>
-                        </ul>
+                    <div class="form-group">
+                        <label for="checkIn">Check-in:</label>
+                        <input type="datetime-local" name="checkIn" id="checkIn" required onchange="updateCheckOutMin(); calculateTotalPrice();">
                     </div>
-                    <h2 class="title">Phòng ${room.roomName} dành cho ${room.roomType}</h2>
-                    <img src="${room.roomImage}" alt="Hình ảnh phòng ${room.roomName}" class="room-image">
-                </div>
 
-                <div class="form-container">
-                    <form action="bookingform" method="post" onsubmit="return validateCheckInOut()">
-                        <input type="hidden" name="customerId" value="${customer.customerId}">
-                        <input type="hidden" name="roomId" value="${room.roomId}">
-                        <input type="hidden" id="pricePerNight" value="${room.pricePerNight}">
-                        <input type="hidden" name="totalPriceHidden" id="totalPriceHidden">
-
-                        <div class="form-group">
-                            <label for="checkIn">Check-in:</label>
-                            <input type="datetime-local" name="checkIn" id="checkIn" required onchange="updateCheckOutMin(); calculateTotalPrice();">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="checkOut">Check-out:</label>
-                            <input type="datetime-local" name="checkOut" id="checkOut" required onchange="calculateTotalPrice();">
-                        </div>
+                    <div class="form-group">
+                        <label for="checkOut">Check-out:</label>
+                        <input type="datetime-local" name="checkOut" id="checkOut" required onchange="calculateTotalPrice();">
+                    </div>
 
 
-                        <div class="form-group">
-                            <label for="petId">Chọn Thú Cưng:</label>
-                            <c:choose>
-                                <c:when test="${empty petList}">
-                                    <p style="color: red;">Bạn chưa có thú cưng. Vui lòng thêm thú cưng trước khi đặt phòng!</p>
-                                    <a href="viewpet" class="add-pet-btn">➕ Thêm thú cưng</a>
-                                </c:when>
-                                <c:otherwise>
-                                    <select name="petId" id="petId" required onchange="checkPetStatus();">
-                                        <option value="" disabled selected>Chọn thú cưng của bạn</option> <!-- Option mặc định -->
-                                        <c:forEach var="pet" items="${petList}">
-                                            <option value="${pet.petId}" data-status="${petStatusMap[pet.petId]}">
-                                                ${pet.petname}
-                                            </option>
-                                        </c:forEach>
-                                    </select>
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
+                    <div class="form-group">
+                        <label for="petId">Chọn Thú Cưng:</label>
+                        <c:choose>
+                            <c:when test="${empty petList}">
+                                <p style="color: red;">Bạn chưa có thú cưng. Vui lòng thêm thú cưng trước khi đặt phòng!</p>
+                                <a href="viewpet" 
+                                   style="display: inline-block; padding: 5px 8px; background: #8c6e63; color: white; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 14px; white-space: nowrap; width: max-content; text-align: left; margin-left: 0;">
+                                    🐶 Thêm thú cưng
+                                </a>
 
 
-                        <div class="form-group">
-                            <label for="note">Ghi chú:</label>
-                            <textarea name="note" rows="3" placeholder="Nhập ghi chú..." maxlength="10000"></textarea>
-                        </div>
 
-                        <div class="form-group">
-                            <label for="totalPrice">Tổng giá (VND):</label>
-                            <input type="text" name="totalPrice" id="totalPrice" readonly>
-                        </div>
+                            </c:when>
+                            <c:otherwise>
+                                <select name="petId" id="petId" required onchange="checkPetStatus();">
+                                    <option value="" disabled selected>Chọn thú cưng của bạn</option> <!-- Option mặc định -->
+                                    <c:forEach var="pet" items="${petList}">
+                                        <option value="${pet.petId}" data-status="${petStatusMap[pet.petId]}">
+                                            ${pet.petname}
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
 
-                        <button type="submit">Đặt lịch</button>
-                    </form>
-                </div>
+
+                    <div class="form-group">
+                        <label for="note">Ghi chú:</label>
+                        <textarea name="note" rows="3" placeholder="Nhập ghi chú..." maxlength="10000"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="totalPrice">Tổng giá (VND):</label>
+                        <input type="text" name="totalPrice" id="totalPrice" readonly>
+                    </div>
+
+                    <div class="button-group" style="display: flex; gap: 10px; align-items: center;">
+                        <!-- Nút Đặt lịch -->
+                        <button type="submit" style="
+                                background-color: #8c6e63;
+                                color: white;
+                                padding: 10px 15px;
+                                border: none;
+                                border-radius: 5px;
+                                cursor: pointer;
+                                width: 70%;">
+                            Đặt lịch
+                        </button>
+                        <!-- Nút Quay lại -->
+                        <button type="button" onclick="history.back();" style="
+                                background-color: gray;
+                                color: white;
+                                padding: 10px 15px;
+                                border: none;
+                                border-radius: 5px;
+                                cursor: pointer;
+                                width: 30%;">
+                            Quay lại
+                        </button>
+                    </div>
+
+
+                </form>
             </div>
         </div>
         <script>

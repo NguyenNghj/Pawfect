@@ -76,7 +76,7 @@ public class PetHotelServlet extends HttpServlet {
         }
 
         // Gọi DAO để lấy danh sách phòng phù hợp với bộ lọc
-        List<PetHotel> roomList = PetHotelDAO.filterPetRooms(sizeFilter, roomTypeFilter);
+        List<PetHotel> roomList = PetHotelDAO.filterPetHotels(sizeFilter, roomTypeFilter);
 
         
         // Lấy customerId từ Cookie

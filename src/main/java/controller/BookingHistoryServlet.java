@@ -60,7 +60,6 @@ public class BookingHistoryServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String customerId = null;
@@ -110,7 +109,7 @@ public class BookingHistoryServlet extends HttpServlet {
                 status = "tc";
         }
         int totalQuantity = 0;
-        // Lay tong so san pham trong gio hang
+        // Lấy tổng số sản phẩm trong giỏ hàng
         List<CartItem> cartItems = CartDAO.getCartByCustomerId(id);
         if (!cartItems.isEmpty()) {
             for (CartItem cartItem : cartItems) {
@@ -124,8 +123,39 @@ public class BookingHistoryServlet extends HttpServlet {
         //Lấy thông tin booking
         request.setAttribute("status", status);
         request.setAttribute("customer", customer);
-        request.setAttribute("booking", booking);
-        request.getRequestDispatcher("bookinghistory.jsp").forward(request, response); // Chuyển dữ liệu sang JSP
+
+        // Lấy danh sách đặt phòng
+//        PetHotelBookingDAO bookingDAO = new PetHotelBookingDAO();
+        List<PetHotelBooking> allBookings = bookingDAO.getBookingsByCustomerId(id);
+
+        // Sắp xếp danh sách theo ngày đặt từ mới nhất đến cũ nhất
+        allBookings.sort((b1, b2) -> b2.getBookingDate().compareTo(b1.getBookingDate()));
+        
+        // Xử lý phân trang
+        int currentPage = 1;
+        String pageParam = request.getParameter("page");
+        if (pageParam != null) {
+            try {
+                currentPage = Integer.parseInt(pageParam);
+            } catch (NumberFormatException e) {
+                currentPage = 1;
+            }
+        }
+
+        int itemsPerPage = 5;
+        int totalPages = (int) Math.ceil((double) allBookings.size() / itemsPerPage);
+
+        int start = (currentPage - 1) * itemsPerPage;
+        int end = Math.min(start + itemsPerPage, allBookings.size());
+
+        List<PetHotelBooking> bookings = allBookings.subList(start, end);
+
+        // Đưa dữ liệu vào request để hiển thị trên JSP
+        request.setAttribute("booking", bookings);
+        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("totalPages", totalPages);
+
+        request.getRequestDispatcher("bookinghistory.jsp").forward(request, response);
     }
 
     /**
