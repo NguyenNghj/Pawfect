@@ -27,6 +27,14 @@
                     document.getElementById("checkOut").min = checkIn;
                 }
             }
+            function checkPetSelected() {
+                let petSelect = document.getElementById("petId");
+                if (!petSelect || petSelect.value === "") {
+                    showAlert("Vui lòng thêm thú cưng trước khi đặt phòng!");
+                    return false;
+                }
+                return true;
+            }
 
             function validateCheckInOut() {
                 let checkIn = document.getElementById("checkIn").value;
@@ -81,7 +89,7 @@
             function showAlert(message) {
                 Swal.fire({
                     icon: "error",
-                    title: "Chọn thời gian hợp lệ!",
+                    title: "Thông tin chưa hợp lệ!",
                     text: message
                 });
             }
@@ -90,16 +98,18 @@
     </head>
     <body>
         <!-- Breadcrumb -->
-        <div class="mt-4 bg-white p-3 mb-4 d-flex align-items-center justify-content-left" 
-             style="border-radius: 20px; height: 60px;">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mb-0" style ="font-weight: bold;">
-                    <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
-                    <li class="breadcrumb-item"><a href="pethotel" class="text-decoration-none">Khách sạn thú cưng</a></li>
-                    <li class="breadcrumb-item"><a href="pethotel?id=${room.roomId}" class="text-decoration-none">Phòng ${room.roomName} dành cho ${room.roomType}</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Phòng ${room.roomName} dành cho ${room.roomType}</li>
-                </ol>
-            </nav>
+        <div class="all"> 
+            <div class="mt-4 bg-white p-3 mb-4 d-flex align-items-center justify-content-left" 
+                 style="border-radius: 20px; height: 60px;">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0" style="font-weight: bold;">
+                        <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Khách sạn thú cưng</a></li>
+                        <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Phòng ${room.roomName} dành cho ${room.roomType}</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Thông tin đặt lịch</li>
+                    </ol>
+                </nav>
+            </div>
         </div>
 
         <h3>THÔNG TIN ĐẶT LỊCH</h3>
@@ -119,7 +129,7 @@
             </div>
 
             <div class="form-container">
-                <form action="bookingform" method="post" onsubmit="return validateCheckInOut()">
+                <form action="bookingform" method="post" onsubmit="return validateCheckInOut() && checkPetSelected();">
                     <input type="hidden" name="customerId" value="${customer.customerId}">
                     <input type="hidden" name="roomId" value="${room.roomId}">
                     <input type="hidden" id="pricePerNight" value="${room.pricePerNight}">

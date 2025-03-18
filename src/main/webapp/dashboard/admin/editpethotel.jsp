@@ -127,13 +127,13 @@
                             <!-- Cân nặng tối thiểu -->
                             <div class="mb-3">
                                 <label for="editMinWeight" class="form-label">Cân nặng tối thiểu (kg)</label>
-                                <input type="number" class="form-control" name="minWeight" step="0.1" value="${room.minWeight}" required>
+                                <input type="number" class="form-control" name="minWeight" step="0.1" value="${room.minWeight}" required min="0.1">
                             </div>
 
                             <!-- Cân nặng tối đa -->
                             <div class="mb-3">
                                 <label for="editMaxWeight" class="form-label">Cân nặng tối đa (kg)</label>
-                                <input type="number" class="form-control" name="maxWeight" step="0.1" value="${room.maxWeight}" required>
+                                <input type="number" class="form-control" name="maxWeight" step="0.1" value="${room.maxWeight}" required min="0.1">
                             </div>
 
                             <!-- Số lượng phòng -->

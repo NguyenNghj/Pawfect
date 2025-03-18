@@ -123,13 +123,13 @@
                             <!-- Cân nặng tối thiểu -->
                             <div class="mb-3">
                                 <label for="minWeight" class="form-label">Cân nặng tối thiểu (kg)</label>
-                                <input type="number" id="minWeight" name="minWeight" step="0.1" class="form-control" required>
+                                <input type="number" id="minWeight" name="minWeight" step="0.1" class="form-control" required min="0.1">
                             </div>
 
                             <!-- Cân nặng tối đa -->
                             <div class="mb-3">
                                 <label for="maxWeight" class="form-label">Cân nặng tối đa (kg)</label>
-                                <input type="number" id="maxWeight" name="maxWeight" step="0.1" class="form-control" required>
+                                <input type="number" id="maxWeight" name="maxWeight" step="0.1" class="form-control" required min="0.1">
                             </div>
 
                             <!-- Số lượng -->

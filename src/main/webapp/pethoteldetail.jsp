@@ -18,16 +18,23 @@
     <head>
         <meta charset="UTF-8">
         <title>Phòng ${room.roomName} dành cho ${room.roomType}</title>
-        <link rel="stylesheet" href="./css/pethoteldetail_v1.css">
+        <link rel="stylesheet" href="./css/pethoteldetail.css">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     </head>
     <body>
-        <ol class="breadcrumb">
-            <li><a class="trang-chu" href="/pawfect">Trang chủ</a></li>
-            <li><a class="trang-chu" href="/pethotel">Khách sạn thú cưng</a></li>
-            <li>Phòng ${room.roomName} dành cho ${room.roomType}</li>
-        </ol>
+        <div class="all"> 
+            <div class="mt-4 bg-white p-3 mb-4 d-flex align-items-center justify-content-left" 
+                 style="border-radius: 20px; height: 60px;">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0" style="font-weight: bold;">
+                        <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Khách sạn thú cưng</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Phòng ${room.roomName} dành cho ${room.roomType}</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
 
         <c:choose>
             <c:when test="${empty room}">

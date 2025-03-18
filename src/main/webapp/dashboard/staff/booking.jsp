@@ -211,7 +211,7 @@
                                                             ${booking.status}
                                                         </span>
                                                     </td>
-                                                    <td style="font-size: 15px; width: 100px; text-align: center; vertical-align: middle;">
+                                                    <td style="font-size: 15px; width: 103px; text-align: center; vertical-align: middle;">
                                                         <c:choose>
                                                             <c:when test="${booking.status eq 'Chờ xác nhận'}">
                                                                 <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
@@ -237,7 +237,17 @@
                                                                         Check-in
                                                                     </button>
                                                                 </form>
+
+                                                                <!-- Form hủy đặt phòng -->
+                                                                <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
+                                                                    <input type="hidden" name="bookingId" value="${booking.bookingId}">
+                                                                    <input type="hidden" name="action" value="cancel">
+                                                                    <button type="button" class="btn btn-sm btn-danger" data-action="cancel" onclick="confirmAction(this)" style="font-size: 12px; padding: 3px 5px;">
+                                                                        Hủy
+                                                                    </button>
+                                                                </form>
                                                             </c:when>
+
                                                             <c:when test="${booking.status eq 'Đã nhận phòng'}">
                                                                 <form action="pethotelbooking" method="post" style="display:inline;" class="confirm-form">
                                                                     <input type="hidden" name="bookingId" value="${booking.bookingId}">
