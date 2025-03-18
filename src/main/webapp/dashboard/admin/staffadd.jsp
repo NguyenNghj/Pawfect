@@ -91,6 +91,12 @@
                         </nav>
                     </div>     
 
+                    <!-- Tiêu đề và icon -->
+                    <div class="mt-4 d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
+                         style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
+                        <i class="fa-solid fa-user-plus fa-lg"></i>
+                        <h4 class="mb-0">Thêm nhân viên mới</h4>
+                    </div>
 
                     <!-- Form Thêm Nhân Viên -->
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">

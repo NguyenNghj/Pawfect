@@ -79,13 +79,19 @@
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
                                 <li class="breadcrumb-item">Bảng điều khiển</li>
                                 <li class="breadcrumb-item">Quản trị viên</li>
-                                <li class="breadcrumb-item"><a href="/dashboard/admin/pethotel">Khách sạn thú cưng</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Tạo phòng</li>
+                                <li class="breadcrumb-item"><a href="/dashboard/admin/pethotel">Quản lý khách sạn thú cưng</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Tạo phòng mới</li>
                             </ol>
                         </nav>
-                    </div>    
+                    </div> 
+                                
+                    <div class="mt-4 d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
+                         style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
+                        <i class="fa-solid fa-hotel fa-lg"></i>
+                        <h4 class="mb-0">Thêm phòng mới</h4>
+                    </div>
 
-                    <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
+                    <div class="row pb-4" style="margin-top: 20px; margin-bottom: 50px;">
                         <form id="createpethotel" action="createpethotel" method="post" enctype="multipart/form-data">
                             <!-- Hình ảnh -->
                             <div class="mb-3">

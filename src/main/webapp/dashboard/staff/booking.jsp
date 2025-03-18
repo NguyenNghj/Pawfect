@@ -11,12 +11,14 @@
 <%@ page import="java.util.Date" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="../../css/dashboard.css">
@@ -59,35 +61,33 @@
                             <div>
                                 <h1>Quản lí các yêu cầu đặt phòng</h1>
                             </div>
-                            <div class="dropdown d-flex align-items-center gap-2">
-                                <span><%= staffName%></span>
-                                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
-                                </button>
-                                <ul class="dropdown-menu ps-2 pe-2 pt-2 pb-2">
-                                    <div class="d-grid gap-2">
-                                        <% if ("Admin".equals(staffRole)) { %>
-                                        <li class="profile-img-switch-employee d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
-                                            <i class="fa-solid fa-repeat"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="/dashboard/admin/dashboard.jsp">Switch to admin</a>
-                                        </li>
-                                        <% }%>
-                                        <li class="profile-img-switch-store d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
-                                            <i class="fa-solid fa-store"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="#">Tới cửa hàng</a>
-                                        </li>
-                                        <hr style="margin: 0;">
-                                        <li class="profile-img-info1 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
-                                            <i class="fa-solid fa-user-pen"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="staffprofile">Hồ sơ</a>
-                                        </li>
-                                        <li class="profile-img-info2 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
-                                            <i class="fa-solid fa-right-from-bracket" style="font-size: 20px;"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="logoutstaff">Đăng xuất</a>
-                                        </li>
+                            <c:choose>
+                                <c:when test="${staffRole eq 'Admin'}">
+                                    <div class="dropdown d-flex align-items-center gap-2">
+                                        <span style="color: #D3A376; font-weight: bold;"><%= staffName%></span>
+                                        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center gap-2" href="/dashboard/admin/statistics">
+                                                    <i class="fa-solid fa-repeat"></i> Chuyển qua giao diện quản lí
+                                                </a>
+                                            </li>
+                                        </ul>
                                     </div>
-                                </ul>
-                            </div>                                                             
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="dropdown d-flex align-items-center gap-2">
+                                        <span style = "color: #D3A376; font-weight: bold;"><%= staffName%></span>
+                                        <a href="staffprofile">
+                                            <button class="btn" type="button">
+                                                <img class="profile-img" src="${staff.image}" alt="">
+                                            </button>
+                                        </a>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>                                                             
                         </div>
                     </div>
 
