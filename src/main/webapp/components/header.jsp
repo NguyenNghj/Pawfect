@@ -28,8 +28,8 @@
                 <div class="row align-items-center">
                     <!-- LOGO HEADER -->
                     <div class="col-auto">
-                        <a href="pawfect">
-                            <img class="logo-header" src="./img/header/logo.png" alt="PawPect Logo">
+                        <a href="pawfect" class="logo-header">
+                            <img src="./img/header/logo.png" alt="PawPect Logo">
                         </a>
                     </div>
 
