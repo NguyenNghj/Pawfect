@@ -101,7 +101,7 @@
                                     <label for="phone" class="form-label">Số điện thoại</label>
                                     <input type="tel" class="form-control" name="phoneNumber" id="phone" placeholder="Nhập số điện thoại của bạn" required>
                                     <div class="invalid-feedback">
-                                        Vui lòng nhập số điện thoại.
+                                        số điện thoại phải có 10 số.
                                     </div>
                                 </div>
 
@@ -116,7 +116,7 @@
                                     <label for="birthdate" class="form-label">Ngày tháng năm sinh</label>
                                     <input type="date" class="form-control" name="birthDate" id="birthdate" required>
                                     <div class="invalid-feedback">
-                                        Vui lòng chọn ngày sinh.
+                                         ngày sinh không được lớn hơn ngày hiện tại.
                                     </div>
                                 </div>
 
