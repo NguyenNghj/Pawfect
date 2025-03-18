@@ -24,9 +24,9 @@ header {
 }
 
 
-.logo-header {
+.logo-header img{
     width: 120px;
-    height: auto;
+    height: 120px;
     object-fit: cover;
     padding-bottom:5px;
 }

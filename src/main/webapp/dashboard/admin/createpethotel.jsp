@@ -54,7 +54,7 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Quản lí Pet Hotel</h1>
+                                <h1>Thêm khách sạn thú cưng</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
                                 <span style = "color: #D3A376; font-weight: bold;"><%= staffName%></span>
@@ -204,7 +204,7 @@
                 }
             }
         </script>
-        
+
 
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

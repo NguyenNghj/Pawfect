@@ -217,7 +217,22 @@
 
                     <script>
                         document.addEventListener("DOMContentLoaded", function () {
-                            var errorMessage = "<c:out value='${errorMessage}' />";
+                            // Lấy thông báo thành công từ session
+                            var successMessage = "<c:out value='${sessionScope.successMessage}' />";
+                            if (successMessage && successMessage.trim() !== "") {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Thành công!",
+                                    text: successMessage,
+                                    confirmButtonText: "OK"
+                                });
+
+                                // Xóa session sau khi hiển thị
+                                fetch('clear-session.jsp');
+                            }
+
+                            // Lấy thông báo lỗi từ session
+                            var errorMessage = "<c:out value='${sessionScope.errorMessage}' />";
                             if (errorMessage && errorMessage.trim() !== "") {
                                 Swal.fire({
                                     icon: "error",
@@ -225,9 +240,18 @@
                                     text: errorMessage,
                                     confirmButtonText: "OK"
                                 });
+
+                                // Xóa session sau khi hiển thị
+                                fetch('clear-session.jsp');
                             }
                         });
                     </script>
+
+                    <%
+                        session.removeAttribute("successMessage");
+                        session.removeAttribute("errorMessage");
+                    %>
+
 
                     <script>
                         function updatePage(page) {
@@ -236,6 +260,8 @@
                             window.location.search = urlParams.toString();
                         }
                     </script>
+
+
                 </div>
             </div>
         </div>  
