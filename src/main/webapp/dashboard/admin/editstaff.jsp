@@ -127,15 +127,6 @@
                                     <input type="text" class="form-control" name="phone" value="${staff.phone}" required>
                                 </div>
 
-                                <!-- Vai trò -->
-                                <div class="mb-3">
-                                    <label class="form-label">Vai Trò</label>
-                                    <select class="form-control" name="roleName" required>
-                                        <option value="Admin" ${staff.roleName eq 'Admin' ? 'selected' : ''}>Admin</option>
-                                        <option value="Staff" ${staff.roleName eq 'Staff' ? 'selected' : ''}>Staff</option>
-                                    </select>
-                                </div>
-
                                 <!-- Mật khẩu -->
                                 <div class="mb-3">
                                     <label class="form-label">Mật Khẩu</label>

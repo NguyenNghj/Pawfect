@@ -187,15 +187,10 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                // Lấy thông báo lỗi từ request
-                var errorMessage = "<c:out value='${errorMessage}' />";
-                if (errorMessage && errorMessage.trim() !== "") {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Lỗi!",
-                        text: errorMessage,
-                        confirmButtonText: "OK"
-                    });
+                // Kiểm tra trạng thái reload để tránh hiển thị lại thông báo sau khi đã reload
+                if (localStorage.getItem("reloaded") === "true") {
+                    localStorage.removeItem("reloaded");
+                    return;
                 }
 
                 // Lấy thông báo thành công từ session
@@ -207,26 +202,13 @@
                         text: successMessage,
                         confirmButtonText: "OK"
                     }).then(() => {
-                        fetch('clear-session.jsp'); // Xóa session sau khi hiển thị
+                        // Đánh dấu đã reload trong localStorage
+                        localStorage.setItem("reloaded", "true");
+                        // Xóa session và reload trang
+                        fetch('clear-session.jsp').then(() => {
+                            location.reload();
+                        });
                     });
-                }
-            });
-
-        </script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                // Lấy thông báo thành công từ session
-                var successMessage = "<c:out value='${sessionScope.successMessage}' />";
-                if (successMessage && successMessage.trim() !== "") {
-                    Swal.fire({
-                        icon: "success",
-                        title: "Thành công!",
-                        text: successMessage,
-                        confirmButtonText: "OK"
-                    });
-
-                    // Xóa session sau khi hiển thị
-                    fetch('clear-session.jsp');
                 }
 
                 // Lấy thông báo lỗi từ session
@@ -237,15 +219,13 @@
                         title: "Lỗi!",
                         text: errorMessage,
                         confirmButtonText: "OK"
+                    }).then(() => {
+                        fetch('clear-session.jsp'); // Xóa session lỗi
                     });
-
-                    // Xóa session sau khi hiển thị
-                    fetch('clear-session.jsp');
                 }
             });
         </script>
-
-        <%            session.removeAttribute("successMessage");
+        <%    session.removeAttribute("successMessage");
             session.removeAttribute("errorMessage");
         %>
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>

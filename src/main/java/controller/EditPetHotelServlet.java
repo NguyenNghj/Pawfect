@@ -175,13 +175,13 @@ public class EditPetHotelServlet extends HttpServlet {
             if (newFileName != null) {
                 filePart.write(realPath + File.separator + newFileName);
 
-                // Xóa ảnh cũ nếu tồn tại
-                if (existingImage != null && !existingImage.isEmpty()) {
-                    File oldImageFile = new File(realPath + File.separator + existingImage);
-                    if (oldImageFile.exists()) {
-                        oldImageFile.delete();
-                    }
-                }
+//                // Xóa ảnh cũ nếu tồn tại
+//                if (existingImage != null && !existingImage.isEmpty()) {
+//                    File oldImageFile = new File(realPath + File.separator + existingImage);
+//                    if (oldImageFile.exists()) {
+//                        oldImageFile.delete();
+//                    }
+//                }
             }
 
             // Tạo object PetHotel với ảnh mới (nếu có)

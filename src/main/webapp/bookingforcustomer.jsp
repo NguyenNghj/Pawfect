@@ -104,8 +104,8 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0" style="font-weight: bold;">
                         <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
-                        <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Khách sạn thú cưng</a></li>
-                        <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Phòng ${room.roomName} dành cho ${room.roomType}</a></li>
+                        <li class="breadcrumb-item"><a href="pethotel" class="text-decoration-none">Khách sạn thú cưng</a></li>
+                        <li class="breadcrumb-item"><a href="pethoteldetail?id=${room.roomId}" class="text-decoration-none">Phòng ${room.roomName} dành cho ${room.roomType}</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Thông tin đặt lịch</li>
                     </ol>
                 </nav>
