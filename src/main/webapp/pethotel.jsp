@@ -13,7 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Danh sách phòng cho thú cưng</title>
-        <link rel="stylesheet" href="./css/pethotel_v2.css">
+        <link rel="stylesheet" href="./css/pethotel.css">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
     </head>
     <body>

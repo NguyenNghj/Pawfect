@@ -83,30 +83,37 @@ public class BookingHistoryServlet extends HttpServlet {
 
         PetHotelBookingDAO bookingDAO = new PetHotelBookingDAO();
         List<PetHotelBooking> booking; // Lấy danh sách đặt phòng
+        // Sắp xếp danh sách theo ngày đặt từ mới nhất đến cũ nhất
         switch (status) {
             case "dd":
                 booking = bookingDAO.getStatusBookingsByCustomerId(id, "Đã duyệt");
                 status = "dd";
+                booking.sort((b1, b2) -> b2.getBookingDate().compareTo(b1.getBookingDate()));
                 break;
             case "cxn":
                 booking = bookingDAO.getStatusBookingsByCustomerId(id, "Chờ xác nhận");
                 status = "cxn";
+                booking.sort((b1, b2) -> b2.getBookingDate().compareTo(b1.getBookingDate()));
                 break;
             case "dh":
                 booking = bookingDAO.getStatusBookingsByCustomerId(id, "Đã hủy");
                 status = "dh";
+                booking.sort((b1, b2) -> b2.getBookingDate().compareTo(b1.getBookingDate()));
                 break;
             case "dnp":
                 booking = bookingDAO.getStatusBookingsByCustomerId(id, "Đã nhận phòng");
                 status = "dnp";
+                booking.sort((b1, b2) -> b2.getBookingDate().compareTo(b1.getBookingDate()));
                 break;
             case "dtp":
                 booking = bookingDAO.getStatusBookingsByCustomerId(id, "Đã trả phòng");
                 status = "dtp";
+                booking.sort((b1, b2) -> b2.getBookingDate().compareTo(b1.getBookingDate()));
                 break;
             default:
                 booking = bookingDAO.getBookingsByCustomerId(id);
                 status = "tc";
+                booking.sort((b1, b2) -> b2.getBookingDate().compareTo(b1.getBookingDate()));
         }
         int totalQuantity = 0;
         // Lấy tổng số sản phẩm trong giỏ hàng
@@ -124,36 +131,8 @@ public class BookingHistoryServlet extends HttpServlet {
         request.setAttribute("status", status);
         request.setAttribute("customer", customer);
 
-        // Lấy danh sách đặt phòng
-//        PetHotelBookingDAO bookingDAO = new PetHotelBookingDAO();
-        List<PetHotelBooking> allBookings = bookingDAO.getBookingsByCustomerId(id);
-
-        // Sắp xếp danh sách theo ngày đặt từ mới nhất đến cũ nhất
-        allBookings.sort((b1, b2) -> b2.getBookingDate().compareTo(b1.getBookingDate()));
-        
-        // Xử lý phân trang
-        int currentPage = 1;
-        String pageParam = request.getParameter("page");
-        if (pageParam != null) {
-            try {
-                currentPage = Integer.parseInt(pageParam);
-            } catch (NumberFormatException e) {
-                currentPage = 1;
-            }
-        }
-
-        int itemsPerPage = 5;
-        int totalPages = (int) Math.ceil((double) allBookings.size() / itemsPerPage);
-
-        int start = (currentPage - 1) * itemsPerPage;
-        int end = Math.min(start + itemsPerPage, allBookings.size());
-
-        List<PetHotelBooking> bookings = allBookings.subList(start, end);
-
         // Đưa dữ liệu vào request để hiển thị trên JSP
-        request.setAttribute("booking", bookings);
-        request.setAttribute("currentPage", currentPage);
-        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("booking", booking);
 
         request.getRequestDispatcher("bookinghistory.jsp").forward(request, response);
     }

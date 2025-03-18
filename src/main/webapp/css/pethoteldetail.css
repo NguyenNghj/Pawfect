@@ -12,10 +12,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     margin: 0;
     padding: 0;
 }
-
 .all {
-    max-width: 1329px;
     margin: auto;
+    max-width: 1329px;
+}
+
+body {
+    background-color: #F4F4F4;
+    text-align: center;
 }
 
 .breadcrumb{
@@ -30,10 +34,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 .breadcrumb .breadcrumb-item a:hover {
     color: #D3A376;
     text-decoration: underline;
-}
-
-body {
-    background-color: #F4F4F4;
 }
 
 .trang-chu {

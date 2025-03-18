@@ -134,7 +134,7 @@
                                         <form id="cancelForm-${booking.bookingId}" action="cancelbooking" method="post">
                                             <input type="hidden" name="bookingId" value="${booking.bookingId}">
                                             <button type="button" style="padding: 10px 15px; border-radius: 5px; font-size: 14px; font-weight: bold; background-color: #dc3545; color: white; border: none;" onclick="confirmCancel(${booking.bookingId})">
-                                                Hủy đơn hàng
+                                                Hủy đặt lịch
                                             </button>
                                         </form>
                                     </c:if>
