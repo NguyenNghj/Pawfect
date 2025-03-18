@@ -96,7 +96,7 @@
 
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
-                        <form id="addVoucherForm" action="/dashboard/admin/createvoucher" method="post">
+                        <form id="addVoucherForm" action="/dashboard/staff/createvoucher" method="post">
 
                             <div class="mb-3">
                                 <label for="voucherCode" class="form-label">Mã giảm giá</label>
@@ -147,7 +147,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary">Thêm voucher</button>
-                            <a href="<c:url value='/dashboard/admin/voucher'/>" class="btn btn-secondary" id="back">Trở về</a>
+                            <a href="<c:url value='/dashboard/staff/voucher'/>" class="btn btn-secondary" id="back">Trở về</a>
                         </form>                        
 
                         <script>
