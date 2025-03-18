@@ -232,36 +232,6 @@
             }
         </script>
 
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                // Lấy thông báo lỗi từ request
-                var errorMessage = "<c:out value='${errorMessage}' />";
-                if (errorMessage && errorMessage.trim() !== "") {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Lỗi!",
-                        text: errorMessage,
-                        confirmButtonText: "OK"
-                    });
-                }
-
-                // Lấy thông báo thành công từ session
-                var successMessage = "<c:out value='${sessionScope.successMessage}' />";
-                if (successMessage && successMessage.trim() !== "") {
-                    Swal.fire({
-                        icon: "success",
-                        title: "Thành công!",
-                        text: successMessage,
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        fetch('clear-session.jsp'); // Xóa session sau khi hiển thị
-                    });
-                }
-            });
-
-        </script>
-
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 let urlParams = new URLSearchParams(window.location.search);
@@ -291,8 +261,15 @@
         </script>
 
 
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
+                // Kiểm tra trạng thái reload để tránh hiển thị lại thông báo sau khi đã reload
+                if (localStorage.getItem("reloaded") === "true") {
+                    localStorage.removeItem("reloaded");
+                    return;
+                }
+
                 // Lấy thông báo thành công từ session
                 var successMessage = "<c:out value='${sessionScope.successMessage}' />";
                 if (successMessage && successMessage.trim() !== "") {
@@ -301,10 +278,14 @@
                         title: "Thành công!",
                         text: successMessage,
                         confirmButtonText: "OK"
+                    }).then(() => {
+                        // Đánh dấu đã reload trong localStorage
+                        localStorage.setItem("reloaded", "true");
+                        // Xóa session và reload trang
+                        fetch('clear-session.jsp').then(() => {
+                            location.reload();
+                        });
                     });
-
-                    // Xóa session sau khi hiển thị
-                    fetch('clear-session.jsp');
                 }
 
                 // Lấy thông báo lỗi từ session
@@ -315,18 +296,15 @@
                         title: "Lỗi!",
                         text: errorMessage,
                         confirmButtonText: "OK"
+                    }).then(() => {
+                        fetch('clear-session.jsp'); // Xóa session lỗi
                     });
-
-                    // Xóa session sau khi hiển thị
-                    fetch('clear-session.jsp');
                 }
             });
         </script>
-        <%
-            session.removeAttribute("successMessage");
+        <%    session.removeAttribute("successMessage");
             session.removeAttribute("errorMessage");
         %>
-
 
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

@@ -105,7 +105,6 @@ public class EditStaffServlet extends HttpServlet {
         try {
             // Lấy dữ liệu từ request
             String staffIdParam = request.getParameter("staffId");
-            String roleName = request.getParameter("roleName");
             String password = request.getParameter("password");
             String fullName = request.getParameter("fullName");
             String email = request.getParameter("email");
@@ -119,8 +118,7 @@ public class EditStaffServlet extends HttpServlet {
 
             // Kiểm tra dữ liệu đầu vào có null hoặc rỗng không
             if (staffIdParam == null || staffIdParam.trim().isEmpty()
-                    || roleName == null || roleName.trim().isEmpty()
-                    || password == null || password.trim().isEmpty()
+                    ||  password == null || password.trim().isEmpty()
                     || fullName == null || fullName.trim().isEmpty()
                     || email == null || email.trim().isEmpty()
                     || phone == null || phone.trim().isEmpty()) {
@@ -185,7 +183,7 @@ public class EditStaffServlet extends HttpServlet {
             }
 
             // Tạo object Staff
-            Staff staff = new Staff(staffId, roleName, hashedPassword, fullName, email, phone, address, gender, birthDate, newFileName != null ? newFileName : existingImage, isActive);
+            Staff staff = new Staff(staffId, hashedPassword, fullName, email, phone, address, gender, birthDate, newFileName != null ? newFileName : existingImage, isActive);
 
             // Cập nhật nhân viên trong database
             boolean updateSuccess = staffDAO.updateStaff(staff);

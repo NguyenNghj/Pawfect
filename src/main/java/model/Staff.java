@@ -35,6 +35,31 @@ public class Staff {
         this.isActive = isActive;
     }
 
+    public Staff(int staffId, String password, String fullName, String email, String phone, String address, String gender, Date birthDate, String image, boolean isActive) {
+        this.staffId = staffId;
+        this.password = password;
+        this.fullName = fullName;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.gender = gender;
+        this.birthDate = birthDate;
+        this.image = image;
+        this.isActive = isActive;
+    }
+
+    public Staff(String password, String fullName, String email, String phone, String address, String gender, Date birthDate, String image, boolean isActive) {
+        this.password = password;
+        this.fullName = fullName;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.gender = gender;
+        this.birthDate = birthDate;
+        this.image = image;
+        this.isActive = isActive;
+    }
+
     // Constructor không có staffId (dùng khi thêm mới)
     public Staff(String roleName, String password, String fullName, String email, String phone, String address,
             String gender, Date birthDate, String image, boolean isActive) {

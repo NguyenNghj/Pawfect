@@ -182,14 +182,15 @@ public class StatisticDAO {
 
     public List<Staff> getStaffRevenueInWeek() {
         List<Staff> staffList = new ArrayList<>();
-        String query = "SELECT s.staff_id, s.full_name, s.image, "
+        String query = "SELECT s.staff_id, s.full_name, s.image, s.role_name, "
                 + "COALESCE(SUM(o.total_amount), 0) AS total_order, "
                 + "COALESCE(SUM(phb.total_price), 0) AS total_booking, "
                 + "(COALESCE(SUM(o.total_amount), 0) + COALESCE(SUM(phb.total_price), 0)) AS total_revenue "
                 + "FROM Staffs s "
                 + "LEFT JOIN Orders o ON s.staff_id = o.staff_id AND o.status = N'Hoàn thành' "
                 + "LEFT JOIN PetHotelBookings phb ON s.staff_id = phb.staff_id AND phb.status = N'Hoàn thành' "
-                + "GROUP BY s.staff_id, s.full_name, s.image "
+                + "WHERE s.role_name = N'Staff' "
+                + "GROUP BY s.staff_id, s.full_name, s.image, s.role_name "
                 + "ORDER BY total_revenue DESC";
 
         try {

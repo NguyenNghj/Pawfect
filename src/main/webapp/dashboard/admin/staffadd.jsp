@@ -77,7 +77,7 @@
                             </div>                                                              
                         </div>
                     </div>
-                                
+
                     <!-- Thanh breadcrumb -->
                     <div class="row mt-2 bg-white p-3 d-flex align-items-center justify-content-center" 
                          style="border-radius: 20px; height: 60px;">
@@ -114,27 +114,16 @@
                                 </div>
                             </div>
 
-                            <!-- Vai trò -->
-                            <div class="mb-3">
-                                <label class="form-label">Vai Trò</label>
-                                <select class="form-control" name="roleName">
-                                    <option value="Admin" ${staff.roleName eq 'Admin' ? 'selected' : ''}>Admin</option>
-                                    <option value="Staff" ${staff.roleName eq 'Staff' ? 'selected' : ''}>Staff</option>
-                                </select>
-                            </div>
-
-                            <!-- Mật khẩu -->
-                            <div class="mb-3">
-                                <label class="form-label">Mật Khẩu</label>
-                                <input type="password" class="form-control" name="password" required>
-                            </div>
-
                             <!-- Họ và tên -->
                             <div class="mb-3">
                                 <label class="form-label">Họ và Tên</label>
                                 <input type="text" class="form-control" name="fullName" required>
                             </div>
-
+                            <!-- Mật khẩu -->
+                            <div class="mb-3">
+                                <label class="form-label">Mật Khẩu</label>
+                                <input type="password" class="form-control" name="password" required>
+                            </div>
                             <!-- Email -->
                             <div class="mb-3">
                                 <label class="form-label">Email</label>

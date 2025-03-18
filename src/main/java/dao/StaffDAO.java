@@ -13,13 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StaffDAO {
+
     Connection conn = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
 
     public List<Staff> getAllStaffs() {
         List<Staff> staffList = new ArrayList<>();
-        String query = "SELECT * FROM Staffs WHERE is_active = 1";
+        String query = "SELECT * FROM Staffs WHERE is_active = 1 AND role_name ='Staff'";
 
         try {
             conn = new DBContext().getConnection();
@@ -76,27 +77,23 @@ public class StaffDAO {
         }
         return null;
     }
-  // Thêm nhân viên mới
+    // Thêm nhân viên mới
+
     public boolean addStaff(Staff staff) {
-        String sql = "INSERT INTO Staffs (role_name, password, full_name, email, phone, address, gender, birth_date, image, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ? ,?, 1)"; // is_active luôn là 1
+        String sql = "INSERT INTO Staffs (role_name, password, full_name, email, phone, address, gender, birth_date, image, is_active) "
+                + "VALUES ('Staff', ?, ?, ?, ?, ?, ?, ?, ?, 1)"; // is_active luôn là 1
 
         try ( Connection conn = new DBContext().getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
-// Đảm bảo set đúng vị trí cho tất cả giá trị
-            ps.setString(1, staff.getRoleName());
-            ps.setString(2, staff.getPassword());
-            ps.setString(3, staff.getFullName());
-            ps.setString(4, staff.getEmail());
-            ps.setString(5, staff.getPhone());
-            ps.setString(6, staff.getAddress());
-            ps.setString(7, staff.getGender());
-            ps.setDate(8, staff.getBirthDate());
-// Xử lý image null đúng cách
-            if (staff.getImage() != null && !staff.getImage().trim().isEmpty()) {
-                ps.setString(9, staff.getImage());
-            } else {
-                ps.setNull(9, Types.VARCHAR);
-            }
-            // Debug log
+
+            ps.setString(1, staff.getPassword());
+            ps.setString(2, staff.getFullName());
+            ps.setString(3, staff.getEmail());
+            ps.setString(4, staff.getPhone());
+            ps.setString(5, staff.getAddress());
+            ps.setString(6, staff.getGender());
+            ps.setDate(7, staff.getBirthDate());
+            ps.setString(8, staff.getImage()); // Không kiểm tra null
+
             int affectedRows = ps.executeUpdate();
             return affectedRows > 0;
 
@@ -106,51 +103,54 @@ public class StaffDAO {
         }
     }
 
- public boolean updateStaff(Staff staff) {
-    String query = "UPDATE Staffs SET role_name = ?, password = ?, full_name = ?, email = ?, phone = ?, "
-            + "address = ?, gender = ?, birth_date = ?, image = ?, is_active = ? WHERE staff_id = ?";
-    Connection conn = null;
-    PreparedStatement ps = null;
+    public boolean updateStaff(Staff staff) {
+        String query = "UPDATE Staffs SET password = ?, full_name = ?, email = ?, phone = ?, "
+                + "address = ?, gender = ?, birth_date = ?, image = ?, is_active = ? WHERE staff_id = ?";
+        Connection conn = null;
+        PreparedStatement ps = null;
 
-    try {
-        conn = new DBContext().getConnection();
-        ps = conn.prepareStatement(query);
-
-        ps.setString(1, staff.getRoleName());
-        ps.setString(2, hashPasswordMD5(staff.getPassword()));
-        ps.setString(3, staff.getFullName());
-        ps.setString(4, staff.getEmail());
-        ps.setString(5, staff.getPhone());
-        ps.setString(6, staff.getAddress());
-        ps.setString(7, staff.getGender());
-        
-        // Nếu birthDate là null, set null cho SQL
-        if (staff.getBirthDate() != null) {
-            ps.setDate(8, staff.getBirthDate());
-        } else {
-            ps.setNull(8, java.sql.Types.DATE);
-        }
-        
-        ps.setString(9, staff.getImage());
-        ps.setBoolean(10, staff.isActive());
-        ps.setInt(11, staff.getStaffId());
-
-        int rowsAffected = ps.executeUpdate();
-        return rowsAffected > 0;
-    } catch (SQLException e) {
-        e.printStackTrace();
-        System.out.println("Lỗi cập nhật nhân viên: " + e.getMessage());
-    } finally {
         try {
-            if (ps != null) ps.close();
-            if (conn != null) conn.close();
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+
+            // Mã hóa mật khẩu trước khi cập nhật
+            ps.setString(1, hashPasswordMD5(staff.getPassword()));
+            ps.setString(2, staff.getFullName());
+            ps.setString(3, staff.getEmail());
+            ps.setString(4, staff.getPhone());
+            ps.setString(5, staff.getAddress());
+            ps.setString(6, staff.getGender());
+
+            // Nếu birthDate là null, set null cho SQL
+            if (staff.getBirthDate() != null) {
+                ps.setDate(7, staff.getBirthDate());
+            } else {
+                ps.setNull(7, java.sql.Types.DATE);
+            }
+
+            ps.setString(8, staff.getImage());
+            ps.setBoolean(9, staff.isActive());
+            ps.setInt(10, staff.getStaffId());
+
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("Lỗi cập nhật nhân viên: " + e.getMessage());
+        } finally {
+            try {
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+        return false;
     }
-    return false;
-}
-
 
     public boolean deleteStaff(int staffId) {
         String query = "UPDATE Staffs SET is_active = 0 WHERE staff_id = ?";
@@ -165,37 +165,38 @@ public class StaffDAO {
         }
         return false;
     }
-     public List<Staff> searchStaffs(String keyword) {
-    List<Staff> staffList = new ArrayList<>();
-    String query = "SELECT * FROM Staffs WHERE LOWER(full_name) LIKE LOWER(N'%' + ? + '%') AND is_active = 1";
 
-    try (Connection conn = new DBContext().getConnection();
-         PreparedStatement ps = conn.prepareStatement(query)) {
-        
-        String searchPattern = "%" + keyword + "%";
-        ps.setString(1, searchPattern);
+    public List<Staff> searchStaffs(String keyword) {
+        List<Staff> staffList = new ArrayList<>();
+        String query = "SELECT * FROM Staffs WHERE LOWER(full_name) LIKE LOWER(N'%' + ? + '%') AND is_active = 1";
 
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            staffList.add(new Staff(
-                    rs.getInt("staff_id"),
-                    rs.getString("role_name"),
-                    rs.getString("password"),
-                    rs.getString("full_name"),
-                    rs.getString("email"),
-                    rs.getString("phone"),
-                    rs.getString("address"),
-                    rs.getString("gender"),
-                    rs.getDate("birth_date"),
-                    rs.getString("image"),
-                    rs.getBoolean("is_active")
-            ));
+        try ( Connection conn = new DBContext().getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
+
+            String searchPattern = "%" + keyword + "%";
+            ps.setString(1, searchPattern);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                staffList.add(new Staff(
+                        rs.getInt("staff_id"),
+                        rs.getString("role_name"),
+                        rs.getString("password"),
+                        rs.getString("full_name"),
+                        rs.getString("email"),
+                        rs.getString("phone"),
+                        rs.getString("address"),
+                        rs.getString("gender"),
+                        rs.getDate("birth_date"),
+                        rs.getString("image"),
+                        rs.getBoolean("is_active")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return staffList;
     }
-    return staffList;
-}
+
     /**
      * Hashes a password using MD5 algorithm
      *
@@ -220,6 +221,5 @@ public class StaffDAO {
         }
         return hashedPassword;
     }
-  
 
 }

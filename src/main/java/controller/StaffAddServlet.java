@@ -86,7 +86,6 @@ public class StaffAddServlet extends HttpServlet {
 
         try {
             // Lấy dữ liệu từ form
-            String roleName = request.getParameter("roleName");
             String password = request.getParameter("password");
             String fullName = request.getParameter("fullName");
             String email = request.getParameter("email");
@@ -97,8 +96,7 @@ public class StaffAddServlet extends HttpServlet {
             String image = null; // Xử lý upload ảnh
 
             // Kiểm tra dữ liệu đầu vào
-            if (roleName == null || roleName.trim().isEmpty()
-                    || password == null || password.trim().isEmpty()
+            if (password == null || password.trim().isEmpty()
                     || fullName == null || fullName.trim().isEmpty()
                     || email == null || email.trim().isEmpty()
                     || phone == null || phone.trim().isEmpty()) {
@@ -136,7 +134,7 @@ public class StaffAddServlet extends HttpServlet {
             image = fileName;
 
             // Tạo đối tượng Staff
-            Staff staff = new Staff(roleName, hashPassword, fullName, email, phone, address, gender, birthDate, image, true);
+            Staff staff = new Staff(hashPassword, fullName, email, phone, address, gender, birthDate, image, true);
 
             // Gọi DAO để thêm nhân viên vào database
             StaffDAO staffDAO = new StaffDAO();
