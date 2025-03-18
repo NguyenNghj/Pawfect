@@ -22,7 +22,7 @@
             showConfirmButton: false,
             timer: 2000
         }).then(() => {
-            window.location.href = "login.jsp";
+            window.location.href = "login";
         });
     </script>
 <% } %>
