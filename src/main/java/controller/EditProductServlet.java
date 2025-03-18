@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.PrintWriter;
+import java.util.UUID;
 import model.Category;
 import model.Product;
 
@@ -80,6 +81,13 @@ public class EditProductServlet extends HttpServlet {
             CategoryDAO categoryDAO = new CategoryDAO();
 
             List<Category> categories = categoryDAO.getAllCategories();
+
+            if (categories == null || categories.isEmpty()) {
+                request.getSession().setAttribute("errorMessage", "Không có danh mục nào. Vui lòng tạo ít nhất một danh mục.");
+                response.sendRedirect(request.getContextPath() + "/dashboard/admin/product");
+                return;
+            }
+
             Product product = productDAO.getProductById(productId);
 
             if (product == null) {
@@ -174,7 +182,31 @@ public class EditProductServlet extends HttpServlet {
             if (filePart != null && filePart.getSize() > 0) {
                 String submittedFileName = filePart.getSubmittedFileName();
                 if (submittedFileName != null && !submittedFileName.trim().isEmpty()) {
-                    newFileName = Paths.get(submittedFileName).getFileName().toString();
+                    String fileName = Paths.get(submittedFileName).getFileName().toString();
+
+                    // Kiểm tra trùng tên file
+                    File file = new File(realPath, fileName);
+                    if (file.exists()) {
+                        String extension = "";
+                        int lastDotIndex = fileName.lastIndexOf('.');
+                        String baseName = fileName;
+                        if (lastDotIndex != -1) {
+                            extension = fileName.substring(lastDotIndex);
+                            baseName = fileName.substring(0, lastDotIndex);
+                        }
+                        fileName = baseName + "_" + UUID.randomUUID() + extension;
+                    }
+
+                    newFileName = fileName;
+                    filePart.write(realPath + File.separator + newFileName);
+
+                    // Xóa ảnh cũ nếu có
+                    if (existingImage != null && !existingImage.isEmpty()) {
+                        File oldImageFile = new File(realPath + File.separator + existingImage);
+                        if (oldImageFile.exists()) {
+                            oldImageFile.delete();
+                        }
+                    }
                 }
             }
 
@@ -186,15 +218,6 @@ public class EditProductServlet extends HttpServlet {
             boolean updateSuccess = productDAO.updateProduct(product);
 
             if (updateSuccess) {
-                if (newFileName != null) {
-                    filePart.write(realPath + File.separator + newFileName);
-                    if (!existingImage.isEmpty()) {
-                        File oldImageFile = new File(realPath + File.separator + existingImage);
-                        if (oldImageFile.exists()) {
-                            oldImageFile.delete();
-                        }
-                    }
-                }
                 response.sendRedirect(request.getContextPath() + "/dashboard/admin/product");
                 request.getSession().setAttribute("successMessage", "Cập nhật sản phẩm thành công!");
             } else {

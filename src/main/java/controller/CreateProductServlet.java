@@ -17,6 +17,7 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 import model.Category;
 import model.Product;
 
@@ -70,11 +71,16 @@ public class CreateProductServlet extends HttpServlet {
             List<Category> categories = categoryDAO.getAllCategories();
 
             request.setAttribute("categories", categories);
+            if (categories == null || categories.isEmpty()) {
+                request.getSession().setAttribute("errorMessage", "Không có danh mục nào. Vui lòng tạo ít nhất một danh mục.");
+                response.sendRedirect(request.getContextPath() + "/dashboard/admin/product");
+                return;
+            }
             request.getRequestDispatcher("/dashboard/admin/createproduct.jsp").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace(); // Ghi log lỗi để debug (nên thay bằng Logger trong hệ thống lớn)
             // Thông báo lỗi để hiển thị trên giao diện
-            request.setAttribute("errorMessage", "Đã xảy ra lỗi khi tải danh mục sản phẩm.");
+            request.getSession().setAttribute("errorMessage", "Đã xảy ra lỗi khi tải danh mục sản phẩm.");
             request.getRequestDispatcher("/dashboard/admin/createproduct.jsp").forward(request, response);
         }
     }
@@ -118,7 +124,22 @@ public class CreateProductServlet extends HttpServlet {
             Part filePart = request.getPart("productImage");
 
             if (filePart != null && filePart.getSize() > 0) {
-                fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+                String originalFileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+                File file = new File(realPath, originalFileName);
+
+                // Nếu file đã tồn tại, đổi tên mới
+                while (file.exists()) {
+                    String extension = "";
+                    int lastDotIndex = originalFileName.lastIndexOf('.');
+                    if (lastDotIndex != -1) {
+                        extension = originalFileName.substring(lastDotIndex);
+                        originalFileName = originalFileName.substring(0, lastDotIndex);
+                    }
+                    String uniqueName = originalFileName + "_" + UUID.randomUUID() + extension;
+                    file = new File(realPath, uniqueName);
+                }
+
+                fileName = file.getName();
                 filePart.write(realPath + File.separator + fileName);
             }
 
@@ -145,9 +166,9 @@ public class CreateProductServlet extends HttpServlet {
             e.printStackTrace();
             request.getSession().setAttribute("errorMessage", "Tạo sản phẩm thất bại!");
             request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
-        }    }
+        }
+    }
 
-    
     /**
      * Returns a short description of the servlet.
      *
