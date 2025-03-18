@@ -13,6 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="../../css/dashboard.css">
@@ -56,7 +57,7 @@
                                 <h1>Quản lí Pet Hotel</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
-                                <span><%= staffName%></span>
+                                <span style = "color: #D3A376; font-weight: bold;"><%= staffName%></span>
                                 <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
                                 </button>
@@ -64,20 +65,7 @@
                                     <div class="d-grid gap-2">
                                         <li class="profile-img-switch-employee d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
                                             <i class="fa-solid fa-repeat"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="/dashboard/staff/dashboard.jsp">Switch to employee</a>
-                                        </li>
-                                        <li class="profile-img-switch-store d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
-                                            <i class="fa-solid fa-store"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="#">Go to store</a>
-                                        </li>
-                                        <hr style="margin: 0;">
-                                        <li class="profile-img-info1 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
-                                            <i class="fa-solid fa-user-pen"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="adminprofile">Profile</a>
-                                        </li>
-                                        <li class="profile-img-info2 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
-                                            <i class="fa-solid fa-right-from-bracket" style="font-size: 20px;"></i>
-                                            <a class="dropdown-item" style="padding: 0;" href="logoutadmin">Logout</a>
+                                            <a class="dropdown-item" style="padding: 0;" href="/dashboard/staff/viewcustomersforStaff">Chuyển qua giao diện nhân viên</a>
                                         </li>
                                     </div>
                                 </ul>
@@ -85,22 +73,25 @@
                         </div>
                     </div>
 
-                    <div class="row mt-2">
+                    <div class="row mt-2 bg-white p-3 d-flex align-items-center justify-content-center" 
+                         style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item" style="color: #6c757d;">Dashboard</li>
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">PetHotels</li>
+                            <ol class="breadcrumb mb-0" style ="font-weight: bold;">
+                                <li class="breadcrumb-item">Bảng điều khiển</li>
+                                <li class="breadcrumb-item">Quản trị viên</li>
+                                <li class="breadcrumb-item"><a href="/dashboard/admin/pethotel">Quản lý khách sạn thú cưng</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Tạo phòng mới</li>
                             </ol>
                         </nav>
-                    </div>   
-                    <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
+                    </div> 
+                                
+                    <div class="mt-4 d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
                          style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
                         <i class="fa-solid fa-hotel fa-lg"></i>
                         <h4 class="mb-0">Thêm phòng mới</h4>
                     </div>
 
-                    <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
+                    <div class="row pb-4" style="margin-top: 20px; margin-bottom: 50px;">
                         <form id="createpethotel" action="createpethotel" method="post" enctype="multipart/form-data">
                             <!-- Hình ảnh -->
                             <div class="mb-3">
