@@ -68,7 +68,7 @@ public class EditCategoryServlet extends HttpServlet {
 
             // Kiểm tra nếu categoryId bị thiếu hoặc rỗng
             if (categoryIdStr == null || categoryIdStr.trim().isEmpty()) {
-                request.setAttribute("errorMessage", "Thiếu ID danh mục.");
+                request.getSession().setAttribute("errorMessage", "Thiếu ID danh mục.");
                 request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
                 return;
             }
@@ -78,7 +78,7 @@ public class EditCategoryServlet extends HttpServlet {
             // Lấy thông tin danh mục từ database
             Category category = categoryDAO.getCategoryById(categoryId);
             if (category == null) {
-                request.setAttribute("errorMessage", "Không tìm thấy danh mục có ID: " + categoryId);
+                request.getSession().setAttribute("errorMessage", "Không tìm thấy danh mục có ID: " + categoryId);
                 request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
                 return;
             }
@@ -88,11 +88,11 @@ public class EditCategoryServlet extends HttpServlet {
             request.getRequestDispatcher("/dashboard/admin/editcategory.jsp").forward(request, response);
 
         } catch (NumberFormatException e) {
-            request.setAttribute("errorMessage", "ID danh mục không hợp lệ. Vui lòng nhập số nguyên.");
+            request.getSession().setAttribute("errorMessage", "ID danh mục không hợp lệ. Vui lòng nhập số nguyên.");
             request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "Đã xảy ra lỗi không xác định: " + e.getMessage());
+            request.getSession().setAttribute("errorMessage", "Đã xảy ra lỗi không xác định: " + e.getMessage());
             request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
         }
     }
@@ -140,16 +140,16 @@ public class EditCategoryServlet extends HttpServlet {
 
         } catch (NumberFormatException e) {
             // Lỗi khi chuyển đổi categoryId sang số
-            request.setAttribute("errorMessage", "ID danh mục không hợp lệ.");
+            request.getSession().setAttribute("errorMessage", "ID danh mục không hợp lệ.");
             request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
 
         } catch (IllegalArgumentException e) {
             // Lỗi do dữ liệu đầu vào không hợp lệ
-            request.setAttribute("errorMessage", "Lỗi dữ liệu: " + e.getMessage());
+            request.getSession().setAttribute("errorMessage", "Lỗi dữ liệu: " + e.getMessage());
             request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "Lỗi không xác định: " + e.getMessage());
+            request.getSession().setAttribute("errorMessage", "Lỗi không xác định: " + e.getMessage());
             request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
         }
     }

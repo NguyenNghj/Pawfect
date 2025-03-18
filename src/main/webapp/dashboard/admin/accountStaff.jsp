@@ -256,6 +256,7 @@
                 }
             });
         </script>
+
         <%            session.removeAttribute("successMessage");
             session.removeAttribute("errorMessage");
         %>
