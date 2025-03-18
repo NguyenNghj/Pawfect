@@ -56,14 +56,33 @@
                             <div>
                                 <h1>Chi tiết đơn hàng</h1>
                             </div>
-                            <div class="dropdown d-flex align-items-center gap-2">
-                                <span style = "color: #D3A376; font-weight: bold;"><%= staffName%></span>
-                                <a href="staffprofile">
-                                    <button class="btn" type="button">
-                                        <img class="profile-img" src="${staff.image}" alt="">
-                                    </button>
-                                </a>
-                            </div>                                                            
+                            <c:choose>
+                                <c:when test="${staffRole eq 'Admin'}">
+                                    <div class="dropdown d-flex align-items-center gap-2">
+                                        <span style="color: #D3A376; font-weight: bold;"><%= staffName%></span>
+                                        <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center gap-2" href="/dashboard/admin/statistics">
+                                                    <i class="fa-solid fa-repeat"></i> Chuyển qua giao diện quản lí
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="dropdown d-flex align-items-center gap-2">
+                                        <span style = "color: #D3A376; font-weight: bold;"><%= staffName%></span>
+                                        <a href="staffprofile">
+                                            <button class="btn" type="button">
+                                                <img class="profile-img" src="${staff.image}" alt="">
+                                            </button>
+                                        </a>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>                                                            
                         </div>
                     </div>
 
