@@ -77,7 +77,7 @@ public class CreateCategoryServlet extends HttpServlet {
 
             // Kiểm tra nếu categoryName bị null hoặc rỗng
             if (categoryName == null || categoryName.trim().isEmpty()) {
-                request.setAttribute("errorMessage", "Tên danh mục không được để trống!");
+                request.getSession().setAttribute("errorMessage", "Tên danh mục không được để trống!");
                 request.getRequestDispatcher("/dashboard/admin/createcategory.jsp").forward(request, response);
                 return;
             }
@@ -99,7 +99,7 @@ public class CreateCategoryServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "Tạo danh mục thất bại!");
+            request.getSession().setAttribute("errorMessage", "Tạo danh mục thất bại!");
             request.getRequestDispatcher("/dashboard/admin/createcategory").forward(request, response);
         }
     }

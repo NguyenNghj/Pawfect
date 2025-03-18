@@ -131,18 +131,19 @@ public class CreateProductServlet extends HttpServlet {
 
             if (createSuccess) {
                 response.sendRedirect("/dashboard/admin/product");
+                request.getSession().setAttribute("successMessage", "Tạo sản phẩm thành công!");
             } else {
                 throw new Exception();
             }
         } catch (NumberFormatException e) {
-            request.setAttribute("errorMessage", "Dữ liệu số không hợp lệ! Vui lòng kiểm tra lại.");
+            request.getSession().setAttribute("errorMessage", "Dữ liệu số không hợp lệ! Vui lòng kiểm tra lại.");
             request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
         } catch (IOException | ServletException e) {
             request.setAttribute("errorMessage", "Lỗi hệ thống khi xử lý tệp ảnh.");
             request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "Tạo sản phẩm thất bại!");
+            request.getSession().setAttribute("errorMessage", "Tạo sản phẩm thất bại!");
             request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
         }    }
 

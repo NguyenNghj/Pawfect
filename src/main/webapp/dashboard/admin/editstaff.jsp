@@ -7,6 +7,7 @@
     <head>
         <meta charset="UTF-8">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="../../css/dashboard.css">
@@ -45,39 +46,40 @@
                 <!-- MAIN CONTENT -->
                 <div class="col" id="main" style="padding: 0 40px;">
                     <div class="row pt-4">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <h1>Cập Nhật Nhân Viên</h1>
+                        <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
+                            <div>
+                                <h1>Chỉnh sửa thông tin nhân viên</h1>
+                            </div>
                             <div class="dropdown d-flex align-items-center gap-2">
-                                <span><%= staffName%></span>
-                                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <span style = "color: #D3A376; font-weight: bold;"><%= staffName%></span>
+                                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
                                 </button>
                                 <ul class="dropdown-menu ps-2 pe-2 pt-2 pb-2">
                                     <div class="d-grid gap-2">
-                                        <li class="profile-img-info1 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
-                                            <i class="fa-solid fa-user-pen"></i>
-                                            <a class="dropdown-item" href="adminprofile">Profile</a>
-                                        </li>
-                                        <li class="profile-img-info2 d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
-                                            <i class="fa-solid fa-right-from-bracket"></i>
-                                            <a class="dropdown-item" href="logoutadmin">Logout</a>
+                                        <li class="profile-img-switch-employee d-flex align-items-center ps-2 pe-2 pt-1 pb-1 gap-3">
+                                            <i class="fa-solid fa-repeat"></i>
+                                            <a class="dropdown-item" style="padding: 0;" href="/dashboard/staff/viewcustomersforStaff">Chuyển qua giao diện nhân viên</a>
                                         </li>
                                     </div>
                                 </ul>
-                            </div>                                                             
+                            </div>                                                              
                         </div>
                     </div>
 
                     <!-- Breadcrumb -->
-                    <div class="row mt-2">
-                        <nav style="--bs-breadcrumb-divider: '>';">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item">Dashboard</li>
-                                <li class="breadcrumb-item"><a href="staff">Quản lý Nhân Viên</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Cập Nhật Nhân Viên</li>
+                    <div class="row mt-2 bg-white p-3 d-flex align-items-center justify-content-center" 
+                         style="border-radius: 20px; height: 60px;">
+                        <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
+                            <ol class="breadcrumb mb-0" style ="font-weight: bold;">
+                                <li class="breadcrumb-item">Bảng điều khiển</li>
+                                <li class="breadcrumb-item">Quản trị viên</li>
+                                <li class="breadcrumb-item"><a href="/dashboard/admin/staff">Quản trị nhân viên</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">${staff.fullName}</li>
                             </ol>
                         </nav>
                     </div>
+
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <c:if test="${not empty param.error}">
@@ -94,7 +96,7 @@
 
                                 <!-- Ảnh nhân viên -->
                                 <div class="mb-3">
-                                    <label for="editStaffImage" class="form-label">Ảnh</label>
+                                    <label for="editStaffImage" class="form-label">Ảnh nhân viên</label>
                                     <div style="display: flex; gap: 10px;">
                                         <img id="previewImage" class="img-thumbnail"
                                              style="width: 220px; height: 220px; display: ${not empty staff.image ? 'block' : 'none'};"

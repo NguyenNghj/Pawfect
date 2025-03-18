@@ -78,23 +78,23 @@ public class EditVoucherServlet extends HttpServlet {
 
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "Id mã giảm giá không hợp lệ!");
+            request.getSession().setAttribute("errorMessage", "Id mã giảm giá không hợp lệ!");
             request.getRequestDispatcher("/dashboard/staff/voucher").forward(request, response);
         } catch (NullPointerException e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "Không tìm thấy mã giảm giá!");
+            request.getSession().setAttribute("errorMessage", "Không tìm thấy mã giảm giá!");
             request.getRequestDispatcher("/dashboard/staff/voucher").forward(request, response);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", e.getMessage());
+            request.getSession().setAttribute("errorMessage", e.getMessage());
             request.getRequestDispatcher("/dashboard/staff/voucher").forward(request, response);
         } catch (IOException | ServletException e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
+            request.getSession().setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
             request.getRequestDispatcher("/dashboard/staff/voucher").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "Lỗi không xác định: " + e.getMessage());
+            request.getSession().setAttribute("errorMessage", "Lỗi không xác định: " + e.getMessage());
             request.getRequestDispatcher("/dashboard/staff/voucher").forward(request, response);
         }
     }

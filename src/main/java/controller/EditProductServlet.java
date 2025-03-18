@@ -69,7 +69,7 @@ public class EditProductServlet extends HttpServlet {
 
             String productIdParam = request.getParameter("productId");
             if (productIdParam == null || productIdParam.trim().isEmpty()) {
-                request.setAttribute("errorMessage", "Product ID không được để trống.");
+                request.getSession().setAttribute("errorMessage", "Product ID không được để trống.");
                 request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
                 return;
             }
@@ -83,14 +83,14 @@ public class EditProductServlet extends HttpServlet {
             Product product = productDAO.getProductById(productId);
 
             if (product == null) {
-                request.setAttribute("errorMessage", "Không tìm thấy sản phẩm với ID: " + productId);
+                request.getSession().setAttribute("errorMessage", "Không tìm thấy sản phẩm với ID: " + productId);
                 request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
                 return;
             }
 
             Category selectedCategory = categoryDAO.getCategoryById(product.getCategoryId());
             if (selectedCategory == null) {
-                request.setAttribute("errorMessage", "Danh mục của sản phẩm không tồn tại.");
+                request.getSession().setAttribute("errorMessage", "Danh mục của sản phẩm không tồn tại.");
                 request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
                 return;
             }
@@ -103,15 +103,15 @@ public class EditProductServlet extends HttpServlet {
 
         } catch (NumberFormatException e) {
             e.printStackTrace(); // Log lỗi
-            request.setAttribute("errorMessage", "ID sản phẩm không hợp lệ.");
+            request.getSession().setAttribute("errorMessage", "ID sản phẩm không hợp lệ.");
             request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
         } catch (IOException | ServletException e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
+            request.getSession().setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
             request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "Lỗi không xác định: " + e.getMessage());
+            request.getSession().setAttribute("errorMessage", "Lỗi không xác định: " + e.getMessage());
             request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
         }
     }
@@ -196,21 +196,22 @@ public class EditProductServlet extends HttpServlet {
                     }
                 }
                 response.sendRedirect(request.getContextPath() + "/dashboard/admin/product");
+                request.getSession().setAttribute("successMessage", "Cập nhật sản phẩm thành công!");
             } else {
-                request.setAttribute("errorMessage", "Cập nhật sản phẩm thất bại!");
+                request.getSession().setAttribute("errorMessage", "Cập nhật sản phẩm thất bại!");
                 request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "Lỗi định dạng số! Vui lòng nhập dữ liệu hợp lệ.");
+            request.getSession().setAttribute("errorMessage", "Lỗi định dạng số! Vui lòng nhập dữ liệu hợp lệ.");
             request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
         } catch (IOException | ServletException e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
+            request.getSession().setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
             request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
         } catch (Exception e) {
             e.printStackTrace();
-            request.setAttribute("errorMessage", "Đã xảy ra lỗi khi cập nhật sản phẩm: " + e.getMessage());
+            request.getSession().setAttribute("errorMessage", "Đã xảy ra lỗi khi cập nhật sản phẩm: " + e.getMessage());
             request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
         }
     }
