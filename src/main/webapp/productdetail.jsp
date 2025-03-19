@@ -462,6 +462,7 @@
 
             const stock = $(this).data('product-stock');
             const quantityToAdd = $('.input-number').val();
+            $('.input-number').val(1);
             console.log("quantityToAdd:", quantityToAdd);
             let productId = $(this).data('product-id');
             console.log("productId:", productId);
@@ -492,10 +493,11 @@
                             icon: "success",
                             title: "Thêm giỏ hàng thành công!",
                             text: productName + " đã được thêm vào giỏ hàng.",
-                            showConfirmButton: false,
+                            showConfirmButton: false,   
+                            showCloseButton: true,
                             backdrop: false,
                             width: '300px',
-                            timer: 3000,
+                            timer: 2500,
                             returnFocus: false
                         });
                     } else {

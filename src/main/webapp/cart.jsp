@@ -74,7 +74,12 @@
                                                         <span class="price-item">
                                                             <f:formatNumber value="${c.productPrice}" pattern="#,##0" />đ     
                                                         </span>
-                                                    </div>
+                                                        <c:forEach items="${products}" var="p">
+                                                            <c:if test="${c.productId == p.productId}">
+                                                                <span class="ms-3">Còn lại: ${p.stock}</span>
+                                                            </c:if>
+                                                        </c:forEach>
+                                                    </div>             
                                                 </div>
 
                                                 <!-- Quantity & Remove Product -->
@@ -84,7 +89,7 @@
                                                             <a href="#" class="btn btn-secondary btn-minus" data-product-id="${c.productId}" data-customer-id="${c.customerId}" >
                                                                 <i class="fa-solid fa-minus"></i>
                                                             </a>
-                                                            <input id="quantity-${c.productId}" class="input-quantity" type="text" value="${c.quantity}" readonly>
+                                                            <input id="quantity-${c.productId}" class="input-quantity" type="text" value="${c.quantity}" min="1">
                                                             <a href="#" class="btn btn-secondary btn-plus" data-product-id="${c.productId}" data-customer-id="${c.customerId}" >
                                                                 <i class="fa-solid fa-plus"></i>                                                                   
                                                             </a>
