@@ -214,6 +214,30 @@ public class ProductDAO {
         }
         return null;
     }
+    
+        public Product getActiveProductById(int productId) {
+        String query = "SELECT p.product_id, p.category_id, c.category_name, p.product_name, p.product_petType, "
+                + "p.product_price, p.product_image, p.stock, p.description, p.is_active "
+                + "FROM Products p "
+                + "JOIN Category c ON p.category_id = c.category_id "
+                + "WHERE p.product_id = ? AND p.is_active = 1";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, productId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Product(
+                        rs.getInt(1), rs.getInt(2), rs.getString(3),
+                        rs.getString(4), rs.getString(5), rs.getDouble(6),
+                        rs.getString(7), rs.getInt(8), rs.getString(9), rs.getBoolean(10)
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public List<Product> searchActiveProducts(String keyword) {
         List<Product> productList = new ArrayList<>();

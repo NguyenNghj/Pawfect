@@ -141,12 +141,12 @@
 
                             <div class="mb-3">
                                 <label for="createProductPrice" class="form-label">Giá</label>
-                                <input type="number" class="form-control" name="productPrice" required>
+                                <input type="number" class="form-control" name="productPrice" min ="1" required>
                             </div>
 
                             <div class="mb-3">
                                 <label for="createProductStock" class="form-label">Tồn kho</label>
-                                <input type="number" class="form-control" name="stock" required>
+                                <input type="number" class="form-control" name="stock" min ="0" required>
                             </div>
 
                             <div class="mb-3">

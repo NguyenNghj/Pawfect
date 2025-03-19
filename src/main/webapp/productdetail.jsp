@@ -80,14 +80,15 @@
                                         <p style="margin: 0;">${product.stock} có sẵn</p>
                                     </div>
 
-
-                                    <div class="buttons">
-                                        <button class="add-to-cart add-to-cart-nut nutnhan" data-product-id="${product.productId}" data-product-name="${product.productName}" data-product-stock="${product.stock}">
-                                            <i class='bx bx-cart-add add-to-cart-logo'></i>
-                                            THÊM VÀO GIỎ HÀNG
-                                        </button>
-                                        <button class="buy-now nutnhan" data-product-id="${product.productId}">MUA NGAY</button>
-                                    </div>
+                                    <c:if test="${product.stock > 0}">
+                                        <div class="buttons">
+                                            <button class="add-to-cart add-to-cart-nut nutnhan" data-product-id="${product.productId}" data-product-name="${product.productName}" data-product-stock="${product.stock}">
+                                                <i class='bx bx-cart-add add-to-cart-logo'></i>
+                                                THÊM VÀO GIỎ HÀNG
+                                            </button>
+                                            <button class="buy-now nutnhan" data-product-id="${product.productId}">MUA NGAY</button>
+                                        </div>
+                                    </c:if>
                                 </div>
                             </div>
                         </div>
@@ -209,7 +210,7 @@
 
                             </div>
 
-           
+
                             <div class="reviews-list">
 
                             <c:if test="${empty feedbacks}">
@@ -493,7 +494,7 @@
                             icon: "success",
                             title: "Thêm giỏ hàng thành công!",
                             text: productName + " đã được thêm vào giỏ hàng.",
-                            showConfirmButton: false,   
+                            showConfirmButton: false,
                             showCloseButton: true,
                             backdrop: false,
                             width: '300px',

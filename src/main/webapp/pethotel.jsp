@@ -54,8 +54,8 @@
                                 <div class="pethotel-name">${room.roomName}</div>
                                 <div class="pethotel-type">Dành cho ${room.roomType}</div>
                                 <div class="pethotel-price">
-                                    <fmt:formatNumber value="${room.pricePerNight}" type="currency" currencyCode="VND"/>
-                                    /đêm
+                                    <fmt:formatNumber value="${room.pricePerNight}"/>
+                                    đ/đêm
                                 </div>
                                 <div class="pethotel-weight">
                                     Cân nặng: ${room.minWeight} - ${room.maxWeight} kg
