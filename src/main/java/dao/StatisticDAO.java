@@ -211,5 +211,103 @@ public class StatisticDAO {
         }
         return staffList;
     }
+     public double getTotalOrderByMonth(int month) {
+    String query = "SELECT SUM(total_amount) "
+                 + "FROM Orders "
+                 + "WHERE MONTH(finished_date) = ? "
+                 + "AND YEAR(finished_date) = YEAR(GETDATE()) " // Chỉ lấy dữ liệu trong năm hiện tại
+                 + "AND status = N'Hoàn thành'"; // Chỉ tính đơn đã hoàn thành
+
+    double total = 0;
+
+    try {
+        conn = new DBContext().getConnection();
+        if (conn != null) {
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, month); // Truyền vào số tháng (1-12)
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                total = rs.getDouble(1); // Lấy tổng doanh thu của tháng
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return total;
+}
+    public int getOrderCountByMonth(int month) {
+    String query = "SELECT COUNT(*) "
+                 + "FROM Orders "
+                 + "WHERE MONTH(finished_date) = ? "
+                 + "AND YEAR(finished_date) = YEAR(GETDATE()) " // Chỉ lấy đơn trong năm hiện tại
+                 + "AND status = N'Hoàn thành'"; // Chỉ tính đơn đã hoàn thành
+
+    int count = 0;
+
+    try {
+        conn = new DBContext().getConnection();
+        if (conn != null) {
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, month); // Truyền vào số tháng (1-12)
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                count = rs.getInt(1); // Lấy số lượng đơn hàng trong tháng
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return count;
+}
+   public double getTotalBookingByMonth(int month) {
+    String query = "SELECT SUM(total_price) "
+                 + "FROM PetHotelBookings "
+                 + "WHERE MONTH(booking_date) = ? "
+                 + "AND YEAR(booking_date) = YEAR(GETDATE()) " // Chỉ lấy dữ liệu trong năm hiện tại
+                 + "AND status = N'Đã trả phòng'"; // Chỉ tính booking đã hoàn tất
+
+    try {
+        conn = new DBContext().getConnection();
+        ps = conn.prepareStatement(query);
+        ps.setInt(1, month); // Truyền vào số tháng (1-12)
+        rs = ps.executeQuery();
+
+        if (rs.next()) {
+            return rs.getDouble(1); // Lấy tổng doanh thu đặt phòng trong tháng
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return 0; // Trả về 0 nếu không có dữ liệu
+}
+public int getBookingCountByMonth(int month) {
+    String query = "SELECT COUNT(*) "
+                 + "FROM PetHotelBookings "
+                 + "WHERE MONTH(booking_date) = ? "
+                 + "AND YEAR(booking_date) = YEAR(GETDATE()) " // Chỉ lấy dữ liệu trong năm hiện tại
+                 + "AND status = N'Đã trả phòng'"; // Chỉ tính các booking đã hoàn tất
+
+    int count = 0;
+
+    try {
+        conn = new DBContext().getConnection();
+        if (conn != null) {
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, month); // Truyền vào số tháng (1-12)
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                count = rs.getInt(1); // Lấy số lượng đặt phòng trong tháng
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return count; // Trả về số lượng đặt phòng theo tháng
+}
+
+
 
 }

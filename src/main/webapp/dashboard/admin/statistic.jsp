@@ -118,13 +118,14 @@
                                                         </div>-->
                         </div>
 
+
                         <div class="row mt-4">
                             <div class="col-md-12">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h5>BIỂU ĐỒ DOANH THU SẢN PHẨM VÀ KHÁCH SẠN THÚ CƯNG</h5>
                                     <div class="toggle-group">
-                                        <button id="month-btn">Month</button>
-                                        <button id="week-btn" class="active">Week</button>
+                                        <button id="month-btn" class="<%= request.getParameter("month") != null ? "active" : ""%>">Month</button>
+                                        <button id="week-btn" class="<%= request.getParameter("month") == null ? "active" : ""%>">Week</button>
                                     </div>
                                 </div>
                                 <div class="card">
@@ -136,16 +137,16 @@
                         <div class="row mt-4">
                             <div class="col-md-6">
                                 <h5>SỐ LƯỢNG ĐƠN HOÀN THÀNH</h5>
-                                <div class="card">
-                                    <h2>Tổng ${totalCountOrder} đơn</h2>
+                                <div class="card p-3">
+                                    <h2 class="text-success">Tổng: ${totalCountOrder} đơn</h2>
                                     <div id="order-chart"></div>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <h5>SỐ LƯỢNG PHÒNG CHECK OUT</h5>
-                                <div class="card">
-                                    <h2>Tổng ${totalCountBooking} phòng</h2>
+                                <div class="card p-3">
+                                    <h2 class="text-danger">Tổng: ${totalCountBooking} phòng</h2>
                                     <div id="booking-chart"></div>
                                 </div>
                             </div>
@@ -280,42 +281,53 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 
         <script>
-                        document.querySelectorAll('.toggle-group button').forEach(button => {
-                            button.addEventListener('click', () => {
-                                document.querySelectorAll('.toggle-group button').forEach(btn => btn.classList.remove('active'));
-                                button.classList.add('active');
-                            });
+                        document.getElementById('month-btn').addEventListener('click', () => {
+                            window.location.href = "statistics?month=true"; // Thay yourServletURL bằng URL servlet
                         });
 
-//                        var options2 = {
-//                            chart: {type: 'bar', height: 250},
-//                            series: [{name: 'Income', data: [60, 90, 70, 50, 65, 55, 75]}],
-//                            xaxis: {categories: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN']},
-//                            colors: ['#17a2b8']
-//                        };
-//                        new ApexCharts(document.querySelector("#bar-chart"), options2).render();
+                        document.getElementById('week-btn').addEventListener('click', () => {
+                            window.location.href = "statistics"; // Không gửi tham số month => Lấy theo tuần
+                        });
         </script>
 
         <%
-            double[] orders = (double[]) request.getAttribute("orders");
+
             int[] countOrder = (int[]) request.getAttribute("countOrder");
             int[] countBooking = (int[]) request.getAttribute("countBooking");
             String[] days = {"T2", "T3", "T4", "T5", "T6", "T7", "CN"};
+            boolean isMonth = request.getParameter("month") != null;
+            double[] orders = (double[]) request.getAttribute(isMonth ? "orderss" : "orders");
+            double[] bookings = (double[]) request.getAttribute(isMonth ? "bookingss" : "bookings");
+            String[] labels = isMonth
+                    ? new String[]{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}
+                    : new String[]{"T2", "T3", "T4", "T5", "T6", "T7", "CN"};
         %>
-
-
-        <<script>
+        <script>
             document.addEventListener("DOMContentLoaded", function () {
-                // Dữ liệu từ JSP sang JavaScript
-                var days = <%= new Gson().toJson(days)%>;
-                var countOrder = <%= new Gson().toJson(countOrder)%>;
-                var countBooking = <%= new Gson().toJson(countBooking)%>;
+                var isMonth = new URLSearchParams(window.location.search).get("month") === "true";
+
+                // Định nghĩa nhãn cho ngày trong tuần và tháng
+                var weekLabels = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
+                var monthLabels = ["T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12"];
+
+                // Chọn nhãn phù hợp
+                var labels = isMonth ? monthLabels : weekLabels;
+
+                var countOrder = <%= new Gson().toJson(request.getAttribute("countOrder") != null ? request.getAttribute("countOrder") : new int[labels.length])%>;
+                var countBooking = <%= new Gson().toJson(request.getAttribute("countBooking") != null ? request.getAttribute("countBooking") : new int[labels.length])%>;
+
+                console.log("Labels:", labels);
+                console.log("Count Order:", countOrder);
+                console.log("Count Booking:", countBooking);
+                console.log("Is Month:", isMonth);
+
+                var xAxisTitle = isMonth ? "Tháng" : "Ngày trong tuần";
 
                 // Vẽ biểu đồ đơn hàng hoàn thành
                 var orderOptions = {
                     chart: {type: 'bar', height: 250},
                     series: [{name: 'Số lượng đơn', data: countOrder}],
-                    xaxis: {categories: days},
+                    xaxis: {categories: labels, title: {text: xAxisTitle}},
                     colors: ['#28a745']
                 };
                 new ApexCharts(document.querySelector("#order-chart"), orderOptions).render();
@@ -324,12 +336,14 @@
                 var bookingOptions = {
                     chart: {type: 'bar', height: 250},
                     series: [{name: 'Số lượng phòng', data: countBooking}],
-                    xaxis: {categories: days},
+                    xaxis: {categories: labels, title: {text: xAxisTitle}},
                     colors: ['#dc3545']
                 };
                 new ApexCharts(document.querySelector("#booking-chart"), bookingOptions).render();
             });
         </script>
+
+        <!--        theo thứ trong ngày-->
 
         <script>
             var ordersData = <%= Arrays.toString((double[]) request.getAttribute("orders"))%>;
@@ -341,12 +355,36 @@
                 series: [
                     {name: 'Đơn hàng', data: ordersData},
                     {name: 'Đặt phòng', data: bookingsData}
+
+
                 ],
                 xaxis: {categories: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN']},
                 colors: ['#007bff', '#17a2b8'],
                 fill: {type: 'gradient'}
             };
             new ApexCharts(document.querySelector("#line-chart"), options1).render();
+        </script>
+
+        <!--        theo tháng-->
+        <script>
+            var ordersData = <%= Arrays.toString((double[]) request.getAttribute("orderss"))%>;
+            var bookingsData = <%= Arrays.toString((double[]) request.getAttribute("bookingss"))%>;
+            var revenueData = <%= Arrays.toString((double[]) request.getAttribute("revenueData"))%>; // Lấy doanh thu đúng
+
+            var options = {
+                chart: {type: 'area', height: 250},
+                series: [
+                    {name: 'Đơn hàng', data: ordersData},
+                    {name: 'Đặt phòng', data: bookingsData}
+                ],
+                xaxis: {
+                    categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+                },
+                colors: ['#007bff', '#17a2b8', '#28a745'],
+                fill: {type: 'gradient'}
+            };
+            new ApexCharts(document.querySelector("#line-chart"), options).render();
         </script>
 
 

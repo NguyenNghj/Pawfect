@@ -125,9 +125,8 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Vai trò</th>
-                                            <th>Mật khẩu</th>
                                             <th>Họ và Tên</th>
+                                            <th>Mật khẩu</th>
                                             <th>Email</th>
                                             <th>SDT</th>
                                             <th>Địa chỉ</th>
@@ -145,9 +144,9 @@
                                         %>
                                         <tr>
                                             <td><%= staff.getStaffId()%></td>
-                                            <td><%= staff.getRoleName()%></td>
-                                            <td><%= staff.getPassword()%></td>
-                                            <td><%= staff.getFullName()%></td>
+                                           <td><%= staff.getFullName()%></td>
+                                            <td>*******</td>
+                                            
                                             <td><%= staff.getEmail()%></td>
                                             <td><%= staff.getPhone()%></td>
                                             <td><%= staff.getAddress()%></td>
