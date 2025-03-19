@@ -5,6 +5,7 @@
 package controller;
 
 import dao.CartDAO;
+import dao.ProductDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
 import model.CartItem;
+import model.Product;
 import org.json.JSONObject;
 
 /**
@@ -186,6 +188,10 @@ public class CartServlet extends HttpServlet {
         // Tinh tong gia trong gio hang de hien thi
         double totalCartPrice = CartDAO.getTotalCartByCustomerId(customerId);
 
+        ProductDAO productDAO = new ProductDAO();
+        List<Product> products = productDAO.getAllProducts();
+        
+        request.setAttribute("products", products);
         request.setAttribute("cartItems", cartItems);
         request.setAttribute("totalCartPrice", totalCartPrice);
         request.setAttribute("totalQuantity", totalQuantity);

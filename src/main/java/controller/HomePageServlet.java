@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import model.CartItem;
 import model.Feedback;
@@ -99,6 +100,22 @@ public class HomePageServlet extends HttpServlet {
                 try {
                     int customerId = Integer.parseInt(username);
                     List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+
+                    Iterator<CartItem> iterator = cartItems.iterator();
+                    while (iterator.hasNext()) {
+                        CartItem cartItem = iterator.next();
+                        Product product = productDAO.getProductById(cartItem.getProductId());
+
+                        // Neu san pham trong gio hang vuot qua ton kho thi xoa san pham do
+                        if (cartItem.getQuantity() > product.getStock()) {
+                            iterator.remove(); // Xóa phần tử an toàn khi đang lặp
+                            CartDAO.removeProductFromCart(product.getProductId(), customerId);
+                        }
+
+                        totalQuantity += cartItem.getQuantity();
+                        System.out.println("totalQuantity: " + totalQuantity);
+                    }
+
                     totalQuantity = cartItems.stream().mapToInt(CartItem::getQuantity).sum();
                 } catch (NumberFormatException e) {
                     request.setAttribute("errorMessage", "Dữ liệu khách hàng không hợp lệ.");

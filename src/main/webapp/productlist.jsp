@@ -360,9 +360,10 @@
                                 title: "Thêm giỏ hàng thành công!",
                                 text: productName + " đã được thêm vào giỏ hàng.",
                                 showConfirmButton: false,
+                                showCloseButton: true,
                                 backdrop: false,
                                 width: '300px',
-                                timer: 3000,
+                                timer: 2500,
                                 returnFocus: false
                             });
                         } else {
