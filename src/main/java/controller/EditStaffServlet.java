@@ -101,20 +101,47 @@ public class EditStaffServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         StaffDAO staffDAO = new StaffDAO(); // Khởi tạo DAO
+    try {
+        // Lấy dữ liệu từ request
+        String staffIdParam = request.getParameter("staffId");
+        String password = request.getParameter("password");
+        String fullName = request.getParameter("fullName").trim();
+        String email = request.getParameter("email").trim();
+        String phone = request.getParameter("phone").trim();
+        String address = request.getParameter("address");
+        String gender = request.getParameter("gender");
+        String birthDateStr = request.getParameter("birthDate");
+        String existingImage = request.getParameter("existingImage");
+        String isActiveParam = request.getParameter("isActive");
 
-        try {
-            // Lấy dữ liệu từ request
-            String staffIdParam = request.getParameter("staffId");
-            String password = request.getParameter("password");
-            String fullName = request.getParameter("fullName");
-            String email = request.getParameter("email");
-            String phone = request.getParameter("phone");
-            String address = request.getParameter("address");
-            String gender = request.getParameter("gender");
-            String birthDateStr = request.getParameter("birthDate");
-            String image = request.getParameter("image");
-            String isActiveParam = request.getParameter("isActive");
-            String existingImage = request.getParameter("existingImage");
+        // Kiểm tra dữ liệu không được để trống
+        if (staffIdParam == null || staffIdParam.trim().isEmpty()
+                || fullName.isEmpty() || email.isEmpty() || password.isEmpty() || phone.isEmpty()) {
+            request.getSession().setAttribute("errorMessage", "Vui lòng nhập đầy đủ thông tin!");
+            response.sendRedirect("editstaff.jsp?staffId=" + staffIdParam);
+            return;
+        }
+
+        // Kiểm tra định dạng email
+        if (!email.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+            request.getSession().setAttribute("errorMessage", "Email không hợp lệ!");
+            response.sendRedirect("editstaff.jsp?staffId=" + staffIdParam);
+            return;
+        }
+
+        // Kiểm tra độ dài mật khẩu
+        if (password.length() < 8) {
+            request.getSession().setAttribute("errorMessage", "Mật khẩu phải có ít nhất 8 ký tự!");
+            response.sendRedirect("editstaff.jsp?staffId=" + staffIdParam);
+            return;
+        }
+
+        // Kiểm tra số điện thoại (chỉ 10 chữ số)
+        if (!phone.matches("^[0-9]{10}$")) {
+            request.getSession().setAttribute("errorMessage", "Số điện thoại phải gồm 10 chữ số!");
+            response.sendRedirect("editstaff.jsp?staffId=" + staffIdParam);
+            return;
+        }
 
             // Kiểm tra dữ liệu đầu vào có null hoặc rỗng không
             if (staffIdParam == null || staffIdParam.trim().isEmpty()
