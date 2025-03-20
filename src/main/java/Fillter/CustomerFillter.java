@@ -26,30 +26,65 @@ public class CustomerFillter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         String path = req.getRequestURI();
-        if (path.startsWith(req.getContextPath() + "/css/")
-                || path.startsWith(req.getContextPath() + "/img/")
-                || path.startsWith(req.getContextPath() + "/products")
-                || path.startsWith(req.getContextPath() + "/product")
-                || path.startsWith(req.getContextPath() + "/pethotel")
-                || path.startsWith(req.getContextPath() + "/pethoteldetail")
-                || path.startsWith(req.getContextPath() + "/js/")
-                || path.equals(req.getContextPath() + "/")
-                || path.startsWith(req.getContextPath() + "/login") || path.startsWith(req.getContextPath() + "/GoogleLoginServlet") || path.startsWith(req.getContextPath() + "/compoments/") || path.startsWith(req.getContextPath() + "/dashboard") || path.startsWith(req.getContextPath() + "/register")|| path.startsWith(req.getContextPath() + "/pawfect") || path.startsWith(req.getContextPath() + "/forgetpassword") || path.startsWith(req.getContextPath() + "/verify")) {
+        String contextPath = req.getContextPath();
+
+        // Các đường dẫn không cần kiểm tra đăng nhập
+        if (path.startsWith(contextPath + "/css/")
+                || path.startsWith(contextPath + "/img/")
+                || path.startsWith(contextPath + "/products")
+                || path.startsWith(contextPath + "/product")
+                || path.startsWith(contextPath + "/pethotel")
+                || path.startsWith(contextPath + "/pethoteldetail")
+                || path.startsWith(contextPath + "/js/")
+                || path.equals(contextPath + "/")
+                || path.startsWith(contextPath + "/login")
+                || path.startsWith(contextPath + "/GoogleLoginServlet")
+                || path.startsWith(contextPath + "/compoments/")
+                || path.startsWith(contextPath + "/dashboard")
+                || path.startsWith(contextPath + "/register")
+                || path.startsWith(contextPath + "/pawfect")
+                || path.startsWith(contextPath + "/forgetpassword")
+                || path.startsWith(contextPath + "/verify")) {
+            
+            if (path.startsWith(contextPath + "/login")) {
+                Cookie[] cookies = req.getCookies();
+                if (cookies != null) {
+                    for (Cookie cookie : cookies) {
+                        if ("staffId".equals(cookie.getName())) {
+                            res.sendRedirect(contextPath + "/pawfect");
+                            return;
+                        }
+                    }
+                }
+            }
+
             chain.doFilter(request, response);
             return;
         }
+
         boolean hasCustomerId = false;
+        boolean hasStaffId = false;
         Cookie[] cookies = req.getCookies();
+
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if ("customerId".equals(cookie.getName())) {
                     hasCustomerId = true;
-                    break;
+                }
+                if ("staffId".equals(cookie.getName())) {
+                    hasStaffId = true;
                 }
             }
         }
+        // Nếu có cookie customerId mà truy cập /loginstaff, chuyển hướng về /pawfect
+        if (hasCustomerId && path.startsWith(contextPath + "/loginstaff")) {
+            res.sendRedirect(contextPath + "/pawfect");
+            return;
+        }
+
+        // Nếu không có customerId thì buộc quay về trang login
         if (!hasCustomerId) {
-            res.sendRedirect(req.getContextPath() + "/login");
+            res.sendRedirect(contextPath + "/login");
             return;
         }
 
