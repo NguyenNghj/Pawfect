@@ -16,6 +16,8 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Period;
 import model.Staff;
 
 @MultipartConfig(
@@ -83,17 +85,61 @@ public class StaffAddServlet extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
+        
 
         try {
             // Lấy dữ liệu từ form
             String password = request.getParameter("password");
-            String fullName = request.getParameter("fullName");
-            String email = request.getParameter("email");
-            String phone = request.getParameter("phone");
+            String fullName = request.getParameter("fullName").trim();
+            String email = request.getParameter("email").trim();
+            String phone = request.getParameter("phone").trim();
             String address = request.getParameter("address");
             String gender = request.getParameter("gender");
             String birthDateStr = request.getParameter("birthDate");
             String image = null; // Xử lý upload ảnh
+        
+
+    if (fullName.isEmpty() || email.isEmpty() || password.isEmpty() || phone.isEmpty()) {
+        request.setAttribute("errorMessage", "Vui lòng điền đầy đủ thông tin!");
+        request.getRequestDispatcher("createcategory.jsp").forward(request, response);
+        return;
+    }
+
+    if (!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+        request.setAttribute("errorMessage", "Email không hợp lệ!");
+        request.getRequestDispatcher("createcategory.jsp").forward(request, response);
+        return;
+    }
+
+    if (password.length() < 6) {
+        request.setAttribute("errorMessage", "Mật khẩu phải có ít nhất 8 ký tự!");
+        request.getRequestDispatcher("createcategory.jsp").forward(request, response);
+        return;
+    }
+
+    if (!phone.matches("^[0-9]{10}$")) {
+        request.setAttribute("errorMessage", "Số điện thoại phải gồm 10 chữ số!");
+        request.getRequestDispatcher("createcategory.jsp").forward(request, response);
+        return;
+    }
+     // Xử lý ngày sinh và kiểm tra tuổi >= 16
+    Date birthDate = null;
+    if (birthDateStr != null && !birthDateStr.isEmpty()) {
+        birthDate = Date.valueOf(birthDateStr);
+
+        LocalDate birthLocalDate = birthDate.toLocalDate();
+        int age = Period.between(birthLocalDate, LocalDate.now()).getYears();
+
+        if (age < 16) {
+            request.setAttribute("errorMessage", "Nhân viên phải từ 16 tuổi trở lên!");
+            request.getRequestDispatcher("staffadd.jsp").forward(request, response);
+            return;
+        }
+    } else {
+        request.setAttribute("errorMessage", "Vui lòng nhập ngày sinh!");
+        request.getRequestDispatcher("staffadd.jsp").forward(request, response);
+        return;
+    }
 
             // Kiểm tra dữ liệu đầu vào
             if (password == null || password.trim().isEmpty()
@@ -110,7 +156,7 @@ public class StaffAddServlet extends HttpServlet {
             String hashPassword = StaffDAO.hashPasswordMD5(password);
 
             // Xử lý ngày sinh
-            Date birthDate = null;
+           
             if (birthDateStr != null && !birthDateStr.isEmpty()) {
                 birthDate = Date.valueOf(birthDateStr);
             }

@@ -67,6 +67,7 @@ public class LoginStaffServlet extends HttpServlet {
         String role = null;
         String staffName = null;
         String staffId = null;
+        String customerId = null;
 
         if (cookies != null) {
             for (Cookie cookie : cookies) {
@@ -76,8 +77,15 @@ public class LoginStaffServlet extends HttpServlet {
                     staffName = cookie.getValue();
                 } else if ("staffId".equals(cookie.getName())) {
                     staffId = cookie.getValue();
+                } else if ("customerId".equals(cookie.getName())) {
+                    customerId = cookie.getValue();
                 }
             }
+        }
+
+        if (customerId != null) {
+            response.sendRedirect("/pawfect");
+            return;
         }
 
         if (role != null && staffName != null && staffId != null) {
@@ -89,8 +97,10 @@ public class LoginStaffServlet extends HttpServlet {
                 return;
             }
         }
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("loginadmin.jsp");
         dispatcher.forward(request, response);
+
     }
 
     /**
