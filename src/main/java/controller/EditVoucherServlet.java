@@ -114,6 +114,7 @@ public class EditVoucherServlet extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         String id = request.getParameter("voucherId");
+
         try {
             // Lấy dữ liệu từ request
             String voucherIdParam = request.getParameter("voucherId");
@@ -127,9 +128,10 @@ public class EditVoucherServlet extends HttpServlet {
             String endDateParam = request.getParameter("endDate");
             String isActiveParam = request.getParameter("active");
 
-            // Kiểm tra dữ liệu đầu vào
+            // Kiểm tra trường bắt buộc
             if (voucherIdParam == null || voucherIdParam.trim().isEmpty()
                     || code == null || code.trim().isEmpty()
+                    || description == null || description.trim().isEmpty()
                     || minOrderValueParam == null || minOrderValueParam.trim().isEmpty()
                     || maxDiscountParam == null || maxDiscountParam.trim().isEmpty()
                     || startDateParam == null || startDateParam.trim().isEmpty()
@@ -137,7 +139,7 @@ public class EditVoucherServlet extends HttpServlet {
                 throw new IllegalArgumentException("Một số trường dữ liệu bị thiếu hoặc rỗng.");
             }
 
-            // Kiểm tra voucherId có phải số hợp lệ không
+            // Kiểm tra voucherId hợp lệ
             if (!voucherIdParam.matches("\\d+")) {
                 throw new IllegalArgumentException("ID mã giảm giá phải là số nguyên dương.");
             }
@@ -146,49 +148,54 @@ public class EditVoucherServlet extends HttpServlet {
             // Kiểm tra giá trị số
             int discountPercentage = 0;
             double discountAmount = 0.0;
+            double minOrderValue = Double.parseDouble(minOrderValueParam);
+            double maxDiscount = Double.parseDouble(maxDiscountParam);
 
             if (discountPercentageParam != null && !discountPercentageParam.trim().isEmpty()) {
                 discountPercentage = Integer.parseInt(discountPercentageParam);
-                if (discountPercentage <= 0) {
-                    throw new IllegalArgumentException("Phần trăm giảm giá phải lớn hơn 0.");
+                if (discountPercentage < 0 || discountPercentage > 100) {
+                    throw new IllegalArgumentException("Phần trăm giảm giá phải từ 0 đến 100.");
                 }
             }
 
             if (discountAmountParam != null && !discountAmountParam.trim().isEmpty()) {
                 discountAmount = Double.parseDouble(discountAmountParam);
-                if (discountAmount <= 0 || discountAmount > 5000000) {
+                if (discountAmount < 0 || discountAmount > 5000000) {
                     throw new IllegalArgumentException("Số tiền giảm giá phải lớn hơn 0 và không vượt quá 5.000.000.");
                 }
             }
 
-            // Chỉ được nhập một trong hai: discountPercentage hoặc discountAmount
+            // Chỉ cho phép nhập một trong hai: discountPercentage hoặc discountAmount
             if (discountPercentage > 0 && discountAmount > 0) {
                 throw new IllegalArgumentException("Chỉ được nhập một trong hai: 'Phần trăm giảm giá' hoặc 'Số tiền giảm giá'.");
             }
 
-            double minOrderValue = Double.parseDouble(minOrderValueParam);
-            if (minOrderValue <= 0) {
-                throw new IllegalArgumentException("Giá trị đơn hàng tối thiểu phải lớn hơn 0.");
-            }
-
-            double maxDiscount = Double.parseDouble(maxDiscountParam);
+            // Kiểm tra giảm giá tối đa
             if (maxDiscount <= 0 || maxDiscount > 5000000) {
                 throw new IllegalArgumentException("Giảm giá tối đa phải lớn hơn 0 và không vượt quá 5.000.000.");
             }
 
-            // Kiểm tra và xử lý ngày tháng
+            // Nếu nhập số tiền giảm giá, giảm giá tối đa không được nhỏ hơn số đó
+            if (discountAmount > 0 && maxDiscount < discountAmount) {
+                throw new IllegalArgumentException("Giảm giá tối đa không thể nhỏ hơn số tiền giảm giá.");
+            }
+
+            // Nếu nhập phần trăm giảm giá, đảm bảo maxDiscount đủ lớn
+            if (discountPercentage > 0 && maxDiscount < (minOrderValue * discountPercentage / 100)) {
+                throw new IllegalArgumentException("Giảm giá tối đa không được nhỏ hơn số tiền giảm từ phần trăm.");
+            }
+
+            // Kiểm tra ngày hợp lệ
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-            dateFormat.setLenient(false); // Tránh nhập ngày không hợp lệ
+            dateFormat.setLenient(false);
 
             Timestamp startDate = new Timestamp(dateFormat.parse(startDateParam).getTime());
             Timestamp endDate = new Timestamp(dateFormat.parse(endDateParam).getTime());
 
-            // Kiểm tra logic ngày tháng
             if (startDate.after(endDate)) {
                 throw new IllegalArgumentException("Ngày bắt đầu không thể sau ngày kết thúc.");
             }
 
-            // Chuyển đổi trạng thái hoạt động
             boolean isActive = Boolean.parseBoolean(isActiveParam);
 
             // Kiểm tra mã giảm giá đã tồn tại chưa
@@ -197,7 +204,7 @@ public class EditVoucherServlet extends HttpServlet {
                 throw new IllegalArgumentException("Mã giảm giá đã tồn tại.");
             }
 
-            // Tạo đối tượng Voucher và cập nhật vào DB
+            // Cập nhật vào DB
             Voucher voucher = new Voucher(voucherId, code, description, discountPercentage, discountAmount,
                     minOrderValue, maxDiscount, startDate, endDate, isActive);
 
