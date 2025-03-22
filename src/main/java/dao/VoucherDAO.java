@@ -279,4 +279,20 @@ public class VoucherDAO {
         return false;
     }
 
+    public boolean updateExpiredVouchers() {
+        String updateQuery = "UPDATE Voucher \n"
+                + "SET is_active = 0 \n"
+                + "WHERE end_date < GETDATE() AND is_active = 1;";
+        boolean isUpdated = false;
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(updateQuery);
+            int affectedRows = ps.executeUpdate();
+            isUpdated = affectedRows > 0; // Nếu có ít nhất 1 voucher được cập nhật, trả về true
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return isUpdated;
+    }
+
 }
