@@ -62,7 +62,7 @@ public class VoucherManagementServlet extends HttpServlet {
         String keyword = request.getParameter("search");
         VoucherDAO voucherDAO = new VoucherDAO();
         List<Voucher> vouchers;
-
+        voucherDAO.updateExpiredVouchers();
         if (keyword != null && !keyword.trim().isEmpty()) {
             vouchers = voucherDAO.searchVouchers(keyword);
         } else {
