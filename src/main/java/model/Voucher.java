@@ -23,6 +23,11 @@ public class Voucher {
     private Timestamp endDate;
     private boolean active;
 
+    public Voucher() {
+    }
+    
+    
+
     public Voucher(int voucherId, String code, String description, int discountPercentage, double discountAmount, double minOrderValue, double maxDiscount, Timestamp startDate, Timestamp endDate, boolean active) {
         this.voucherId = voucherId;
         this.code = code;

@@ -85,7 +85,7 @@ public class CheckoutServlet extends HttpServlet {
         }
     }
 
-    private void applyVoucher(HttpServletRequest request, HttpServletResponse response)
+    public void applyVoucher(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
 
         JSONObject json = new JSONObject();

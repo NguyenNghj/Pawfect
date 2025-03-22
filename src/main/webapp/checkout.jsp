@@ -482,6 +482,15 @@
                                 width: 350,
                                 timer: 2500
                             });
+                        } else if (response.status === "error-data-name-valid") {
+                            Swal.fire({
+                                position: "top",
+                                icon: "warning",
+                                title: "Họ và tên chỉ chứa ký tự chữ.",
+                                showConfirmButton: false,
+                                width: 350,
+                                timer: 2500
+                            });
                         } else if (response.status === "error-data-phone-empty") {
                             Swal.fire({
                                 position: "top",
