@@ -12,11 +12,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 import model.Customers;
 import model.Voucher;
 import util.Email;
@@ -79,84 +82,81 @@ public class SendVoucherServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Lấy dữ liệu từ form
-        String customerId = request.getParameter("customerId");
+        request.setCharacterEncoding("UTF-8");
+
+        String customerIdsParam = request.getParameter("customerIds");
         String voucherCode = request.getParameter("voucherCode");
 
-        // Kiểm tra dữ liệu hợp lệ
-        if (customerId == null || customerId.isEmpty() || voucherCode == null || voucherCode.isEmpty()) {
-            request.setAttribute("errorMessage", "Vui lòng chọn khách hàng và voucher.");
-            request.getRequestDispatcher("/dashboard/staff/viewcustomersforStaff").forward(request, response);
+        if (customerIdsParam == null || customerIdsParam.trim().isEmpty()
+                || voucherCode == null || voucherCode.trim().isEmpty()) {
+            request.getSession().setAttribute("errorMessage", "Vui lòng chọn ít nhất một khách hàng và voucher.");
+            response.sendRedirect(request.getContextPath() + "/dashboard/staff/viewcustomersforStaff");
             return;
         }
 
         try {
-            // Gửi voucher mail code ở đây
-
-            Customers customers;
-            // Lay thong tin email cua khach dat hang
-            customers = CustomersDAO.getCustomerById(Integer.parseInt(customerId));
-
-            // Lay email khach hang
-            String customerEmail = customers.getEmail();
-            System.out.println("customerEmail: " + customerEmail);
-
-            // Lay ten khach hang
-            String customerName = customers.getFullName();
-
-            // Lay thong tin ma giam gia
-            VoucherDAO voucherDAO = new VoucherDAO();
-            Voucher voucher = voucherDAO.getVoucherByCode(voucherCode);
-
-            // Lay giam gia theo % hoac gia tien de show len email
-            double discountPrice = 0;
-            if (voucher.getDiscountAmount() != 0) {
-                discountPrice = voucher.getDiscountAmount();
-            } else {
-                discountPrice = voucher.getDiscountPercentage();
+            // Chuyển danh sách ID khách hàng
+            List<Integer> customerIds = Arrays.stream(customerIdsParam.split(","))
+                    .map(String::trim)
+                    .filter(s -> !s.isEmpty())
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+            if (customerIds.isEmpty()) {
+                throw new IllegalArgumentException("Danh sách khách hàng không hợp lệ.");
             }
 
-            // Dinh dang lai han su dung cua voucher
+            // Truy vấn voucher một lần
+            VoucherDAO voucherDAO = new VoucherDAO();
+            Voucher voucher = voucherDAO.getVoucherByCode(voucherCode);
+            if (voucher == null) {
+                throw new IllegalArgumentException("Không tìm thấy voucher với mã: " + voucherCode);
+            }
+
+            double discountValue = (voucher.getDiscountAmount() != 0) ? voucher.getDiscountAmount() : voucher.getDiscountPercentage();
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
             String voucherFrom = sdf.format(voucher.getStartDate());
             String voucherTo = sdf.format(voucher.getEndDate());
-
-            // Url dan toi PawFect
             String shopLink = "http://localhost:9999/pawfect";
+            String contentEmailTemplate = Email.emailSendVoucher;
 
-            // Chuyen doi jsp sang String
-            String contentEmail = Email.emailSendVoucher;
-            String finalContentEmail = String.format(contentEmail, customerName, voucherCode, discountPrice, voucherFrom, voucherTo, shopLink);
+            CustomersDAO customersDAO = new CustomersDAO();
+            List<Customers> customers = customersDAO.getCustomersByIds(customerIds);
 
-            ExecutorService executor = Executors.newFixedThreadPool(10); // Tạo một ExecutorService với 10 luồng         
+            // Gửi email song song bằng ExecutorService
+            ExecutorService executor = Executors.newFixedThreadPool(50); //50 luồng song song
+            AtomicInteger successCount = new AtomicInteger(0);
 
-            // Thay vì trực tiếp gửi email trong thread, chúng ta sử dụng Future để kiểm tra kết quả
-            Future<Boolean> future = executor.submit(() -> {
-                try {
-                    return Email.sendEmail(customerEmail, "Ưu đãi khách hàng", finalContentEmail);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return false;
+            for (Customers customer : customers) {
+                if (customer != null) {
+                    executor.submit(() -> {
+                        try {
+                            String finalContentEmail = String.format(contentEmailTemplate,
+                                    customer.getFullName(), voucherCode, discountValue, voucherFrom, voucherTo, shopLink);
+
+                            if (Email.sendEmail(customer.getEmail(), "Ưu đãi khách hàng", finalContentEmail)) {
+                                successCount.incrementAndGet();
+                            }
+                        } catch (Exception ignored) {
+                        }
+                    });
                 }
-            });
+            }
 
+            // Chờ tất cả email gửi xong
             executor.shutdown();
+            executor.awaitTermination(1, TimeUnit.MINUTES);
 
-            boolean success = future.get();  // Đợi task hoàn thành và lấy kết quả trả về
-
-            if (success) {
-                request.getSession().setAttribute("message", "Gửi voucher thành công!");
-                response.sendRedirect("/dashboard/staff/viewcustomersforStaff?success");
-            } else {
-                request.getSession().setAttribute("errorMessage", "Gửi voucher thất bại!");
-                response.sendRedirect("/dashboard/staff/viewcustomersforStaff?success");
+            // Gửi phản hồi
+            if (successCount.get() > 0) {
+                request.getSession().setAttribute("successMessage", "Đã gửi voucher thành công cho " + successCount.get() + " khách hàng.");
             }
 
         } catch (Exception e) {
+            request.getSession().setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
             e.printStackTrace();
-            request.setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
-            request.getRequestDispatcher("/dashboard/staff/viewcustomersforStaff").forward(request, response);
         }
+
+        response.sendRedirect(request.getContextPath() + "/dashboard/staff/viewcustomersforStaff");
     }
 
     /**

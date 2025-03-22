@@ -163,13 +163,6 @@
                                                     <input type="hidden" name="customerId" value="<%= customer.getCustomerId()%>">
                                                     <form action="sendDiscountCode" method="post">
                                                         <input type="hidden" name="customerId" value="<%= customer.getCustomerId()%>">
-                                                        <!-- Nút gửi mã giảm giá -->
-                                                        <button type="button" class="btn btn-success openVoucherModal" 
-                                                                data-bs-toggle="modal" 
-                                                                data-bs-target="#sendVoucherModal" 
-                                                                data-customer-id="<%= customer.getCustomerId()%>">
-                                                            Gửi mã giảm giá 
-                                                        </button>
                                                     </form>
                                                 </form>
 
@@ -255,64 +248,6 @@
                     document.getElementById("customerIdInput").value = customerId; // Gán vào input ẩn
                 });
             });
-        </script>
-
-
-        <!--        <script>
-                    document.addEventListener("DOMContentLoaded", function () {
-                        var errorMessage = "<c:out value='${errorMessage}' />";
-                        if (errorMessage && errorMessage.trim() !== "") {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Lỗi!",
-                                text: errorMessage,
-                                confirmButtonText: "OK"
-                            });
-                        }
-                    });
-                </script>-->
-
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const urlParams = new URLSearchParams(window.location.search);
-
-                if (urlParams.has("success")) {
-                    Swal.fire({
-                        title: "Thành công!",
-                        text: "Gửi voucher thành công!",
-                        icon: "success",
-                        confirmButtonText: "OK"
-                    });
-                } else if (urlParams.has("error")) {
-                    Swal.fire({
-                        title: "Thất bại!",
-                        text: "Gửi voucher thất bại!",
-                        icon: "error",
-                        confirmButtonText: "Thử lại"
-                    });
-                }
-            });
-        </script>
-
-        <script>
-            const exampleModal = document.getElementById('exampleModal')
-            if (exampleModal) {
-                exampleModal.addEventListener('show.bs.modal', event => {
-                    // Button that triggered the modal
-                    const button = event.relatedTarget
-                    // Extract info from data-bs-* attributes
-                    const recipient = button.getAttribute('data-bs-whatever')
-                    // If necessary, you could initiate an Ajax request here
-                    // and then do the updating in a callback.
-
-                    // Update the modal's content.
-                    const modalTitle = exampleModal.querySelector('.modal-title')
-                    const modalBodyInput = exampleModal.querySelector('.modal-body input')
-
-                    modalTitle.textContent = `New message to ${recipient}`
-                    modalBodyInput.value = recipient
-                })
-            }
         </script>
 
 
