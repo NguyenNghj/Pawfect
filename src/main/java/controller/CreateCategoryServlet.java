@@ -117,7 +117,7 @@ public class CreateCategoryServlet extends HttpServlet {
 
             // Kiểm tra categoryName không chỉ toàn số (phải có ít nhất một chữ cái)
             if (!categoryName.matches(".*[a-zA-ZÀ-Ỹà-ỹ].*")) {
-                request.getSession().setAttribute("errorMessage", "Tên danh mục phải chứa ít nhất một chữ cái!");
+                    request.getSession().setAttribute("errorMessage", "Tên danh mục phải chứa ít nhất một chữ cái!");
                 response.sendRedirect(request.getContextPath() + "/dashboard/admin/createcategory");
                 return;
             }

@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -231,6 +232,7 @@ public class Email {
             + "    </div>\n"
             + "</body>\n"
             + "</html>";
+
 
     public static void main(String[] args) {
 

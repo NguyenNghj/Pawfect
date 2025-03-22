@@ -263,12 +263,69 @@
                                 fetch('clear-session.jsp');
                             }
                         });
+
                     </script>
+
+
 
                     <%
                         session.removeAttribute("successMessage");
                         session.removeAttribute("errorMessage");
                     %>
+
+
+                    <script>
+                        document.getElementById("sendVoucherToSelected").addEventListener("click", function () {
+                            let selectedCustomers = [];
+                            document.querySelectorAll(".voucherCheckbox:checked").forEach(function (checkbox) {
+                                selectedCustomers.push(checkbox.value);
+                            });
+
+                            if (selectedCustomers.length === 0) {
+                                Swal.fire({
+                                    title: "Chưa chọn khách hàng!",
+                                    text: "Vui lòng chọn ít nhất một khách hàng để gửi mã giảm giá.",
+                                    icon: "warning",
+                                    confirmButtonText: "OK"
+                                });
+                                return;
+                            }
+
+                            Swal.fire({
+                            title: "Chọn mã giảm giá",
+                                    input: "select",
+                                    inputOptions: {
+                        <c:forEach var="voucher" items="${vouchers}">
+                                    "${voucher.code}": "${voucher.code} - ${voucher.discountAmount > 0 ? 'Giảm ' + voucher.discountAmount + 'đ' : 'Giảm ' + voucher.discountPercentage + '%'}",
+                        </c:forEach>
+                                                    },
+                                                    inputPlaceholder: "Chọn mã giảm giá...",
+                                            showCancelButton: true,
+                                                    confirmButtonText: "Gửi",
+                                                    cancelButtonText: "Hủy",
+                                            }
+                                            ).then((result) => {
+                                            if (result.isConfirmed) {
+                                                fetch("sendvoucherbulk", {
+                                                    method: "POST",
+                                                    headers: {"Content-Type": "application/json"},
+                                                    body: JSON.stringify({customerIds: selectedCustomers, voucherCode: result.value})
+                                                }).then(response => response.json())
+                                                        .then(data => {
+                                                            if (data.success) {
+                                                                Swal.fire("Thành công!", "Gửi mã giảm giá thành công!", "success");
+                                                            } else {
+                                                                Swal.fire("Lỗi!", "Có lỗi xảy ra khi gửi mã giảm giá.", "error");
+                                                            }
+                                                        }).catch(error => {
+                                                    Swal.fire("Lỗi!", "Không thể gửi yêu cầu đến server.", "error");
+                                                });
+                                                }
+                                            }
+                                            );
+                                        });
+                    </script>
+
                 </div>
             </div>
         </div>  

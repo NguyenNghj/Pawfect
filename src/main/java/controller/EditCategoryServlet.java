@@ -153,7 +153,7 @@ public class EditCategoryServlet extends HttpServlet {
                 throw new IllegalArgumentException("Tên danh mục không được chứa kí tự đặc biệt.");
             }
 
-            // Kiểm tra categoryName không chỉ toàn số (phải chứa ít nhất một chữ cái)
+            // Kiểm tra categoryName không chỉ toàn số (phải chứa ít nhất một chữ cái)  
             if (!categoryName.matches(".*[a-zA-ZÀ-Ỹà-ỹ].*")) {
                 throw new IllegalArgumentException("Tên danh mục phải chứa ít nhất một chữ cái.");
             }

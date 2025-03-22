@@ -103,6 +103,16 @@
                     </div>   
 
                     <div class="row d-flex align-items-center" style="margin-top: 30px;">
+
+                        <!-- Nút gửi mã giảm giá chung -->
+                        <div class="col-md-3 text-start">
+                            <button class="btn btn-primary" id="sendVoucherToSelected">Gửi mã giảm giá</button>
+                        </div>
+
+                        <div class="col-md-3 text-start">
+                            <button class="btn btn-success" id="sendVoucherBtn">Gửi mã giảm giá cho tất cả</button>
+                        </div>
+
                         <!-- Form Tìm Kiếm -->
                         <div class="col-md-6 text-start">
                             <form action="viewcustomersforStaff" method="get" class="d-flex mb-3 align-items-center"
@@ -129,7 +139,6 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th><input type="checkbox" id="selectAll"></th>
                                             <th>ID</th>
                                             <th>Họ và Tên</th>
                                             <th>Email</th>
@@ -137,7 +146,7 @@
                                             <th>Địa chỉ</th>
                                             <th>Giới tính</th>
                                             <th>Ngày sinh</th>
-                                            <th>Hành động</th>
+                                            <th>Chọn gửi mã giảm giá</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -146,7 +155,6 @@
                                             for (Customers customer : customerList) {
                                         %>
                                         <tr>
-                                            <td><input type="checkbox" class="customerCheckbox" value="<%= customer.getCustomerId()%>"></td>
                                             <td><%= customer.getCustomerId()%></td>
                                             <td><%= customer.getFullName()%></td>
                                             <td><%= customer.getEmail()%></td>
@@ -156,15 +164,7 @@
                                             <td><%= customer.getBirthDate()%></td>
                                             <td>
                                                 <% if (customer.isActive()) {%>
-                                                <form action="sendvoucher" method="post">
-                                                    <input type="hidden" name="customerId" value="<%= customer.getCustomerId()%>">
-                                                    <button type="button" class="btn btn-success openVoucherModal" 
-                                                            data-bs-toggle="modal" 
-                                                            data-bs-target="#sendVoucherModal" 
-                                                            data-customer-id="<%= customer.getCustomerId()%>">
-                                                        Gửi mã giảm giá
-                                                    </button>
-                                                </form>
+                                                <input type="checkbox" class="voucherCheckbox" value="<%= customer.getCustomerId()%>">
                                                 <% } %>
                                             </td>
                                         </tr>
@@ -173,6 +173,7 @@
                                         %>
                                     </tbody>
                                 </table>
+
                                 <c:if test="${empty customerList}">
                                     <div>
                                         <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
@@ -180,36 +181,34 @@
                                         </h5>
                                     </div>
                                 </c:if>
+
                             </div>
                         </div>
                     </div>
 
-                    <script>
-                        document.getElementById('selectAll').addEventListener('change', function () {
-                            let checkboxes = document.querySelectorAll('.customerCheckbox');
-                            checkboxes.forEach(checkbox => checkbox.checked = this.checked);
-                        });
-                    </script>
-                    
+
                 </div>
             </div>
         </div>
 
-        <!-- Modal Gửi Mã Giảm Giá -->
-        <div class="modal fade" id="sendVoucherModal" tabindex="-1" aria-labelledby="sendVoucherModalLabel" aria-hidden="true">
+        <!-- Modal Gửi Mã Giảm Giá (Danh Sách Chọn) -->
+        <div class="modal fade" id="sendVoucherSelectedModal" tabindex="-1" aria-labelledby="sendVoucherSelectedLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="sendVoucherModalLabel">Gửi Mã Giảm Giá</h5>
+                        <h5 class="form-label" id="sendVoucherSelectedLabel" style = "color: black;">Gửi Mã Giảm Giá - Danh Sách Chọn</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="sendVoucherForm" action="sendvoucher" method="post">
-                            <input type="hidden" name="customerId" id="customerIdInput">
-
+                        <form id="sendVoucherSelectedForm" action="sendvoucher" method="post">
+                            <input type="hidden" name="customerIds" id="selectedCustomerIdsInput">
                             <div class="mb-3">
-                                <label for="voucherCode" class="form-label">Chọn Voucher:</label>
-                                <select class="form-control" id="voucherCode" name="voucherCode" required>
+                                <label for="searchVoucher" class="form-label">Tìm kiếm Voucher:</label>
+                                <input type="text" class="form-control" id="searchVoucherSelected" placeholder="Nhập mã hoặc giảm giá...">
+                            </div>
+                            <div class="mb-3">
+                                <label for="voucherCodeSelected" class="form-label">Chọn Voucher:</label>
+                                <select class="form-control" id="voucherCodeSelected" name="voucherCode" required>
                                     <option value="">-- Chọn voucher --</option>
                                     <c:forEach var="voucher" items="${vouchers}">
                                         <option value="${voucher.code}">
@@ -226,7 +225,6 @@
                                     </c:forEach>
                                 </select>
                             </div>
-
                             <button type="submit" class="btn btn-primary w-100">Gửi Voucher</button>
                         </form>
                     </div>
@@ -234,71 +232,188 @@
             </div>
         </div>
 
+
+
+        <!-- Modal Gửi Mã Giảm Giá (Tất Cả) -->
+        <div class="modal fade" id="sendVoucherAllModal" tabindex="-1" aria-labelledby="sendVoucherAllLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="form-label" id="sendVoucherAllLabel" style = "color: black;">Gửi Mã Giảm Giá - Tất Cả Khách Hàng</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="sendVoucherAllForm" action="sendvoucher" method="post">
+                            <input type="hidden" name="customerIds" id="allCustomerIdsInput">
+                            <div class="mb-3">
+                                <label for="searchVoucher" class="form-label">Tìm kiếm Voucher:</label>
+                                <input type="text" class="form-control" id="searchVoucherAll" placeholder="Nhập mã hoặc giảm giá...">
+                            </div>
+                            <div class="mb-3">
+                                <label for="voucherCodeAll" class="form-label">Chọn Voucher:</label>
+                                <select class="form-control" id="voucherCodeAll" name="voucherCode" required>
+                                    <option value="">-- Chọn voucher --</option>
+                                    <c:forEach var="voucher" items="${vouchers}">
+                                        <option value="${voucher.code}">
+                                            ${voucher.code} - 
+                                            <c:choose>
+                                                <c:when test="${voucher.discountAmount > 0}">
+                                                    Giảm ${voucher.discountAmount}đ
+                                                </c:when>
+                                                <c:when test="${voucher.discountPercentage > 0}">
+                                                    Giảm ${voucher.discountPercentage}%
+                                                </c:when>
+                                            </c:choose>
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Gửi Voucher</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> 
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-
         <script>
-                        document.addEventListener("DOMContentLoaded", function () {
-                            var sendVoucherModal = document.getElementById("sendVoucherModal");
-
-                            sendVoucherModal.addEventListener("show.bs.modal", function (event) {
-                                var button = event.relatedTarget; // Button kích hoạt modal
-                                var customerId = button.getAttribute("data-customer-id"); // Lấy customerId từ data attribute
-                                document.getElementById("customerIdInput").value = customerId; // Gán vào input ẩn
-                            });
-                        });
-
-        </script>
-
-        <script>
-            const exampleModal = document.getElementById('exampleModal')
-            if (exampleModal) {
-                exampleModal.addEventListener('show.bs.modal', event => {
-                    // Button that triggered the modal
-                    const button = event.relatedTarget
-                    // Extract info from data-bs-* attributes
-                    const recipient = button.getAttribute('data-bs-whatever')
-                    // If necessary, you could initiate an Ajax request here
-                    // and then do the updating in a callback.
-
-                    // Update the modal's content.
-                    const modalTitle = exampleModal.querySelector('.modal-title')
-                    const modalBodyInput = exampleModal.querySelector('.modal-body input')
-
-                    modalTitle.textContent = `New message to ${recipient}`
-                    modalBodyInput.value = recipient
-                })
-            }
-        </script>
-
-
-        <<script>
             document.addEventListener("DOMContentLoaded", function () {
-                const urlParams = new URLSearchParams(window.location.search);
+                // Gửi mã giảm giá theo danh sách chọn
+                document.getElementById("sendVoucherToSelected").addEventListener("click", function () {
+                    let selectedCustomers = [];
+                    document.querySelectorAll(".voucherCheckbox:checked").forEach(checkbox => {
+                        selectedCustomers.push(checkbox.value);
+                    });
 
-                if (urlParams.has("success")) {
-                    Swal.fire({
-                        title: "Thành công!",
-                        text: "Gửi voucher thành công!",
-                        icon: "success",
-                        confirmButtonText: "OK"
+                    if (selectedCustomers.length === 0) {
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Chưa chọn khách hàng!",
+                            text: "Vui lòng chọn ít nhất một khách hàng để gửi mã giảm giá.",
+                            confirmButtonText: "OK"
+                        });
+                        return;
+                    }
+
+                    // Gán danh sách ID vào input ẩn của modal "Danh Sách Chọn"
+                    document.getElementById("selectedCustomerIdsInput").value = selectedCustomers.join(",");
+
+                    // Mở modal "Danh Sách Chọn"
+                    let sendVoucherSelectedModal = new bootstrap.Modal(document.getElementById('sendVoucherSelectedModal'));
+                    sendVoucherSelectedModal.show();
+                });
+
+                // Gửi mã giảm giá cho tất cả khách hàng
+                document.getElementById("sendVoucherBtn").addEventListener("click", function () {
+                    let allCustomerIds = [];
+
+                    // Lấy tất cả ID khách hàng từ bảng
+                    document.querySelectorAll(".voucherCheckbox").forEach(checkbox => {
+                        allCustomerIds.push(checkbox.value);
                     });
-                } else if (urlParams.has("error")) {
-                    Swal.fire({
-                        title: "Thất bại!",
-                        text: "Gửi voucher thất bại!",
-                        icon: "error",
-                        confirmButtonText: "Thử lại"
+
+                    if (allCustomerIds.length === 0) {
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Không có khách hàng hợp lệ!",
+                            text: "Không có khách hàng nào để gửi mã giảm giá.",
+                            confirmButtonText: "OK"
+                        });
+                        return;
+                    }
+
+                    // Gán danh sách ID vào input ẩn của modal "Tất Cả"
+                    document.getElementById("allCustomerIdsInput").value = allCustomerIds.join(",");
+
+                    // Mở modal "Tất Cả"
+                    let sendVoucherAllModal = new bootstrap.Modal(document.getElementById('sendVoucherAllModal'));
+                    sendVoucherAllModal.show();
+                });
+            });
+        </script>
+
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                document.querySelectorAll(".sendVoucherBtn").forEach(button => {
+                    button.addEventListener("click", function () {
+                        let customerId = this.getAttribute("data-customer-id");
+                        document.getElementById("customerIdInput").value = customerId;
                     });
-                }
+                });
             });
         </script>
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                var errorMessage = "<c:out value='${errorMessage}' />";
+                function setupSearch(searchInputId, selectId) {
+                    let searchInput = document.getElementById(searchInputId);
+                    let selectVoucher = document.getElementById(selectId);
+
+                    if (!searchInput || !selectVoucher)
+                        return;
+
+                    let defaultOption = selectVoucher.querySelector("option[value='']");
+
+                    searchInput.addEventListener("input", function () {
+                        let searchValue = this.value.toLowerCase();
+                        let voucherOptions = selectVoucher.querySelectorAll("option:not([value=''])");
+
+                        let hasMatch = false;
+                        voucherOptions.forEach(option => {
+                            let text = option.textContent.toLowerCase();
+                            if (text.includes(searchValue)) {
+                                option.style.display = "block";
+                                hasMatch = true;
+                            } else {
+                                option.style.display = "none";
+                            }
+                        });
+
+                        defaultOption.style.display = "block";
+
+                        // Mở dropdown nếu có kết quả
+                        if (hasMatch) {
+                            selectVoucher.size = Math.min(5, voucherOptions.length + 1);
+                        } else {
+                            selectVoucher.size = 1;
+                        }
+                    });
+
+                    selectVoucher.addEventListener("change", function () {
+                        this.size = 1;
+                    });
+                }
+
+                setupSearch("searchVoucherSelected", "voucherCodeSelected");
+                setupSearch("searchVoucherAll", "voucherCodeAll");
+            });
+        </script>
+
+
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Lấy thông báo thành công từ session
+                var successMessage = "<c:out value='${sessionScope.successMessage}' />";
+                if (successMessage && successMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Thành công!",
+                        text: successMessage,
+                        confirmButtonText: "OK"
+                    });
+
+                    // Xóa session sau khi hiển thị
+                    fetch('clear-session.jsp');
+                }
+
+                // Lấy thông báo lỗi từ session
+                var errorMessage = "<c:out value='${sessionScope.errorMessage}' />";
                 if (errorMessage && errorMessage.trim() !== "") {
                     Swal.fire({
                         icon: "error",
@@ -306,10 +421,17 @@
                         text: errorMessage,
                         confirmButtonText: "OK"
                     });
+
+                    // Xóa session sau khi hiển thị
+                    fetch('clear-session.jsp');
                 }
             });
         </script>
 
+        <%
+            session.removeAttribute("successMessage");
+            session.removeAttribute("errorMessage");
+        %>
 
     </body>
 </html>

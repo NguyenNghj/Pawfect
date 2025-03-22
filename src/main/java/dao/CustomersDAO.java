@@ -1,9 +1,11 @@
 package dao;
+
 import db.DBContext;
 import model.Customers;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CustomersDAO {
 
@@ -120,48 +122,46 @@ public class CustomersDAO {
         }
         return false;
     }
-    public static boolean unbanCustomer(int customerId) {
-    try {
-        Con = new DBContext().getConnection();
-        PreparedStatement ps = Con.prepareStatement(UnBan_Customer);
-        ps.setInt(1, customerId);
 
-        int rowsUpdated = ps.executeUpdate();
-        ps.close();
-        return rowsUpdated > 0;
-    } catch (SQLException e) {
-        e.printStackTrace();
-    } finally {
-        closeConnection();
+    public static boolean unbanCustomer(int customerId) {
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(UnBan_Customer);
+            ps.setInt(1, customerId);
+
+            int rowsUpdated = ps.executeUpdate();
+            ps.close();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
+        }
+        return false;
     }
-    return false;
-}
 
     // Search customers by name or email
-public static List<Customers> searchCustomers(String keyword) {
-    List<Customers> list = new ArrayList<>();
+    public static List<Customers> searchCustomers(String keyword) {
+        List<Customers> list = new ArrayList<>();
 
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Search_Customer);
+            ps.setString(1, "%" + keyword + "%");  // Chỉ tìm theo tên khách hàng
 
-    try {
-        Con = new DBContext().getConnection();
-        PreparedStatement ps = Con.prepareStatement(Search_Customer);
-        ps.setString(1, "%" + keyword + "%");  // Chỉ tìm theo tên khách hàng
-
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            list.add(mapResultSetToCustomer(rs));
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(mapResultSetToCustomer(rs));
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
         }
-        rs.close();
-        ps.close();
-    } catch (SQLException e) {
-        e.printStackTrace();
-    } finally {
-        closeConnection();
+        return list;
     }
-    return list;
-}
-
-
 
     private static void closeConnection() {
         try {
@@ -190,4 +190,40 @@ public static List<Customers> searchCustomers(String keyword) {
     public static boolean banCustomer(int customerId) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    public static List<Customers> getCustomersByIds(List<Integer> customerIds) {
+        List<Customers> customers = new ArrayList<>();
+        if (customerIds == null || customerIds.isEmpty()) {
+            return customers;
+        }
+
+        String placeholders = customerIds.stream()
+                .map(id -> "?")
+                .collect(Collectors.joining(", "));
+
+        String query = "SELECT * FROM Customers WHERE customer_id IN (" + placeholders + ")";
+
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(query);
+
+            for (int i = 0; i < customerIds.size(); i++) {
+                ps.setInt(i + 1, customerIds.get(i));
+            }
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                customers.add(mapResultSetToCustomer(rs));
+            }
+
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
+        }
+        return customers;
+    }
+
 }
