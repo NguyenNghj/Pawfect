@@ -61,6 +61,12 @@
                 <span>Danh mục sản phẩm</span>
             </a>
         </nav>
+        <nav class="navbar bg-body-tertiary" id="voucher">                   
+            <a class="navbar-brand d-flex align-items-center gap-3" href="voucher">
+                <i class="fa-solid fa-ticket"></i>
+                <span>Mã giảm giá</span>
+            </a>
+        </nav>
         <nav class="navbar bg-body-tertiary" id="pethotel">                                            
             <a class="navbar-brand d-flex align-items-center gap-3" href="pethotel">
                 <i class="fa-solid fa-hotel fa-lg"></i>  
@@ -116,7 +122,7 @@
             "product": "product",
             "category": "category",
             "pethotel": "pethotel",
-            "profile": "profile",
+            "voucher": "voucher",
             "logout": "logout",
             "staff": "staff",
             "customers": "customers"
