@@ -231,23 +231,48 @@ public class OrderServlet extends HttpServlet {
                     throw new IllegalArgumentException("error-data-email-valid");
                 }
 
+                if (!isValidEmailLength(email)) {
+                    throw new IllegalArgumentException("error-data-email-length");
+                }
+
                 if (name == null || name.isEmpty()) {
                     throw new IllegalArgumentException("error-data-name-empty");
                 }
-                
+
                 if (!isValidName(name)) {
                     throw new IllegalArgumentException("error-data-name-valid");
+                }
+
+                if (!isValidNameLength(name)) {
+                    throw new IllegalArgumentException("error-data-name-length");
                 }
 
                 if (phone == null || phone.isEmpty()) {
                     throw new IllegalArgumentException("error-data-phone-empty");
                 }
+
                 if (!isValidPhone(phone)) {
                     throw new IllegalArgumentException("error-data-phone-valid");
                 }
 
                 if (address == null || address.isEmpty()) {
                     throw new IllegalArgumentException("error-data-address-empty");
+                }
+
+                if (!isValidAddressCharacters(address)) {
+                    throw new IllegalArgumentException("error-data-address-valid");
+                }
+
+                if (!isValidAddressLength(address)) {
+                    throw new IllegalArgumentException("error-data-address-lenght");
+                }
+
+                if (!isValidAddressNotOnlyNumbers(address)) {
+                    throw new IllegalArgumentException("error-data-address-number");
+                }
+
+                if (!isValidOrderNoteLength(note)) {
+                    throw new IllegalArgumentException("error-data-note-valid");
                 }
 
             } catch (IllegalArgumentException e) {
@@ -567,12 +592,22 @@ public class OrderServlet extends HttpServlet {
         return name.matches(nameRegex);
     }
 
-    // Phương thức kiểm tra email hợp lệ
+    // Phuong thuc kiem tra ten khong vuot qua 100 ky tu
+    private boolean isValidNameLength(String name) {
+        return name != null && name.length() <= 100;
+    }
+
+    // Phương thức kiểm tra email hợp lệ (không bắt đầu bằng số)
     private boolean isValidEmail(String email) {
-        String emailRegex = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
+        String emailRegex = "^[A-Za-z][A-Za-z0-9._%+-]*@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
         Pattern pattern = Pattern.compile(emailRegex);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    // Phuong thuc kiem tra email khong vuot qua 255 ky tu
+    private boolean isValidEmailLength(String email) {
+        return email != null && email.length() <= 255;
     }
 
     // Phương thức kiểm tra số điện thoại hợp lệ (10-11 chữ số)
@@ -581,6 +616,26 @@ public class OrderServlet extends HttpServlet {
         Pattern pattern = Pattern.compile(phoneRegex);
         Matcher matcher = pattern.matcher(phone);
         return matcher.matches();
+    }
+
+    // Kiểm tra địa chỉ chỉ chứa chữ cái, số và khoảng trắng (không chứa ký tự đặc biệt)
+    private boolean isValidAddressCharacters(String address) {
+        return address != null && address.matches("^[a-zA-ZÀ-ỹ0-9\\s,.]+$");
+    }
+
+    // Kiểm tra địa chỉ không phải toàn số
+    private boolean isValidAddressNotOnlyNumbers(String address) {
+        return address != null && !address.matches("^\\d+$");
+    }
+
+    // Kiểm tra địa chỉ không vượt quá 255 ký tự
+    private boolean isValidAddressLength(String address) {
+        return address != null && address.length() <= 255;
+    }
+
+    // Phuong thuc kiem tra ghi chu khong vuot qua 500 ky tu
+    private boolean isValidOrderNoteLength(String orderNote) {
+        return orderNote != null && orderNote.length() <= 500;
     }
 
     /**

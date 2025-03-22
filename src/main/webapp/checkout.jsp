@@ -464,6 +464,15 @@
                                 width: 350,
                                 timer: 2500
                             });
+                        } else if (response.status === "error-data-email-length") {
+                            Swal.fire({
+                                position: "top",
+                                icon: "warning",
+                                title: "Email không không vượt quá 255 kí tự.",
+                                showConfirmButton: false,
+                                width: 350,
+                                timer: 2500
+                            });
                         } else if (response.status === "error-data-email-valid") {
                             Swal.fire({
                                 position: "top",
@@ -491,6 +500,15 @@
                                 width: 350,
                                 timer: 2500
                             });
+                        } else if (response.status === "error-data-name-length") {
+                            Swal.fire({
+                                position: "top",
+                                icon: "warning",
+                                title: "Họ tên không vượt quá 100 kí tự.",
+                                showConfirmButton: false,
+                                width: 350,
+                                timer: 2500
+                            });
                         } else if (response.status === "error-data-phone-empty") {
                             Swal.fire({
                                 position: "top",
@@ -514,6 +532,42 @@
                                 position: "top",
                                 icon: "warning",
                                 title: "Địa chỉ không được để trống.",
+                                showConfirmButton: false,
+                                width: 350,
+                                timer: 2500
+                            });
+                        } else if (response.status === "error-data-address-valid") {
+                            Swal.fire({
+                                position: "top",
+                                icon: "warning",
+                                title: "Địa chỉ không được chứa kí tự đặc biệt.",
+                                showConfirmButton: false,
+                                width: 350,
+                                timer: 2500
+                            });
+                        } else if (response.status === "error-data-address-lenght") {
+                            Swal.fire({
+                                position: "top",
+                                icon: "warning",
+                                title: "Địa chỉ không vượt quá 255 kí tự.",
+                                showConfirmButton: false,
+                                width: 350,
+                                timer: 2500
+                            });
+                        } else if (response.status === "error-data-address-number") {
+                            Swal.fire({
+                                position: "top",
+                                icon: "warning",
+                                title: "Địa chỉ không được là toàn số.",
+                                showConfirmButton: false,
+                                width: 350,
+                                timer: 2500
+                            });
+                        } else if (response.status === "error-data-note-valid") {
+                            Swal.fire({
+                                position: "top",
+                                icon: "warning",
+                                title: "Ghi chú không vượt quá 500 kí tự.",
                                 showConfirmButton: false,
                                 width: 350,
                                 timer: 2500
