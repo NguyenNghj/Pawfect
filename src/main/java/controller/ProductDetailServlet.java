@@ -75,7 +75,7 @@ public class ProductDetailServlet extends HttpServlet {
 
             int productId = Integer.parseInt(productIdParam);
             ProductDAO productDAO = new ProductDAO();
-            Product product = productDAO.getProductById(productId);
+            Product product = productDAO.getActiveProductById(productId);
 //
 //        if (product == null) {
 //            response.sendRedirect("sanpham"); // Chuyển hướng nếu sản phẩm không tồn tại
@@ -87,7 +87,7 @@ public class ProductDetailServlet extends HttpServlet {
             if (username == null) {
                 System.out.println("Không tìm thấy customerId!");
                 username = "0";
-            } 
+            }
 
             int totalQuantity = 0;
             int customerId = Integer.parseInt(username);

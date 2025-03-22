@@ -56,7 +56,7 @@ public class ProductListServlet extends HttpServlet {
             CategoryDAO categoryDAO = new CategoryDAO();
 
             // Lấy danh sách danh mục
-            List<Category> categories = categoryDAO.getAllCategories();
+            List<Category> categories = categoryDAO.getAllActiveCategories();
             request.setAttribute("categories", categories);
 
             // Lấy các tham số từ request

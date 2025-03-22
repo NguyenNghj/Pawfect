@@ -48,7 +48,7 @@
 
                             <!-- Dropdown Sản phẩm cho Chó -->
                             <div class="col-auto dropdown">
-                                <a class="btn dropdown-toggle" href="products?pettype=1&page=1" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownMenuLinkDog">
+                                <a class="btn dropdown-toggle" href="products?pettype=1&page=1" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownMenuLink">
                                     Sản phẩm cho Chó
                                 </a>
 
@@ -70,12 +70,12 @@
 
                             <!-- Dropdown Sản phẩm cho Mèo -->
                             <div class="col-auto dropdown">
-                                <a class="btn dropdown-toggle" href="products?pettype=2&page=1" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownMenuLinkCat">
+                                <a class="btn dropdown-toggle" href="products?pettype=2&page=1" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownMenuLink">
                                     Sản phẩm cho Mèo
                                 </a>
                                 <script>
                                     // Select both elements by their IDs
-                                    const dropdownLinks = ['dropdownMenuLinkCat', 'dropdownMenuLinkDog'];
+                                    const dropdownLinks = 'dropdownMenuLink';
 
                                     // Loop through each element and add event listeners
                                     dropdownLinks.forEach(function (linkId) {

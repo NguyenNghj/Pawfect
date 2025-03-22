@@ -63,6 +63,24 @@ public class CategoryDAO {
         return categories;
     }
 
+    public boolean isCategoryExists(String categoryName) {
+        String query = "SELECT COUNT(*) FROM Category WHERE LOWER(category_name) = LOWER(?)";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+
+            ps.setString(1, categoryName);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Nếu COUNT > 0, danh mục đã tồn tại
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public Category getCategoryById(int categoryId) {
         String query = "SELECT category_id, category_name, is_active FROM Category WHERE category_id = ?";
         try {
@@ -102,7 +120,7 @@ public class CategoryDAO {
 
     public List<Category> searchCategories(String keyword) {
         List<Category> categories = new ArrayList<>();
-        String query = "SELECT category_id, category_name, is_active FROM Category WHERE category_name LIKE ?";
+        String query = "SELECT category_id, category_name, is_active FROM Category WHERE category_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ?";
 
         try {
             conn = new DBContext().getConnection();

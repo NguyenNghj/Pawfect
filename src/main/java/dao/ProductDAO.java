@@ -116,7 +116,7 @@ public class ProductDAO {
         List<Object> params = new ArrayList<>();
 
         if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
-            query.append(" AND (p.product_name LIKE ? OR p.product_petType LIKE ? OR c.category_name LIKE ?)");
+                query.append(" AND (p.product_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? OR p.product_petType COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? OR c.category_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ?)");
             String keywordParam = "%" + searchKeyword + "%";
             params.add(keywordParam);
             params.add(keywordParam);
@@ -215,41 +215,37 @@ public class ProductDAO {
         return null;
     }
 
-    public List<Product> searchActiveProducts(String keyword) {
-        List<Product> productList = new ArrayList<>();
-        String query = "SELECT p.product_id, p.category_id, c.category_name, p.product_name, p.product_petType, \n"
-                + "                p.product_price, p.product_image, p.stock, p.description, p.is_active \n"
-                + "                FROM Products p \n"
-                + "               JOIN Category c ON p.category_id = c.category_id \n"
-                + "                WHERE (p.product_name LIKE ? OR p.product_petType LIKE  ? OR c.category_name LIKE  ?)"
-                + "                AND p.is_active = 1";
+    public Product getActiveProductById(int productId) {
+        String query = "SELECT p.product_id, p.category_id, c.category_name, p.product_name, p.product_petType, "
+                + "p.product_price, p.product_image, p.stock, p.description, p.is_active "
+                + "FROM Products p "
+                + "JOIN Category c ON p.category_id = c.category_id "
+                + "WHERE p.product_id = ? AND p.is_active = 1";
         try {
             conn = new DBContext().getConnection();
             ps = conn.prepareStatement(query);
-            ps.setString(1, "%" + keyword + "%");
-            ps.setString(2, "%" + keyword + "%");
-            ps.setString(3, "%" + keyword + "%");
+            ps.setInt(1, productId);
             rs = ps.executeQuery();
-            while (rs.next()) {
-                productList.add(new Product(
+            if (rs.next()) {
+                return new Product(
                         rs.getInt(1), rs.getInt(2), rs.getString(3),
                         rs.getString(4), rs.getString(5), rs.getDouble(6),
                         rs.getString(7), rs.getInt(8), rs.getString(9), rs.getBoolean(10)
-                ));
+                );
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return productList;
+        return null;
     }
 
     public List<Product> searchProducts(String keyword) {
         List<Product> productList = new ArrayList<>();
-        String query = "SELECT p.product_id, p.category_id, c.category_name, p.product_name, p.product_petType, \n"
-                + "                p.product_price, p.product_image, p.stock, p.description, p.is_active \n"
-                + "                FROM Products p \n"
-                + "               JOIN Category c ON p.category_id = c.category_id \n"
-                + "                WHERE p.product_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? OR p.product_petType COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? OR c.category_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ?";
+            String query = "SELECT p.product_id, p.category_id, c.category_name, p.product_name, p.product_petType, \n"
+                    + "                p.product_price, p.product_image, p.stock, p.description, p.is_active \n"
+                    + "                FROM Products p \n"
+                    + "               JOIN Category c ON p.category_id = c.category_id \n"
+                    + "                WHERE p.product_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? OR p.product_petType COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? OR c.category_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ?";
         try {
             conn = new DBContext().getConnection();
             ps = conn.prepareStatement(query);

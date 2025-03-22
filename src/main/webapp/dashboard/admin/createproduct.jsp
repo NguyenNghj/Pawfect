@@ -141,7 +141,7 @@
 
                             <div class="mb-3">
                                 <label for="createProductPrice" class="form-label">Giá</label>
-                                <input type="number" class="form-control" name="productPrice" required>
+                                <input type="number" class="form-control" name="productPrice" required>                        
                             </div>
 
                             <div class="mb-3">
@@ -167,6 +167,85 @@
 
                         </form>
 
+                        <!--                        <script>
+                                                    document.addEventListener("DOMContentLoaded", function () {
+                                                        function validateInput(input, min, max, messageMin, messageMax) {
+                                                            const errorSpan = document.createElement("span");
+                                                            errorSpan.classList.add("text-danger", "small");
+                                                            input.parentNode.appendChild(errorSpan);
+                        
+                                                            input.addEventListener("input", function () {
+                                                                if (this.value === "") {
+                                                                    errorSpan.textContent = "";
+                                                                    return;
+                                                                }
+                                                                if (this.value < min) {
+                                                                    errorSpan.textContent = messageMin;
+                                                                } else if (this.value > max) {
+                                                                    errorSpan.textContent = messageMax;
+                                                                } else {
+                                                                    errorSpan.textContent = "";
+                                                                }
+                                                            });
+                                                        }
+                        
+                                                        // Áp dụng kiểm tra cho từng ô input
+                                                        validateInput(
+                                                                document.querySelector("input[name='productPrice']"),
+                                                                1,
+                                                                50000000,
+                                                                "⚠ Giá sản phẩm phải lớn hơn hoặc bằng 1.",
+                                                                "⚠ Giá sản phẩm không được vượt quá 50,000,000."
+                                                                );
+                        
+                                                        validateInput(
+                                                                document.querySelector("input[name='stock']"),
+                                                                0,
+                                                                200,
+                                                                "⚠ Giá trị tồn kho không được nhỏ hơn 0.",
+                                                                "⚠ Giá trị tồn kho không được vượt quá 200."
+                                                                );
+                                                    });
+                                                </script>-->
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                // Lấy thông báo thành công từ session
+                                var successMessage = "<c:out value='${sessionScope.successMessage}' />";
+                                if (successMessage && successMessage.trim() !== "") {
+                                    Swal.fire({
+                                        icon: "success",
+                                        title: "Thành công!",
+                                        text: successMessage,
+                                        confirmButtonText: "OK"
+                                    });
+
+                                    // Xóa session sau khi hiển thị
+                                    fetch('clear-session.jsp');
+                                }
+
+                                // Lấy thông báo lỗi từ session
+                                var errorMessage = "<c:out value='${sessionScope.errorMessage}' />";
+                                if (errorMessage && errorMessage.trim() !== "") {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Lỗi!",
+                                        text: errorMessage,
+                                        confirmButtonText: "OK"
+                                    });
+
+                                    // Xóa session sau khi hiển thị
+                                    fetch('clear-session.jsp');
+                                }
+                            });
+                        </script>
+
+                        <%
+                            session.removeAttribute("successMessage");
+                            session.removeAttribute("errorMessage");
+                        %>
+
+                        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                         <script>
                             function previewFile() {
                                 const fileInput = document.getElementById('createProductImage');

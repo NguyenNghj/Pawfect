@@ -84,7 +84,7 @@
                                         <div class="pethotel-name">${similarRoom.roomName}</div>
                                         <div class="pethotel-type">Dành cho ${similarRoom.roomType}</div>
                                         <div class="pethotel-price">
-                                            <fmt:formatNumber value="${similarRoom.pricePerNight}" type="currency" currencyCode="VND"/>/đêm
+                                            <fmt:formatNumber value="${similarRoom.pricePerNight}"/>đ/đêm
                                         </div>
                                         <div class="pethotel-weight">Cân nặng: ${similarRoom.minWeight} - ${similarRoom.maxWeight} kg</div>
                                         <c:choose>

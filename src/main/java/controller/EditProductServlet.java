@@ -8,7 +8,6 @@ import dao.CategoryDAO;
 import dao.ProductDAO;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -18,6 +17,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.PrintWriter;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.stream.Stream;
 import model.Category;
 import model.Product;
 
@@ -67,19 +69,37 @@ public class EditProductServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-
+            // Lấy productId từ request và kiểm tra hợp lệ
             String productIdParam = request.getParameter("productId");
+
             if (productIdParam == null || productIdParam.trim().isEmpty()) {
                 request.getSession().setAttribute("errorMessage", "Product ID không được để trống.");
-                request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/dashboard/admin/product");
                 return;
             }
 
-            int productId = Integer.parseInt(productIdParam.trim());
+            int productId = -1;
+            try {
+                productId = Integer.parseInt(productIdParam.trim());
+                if (productId <= 0) {
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException e) {
+                request.getSession().setAttribute("errorMessage", "ID sản phẩm không hợp lệ.");
+                response.sendRedirect(request.getContextPath() + "/dashboard/admin/product");
+                return;
+            }
 
             ProductDAO productDAO = new ProductDAO();
-            CategoryDAO categoryDAO = new CategoryDAO();
+            Product product = productDAO.getProductById(productId);
 
+            if (product == null) {
+                request.getSession().setAttribute("errorMessage", "Không tìm thấy sản phẩm với ID: " + productId);
+                response.sendRedirect(request.getContextPath() + "/dashboard/admin/product");
+                return;
+            }
+
+            CategoryDAO categoryDAO = new CategoryDAO();
             List<Category> categories = categoryDAO.getAllCategories();
 
             if (categories == null || categories.isEmpty()) {
@@ -88,39 +108,24 @@ public class EditProductServlet extends HttpServlet {
                 return;
             }
 
-            Product product = productDAO.getProductById(productId);
-
-            if (product == null) {
-                request.getSession().setAttribute("errorMessage", "Không tìm thấy sản phẩm với ID: " + productId);
-                request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
-                return;
-            }
-
             Category selectedCategory = categoryDAO.getCategoryById(product.getCategoryId());
             if (selectedCategory == null) {
                 request.getSession().setAttribute("errorMessage", "Danh mục của sản phẩm không tồn tại.");
-                request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/dashboard/admin/product");
                 return;
             }
 
+            // Đưa dữ liệu lên request để hiển thị trên trang JSP
             request.setAttribute("selectedCategory", selectedCategory);
             request.setAttribute("categories", categories);
             request.setAttribute("product", product);
 
             request.getRequestDispatcher("/dashboard/admin/editproduct.jsp").forward(request, response);
 
-        } catch (NumberFormatException e) {
-            e.printStackTrace(); // Log lỗi
-            request.getSession().setAttribute("errorMessage", "ID sản phẩm không hợp lệ.");
-            request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
-        } catch (IOException | ServletException e) {
-            e.printStackTrace();
-            request.getSession().setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
-            request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
         } catch (Exception e) {
-            e.printStackTrace();
-            request.getSession().setAttribute("errorMessage", "Lỗi không xác định: " + e.getMessage());
-            request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Lỗi hệ thống khi chỉnh sửa sản phẩm", e);
+            request.getSession().setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
+            response.sendRedirect(request.getContextPath() + "/dashboard/admin/product");
         }
     }
 
@@ -139,36 +144,53 @@ public class EditProductServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         try {
-            // Nhận dữ liệu từ form, kiểm tra null hoặc rỗng trước khi parse
+            // Lấy dữ liệu từ request
             String productIdParam = request.getParameter("productId");
             String categoryIdParam = request.getParameter("categoryId");
             String productPriceParam = request.getParameter("productPrice");
             String stockParam = request.getParameter("stock");
-
-            if (productIdParam == null || productIdParam.trim().isEmpty()
-                    || categoryIdParam == null || categoryIdParam.trim().isEmpty()
-                    || productPriceParam == null || productPriceParam.trim().isEmpty()
-                    || stockParam == null || stockParam.trim().isEmpty()) {
-                throw new IllegalArgumentException("Một số trường dữ liệu bị thiếu.");
-            }
-
-            int productId = Integer.parseInt(productIdParam.trim());
-            int categoryId = Integer.parseInt(categoryIdParam.trim());
-            double productPrice = Double.parseDouble(productPriceParam.trim());
-            int stock = Integer.parseInt(stockParam.trim());
-            boolean productActive = false;
-            if (stock != 0) {
-                productActive = Boolean.parseBoolean(request.getParameter("productActive"));
-            }
-            String description = request.getParameter("description");
             String productName = request.getParameter("productName");
             String productPetType = request.getParameter("productPetType");
-
+            String description = request.getParameter("description");
             String existingImage = request.getParameter("existingImage");
 
+            // Kiểm tra dữ liệu không rỗng
+            if (Stream.of(productIdParam, categoryIdParam, productPriceParam, stockParam, productName, productPetType, description)
+                    .anyMatch(param -> param == null || param.trim().isEmpty())) {
+                request.getSession().setAttribute("errorMessage", "Vui lòng điền đầy đủ thông tin!");
+                response.sendRedirect(request.getContextPath() + "/dashboard/admin/product?productId=" + productIdParam);
+                return;
+            }
+
+            // Kiểm tra kiểu dữ liệu hợp lệ
+            int productId, categoryId, stock;
+            double productPrice;
+            try {
+                productId = Integer.parseInt(productIdParam.trim());
+                categoryId = Integer.parseInt(categoryIdParam.trim());
+                productPrice = Double.parseDouble(productPriceParam.trim());
+                stock = Integer.parseInt(stockParam.trim());
+
+                // Kiểm tra các giá trị hợp lệ
+                if (productId <= 0 || categoryId <= 0 || productPrice <= 0 || productPrice > 50000000 || stock < 0 || stock > 200) {
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException e) {
+                request.getSession().setAttribute("errorMessage", "Giá phải từ 0 đến 50,000,000 và số lượng phải từ 0 đến 200!");
+                response.sendRedirect(request.getContextPath() + "/dashboard/admin/editproduct?productId=" + productIdParam);
+                return;
+            }
+
+            if (!productName.matches("^[a-zA-Z0-9\\s\\-()]+$")) {
+                request.getSession().setAttribute("errorMessage", "Tên sản phẩm không được chứa ký tự đặc biệt ngoại trừ dấu ngoặc đơn () và dấu gạch ngang -!");
+                response.sendRedirect(request.getContextPath() + "/dashboard/admin/product?productId=" + productIdParam);
+                return;
+            }
+
+            boolean productActive = (stock != 0) && Boolean.parseBoolean(request.getParameter("productActive"));
+
             // Xử lý đường dẫn lưu ảnh
-            String[] context = request.getServletContext().getRealPath("").split("target");
-            String realPath = context[0] + "src" + File.separator + "main" + File.separator + "webapp" + File.separator + "img" + File.separator + "products";
+            String realPath = request.getServletContext().getRealPath("/img/products");
 
             File uploadDir = new File(realPath);
             if (!uploadDir.exists()) {
@@ -182,22 +204,24 @@ public class EditProductServlet extends HttpServlet {
             if (filePart != null && filePart.getSize() > 0) {
                 String submittedFileName = filePart.getSubmittedFileName();
                 if (submittedFileName != null && !submittedFileName.trim().isEmpty()) {
-                    String fileName = Paths.get(submittedFileName).getFileName().toString();
+                    String extension = submittedFileName.substring(submittedFileName.lastIndexOf(".")).toLowerCase();
 
-                    // Kiểm tra trùng tên file
-                    File file = new File(realPath, fileName);
-                    if (file.exists()) {
-                        String extension = "";
-                        int lastDotIndex = fileName.lastIndexOf('.');
-                        String baseName = fileName;
-                        if (lastDotIndex != -1) {
-                            extension = fileName.substring(lastDotIndex);
-                            baseName = fileName.substring(0, lastDotIndex);
-                        }
-                        fileName = baseName + "_" + UUID.randomUUID() + extension;
+                    // Kiểm tra định dạng ảnh hợp lệ
+                    if (!extension.matches("\\.(jpg|jpeg|png|gif)$")) {
+                        request.getSession().setAttribute("errorMessage", "Định dạng ảnh không hợp lệ! Chỉ chấp nhận JPG, JPEG, PNG, GIF.");
+                        response.sendRedirect(request.getContextPath() + "/dashboard/admin/editproduct?productId=" + productIdParam);
+                        return;
                     }
 
-                    newFileName = fileName;
+                    // Kiểm tra kích thước ảnh (giới hạn 5MB)
+                    if (filePart.getSize() > 5 * 1024 * 1024) {
+                        request.getSession().setAttribute("errorMessage", "Kích thước ảnh quá lớn! Tối đa 5MB.");
+                        response.sendRedirect(request.getContextPath() + "/dashboard/admin/editproduct?productId=" + productIdParam);
+                        return;
+                    }
+
+                    // Đặt tên file ảnh mới tránh trùng lặp
+                    newFileName = UUID.randomUUID().toString() + extension;
                     filePart.write(realPath + File.separator + newFileName);
 
                     // Xóa ảnh cũ nếu có
@@ -218,24 +242,16 @@ public class EditProductServlet extends HttpServlet {
             boolean updateSuccess = productDAO.updateProduct(product);
 
             if (updateSuccess) {
-                response.sendRedirect(request.getContextPath() + "/dashboard/admin/product");
                 request.getSession().setAttribute("successMessage", "Cập nhật sản phẩm thành công!");
             } else {
                 request.getSession().setAttribute("errorMessage", "Cập nhật sản phẩm thất bại!");
-                request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
             }
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            request.getSession().setAttribute("errorMessage", "Lỗi định dạng số! Vui lòng nhập dữ liệu hợp lệ.");
-            request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
-        } catch (IOException | ServletException e) {
-            e.printStackTrace();
-            request.getSession().setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
-            request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/dashboard/admin/product");
+
         } catch (Exception e) {
-            e.printStackTrace();
-            request.getSession().setAttribute("errorMessage", "Đã xảy ra lỗi khi cập nhật sản phẩm: " + e.getMessage());
-            request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Lỗi hệ thống khi cập nhật sản phẩm", e);
+            request.getSession().setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
+            response.sendRedirect(request.getContextPath() + "/dashboard/admin/product");
         }
     }
 

@@ -4,7 +4,6 @@
  */
 package controller;
 
-import dao.CategoryDAO;
 import dao.ProductDAO;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -62,8 +61,6 @@ public class ProductManagementServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             ProductDAO productDAO = new ProductDAO();
-//            CategoryDAO categoryDAO = new CategoryDAO();
-
             String keyword = request.getParameter("search");
             List<Product> products;
 
@@ -73,9 +70,6 @@ public class ProductManagementServlet extends HttpServlet {
                 products = productDAO.getAllProducts();
             }
 
-//            List<Category> categoryList = categoryDAO.getAllCategories();
-//
-//            request.setAttribute("categories", categoryList);
             request.setAttribute("productList", products);
 
             RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard/admin/product.jsp");
