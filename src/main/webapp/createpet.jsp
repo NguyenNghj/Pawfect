@@ -221,20 +221,31 @@
                 petDobError.innerText = "";
 
                 // Kiểm tra tên thú cưng
-                if (petName === "") {
+                const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/; // Các ký tự đặc biệt cần kiểm tra
+
+                if (petName.trim() === "") {
                     petNameError.innerText = "Tên thú cưng không được để trống.";
                     isValid = false;
+                } else if (specialCharRegex.test(petName)) {
+                    petNameError.innerText = "Tên thú cưng không được chứa ký tự đặc biệt.";
+                    isValid = false;
+                } else {
+                    petNameError.innerText = ""; // Xóa lỗi nếu hợp lệ
                 }
+
 
                 // Kiểm tra giống thú cưng
                 if (petBreed === "") {
                     petBreedError.innerText = "Giống thú cưng không được để trống.";
                     isValid = false;
+                } else if (!/^[a-zA-ZÀ-ỹ\s]+$/.test(petBreed)) {
+                    petBreedError.innerText = "Giống thú cưng không được chứa ký tự đặc biệt.";
+                    isValid = false;
                 }
 
                 // Kiểm tra cân nặng (phải là số dương)
-                if (petWeight === "" || isNaN(petWeight) || parseFloat(petWeight) <= 0) {
-                    petWeightError.innerText = "Cân nặng phải là số dương.";
+                if (petWeight === "" || isNaN(petWeight) || parseFloat(petWeight) <= 0 || parseFloat(petWeight) >= 50) {
+                    petWeightError.innerText = "Cân nặng phải là số dương nhỏ hơn 50.";
                     isValid = false;
                 }
 

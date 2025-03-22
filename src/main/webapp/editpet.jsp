@@ -241,18 +241,29 @@
 
                 let whitespaceRegex = /^\s*$/;
 
+                const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/; // Các ký tự đặc biệt không hợp lệ
+
                 if (petName === "" || whitespaceRegex.test(petName)) {
                     petNameError.innerText = "Tên thú cưng không được để trống hoặc chỉ chứa khoảng trắng.";
                     isValid = false;
+                } else if (specialCharRegex.test(petName)) {
+                    petNameError.innerText = "Tên thú cưng không được chứa ký tự đặc biệt.";
+                    isValid = false;
+                } else {
+                    petNameError.innerText = ""; // Xóa lỗi nếu hợp lệ
                 }
 
                 if (petBreed === "" || whitespaceRegex.test(petBreed)) {
                     petBreedError.innerText = "Giống thú cưng không được để trống hoặc chỉ chứa khoảng trắng.";
                     isValid = false;
+                } else if (specialCharRegex.test(petBreed)) {
+                    petBreedError.innerText = "Giống thú cưng không được chứa ký tự đặc biệt.";
+                    isValid = false;
+                } else {
+                    petBreedError.innerText = "";
                 }
-
-                if (petWeight === "" || isNaN(petWeight) || parseFloat(petWeight) <= 0) {
-                    petWeightError.innerText = "Cân nặng phải là số dương.";
+                if (petWeight === "" || isNaN(petWeight) || parseFloat(petWeight) <= 0 || parseFloat(petWeight) >= 50) {
+                    petWeightError.innerText = "Cân nặng phải là số dương nhỏ hơn 50.";
                     isValid = false;
                 }
 
@@ -265,7 +276,7 @@
                     isValid = false;
                 }
 
-              
+
                 if (petImage === 0 && existingImage === "") {
                     alert("Vui lòng chọn một ảnh cho thú cưng.");
                     isValid = false;
