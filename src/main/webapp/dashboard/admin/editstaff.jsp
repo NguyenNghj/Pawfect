@@ -173,6 +173,44 @@
                 </div>
             </div>
         </div>
+                                        <script>
+                document.getElementById("editStaffForm").addEventListener("submit", function (event) {
+                    const fullName = document.getElementsByName("fullName")[0].value.trim();
+                    const email = document.getElementsByName("email")[0].value.trim();
+                    const password = document.getElementsByName("password")[0].value;
+                    const phone = document.getElementsByName("phone")[0].value.trim();
+
+                    // Kiểm tra tên không được để trống
+                    if (fullName === "") {
+                        alert("Họ và Tên không được để trống!");
+                        event.preventDefault();
+                        return;
+                    }
+
+                    // Kiểm tra email hợp lệ
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(email)) {
+                        alert("Email không hợp lệ!");
+                        event.preventDefault();
+                        return;
+                    }
+
+                    // Kiểm tra mật khẩu có ít nhất 6 ký tự
+                    if (password.length < 6) {
+                        alert("Mật khẩu phải có ít nhất 6 ký tự!");
+                        event.preventDefault();
+                        return;
+                    }
+
+                    // Kiểm tra số điện thoại chỉ chứa số và có 10 chữ số
+                    const phoneRegex = /^[0-9]{10}$/;
+                    if (!phoneRegex.test(phone)) {
+                        alert("Số điện thoại phải gồm 10 chữ số!");
+                        event.preventDefault();
+                        return;
+                    }
+                });
+            </script>
         <script>
             function previewFile() {
                 const fileInput = document.getElementById('editStaffImage');

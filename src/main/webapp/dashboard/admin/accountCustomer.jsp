@@ -128,10 +128,13 @@
                                     <tbody>
                                         <%
                                             List<Customers> customerList = (List<Customers>) request.getAttribute("customerList");
-                                            if (customerList != null) {
+                                            Integer currentPage = (Integer) request.getAttribute("currentPage");
+                                            Integer totalPages = (Integer) request.getAttribute("totalPages");
+                                            String searchKeyword = (String) request.getAttribute("searchKeyword");
+
+                                            if (customerList != null && !customerList.isEmpty()) {
                                                 for (Customers customer : customerList) {
                                         %>
-
                                         <tr>
                                             <td><%= customer.getCustomerId()%></td>
                                             <td><%= customer.getFullName()%></td>
@@ -140,48 +143,43 @@
                                             <td><%= customer.getAddress()%></td>
                                             <td><%= customer.getGender()%></td>
                                             <td><%= customer.getBirthDate()%></td>
-
                                             <td>
                                                 <% if ("admin".equalsIgnoreCase(staffRole)) { %> 
                                                 <% if (customer.isActive()) {%>
-                                                <form action="customersban" method="get" onsubmit="return confirm('Bạn có chắc muốn cấm khách hàng này?');">
-                                                    <input type="hidden" name="id" value="<%= customer.getCustomerId()%>">
-                                                    <input type="hidden" name="action" value="ban">
-                                                    <button type="submit" class="btn btn-danger">Cấm</button>
-
-                                                </form>
+                                                <!-- Nút Cấm -->
+                                                <button class="btn btn-danger" onclick="confirmBan('<%= customer.getCustomerId()%>')">Cấm</button>
                                                 <% } else {%>
-                                                <form action="customersban" method="get" onsubmit="return confirm('Bạn có chắc muốn gỡ cấm khách hàng này?');">
-                                                    <input type="hidden" name="id" value="<%= customer.getCustomerId()%>">
-                                                    <input type="hidden" name="action" value="unban">
-                                                    <button type="submit" class="btn btn-primary"style="">Mở</button>
-                                                </form>
+                                                <!-- Nút Gỡ Cấm -->
+                                                <button class="btn btn-primary" onclick="confirmUnban('<%= customer.getCustomerId()%>')">Mở</button>
                                                 <% }%>
 
                                                 <!-- Nút gửi mã giảm giá -->
                                                 <form action="sendvoucher" method="post">
                                                     <input type="hidden" name="customerId" value="<%= customer.getCustomerId()%>">
-                                                    <form action="sendDiscountCode" method="post">
-                                                        <input type="hidden" name="customerId" value="<%= customer.getCustomerId()%>">
-                                                    </form>
+                                                    <button type="submit" class="btn btn-success">Gửi Voucher</button>
                                                 </form>
-
                                                 <% } else { %>
                                                 <span class="text-muted">Không có quyền</span>
                                                 <% } %>
                                             </td>
-
                                         </tr>
                                         <%
                                             }
-                                        } else {%>
-                                        <!-- Hiển thị thông báo nếu không tìm thấy khách hàng -->
-                                    <div class="alert alert-warning text-center" role="alert">
-                                        No customers found. Please try again with a different name.
-                                    </div>
-                                    <%
-                                        }
-                                    %>
+                                        } else {
+                                        %>
+                                        <tr>
+                                            <td colspan="8" class="text-center">
+                                                <div class="alert alert-warning">Không tìm thấy khách hàng.</div>
+                                            </td>
+                                        </tr>
+                                        <%
+                                            }
+                                        %>
+                                    </tbody>
+
+
+
+
                                     </tbody>
                                 </table>
                                 <c:if test="${empty customerList}">                     
@@ -191,6 +189,34 @@
                                         </h5>
                                     </div>
                                 </c:if>
+                                <!-- PHÂN TRANG -->
+                                <%
+                                    if (totalPages != null && totalPages > 1) {
+                                %>
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination justify-content-center">
+                                        <% if (currentPage > 1) {%>
+                                        <li class="page-item">
+                                            <a class="page-link" href="customers?page=<%= currentPage - 1%>&search=<%= searchKeyword != null ? searchKeyword : ""%>">Previous</a>
+                                        </li>
+                                        <% } %>
+
+                                        <% for (int i = 1; i <= totalPages; i++) {%>
+                                        <li class="page-item <%= (i == currentPage) ? "active" : ""%>">
+                                            <a class="page-link" href="customers?page=<%= i%>&search=<%= searchKeyword != null ? searchKeyword : ""%>"><%= i%></a>
+                                        </li>
+                                        <% } %>
+
+                                        <% if (currentPage < totalPages) {%>
+                                        <li class="page-item">
+                                            <a class="page-link" href="customers?page=<%= currentPage + 1%>&search=<%= searchKeyword != null ? searchKeyword : ""%>">Next</a>
+                                        </li>
+                                        <% } %>
+                                    </ul>
+                                </nav>
+                                <%
+                                    }
+                                %>
                             </div>
                         </div>
                     </div>
@@ -238,7 +264,39 @@
                 </div>
             </div>
         </div>
+        <script>
+            function confirmBan(customerId) {
+                Swal.fire({
+                    title: "Bạn có chắc muốn cấm khách hàng này?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Có, Cấm!",
+                    cancelButtonText: "Hủy"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "customersban?id=" + customerId + "&action=ban";
+                    }
+                });
+            }
 
+            function confirmUnban(customerId) {
+                Swal.fire({
+                    title: "Bạn có chắc muốn gỡ cấm khách hàng này?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#28a745",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Có, Mở!",
+                    cancelButtonText: "Hủy"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "customersban?id=" + customerId + "&action=unban";
+                    }
+                });
+            }
+        </script>
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 var sendVoucherModal = document.getElementById("sendVoucherModal");
@@ -249,8 +307,35 @@
                 });
             });
         </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var errorMessage = "<c:out value='${errorMessage}' />";
+                var successMessage = "<c:out value='${successMessage}' />";
 
+                if (errorMessage && errorMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Thất bại",
+                        text: errorMessage,
+                        confirmButtonText: "OK"
+                    });
+                } else if (successMessage && successMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Thành công",
+                        text: successMessage,
+                        confirmButtonText: "OK"
+                    });
+                }
+            });
+        </script>
 
+        <%
+            session.removeAttribute("errorMessage");
+            session.removeAttribute("successMessage");
+        %>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

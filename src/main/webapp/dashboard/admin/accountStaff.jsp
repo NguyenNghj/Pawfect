@@ -144,9 +144,9 @@
                                         %>
                                         <tr>
                                             <td><%= staff.getStaffId()%></td>
-                                           <td><%= staff.getFullName()%></td>
+                                            <td><%= staff.getFullName()%></td>
                                             <td>*******</td>
-                                            
+
                                             <td><%= staff.getEmail()%></td>
                                             <td><%= staff.getPhone()%></td>
                                             <td><%= staff.getAddress()%></td>
@@ -176,6 +176,38 @@
                                         </h5>
                                     </div>
                                 </c:if>
+                                <!-- Phân trang -->
+
+                                <c:if test="${totalPages > 1}">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination justify-content-center">
+                                            <!-- Nút Previous -->
+                                            <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                                <a class="page-link" href="staff?page=${currentPage - 1}&search=${searchKeyword}">Previous</a>
+                                            </li>
+                                            <!-- Hiển thị số trang -->
+                                            <c:forEach var="i" begin="1" end="${totalPages}">
+                                                <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                                    <a class="page-link" href="staff?page=${i}&search=${searchKeyword}"
+                                                       style="background-color: ${i == currentPage ? '#FFE0B2' : 'transparent'};
+                                                       color: black; border-radius: 5px; margin: 3px; padding: 8px 12px;
+                                                       text-decoration: none; transition: background-color 0.3s, transform 0.2s;">
+                                                        ${i}
+                                                    </a>
+                                                </li>
+                                            </c:forEach>
+
+                                            <!-- Nút Next -->
+                                            <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
+                                                <a class="page-link" href="staff?page=${currentPage + 1}&search=${searchKeyword}">Next</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </c:if>
+
+
+
+
                             </div>
                         </div>
                     </div>          
