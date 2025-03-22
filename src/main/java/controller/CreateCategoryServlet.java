@@ -19,7 +19,7 @@ import model.Category;
  * @author Nguyen Tri Nghi - CE180897
  */
 public class CreateCategoryServlet extends HttpServlet {
-    
+
     private CategoryDAO categoryDAO;
 
     public CreateCategoryServlet() {
@@ -110,8 +110,15 @@ public class CreateCategoryServlet extends HttpServlet {
 
             // Kiểm tra ký tự đặc biệt (cho phép chữ, số, khoảng trắng, dấu gạch ngang (-), dấu gạch dưới (_), có hỗ trợ tiếng Việt)
             if (!categoryName.matches("^[a-zA-Z0-9\\sÀ-Ỹà-ỹ_-]+$")) {
-                request.getSession().setAttribute("errorMessage", "Tên danh mục không được chứa kí tự đặc biệt");
+                request.getSession().setAttribute("errorMessage", "Tên danh mục không được chứa kí tự đặc biệt!");
                 request.getRequestDispatcher("/dashboard/admin/createcategory.jsp").forward(request, response);
+                return;
+            }
+
+            // Kiểm tra categoryName không chỉ toàn số (phải có ít nhất một chữ cái)
+            if (!categoryName.matches(".*[a-zA-ZÀ-Ỹà-ỹ].*")) {
+                request.getSession().setAttribute("errorMessage", "Tên danh mục phải chứa ít nhất một chữ cái!");
+                response.sendRedirect(request.getContextPath() + "/dashboard/admin/createcategory");
                 return;
             }
 
@@ -144,7 +151,7 @@ public class CreateCategoryServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             request.getSession().setAttribute("errorMessage", "Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau!");
-            request.getRequestDispatcher("/dashboard/admin/category").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/dashboard/admin/createcategory");
         }
     }
 

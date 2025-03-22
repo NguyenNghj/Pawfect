@@ -118,7 +118,7 @@ public class EditCategoryServlet extends HttpServlet {
             throws ServletException, IOException {
         CategoryDAO categoryDAO = new CategoryDAO();
         ProductDAO productDAO = new ProductDAO();
-        String Id = request.getParameter("categoryId");
+        String id = request.getParameter("categoryId");
         try {
             // Lấy dữ liệu từ request
             String categoryIdStr = request.getParameter("categoryId");
@@ -131,7 +131,6 @@ public class EditCategoryServlet extends HttpServlet {
             }
 
             int categoryId;
-
             try {
                 categoryId = Integer.parseInt(categoryIdStr.trim());
                 if (categoryId <= 0) {
@@ -152,6 +151,11 @@ public class EditCategoryServlet extends HttpServlet {
 
             if (!categoryName.matches("^[a-zA-Z0-9\\sÀ-Ỹà-ỹ_-]+$")) {
                 throw new IllegalArgumentException("Tên danh mục không được chứa kí tự đặc biệt.");
+            }
+
+            // Kiểm tra categoryName không chỉ toàn số (phải chứa ít nhất một chữ cái)
+            if (!categoryName.matches(".*[a-zA-ZÀ-Ỹà-ỹ].*")) {
+                throw new IllegalArgumentException("Tên danh mục phải chứa ít nhất một chữ cái.");
             }
 
             // Kiểm tra activeStr hợp lệ
@@ -176,7 +180,7 @@ public class EditCategoryServlet extends HttpServlet {
         } catch (IllegalArgumentException e) {
             // Xử lý lỗi dữ liệu không hợp lệ
             request.getSession().setAttribute("errorMessage", e.getMessage());
-            response.sendRedirect(request.getContextPath() + "/dashboard/admin/editcategory?categoryId=" + Id);
+            response.sendRedirect(request.getContextPath() + "/dashboard/admin/editcategory?categoryId=" + id);
 
         } catch (Exception e) {
             e.printStackTrace();

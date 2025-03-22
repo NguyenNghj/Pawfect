@@ -121,16 +121,15 @@
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <div class="main-dashboard-table">
                             <div class="d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
-                                 style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                               
+                                 style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">
                                 <i class="fa-solid fa-user-tie" style="font-size: 20px;"></i>
                                 <h4 class="mb-0">Danh Sách Khách Hàng</h4>
                             </div>
                             <div style="padding: 15px;">
-
                                 <table class="table">
-
                                     <thead>
                                         <tr>
+                                            <th><input type="checkbox" id="selectAll"></th>
                                             <th>ID</th>
                                             <th>Họ và Tên</th>
                                             <th>Email</th>
@@ -147,6 +146,7 @@
                                             for (Customers customer : customerList) {
                                         %>
                                         <tr>
+                                            <td><input type="checkbox" class="customerCheckbox" value="<%= customer.getCustomerId()%>"></td>
                                             <td><%= customer.getCustomerId()%></td>
                                             <td><%= customer.getFullName()%></td>
                                             <td><%= customer.getEmail()%></td>
@@ -154,12 +154,10 @@
                                             <td><%= customer.getAddress()%></td>
                                             <td><%= customer.getGender()%></td>
                                             <td><%= customer.getBirthDate()%></td>
-
                                             <td>
                                                 <% if (customer.isActive()) {%>
                                                 <form action="sendvoucher" method="post">
                                                     <input type="hidden" name="customerId" value="<%= customer.getCustomerId()%>">
-                                                    <!-- Nút gửi mã giảm giá -->
                                                     <button type="button" class="btn btn-success openVoucherModal" 
                                                             data-bs-toggle="modal" 
                                                             data-bs-target="#sendVoucherModal" 
@@ -175,7 +173,7 @@
                                         %>
                                     </tbody>
                                 </table>
-                                <c:if test="${empty customerList}">                     
+                                <c:if test="${empty customerList}">
                                     <div>
                                         <h5 style="color: #856404; text-align: center; background-color: #fff3cd; padding: 12px; border-radius: 5px; margin-top: 10px;">
                                             Không tìm thấy!
@@ -185,6 +183,14 @@
                             </div>
                         </div>
                     </div>
+
+                    <script>
+                        document.getElementById('selectAll').addEventListener('change', function () {
+                            let checkboxes = document.querySelectorAll('.customerCheckbox');
+                            checkboxes.forEach(checkbox => checkbox.checked = this.checked);
+                        });
+                    </script>
+                    
                 </div>
             </div>
         </div>
@@ -234,15 +240,15 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                var sendVoucherModal = document.getElementById("sendVoucherModal");
+                        document.addEventListener("DOMContentLoaded", function () {
+                            var sendVoucherModal = document.getElementById("sendVoucherModal");
 
-                sendVoucherModal.addEventListener("show.bs.modal", function (event) {
-                    var button = event.relatedTarget; // Button kích hoạt modal
-                    var customerId = button.getAttribute("data-customer-id"); // Lấy customerId từ data attribute
-                    document.getElementById("customerIdInput").value = customerId; // Gán vào input ẩn
-                });
-            });
+                            sendVoucherModal.addEventListener("show.bs.modal", function (event) {
+                                var button = event.relatedTarget; // Button kích hoạt modal
+                                var customerId = button.getAttribute("data-customer-id"); // Lấy customerId từ data attribute
+                                document.getElementById("customerIdInput").value = customerId; // Gán vào input ẩn
+                            });
+                        });
 
         </script>
 
