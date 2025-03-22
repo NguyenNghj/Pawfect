@@ -215,8 +215,8 @@ public class OrderServlet extends HttpServlet {
             String address = request.getParameter("address").trim();
             String note = request.getParameter("note").trim();
             String phone = request.getParameter("phone").trim();
-            String shippingMethod = request.getParameter("shippingMethod");
-            String paymentMethod = request.getParameter("paymentMethod");
+            String shippingMethod = request.getParameter("shippingMethod").trim();
+            String paymentMethod = request.getParameter("paymentMethod").trim();
             double totalCartPrice = Double.parseDouble(request.getParameter("totalPrice"));
             double salePrice = Double.parseDouble(request.getParameter("salePrice"));
             int voucherId = Integer.parseInt(request.getParameter("voucherId"));
@@ -233,6 +233,10 @@ public class OrderServlet extends HttpServlet {
 
                 if (name == null || name.isEmpty()) {
                     throw new IllegalArgumentException("error-data-name-empty");
+                }
+                
+                if (!isValidName(name)) {
+                    throw new IllegalArgumentException("error-data-name-valid");
                 }
 
                 if (phone == null || phone.isEmpty()) {

@@ -19,6 +19,17 @@ import model.Category;
  * @author Nguyen Tri Nghi - CE180897
  */
 public class CreateCategoryServlet extends HttpServlet {
+    
+    private CategoryDAO categoryDAO;
+
+    public CreateCategoryServlet() {
+        this.categoryDAO = new CategoryDAO();
+    }
+
+    // Constructor để test
+    public CreateCategoryServlet(CategoryDAO categoryDAO) {
+        this.categoryDAO = categoryDAO;
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -70,7 +81,7 @@ public class CreateCategoryServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             // Đọc dữ liệu từ request
