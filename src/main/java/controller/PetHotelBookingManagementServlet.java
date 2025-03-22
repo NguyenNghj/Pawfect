@@ -101,27 +101,28 @@ public class PetHotelBookingManagementServlet extends HttpServlet {
             try {
                 int bookingID = Integer.parseInt(bookingId);
                 int staffID = Integer.parseInt(staffId); // Chuyển từ String sang int
-                PetHotelBooking booking = bookingDAO.getBookingById(bookingID);
-
+                PetHotelBooking booking = PetHotelBookingDAO.getBookingById(bookingID);
                 if (booking != null) {
+                    boolean success = false;
                     int roomId = booking.getRoomId();
                     int petId = booking.getPetId();
-
                     switch (action) {
                         case "approve":
-                            if (PetHotelDAO.decreaseAvailableQuantity(roomId)) {
-                                bookingDAO.updateBookingStatus(bookingID, "Đã duyệt", petId, staffID);
-                            }
+                            success = PetHotelBookingDAO.updateBookingStatus(bookingID, "Đã duyệt", petId, staffID);
                             break;
                         case "cancel":
-                            bookingDAO.updateBookingStatus(bookingID, "Đã hủy", petId, staffID);
+                            success = PetHotelBookingDAO.updateBookingStatus(bookingID, "Đã hủy", petId, staffID);
                             break;
                         case "checkin":
-                            bookingDAO.updateBookingStatus(bookingID, "Đã nhận phòng", petId, staffID);
+                            if (PetHotelDAO.decreaseAvailableQuantity(roomId)) { // Giảm số lượng phòng trống
+                                success = PetHotelBookingDAO.updateBookingStatus(bookingID, "Đã nhận phòng", petId, staffID);
+                            } else {
+                                request.getSession().setAttribute("errorMessage", "Hiện tại không còn phòng trống cho loại phòng này!");
+                            }
                             break;
                         case "checkout":
-                            if (PetHotelDAO.increaseAvailableQuantity(roomId)) {
-                                bookingDAO.updateBookingStatus(bookingID, "Đã trả phòng", petId, staffID);
+                            if (PetHotelDAO.increaseAvailableQuantity(roomId)) { // Tăng số lượng phòng trống
+                                success = PetHotelBookingDAO.updateBookingStatus(bookingID, "Đã trả phòng", petId, staffID);
                             }
                             break;
                         default:

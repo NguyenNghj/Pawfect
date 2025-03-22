@@ -74,7 +74,7 @@ public class PetHotelManagementServlet extends HttpServlet {
         }
 
         // Số lượng phòng trên mỗi trang
-        int itemsPerPage = 5;
+        int itemsPerPage = 10;
         List<PetHotel> allRooms;
 
         if (search != null && !search.trim().isEmpty()) {

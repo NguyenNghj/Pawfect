@@ -297,6 +297,20 @@ public class PetHotelDAO {
         return success;
     }
 
+    public static Integer getRoomIdByBooking(int bookingID) {
+        String query = "SELECT room_id FROM PetHotelBookings WHERE booking_id = ?";
+        try ( Connection conn = new DBContext().getConnection();  PreparedStatement ps = conn.prepareStatement(query)) {
+            ps.setInt(1, bookingID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("room_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static List<PetHotel> searchPetRooms(String search) {
         List<PetHotel> petRooms = new ArrayList<>();
         String query = "SELECT * FROM PetHotel WHERE is_active = 1 "

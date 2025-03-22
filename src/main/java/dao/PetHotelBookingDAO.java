@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import model.PetHotel;
 import model.PetHotelBooking;
 
 public class PetHotelBookingDAO {
@@ -388,7 +389,7 @@ public class PetHotelBookingDAO {
         return petStatus;
     }
 
-        public static List<PetHotelBooking> searchBookingsByCustomerName(String customerName) {
+    public static List<PetHotelBooking> searchBookingsByCustomerName(String customerName) {
         List<PetHotelBooking> list = new ArrayList<>();
         try {
             Con = new DBContext().getConnection();
@@ -427,6 +428,67 @@ public class PetHotelBookingDAO {
         return list;
     }
 
+    public static boolean isRoomAvailable(int roomId, Timestamp checkIn, Timestamp checkOut) {
+        String countQuery = "SELECT COUNT(*) FROM PetHotelBookings "
+                + "WHERE room_id = ? AND status IN (N'Đã duyệt', N'Đã nhận phòng') "
+                + "AND ((check_in <= ? AND check_out > ?) "
+                + "     OR (check_in < ? AND check_out >= ?) "
+                + "     OR (check_in >= ? AND check_out <= ?))";
+
+        String totalRoomQuery = "SELECT quantity FROM PetHotel WHERE room_id = ?";
+
+        try ( Connection con = new DBContext().getConnection();  PreparedStatement psCount = con.prepareStatement(countQuery);  PreparedStatement psTotal = con.prepareStatement(totalRoomQuery)) {
+
+            // Thiết lập tham số cho truy vấn đếm số phòng đã đặt
+            psCount.setInt(1, roomId);
+            psCount.setTimestamp(2, checkIn);
+            psCount.setTimestamp(3, checkIn);
+            psCount.setTimestamp(4, checkOut);
+            psCount.setTimestamp(5, checkOut);
+            psCount.setTimestamp(6, checkIn);
+            psCount.setTimestamp(7, checkOut);
+
+            // Thiết lập tham số cho truy vấn tổng số lượng phòng
+            psTotal.setInt(1, roomId);
+
+            // Thực thi truy vấn
+            int bookedRooms = 0, totalRooms = 0;
+            try ( ResultSet rsCount = psCount.executeQuery()) {
+                if (rsCount.next()) {
+                    bookedRooms = rsCount.getInt(1);
+                }
+            }
+
+            try ( ResultSet rsTotal = psTotal.executeQuery()) {
+                if (rsTotal.next()) {
+                    totalRooms = rsTotal.getInt(1);
+                }
+            }
+
+            // Kiểm tra số lượng phòng còn trống
+            return totalRooms > bookedRooms;
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi kiểm tra phòng trống: " + e.getMessage());
+        }
+    }
+
+//// Hàm đóng kết nối
+//    private static void closeConnection(Connection con, PreparedStatement ps, ResultSet rs) {
+//        try {
+//            if (rs != null) {
+//                rs.close();
+//            }
+//            if (ps != null) {
+//                ps.close();
+//            }
+//            if (con != null) {
+//                con.close();
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
     // Hàm đóng kết nối
     private static void closeConnection() {
         try {

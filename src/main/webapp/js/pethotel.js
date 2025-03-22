@@ -47,39 +47,39 @@ document.addEventListener("DOMContentLoaded", function () {
     hotelList.addEventListener("scroll", checkScrollButtons);
     checkScrollButtons();
 
-    // Xử lý đặt phòng
-    const bookRoomBtns = document.querySelectorAll(".booking");
+//    // Xử lý đặt phòng
+//    const bookRoomBtns = document.querySelectorAll(".booking");
+//
+//    bookRoomBtns.forEach(button => {
+//        button.addEventListener("click", function (event) {
+//            event.preventDefault();
+//            const roomStatus = button.getAttribute("data-status").trim().toLowerCase();
+//
+//            if (roomStatus === "hết phòng") {
+//                Swal.fire({
+//                    icon: 'error',
+//                    title: 'Phòng đã hết!',
+//                    text: 'Vui lòng chọn phòng khác. Xin cảm ơn!',
+//                    confirmButtonText: 'OK',
+//                    confirmButtonColor: '#8B4513'
+//                });
+//            } else {
+//                window.location.href = button.getAttribute("href");
+//            }
+//        });
+//    });
 
-    bookRoomBtns.forEach(button => {
-        button.addEventListener("click", function (event) {
-            event.preventDefault();
-            const roomStatus = button.getAttribute("data-status").trim().toLowerCase();
-
-            if (roomStatus === "hết phòng") {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Phòng đã hết!',
-                    text: 'Vui lòng chọn phòng khác. Xin cảm ơn!',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#8B4513'
-                });
-            } else {
-                window.location.href = button.getAttribute("href");
-            }
-        });
-    });
-
-    // Lưu vị trí cuộn trang
-    document.addEventListener("click", function (event) {
-        localStorage.setItem("scrollPosition", event.pageY);
-    });
-
-    // Cuộn về vị trí cũ khi load lại trang
-    let scrollPosition = localStorage.getItem("scrollPosition");
-    if (scrollPosition) {
-        window.scrollTo(0, scrollPosition);
-        localStorage.removeItem("scrollPosition");
-    }
+//    // Lưu vị trí cuộn trang
+//    document.addEventListener("click", function (event) {
+//        localStorage.setItem("scrollPosition", event.pageY);
+//    });
+//
+//    // Cuộn về vị trí cũ khi load lại trang
+//    let scrollPosition = localStorage.getItem("scrollPosition");
+//    if (scrollPosition) {
+//        window.scrollTo(0, scrollPosition);
+//        localStorage.removeItem("scrollPosition");
+//    }
 });
 
 // Hàm lọc phòng

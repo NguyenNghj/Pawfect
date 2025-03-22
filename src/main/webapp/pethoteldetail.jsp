@@ -53,20 +53,11 @@
                             <p class="room-type">Dành cho ${room.roomType}</p>
                             <p class="room-price">Giá: <fmt:formatNumber value="${room.pricePerNight}" type="currency" currencyCode="VND"/></p>
                             <p class="room-weight">Cân nặng phù hợp: ${room.minWeight} - ${room.maxWeight} kg</p>
-                            <p class="room-quantity">Số lượng phòng trống: ${room.availableQuantity}/${room.quantity} phòng</p>
-                            <p class="room-status">Trạng thái: ${room.status}</p>
                             <hr class="divider">
-                            <p class="room-description">${room.description}</p>
+                            <p class="room-description" style="text-align: left;">${room.description}</p>
                         </div>
                         <div class="button-container">
-                            <c:choose>
-                                <c:when test="${room.status eq 'Còn phòng'}">
-                                    <a href="bookingform?id=${room.roomId}" class="booking-btn" data-status="${room.status}">Đặt lịch ngay</a>
-                                </c:when>
-                                <c:otherwise>
-                                    <button href="bookingform?id=${room.roomId}" class="booking-btn" data-status="${room.status}">Hết phòng</button>
-                                </c:otherwise>
-                            </c:choose>
+                            <a href="bookingform?id=${room.roomId}" class="booking-btn">Đặt lịch ngay</a>
                             <a href="pethotel" class="back-btn">Quay lại</a>
                         </div>
                     </div>
@@ -87,15 +78,7 @@
                                             <fmt:formatNumber value="${similarRoom.pricePerNight}"/>đ/đêm
                                         </div>
                                         <div class="pethotel-weight">Cân nặng: ${similarRoom.minWeight} - ${similarRoom.maxWeight} kg</div>
-                                        <c:choose>
-                                            <c:when test="${similarRoom.status == 'Còn phòng'}">
-                                                <a href="bookingform?id=${room.roomId}" class="booking" data-status="${room.status}">Đặt lịch ngay</a>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <a href="bookingform?id=${similarRoom.roomId}" class="booking" data-status="${similarRoom.status}">Hết phòng</a>
-                                            </c:otherwise>
-                                        </c:choose>
-
+                                        <a href="bookingform?id=${room.roomId}" class="booking">Đặt lịch ngay</a>
                                     </div>
                                 </c:forEach>
                             </c:when>
@@ -110,28 +93,28 @@
         </c:choose>
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script>
-                                            document.addEventListener("DOMContentLoaded", function () {
-                                                const bookRoomBtns = document.querySelectorAll(".booking-btn, .booking"); // Chọn cả hai loại nút
-                                                bookRoomBtns.forEach(button => {
-                                                    button.addEventListener("click", function (event) {
-                                                        event.preventDefault();
-                                                        const roomStatus = button.getAttribute("data-status").trim().toLowerCase();
-                                                        if (roomStatus === "hết phòng") {
-                                                            Swal.fire({
-                                                                icon: 'error',
-                                                                title: 'Phòng đã hết!',
-                                                                text: 'Vui lòng chọn phòng khác. Xin cảm ơn!',
-                                                                confirmButtonText: 'OK',
-                                                                confirmButtonColor: '#8B4513'
+        <!--        <script>
+                                                    document.addEventListener("DOMContentLoaded", function () {
+                                                        const bookRoomBtns = document.querySelectorAll(".booking-btn, .booking"); // Chọn cả hai loại nút
+                                                        bookRoomBtns.forEach(button => {
+                                                            button.addEventListener("click", function (event) {
+                                                                event.preventDefault();
+                                                                const roomStatus = button.getAttribute("data-status").trim().toLowerCase();
+                                                                if (roomStatus === "hết phòng") {
+                                                                    Swal.fire({
+                                                                        icon: 'error',
+                                                                        title: 'Phòng đã hết!',
+                                                                        text: 'Vui lòng chọn phòng khác. Xin cảm ơn!',
+                                                                        confirmButtonText: 'OK',
+                                                                        confirmButtonColor: '#8B4513'
+                                                                    });
+                                                                } else {
+                                                                    window.location.href = button.getAttribute("href");
+                                                                }
                                                             });
-                                                        } else {
-                                                            window.location.href = button.getAttribute("href");
-                                                        }
+                                                        });
                                                     });
-                                                });
-                                            });
-        </script>
+                </script>-->
         <script src="./js/pethotel.js"></script>
 
     </body>
