@@ -482,15 +482,15 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>VoucherManagementServlet</servlet-name>
-        <url-pattern>/dashboard/staff/voucher</url-pattern>
+        <url-pattern>/dashboard/admin/voucher</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CreateVoucherServlet</servlet-name>
-        <url-pattern>/dashboard/staff/createvoucher</url-pattern>
+        <url-pattern>/dashboard/admin/createvoucher</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EditVoucherServlet</servlet-name>
-        <url-pattern>/dashboard/staff/editvoucher</url-pattern>
+        <url-pattern>/dashboard/admin/editvoucher</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EditStaffServlet</servlet-name>

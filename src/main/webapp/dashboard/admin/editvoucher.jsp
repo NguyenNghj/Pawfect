@@ -97,7 +97,7 @@
 
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
-                        <form id="editVoucherForm" action="/dashboard/staff/editvoucher" method="post">
+                        <form id="editVoucherForm" action="/dashboard/admin/editvoucher" method="post">
 
                             <input type="hidden" name="voucherId" value="${voucher.voucherId}">
 
@@ -150,7 +150,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-                            <a href="<c:url value='/dashboard/staff/voucher'/>" class="btn btn-secondary" id="back">Trở về</a>
+                            <a href="<c:url value='/dashboard/admin/voucher'/>" class="btn btn-secondary" id="back">Trở về</a>
                         </form>
 
                         <script>
