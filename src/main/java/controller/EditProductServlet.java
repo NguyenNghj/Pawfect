@@ -181,8 +181,9 @@ public class EditProductServlet extends HttpServlet {
                 return;
             }
 
-            if (!productName.matches("^[a-zA-Z0-9\\s\\-()]+$")) {
-                request.getSession().setAttribute("errorMessage", "Tên sản phẩm không được chứa ký tự đặc biệt ngoại trừ dấu ngoặc đơn () và dấu gạch ngang -!");
+            if (!productName.matches("^[a-zA-Z0-9\\sÀ-Ỹà-ỹ()\\-.,]+$")) {
+                request.getSession().setAttribute("errorMessage",
+                        "Tên sản phẩm không được chứa ký tự đặc biệt ngoại trừ dấu ngoặc đơn (), dấu gạch ngang (-), dấu chấm (.), và dấu phẩy (,).");
                 response.sendRedirect(request.getContextPath() + "/dashboard/admin/product?productId=" + productIdParam);
                 return;
             }

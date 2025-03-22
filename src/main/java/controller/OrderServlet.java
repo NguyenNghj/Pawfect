@@ -287,7 +287,6 @@ public class OrderServlet extends HttpServlet {
             int shippingMethod_id = shippingMethod.equals("shipping-hoatoc") ? 2 : 1;
             int paymentMethod_id = paymentMethod.equals("payment-cash") ? 1 : 2;
             String status = paymentMethod.equals("payment-cash") ? "Chờ xác nhận" : "Chờ lấy hàng";
-            
 
             Order order = new Order(customerId, paymentMethod_id, shippingMethod_id, name, phone, address, note, basePrice + shippingCost, status);
             int orderId = 0;
@@ -318,6 +317,9 @@ public class OrderServlet extends HttpServlet {
                 for (OrderItem orderitem : orderitems) {
                     basicPrice += orderitem.getSubtotal();
                     Product product = productDAO.getProductById(orderitem.getProductId());
+                    if ((product.getStock() - orderitem.getQuantity()) == 0) {
+                        product.setActive(false); // Hết hàng thì tắt trạng thái hoạt động
+                    }
                     product.setStock(product.getStock() - orderitem.getQuantity());
                     productDAO.updateProduct(product);
                 }
@@ -432,7 +434,7 @@ public class OrderServlet extends HttpServlet {
                     List<OrderItem> orderitems = OrderDAO.getOrderItemsByOrderId(orderId);
                     // Lap qua tung orderItem de thu hoi lai san pham 
                     for (OrderItem orderitem : orderitems) {
-                        Product product = productDAO.getProductById(orderitem.getProductId());
+                        Product product = productDAO.getProductById(orderitem.getProductId());                   
                         product.setStock(product.getStock() + orderitem.getQuantity());
                         productDAO.updateProduct(product);
                     }
