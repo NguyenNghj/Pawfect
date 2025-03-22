@@ -66,7 +66,7 @@
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <li>
-                                                <a class="dropdown-item d-flex align-items-center gap-2" href="/dashboard/admin/statistics">
+                                                <a class="dropdown-item d-flex align-items-center gap-2" href="/dashboard/staff/viewcustomersforStaff">
                                                     <i class="fa-solid fa-repeat"></i> Chuyển qua giao diện quản lí
                                                 </a>
                                             </li>

@@ -167,46 +167,23 @@
 
                         </form>
 
-                        <!--                        <script>
-                                                    document.addEventListener("DOMContentLoaded", function () {
-                                                        function validateInput(input, min, max, messageMin, messageMax) {
-                                                            const errorSpan = document.createElement("span");
-                                                            errorSpan.classList.add("text-danger", "small");
-                                                            input.parentNode.appendChild(errorSpan);
-                        
-                                                            input.addEventListener("input", function () {
-                                                                if (this.value === "") {
-                                                                    errorSpan.textContent = "";
-                                                                    return;
-                                                                }
-                                                                if (this.value < min) {
-                                                                    errorSpan.textContent = messageMin;
-                                                                } else if (this.value > max) {
-                                                                    errorSpan.textContent = messageMax;
-                                                                } else {
-                                                                    errorSpan.textContent = "";
-                                                                }
-                                                            });
-                                                        }
-                        
-                                                        // Áp dụng kiểm tra cho từng ô input
-                                                        validateInput(
-                                                                document.querySelector("input[name='productPrice']"),
-                                                                1,
-                                                                50000000,
-                                                                "⚠ Giá sản phẩm phải lớn hơn hoặc bằng 1.",
-                                                                "⚠ Giá sản phẩm không được vượt quá 50,000,000."
-                                                                );
-                        
-                                                        validateInput(
-                                                                document.querySelector("input[name='stock']"),
-                                                                0,
-                                                                200,
-                                                                "⚠ Giá trị tồn kho không được nhỏ hơn 0.",
-                                                                "⚠ Giá trị tồn kho không được vượt quá 200."
-                                                                );
-                                                    });
-                                                </script>-->
+                        <script>
+                            document.getElementById("createProductForm").addEventListener("submit", function (event) {
+                                event.preventDefault();
+                                Swal.fire({
+                                    title: "Đang xử lý...",
+                                    text: "Vui lòng chờ trong giây lát.",
+                                    allowOutsideClick: false,
+                                    didOpen: () => {
+                                        Swal.showLoading();
+                                    }
+                                });
+
+                                setTimeout(() => {
+                                    event.target.submit();
+                                }, 2000);
+                            });
+                        </script>
 
                         <script>
                             document.addEventListener("DOMContentLoaded", function () {

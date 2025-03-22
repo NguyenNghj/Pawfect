@@ -134,21 +134,20 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="endDate" class="form-label">Ngày kết thúc</label>
-                                <input type="datetime-local" class="form-control" name="endDate" required>
+                                <label for="editEndDate" class="form-label">Ngày kết thúc</label>
+                                <input type="datetime-local" class="form-control" id="editEndDate" name="endDate" value="${voucher.endDate}" required>
                             </div>
-
                             <div class="mb-3">
-                                <label for="voucherActive" class="form-label">Trạng thái</label>
-                                <select class="form-select" name="active">
-                                    <option value="true">Hoạt động</option>
-                                    <option value="false">Không hoạt động</option>
+                                <label for="editVoucherActive" class="form-label">Trạng thái</label>
+                                <select class="form-select" name="active" id="editVoucherActive">
+                                    <option value="true" ${voucher.active ? 'selected' : ''} id="optionActive">Hoạt động</option>
+                                    <option value="false" ${!voucher.active ? 'selected' : ''}>Không hoạt động</option>
                                 </select>
                             </div>
 
                             <button type="submit" class="btn btn-primary">Thêm voucher</button>
                             <a href="<c:url value='/dashboard/admin/voucher'/>" class="btn btn-secondary" id="back">Trở về</a>
-                        </form>                        
+                        </form>    
 
                         <script>
                             document.addEventListener("DOMContentLoaded", function () {
@@ -200,6 +199,27 @@
                                         discountAmountInput.value = 0; // Nếu đang có phần trăm giảm giá, số tiền giảm giá = 0
                                     }
                                 });
+                            });
+                        </script>
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const endDateInput = document.getElementById("editEndDate");
+                                const activeOption = document.getElementById("optionActive");
+
+                                function checkEndDate() {
+                                    const selectedDate = new Date(endDateInput.value);
+                                    const currentDate = new Date();
+
+                                    if (selectedDate < currentDate) {
+                                        activeOption.disabled = true; // Vô hiệu hóa tùy chọn "Hoạt động"
+                                    } else {
+                                        activeOption.disabled = false; // Cho phép chọn lại nếu hợp lệ
+                                    }
+                                }
+
+                                endDateInput.addEventListener("change", checkEndDate);
+                                checkEndDate(); // Kiểm tra ngay khi tải trang
                             });
                         </script>
 

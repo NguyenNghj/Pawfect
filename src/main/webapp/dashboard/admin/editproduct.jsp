@@ -173,6 +173,24 @@
                         </form>
 
                         <script>
+                            document.getElementById("editProductForm").addEventListener("submit", function (event) {
+                                event.preventDefault();
+                                Swal.fire({
+                                    title: "Đang xử lý...",
+                                    text: "Vui lòng chờ trong giây lát.",
+                                    allowOutsideClick: false,
+                                    didOpen: () => {
+                                        Swal.showLoading();
+                                    }
+                                });
+
+                                setTimeout(() => {
+                                    event.target.submit();
+                                }, 2000);
+                            });
+                        </script>
+
+                        <script>
                             function previewFile() {
                                 const fileInput = document.getElementById('editProductImage');
                                 const previewImage = document.getElementById('previewImage');
@@ -226,7 +244,7 @@
                         <script>
                             document.addEventListener("DOMContentLoaded", function () {
                                 // Lấy thông báo thành công từ session
-                                    var successMessage = "<c:out value='${sessionScope.successMessage}' />";
+                                var successMessage = "<c:out value='${sessionScope.successMessage}' />";
                                 if (successMessage && successMessage.trim() !== "") {
                                     Swal.fire({
                                         icon: "success",
@@ -240,7 +258,7 @@
                                 }
 
                                 // Lấy thông báo lỗi từ session
-                                    var errorMessage = "<c:out value='${sessionScope.errorMessage}' />";
+                                var errorMessage = "<c:out value='${sessionScope.errorMessage}' />";
                                 if (errorMessage && errorMessage.trim() !== "") {
                                     Swal.fire({
                                         icon: "error",
