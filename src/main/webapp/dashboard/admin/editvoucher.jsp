@@ -86,16 +86,6 @@
                         </nav>
                     </div>   
 
-                    <!--                    <div class="row">   
-                                            <div class="col-3 p-0" style="margin-top: 60px;">
-                                                <button type="button" class="btn btn-primary">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                    New Product
-                                                </button>
-                                            </div>        
-                                        </div>-->
-
-
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <form id="editVoucherForm" action="/dashboard/admin/editvoucher" method="post">
 
@@ -155,23 +145,8 @@
 
                         <script>
                             document.addEventListener("DOMContentLoaded", function () {
-                                var errorMessage = "<c:out value='${errorMessage}' />";
-                                if (errorMessage && errorMessage.trim() !== "") {
-                                    Swal.fire({
-                                        icon: "error",
-                                        title: "Lỗi!",
-                                        text: errorMessage,
-                                        confirmButtonText: "OK"
-                                    });
-                                }
-                            });
-                        </script>
-
-                        <script>
-                            document.addEventListener("DOMContentLoaded", function () {
                                 const discountPercentage = document.querySelector('input[name="discountPercentage"]');
                                 const discountAmount = document.querySelector('input[name="discountAmount"]');
-
                                 discountPercentage.addEventListener("input", function () {
                                     if (discountPercentage.value) {
                                         discountAmount.disabled = true;
@@ -179,7 +154,6 @@
                                         discountAmount.disabled = false;
                                     }
                                 });
-
                                 discountAmount.addEventListener("input", function () {
                                     if (discountAmount.value) {
                                         discountPercentage.disabled = true;
@@ -192,29 +166,80 @@
 
 
                         <script>
-                            document.getElementById("editVoucherForm").addEventListener("submit", function (event) {
-                                var startDate = new Date(document.querySelector("input[name='startDate']").value);
-                                var endDate = new Date(document.querySelector("input[name='endDate']").value);
-
-                                if (startDate > endDate) {
-                                    event.preventDefault(); // Ngăn chặn form submit
-                                    Swal.fire({
-                                        icon: "error",
-                                        title: "Lỗi!",
-                                        text: "Ngày bắt đầu không thể lớn hơn ngày kết thúc.",
-                                        confirmButtonText: "OK"
-                                    });
-                                }
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const discountPercentageInput = document.querySelector("input[name='discountPercentage']");
+                                const discountAmountInput = document.querySelector("input[name='discountAmount']");
+                                const maxDiscountInput = document.querySelector("input[name='maxDiscount']");
+                                // Khi nhập phần trăm giảm giá
+                                discountPercentageInput.addEventListener("input", function () {
+                                    if (this.value) {
+                                        discountAmountInput.value = 0; // Đặt số tiền giảm giá về 0
+                                        maxDiscountInput.removeAttribute("readonly"); // Cho phép chỉnh sửa
+                                    }
+                                });
+                                // Khi nhập số tiền giảm giá
+                                discountAmountInput.addEventListener("input", function () {
+                                    if (this.value > 0) {
+                                        maxDiscountInput.value = this.value; // Giảm giá tối đa = Số tiền giảm giá
+                                        maxDiscountInput.setAttribute("readonly", "true"); // Khóa chỉnh sửa
+                                    } else {
+                                        maxDiscountInput.value = ""; // Nếu xóa số tiền giảm giá thì bỏ khóa giảm giá tối đa
+                                        maxDiscountInput.removeAttribute("readonly");
+                                    }
+                                });
+                                // Khi chỉnh sửa giảm giá tối đa
+                                maxDiscountInput.addEventListener("input", function () {
+                                    if (discountPercentageInput.value) {
+                                        discountAmountInput.value = 0; // Nếu đang có phần trăm giảm giá, số tiền giảm giá = 0
+                                    }
+                                });
                             });
                         </script>
 
-                    </div>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                // Lấy thông báo thành công từ session
+                                var successMessage = "<c:out value='${sessionScope.successMessage}' />";
+                                if (successMessage && successMessage.trim() !== "") {
+                                    Swal.fire({
+                                        icon: "success",
+                                        title: "Thành công!",
+                                        text: successMessage,
+                                        confirmButtonText: "OK"
+                                    });
 
+                                    // Xóa session sau khi hiển thị
+                                    fetch('clear-session.jsp');
+                                }
+
+                                // Lấy thông báo lỗi từ session
+                                var errorMessage = "<c:out value='${sessionScope.errorMessage}' />";
+                                if (errorMessage && errorMessage.trim() !== "") {
+                                    Swal.fire({
+                                        icon: "error",
+                                        title: "Lỗi!",
+                                        text: errorMessage,
+                                        confirmButtonText: "OK"
+                                    });
+
+                                    // Xóa session sau khi hiển thị
+                                    fetch('clear-session.jsp');
+                                }
+                            });
+
+                        </script>
+
+                        <%
+                            session.removeAttribute("successMessage");
+                            session.removeAttribute("errorMessage");
+                        %>
+                        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>

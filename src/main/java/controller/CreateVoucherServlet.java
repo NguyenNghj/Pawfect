@@ -103,8 +103,8 @@ public class CreateVoucherServlet extends HttpServlet {
 
             if (discountPercentageParam != null && !discountPercentageParam.trim().isEmpty()) {
                 discountPercentage = Integer.parseInt(discountPercentageParam);
-                if (discountPercentage <= 0) {
-                    throw new IllegalArgumentException("Phần trăm giảm giá phải lớn hơn 0.");
+                if (discountPercentage <= 0 || discountPercentage > 100) {
+                    throw new IllegalArgumentException("Phần trăm giảm giá phải từ 1 đến 100.");
                 }
             }
 
@@ -130,9 +130,19 @@ public class CreateVoucherServlet extends HttpServlet {
                 throw new IllegalArgumentException("Giảm giá tối đa phải lớn hơn 0 và không vượt quá 5.000.000.");
             }
 
+            // Nếu nhập số tiền giảm giá, maxDiscount không thể nhỏ hơn discountAmount
+            if (discountAmount > 0 && maxDiscount < discountAmount) {
+                throw new IllegalArgumentException("Giảm giá tối đa không thể nhỏ hơn số tiền giảm giá.");
+            }
+
+            // Nếu nhập phần trăm giảm giá, đảm bảo maxDiscount đủ lớn
+            if (discountPercentage > 0 && maxDiscount < (minOrderValue * discountPercentage / 100)) {
+                throw new IllegalArgumentException("Giảm giá tối đa không được nhỏ hơn số tiền giảm từ phần trăm.");
+            }
+
             // Kiểm tra và xử lý ngày tháng
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-            dateFormat.setLenient(false); // Tránh nhập ngày không hợp lệ
+            dateFormat.setLenient(false);
 
             Timestamp startDate = new Timestamp(dateFormat.parse(startDateParam).getTime());
             Timestamp endDate = new Timestamp(dateFormat.parse(endDateParam).getTime());
@@ -148,9 +158,7 @@ public class CreateVoucherServlet extends HttpServlet {
             // Kiểm tra xem mã giảm giá đã tồn tại chưa
             VoucherDAO voucherDAO = new VoucherDAO();
             if (voucherDAO.isCodeExists(code)) {
-                request.getSession().setAttribute("errorMessage", "Mã giảm giá đã tồn tại!");
-                response.sendRedirect(request.getContextPath() + "/dashboard/admin/createvoucher");
-                return;
+                throw new IllegalArgumentException("Mã giảm giá đã tồn tại!");
             }
 
             // Tạo đối tượng Voucher
