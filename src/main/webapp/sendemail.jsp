@@ -902,7 +902,7 @@
                                                                                                                             <span style="font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 17px; line-height: 140%; letter-spacing: -0.03em;" class="pc-w620-font-size-16px pc-w620-line-height-20px">
                                                                                                                                 <c:choose>
                                                                                                                                     <c:when test="${o.discountAmount != 0}">
-                                                                                                                                        - <f:formatNumber value="${o.totalAmount - o.discountAmount}" pattern="#,##0" />đ
+                                                                                                                                        - <f:formatNumber value="${o.discountAmount}" pattern="#,##0" />đ
                                                                                                                                     </c:when>
                                                                                                                                     <c:otherwise>
                                                                                                                                         - <f:formatNumber value="0" pattern="#,##0" />đ
@@ -957,24 +957,27 @@
 
                                                                                                                         <c:choose>
                                                                                                                             <c:when test="${o.discountAmount != 0}">
-                                                                                                                                <div style="display: flex; align-items: center; gap: 15px;">
-                                                                                                                                    <div>
-                                                                                                                                        <span style="font-size: 16px !important; text-decoration: line-through; font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 17px; line-height: 140%; letter-spacing: -0.03em;" class="pc-w620-font-size-16px pc-w620-line-height-20px">
-                                                                                                                                            <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
-                                                                                                                                        </span>
+                                                                                                                                <div class="d-flex align-items-center gap-3">
+                                                                                                                                    <div class="h5 m-0" style="text-decoration: line-through">
+                                                                                                                                        <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
                                                                                                                                     </div>
-                                                                                                                                    <div>
-                                                                                                                                        <span style="font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 17px; line-height: 140%; letter-spacing: -0.03em;" class="pc-w620-font-size-16px pc-w620-line-height-20px">
-                                                                                                                                            <f:formatNumber value="${o.discountAmount}" pattern="#,##0" />đ
-                                                                                                                                        </span>
+                                                                                                                                    <div class="h3 m-0 text-danger">
+                                                                                                                                        <c:choose>
+                                                                                                                                            <c:when test="${o.totalAmount - o.discountAmount < 0}">
+                                                                                                                                                <f:formatNumber value="0" pattern="#,##0" />đ
+                                                                                                                                            </c:when>
+                                                                                                                                            <c:otherwise>
+                                                                                                                                                <f:formatNumber value="${o.totalAmount - o.discountAmount}" pattern="#,##0" />đ
+                                                                                                                                            </c:otherwise>
+                                                                                                                                        </c:choose>
+
                                                                                                                                     </div>
                                                                                                                                 </div>
+
                                                                                                                             </c:when>
                                                                                                                             <c:otherwise>
-                                                                                                                                <div>
-                                                                                                                                    <span style="font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 17px; line-height: 140%; letter-spacing: -0.03em;" class="pc-w620-font-size-16px pc-w620-line-height-20px">
-                                                                                                                                        <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
-                                                                                                                                    </span>
+                                                                                                                                <div class="h3 m-0">
+                                                                                                                                    <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
                                                                                                                                 </div>
                                                                                                                             </c:otherwise>
                                                                                                                         </c:choose>

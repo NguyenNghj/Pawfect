@@ -407,9 +407,16 @@
                 if (salePrice === 0) {
                     voucherId = 0;
                 }
+                
+                // Lay gia tien tam tinh (chua bao gom phi van chuyen)
+                let basePriceString = $('#base-price').data("price");
+                // Chuyen basePriceString sang kieu so
+                let basePrice = parseFloat(basePriceString);
+                
                 // **Lấy giá trị của radio button được chọn
                 const shippingMethod = $('input[name="shipping-method"]:checked').attr('id');
                 const paymentMethod = $('input[name="payment-method"]:checked').attr('id');
+                
 
                 let ajaxUrl = (paymentMethod === "payment-vnpay") ? "vnpay" : "order";
                 console.log("Lay gia tri ajaxUrl: " + email);
@@ -438,6 +445,7 @@
                         note: note,
                         phone: phone,
                         totalPrice: totalPrice,
+                        basePrice: basePrice,
                         shippingCost: shippingCost,
                         shippingMethod: shippingMethod,
                         paymentMethod: paymentMethod,
@@ -632,6 +640,9 @@
 
                 // Tinh tong gia tien cuoi cung
                 let totalPrice = basePrice + shippingCost - salePrice;
+                if(totalPrice < 0){
+                    totalPrice = 0;
+                }
                 console.log("Total price: " + totalPrice);
                 console.log(``);
 

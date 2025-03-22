@@ -240,7 +240,7 @@
                                                 <div class="text-success">
                                                     <c:choose>
                                                         <c:when test="${o.discountAmount != 0}">
-                                                            - <f:formatNumber value="${o.totalAmount - o.discountAmount}" pattern="#,##0" />đ
+                                                            - <f:formatNumber value="${o.discountAmount}" pattern="#,##0" />đ
                                                         </c:when>
                                                         <c:otherwise>
                                                             - <f:formatNumber value="0" pattern="#,##0" />đ
@@ -258,7 +258,15 @@
                                                                 <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
                                                             </div>
                                                             <div class="h3 m-0 text-danger">
-                                                                <f:formatNumber value="${o.discountAmount}" pattern="#,##0" />đ
+                                                                <c:choose>
+                                                                    <c:when test="${o.totalAmount - o.discountAmount < 0}">
+                                                                        <f:formatNumber value="0" pattern="#,##0" />đ
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <f:formatNumber value="${o.totalAmount - o.discountAmount}" pattern="#,##0" />đ
+                                                                    </c:otherwise>
+                                                                </c:choose>
+
                                                             </div>
                                                         </div>
 

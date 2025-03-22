@@ -89,7 +89,7 @@
                                                             <a href="#" class="btn btn-secondary btn-minus" data-product-id="${c.productId}" data-customer-id="${c.customerId}" >
                                                                 <i class="fa-solid fa-minus"></i>
                                                             </a>
-                                                            <input id="quantity-${c.productId}" class="input-quantity" type="text" value="${c.quantity}" min="1">
+                                                            <input id="quantity-${c.productId}" class="input-quantity" type="text" value="${c.quantity}" min="1" readonly>
                                                             <a href="#" class="btn btn-secondary btn-plus" data-product-id="${c.productId}" data-customer-id="${c.customerId}" >
                                                                 <i class="fa-solid fa-plus"></i>                                                                   
                                                             </a>

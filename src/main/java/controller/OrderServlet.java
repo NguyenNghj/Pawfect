@@ -220,7 +220,8 @@ public class OrderServlet extends HttpServlet {
             double totalCartPrice = Double.parseDouble(request.getParameter("totalPrice"));
             double salePrice = Double.parseDouble(request.getParameter("salePrice"));
             int voucherId = Integer.parseInt(request.getParameter("voucherId"));
-//            double shippingCost = Double.parseDouble(request.getParameter("shippingCost"));
+            double shippingCost = Double.parseDouble(request.getParameter("shippingCost"));
+            double basePrice = Double.parseDouble(request.getParameter("basePrice"));
 
             // Kiem tra du lieu dau vao
             try {
@@ -286,8 +287,9 @@ public class OrderServlet extends HttpServlet {
             int shippingMethod_id = shippingMethod.equals("shipping-hoatoc") ? 2 : 1;
             int paymentMethod_id = paymentMethod.equals("payment-cash") ? 1 : 2;
             String status = paymentMethod.equals("payment-cash") ? "Chờ xác nhận" : "Chờ lấy hàng";
+            
 
-            Order order = new Order(customerId, paymentMethod_id, shippingMethod_id, name, phone, address, note, totalCartPrice + salePrice, status);
+            Order order = new Order(customerId, paymentMethod_id, shippingMethod_id, name, phone, address, note, basePrice + shippingCost, status);
             int orderId = 0;
             orderId = OrderDAO.insertOrder(order);
             // Tao don hang thanh cong
@@ -299,7 +301,7 @@ public class OrderServlet extends HttpServlet {
                 // Neu tim duoc voucher thi ap dung voucher
                 if (voucherId != 0) {
                     DiscountOrderDAO discountOrderDAO = new DiscountOrderDAO();
-                    DiscountOrder discountOrder = new DiscountOrder(orderId, voucherId, totalCartPrice);
+                    DiscountOrder discountOrder = new DiscountOrder(orderId, voucherId, salePrice);
                     boolean check = discountOrderDAO.addDiscountOrder(discountOrder);
                     System.out.println("Them DiscountOrder " + (check ? "thanh cong." : "that bai!"));
                     if (!check) {
