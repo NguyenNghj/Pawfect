@@ -59,25 +59,38 @@ public class CustomersBanServlet extends HttpServlet {
         String customerIdStr = request.getParameter("id");
         String action = request.getParameter("action"); // Lấy hành động (ban hoặc unban)
 
-        if (customerIdStr != null) {
-            int customerId = Integer.parseInt(customerIdStr);
+        // Kiểm tra nếu không có ID hoặc action không hợp lệ
+        if (customerIdStr == null || action == null || (!action.equals("ban") && !action.equals("unban"))) {
+            request.getSession().setAttribute("errorMessage", "Yêu cầu không hợp lệ!");
+            response.sendRedirect("customers");
+            return;
+        }
+
+        try {
+            int customerId = Integer.parseInt(customerIdStr.trim()); // Trim để tránh lỗi nhập chuỗi có khoảng trắng
             boolean success = false;
 
+            // Xử lý cấm hoặc bỏ cấm khách hàng
             if ("ban".equals(action)) {
                 success = CustomersDAO.deleteCustomer(customerId);
             } else if ("unban".equals(action)) {
                 success = CustomersDAO.unbanCustomer(customerId);
             }
 
-            // Thêm thông báo thành công hoặc thất bại
-            if (success) {
-                request.setAttribute("message", action.equals("ban") ? "Khách hàng đã bị cấm!" : "Khách hàng đã được gỡ cấm!");
-            } else {
-                request.setAttribute("error", action.equals("ban") ? "Không thể cấm khách hàng." : "Không thể gỡ cấm khách hàng.");
-            }
+            // Kiểm tra kết quả và thêm thông báo
+            request.getSession().setAttribute(
+                    success ? "successMessage" : "errorMessage",
+                    success ? "Thao tác thành công!" : "Thao tác thất bại!"
+            );
+
+        } catch (NumberFormatException e) {
+            request.getSession().setAttribute("errorMessage", "ID khách hàng không hợp lệ!");
+        } catch (Exception e) {
+            request.getSession().setAttribute("errorMessage", "Lỗi hệ thống! Vui lòng thử lại.");
+            e.printStackTrace(); // Log lỗi ra console để debug dễ dàng hơn
         }
 
-        // Quay lại danh sách khách hàng
+        // Luôn quay lại danh sách khách hàng sau khi xử lý
         response.sendRedirect("customers");
     }
 

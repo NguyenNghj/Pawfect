@@ -63,18 +63,37 @@ public class StaffServlet extends HttpServlet {
         List<Staff> staffList;
 
         if (keyword != null && !keyword.trim().isEmpty()) {
-            // Nếu có keyword, thực hiện tìm kiếm nhân viên
-            staffList = staffDAO.searchStaffs(keyword); // Gọi phương thức từ đối tượng DAO
+            staffList = staffDAO.searchStaffs(keyword);
         } else {
-            // Nếu không có keyword, lấy toàn bộ danh sách nhân viên
-            staffList = staffDAO.getAllStaffs(); // Gọi từ đối tượng DAO
+            staffList = staffDAO.getAllStaffs();
         }
 
-// Gửi danh sách nhân viên đến JSP để hiển thị
-        request.setAttribute("staffList", staffList);
-        request.setAttribute("searchKeyword", keyword); // Giữ lại từ khóa để hiển thị trên giao diện
-        request.getRequestDispatcher("accountStaff.jsp").forward(request, response);
+        // Phân trang
+        int page = 1; // Mặc định trang đầu tiên
+        int recordsPerPage = 5; // Số nhân viên trên mỗi trang
+        String pageStr = request.getParameter("page");
 
+        if (pageStr != null) {
+            try {
+                page = Integer.parseInt(pageStr);
+            } catch (NumberFormatException e) {
+                page = 1; // Nếu có lỗi, quay về trang đầu
+            }
+        }
+
+        int totalRecords = staffList.size();
+        int totalPages = (int) Math.ceil((double) totalRecords / recordsPerPage);
+
+        int startIndex = (page - 1) * recordsPerPage;
+        int endIndex = Math.min(startIndex + recordsPerPage, totalRecords);
+        List<Staff> paginatedList = staffList.subList(startIndex, endIndex);
+
+        // Gửi dữ liệu đến JSP
+        request.setAttribute("staffList", paginatedList);
+        request.setAttribute("searchKeyword", keyword);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+        request.getRequestDispatcher("accountStaff.jsp").forward(request, response);
     }
 
     /**
