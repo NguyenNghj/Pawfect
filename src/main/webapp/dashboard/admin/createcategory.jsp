@@ -120,6 +120,44 @@
             </div>
         </div>
 
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Lấy thông báo thành công từ session
+                var successMessage = "<c:out value='${sessionScope.successMessage}' />";
+                if (successMessage && successMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Thành công!",
+                        text: successMessage,
+                        confirmButtonText: "OK"
+                    });
+
+                    // Xóa session sau khi hiển thị
+                    fetch('clear-session.jsp');
+                }
+
+                // Lấy thông báo lỗi từ session
+                var errorMessage = "<c:out value='${sessionScope.errorMessage}' />";
+                if (errorMessage && errorMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Lỗi!",
+                        text: errorMessage,
+                        confirmButtonText: "OK"
+                    });
+
+                    // Xóa session sau khi hiển thị
+                    fetch('clear-session.jsp');
+                }
+            });
+        </script>
+
+        <%
+            session.removeAttribute("successMessage");
+            session.removeAttribute("errorMessage");
+        %>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
