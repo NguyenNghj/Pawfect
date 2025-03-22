@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.regex.Pattern;
 import model.Category;
 
 /**
@@ -76,31 +77,56 @@ public class CreateCategoryServlet extends HttpServlet {
             String categoryName = request.getParameter("categoryName");
 
             // Kiểm tra nếu categoryName bị null hoặc rỗng
-            if (categoryName == null || categoryName.trim().isEmpty()) {
+            if (categoryName == null || (categoryName = categoryName.trim()).isEmpty()) {
                 request.getSession().setAttribute("errorMessage", "Tên danh mục không được để trống!");
                 request.getRequestDispatcher("/dashboard/admin/createcategory.jsp").forward(request, response);
                 return;
             }
 
-            boolean isActive = Boolean.parseBoolean(request.getParameter("isActive"));
+            // Kiểm tra độ dài categoryName
+            if (categoryName.length() > 255) {
+                request.getSession().setAttribute("errorMessage", "Tên danh mục không được quá 255 ký tự!");
+                request.getRequestDispatcher("/dashboard/admin/createcategory.jsp").forward(request, response);
+                return;
+            }
+
+            // Kiểm tra ký tự đặc biệt
+            Pattern specialCharPattern = Pattern.compile("^[a-zA-Z0-9\\s-_]+$");
+            if (!specialCharPattern.matcher(categoryName).matches()) {
+                request.getSession().setAttribute("errorMessage", "Tên danh mục chỉ được chứa chữ cái, số, khoảng trắng, '-', '_'.");
+                request.getRequestDispatcher("/dashboard/admin/createcategory.jsp").forward(request, response);
+                return;
+            }
+
+            // Kiểm tra danh mục đã tồn tại chưa
+            CategoryDAO categoryDAO = new CategoryDAO();
+            if (categoryDAO.isCategoryExists(categoryName)) {
+                request.getSession().setAttribute("errorMessage", "Danh mục đã tồn tại! Vui lòng nhập danh mục khác.");
+                request.getRequestDispatcher("/dashboard/admin/createcategory.jsp").forward(request, response);
+                return;
+            }
+
+            // Kiểm tra giá trị của isActive
+            String isActiveParam = request.getParameter("isActive");
+            boolean isActive = isActiveParam != null && Boolean.parseBoolean(isActiveParam);
 
             // Tạo đối tượng Category
-            Category category = new Category(categoryName.trim(), isActive);
+            Category category = new Category(categoryName, isActive);
 
             // Gọi DAO để thêm danh mục
-            CategoryDAO categoryDAO = new CategoryDAO();
             boolean isCreated = categoryDAO.createCategory(category);
 
             if (isCreated) {
                 response.sendRedirect(request.getContextPath() + "/dashboard/admin/category");
             } else {
-                throw new Exception();
+                request.getSession().setAttribute("errorMessage", "Tạo danh mục thất bại! Vui lòng thử lại.");
+                request.getRequestDispatcher("/dashboard/admin/product").forward(request, response);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.getSession().setAttribute("errorMessage", "Tạo danh mục thất bại!");
-            request.getRequestDispatcher("/dashboard/admin/createcategory").forward(request, response);
+            request.getSession().setAttribute("errorMessage", "Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau!");
+            request.getRequestDispatcher("/dashboard/admin/createcategory.jsp").forward(request, response);
         }
     }
 
