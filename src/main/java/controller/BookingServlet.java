@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -149,6 +150,7 @@ public class BookingServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
+            // Lấy thông tin từ request
             int customerId = Integer.parseInt(request.getParameter("customerId"));
             int roomId = Integer.parseInt(request.getParameter("roomId"));
             int petId = Integer.parseInt(request.getParameter("petId"));
@@ -164,18 +166,36 @@ public class BookingServlet extends HttpServlet {
             BigDecimal totalPrice = new BigDecimal(request.getParameter("totalPriceHidden"));
             String note = request.getParameter("note");
 
-            // Gọi DAO để tạo booking
+            // ✅ Kiểm tra phòng trống
+            boolean isAvailable = PetHotelBookingDAO.isRoomAvailable(roomId, checkIn, checkOut);
+            if (!isAvailable) {
+                request.getSession().setAttribute("errorMessage", "Vui lòng chọn phòng khác hoặc khoảng thời gian khác!");
+                response.sendRedirect("pethotel"); // Chuyển hướng nếu phòng đầy
+                return;
+            }
+
+            // ✅ Gọi DAO để tạo booking
             boolean success = PetHotelBookingDAO.createBooking(roomId, customerId, petId, checkIn, checkOut, totalPrice, note);
 
             if (success) {
-                response.sendRedirect("bookinghistory"); // Chuyển hướng sang trang thông báo thành công
+                response.sendRedirect("bookinghistory"); // Chuyển hướng nếu đặt phòng thành công
             } else {
-                response.sendRedirect("pethotel"); // Chuyển hướng sang trang thông báo thất bại
+                request.getSession().setAttribute("errorMessage", "Đặt phòng thất bại, vui lòng thử lại!");
+                response.sendRedirect("pethotel");
             }
 
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             e.printStackTrace();
-            response.sendRedirect("booking-error.jsp");
+            request.getSession().setAttribute("errorMessage", "Dữ liệu không hợp lệ, vui lòng kiểm tra lại!");
+            response.sendRedirect("pethotel");
+        } catch (DateTimeParseException e) {
+            e.printStackTrace();
+            request.getSession().setAttribute("errorMessage", "Định dạng ngày không hợp lệ!");
+            response.sendRedirect("pethotel");
+        } catch (Exception e) {
+            e.printStackTrace(); // In lỗi ra console
+            request.getSession().setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage()); // Hiển thị lỗi cụ thể
+            response.sendRedirect("pethotel");
         }
 
     }

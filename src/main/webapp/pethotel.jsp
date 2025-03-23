@@ -60,15 +60,7 @@
                                 <div class="pethotel-weight">
                                     Cân nặng: ${room.minWeight} - ${room.maxWeight} kg
                                 </div>
-                                <c:choose>
-                                    <c:when test="${room.status == 'Còn phòng'}">
-                                        <a href="bookingform?id=${room.roomId}" class="booking" data-status="${room.status}">Đặt lịch ngay</a>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <a href="bookingform?id=${room.roomId}" class="booking" data-status="${room.status}">Hết phòng</a>
-                                    </c:otherwise>
-                                </c:choose>
-
+                                <a href="bookingform?id=${room.roomId}" class="booking">Đặt lịch ngay</a>
                             </div>
                         </c:forEach>
                     </c:when>
@@ -86,13 +78,16 @@
                 if (errorMessage && errorMessage.trim() !== "") {
                     Swal.fire({
                         icon: "error",
-                        title: "Lỗi!",
+                        title: "Hết phòng!",
                         text: errorMessage,
                         confirmButtonText: "OK"
                     });
                 }
             });
         </script>
+        <%
+            session.removeAttribute("errorMessage");
+        %>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="./js/pethotel.js"></script>
 

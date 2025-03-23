@@ -10,6 +10,8 @@
 <%@ page import="java.text.NumberFormat, java.util.Locale" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <!DOCTYPE html>
 <html>
@@ -152,35 +154,35 @@
                                                             <img src="<%= request.getContextPath()%>/img/pethotel/${room.roomImage}" alt="Hình ảnh phòng" width="150" height="150">
                                                         </td>
                                                         <td style="text-align: center; width: 12%;">${room.roomName}</td>
-                                                        <td style="text-align: center; width: 9%;">${room.roomType}</td>
-                                                        <td style="text-align: center;">${room.minWeight}</td>
-                                                        <td style="text-align: center;">${room.maxWeight}</td>
-                                                        <td style="text-align: center;">
-                                                <fmt:formatNumber value="${room.pricePerNight}" type="currency" currencyCode="VND"/>
-                                                </td>
-                                                <td>${room.description}</td>
-                                                <td style="width: 8%; text-align: center;">${room.availableQuantity}/${room.quantity}</td>
-                                                <td style="width: 10%;">
-                                                    <span style="font-weight: bold; padding: 5px; color: ${room.status eq 'Còn phòng' ? 'green' : 'red'};">
-                                                        ${room.status}
-                                                    </span>
-                                                </td>
-                                                <td style="width: 12%;">
-                                                    <button type="button" class="btn btn-primary" onclick="editpethotel(${room.roomId})">Chỉnh sửa</button>
-                                                </td>
+                                                        <td style="text-align: center; width: 7%;">${room.roomType}</td>
+                                                        <td style="text-align: center; width: 7%;">${room.minWeight}</td>
+                                                        <td style="text-align: center; width: 7%;">${room.maxWeight}</td>
+                                                        <td style=" width: 8%; text-align: center;">
+                                                            <fmt:formatNumber value="${room.pricePerNight}" type="currency" currencyCode="VND"/>
+                                                        </td>
+                                                        <td style="text-align: left;">${room.description}</td>
+                                                        <td style="text-align: center; width: 7%;">${room.availableQuantity}/${room.quantity}</td>
+                                                        <td style="width: 10%;">
+                                                            <span style="font-weight: bold; padding: 5px; color: ${room.status eq 'Còn phòng' ? 'green' : 'red'};">
+                                                                ${room.status}
+                                                            </span>
+                                                        </td>
+                                                        <td style="width: 12%;">
+                                                            <button type="button" class="btn btn-primary" onclick="editpethotel(${room.roomId})">Chỉnh sửa</button>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <tr>
+                                                    <td colspan="10" class="text-center w-100">
+                                                        <div class="alert alert-warning" role="alert">
+                                                            Không có phòng nào được tìm thấy.
+                                                        </div>
+                                                    </td>
                                                 </tr>
-                                            </c:forEach>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <tr>
-                                                <td colspan="10" class="text-center w-100">
-                                                    <div class="alert alert-warning" role="alert">
-                                                        Không có phòng nào được tìm thấy.
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </c:otherwise>
-                                    </c:choose>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </tbody>
 
                                 </table>
@@ -263,44 +265,44 @@
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                // Kiểm tra trạng thái reload để tránh hiển thị lại thông báo sau khi đã reload
-                if (localStorage.getItem("reloaded") === "true") {
-                    localStorage.removeItem("reloaded");
-                    return;
-                }
+                        document.addEventListener("DOMContentLoaded", function () {
+                            // Kiểm tra trạng thái reload để tránh hiển thị lại thông báo sau khi đã reload
+                            if (localStorage.getItem("reloaded") === "true") {
+                                localStorage.removeItem("reloaded");
+                                return;
+                            }
 
-                // Lấy thông báo thành công từ session
-                var successMessage = "<c:out value='${sessionScope.successMessage}' />";
-                if (successMessage && successMessage.trim() !== "") {
-                    Swal.fire({
-                        icon: "success",
-                        title: "Thành công!",
-                        text: successMessage,
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        // Đánh dấu đã reload trong localStorage
-                        localStorage.setItem("reloaded", "true");
-                        // Xóa session và reload trang
-                        fetch('clear-session.jsp').then(() => {
-                            location.reload();
+                            // Lấy thông báo thành công từ session
+                            var successMessage = "<c:out value='${sessionScope.successMessage}' />";
+                            if (successMessage && successMessage.trim() !== "") {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Thành công!",
+                                    text: successMessage,
+                                    confirmButtonText: "OK"
+                                }).then(() => {
+                                    // Đánh dấu đã reload trong localStorage
+                                    localStorage.setItem("reloaded", "true");
+                                    // Xóa session và reload trang
+                                    fetch('clear-session.jsp').then(() => {
+                                        location.reload();
+                                    });
+                                });
+                            }
+
+                            // Lấy thông báo lỗi từ session
+                            var errorMessage = "<c:out value='${sessionScope.errorMessage}' />";
+                            if (errorMessage && errorMessage.trim() !== "") {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Lỗi!",
+                                    text: errorMessage,
+                                    confirmButtonText: "OK"
+                                }).then(() => {
+                                    fetch('clear-session.jsp'); // Xóa session lỗi
+                                });
+                            }
                         });
-                    });
-                }
-
-                // Lấy thông báo lỗi từ session
-                var errorMessage = "<c:out value='${sessionScope.errorMessage}' />";
-                if (errorMessage && errorMessage.trim() !== "") {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Lỗi!",
-                        text: errorMessage,
-                        confirmButtonText: "OK"
-                    }).then(() => {
-                        fetch('clear-session.jsp'); // Xóa session lỗi
-                    });
-                }
-            });
         </script>
         <%    session.removeAttribute("successMessage");
             session.removeAttribute("errorMessage");
