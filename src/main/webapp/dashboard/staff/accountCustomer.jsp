@@ -181,6 +181,35 @@
                                         </h5>
                                     </div>
                                 </c:if>
+                                <c:if test="${totalPages > 1}">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination justify-content-center">
+                                            <!-- Nút Previous -->
+                                            <li class="page-item ${currentPage == 1 ? 'disabled' : ''}">
+                                                <a class="page-link" href="viewcustomersforStaff?page=${currentPage - 1}&search=${searchKeyword}" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo; Previous</span>
+                                                </a>
+                                            </li>
+
+                                            <!-- Hiển thị số trang -->
+                                            <c:forEach var="i" begin="1" end="${totalPages}">
+                                                <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                                    <a class="page-link" href="viewcustomersforStaff?page=${i}&search=${searchKeyword}">
+                                                        ${i}
+                                                    </a>
+                                                </li>
+                                            </c:forEach>
+
+                                            <!-- Nút Next -->
+                                            <li class="page-item ${currentPage == totalPages ? 'disabled' : ''}">
+                                                <a class="page-link" href="viewcustomersforStaff?page=${currentPage + 1}&search=${searchKeyword}" aria-label="Next">
+                                                    <span aria-hidden="true">Next &raquo;</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </c:if>
+
 
                             </div>
                         </div>

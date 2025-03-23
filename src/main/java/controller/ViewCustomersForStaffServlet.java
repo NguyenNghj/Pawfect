@@ -65,18 +65,39 @@ public class ViewCustomersForStaffServlet extends HttpServlet {
         List<Customers> customerList;
         VoucherDAO voucherDAO = new VoucherDAO();
         List<Voucher> vouchers = voucherDAO.getAllActiveVouchers();
+
         if (keyword != null && !keyword.trim().isEmpty()) {
-            // Nếu có keyword, thực hiện tìm kiếm
             customerList = CustomersDAO.searchCustomers(keyword);
         } else {
-            // Nếu không có keyword, lấy toàn bộ danh sách
             customerList = CustomersDAO.getAllCustomers();
         }
 
-        // Gửi danh sách khách hàng đến JSP để hiển thị
-        request.setAttribute("customerList", customerList);
+        // Phân trang
+        int page = 1;
+        int recordsPerPage = 10;
+        String pageStr = request.getParameter("page");
+        if (pageStr != null) {
+            try {
+                page = Integer.parseInt(pageStr);
+            } catch (NumberFormatException e) {
+                page = 1; // Nếu lỗi thì giữ nguyên trang đầu tiên
+            }
+        }
+
+        int totalRecords = customerList.size();
+        int totalPages = (int) Math.ceil((double) totalRecords / recordsPerPage);
+
+        int start = (page - 1) * recordsPerPage;
+        int end = Math.min(start + recordsPerPage, totalRecords);
+        List<Customers> paginatedList = customerList.subList(start, end);
+
+        // Gửi danh sách khách hàng và thông tin phân trang đến JSP
+        request.setAttribute("customerList", paginatedList);
         request.setAttribute("vouchers", vouchers);
-        request.setAttribute("searchKeyword", keyword); // Giữ lại giá trị keyword để hiển thị trên giao diện
+        request.setAttribute("searchKeyword", keyword);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard/staff/accountCustomer.jsp");
         dispatcher.forward(request, response);
     }
