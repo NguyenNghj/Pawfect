@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.CartDAO;
 import dao.PetDAO;
 import dao.ProfileDAO;
 import java.io.IOException;
@@ -18,6 +19,8 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.util.List;
+import model.CartItem;
 import model.User;
 
 /**
@@ -79,6 +82,17 @@ public class CreatePetServlet extends HttpServlet {
                 }
             }
         }
+        
+        int totalQuantity = 0;
+        // Lay tong so san pham trong gio hang
+        List<CartItem> cartItems = CartDAO.getCartByCustomerId(Integer.parseInt(customerId));
+        if (!cartItems.isEmpty()) {
+            for (CartItem cartItem : cartItems) {
+                totalQuantity += cartItem.getQuantity();
+            }
+        }
+        request.setAttribute("totalQuantity", totalQuantity);
+        
         ProfileDAO profileDAO = new ProfileDAO();
         User user = profileDAO.getUser(customerId);
         request.setAttribute("customer", user);

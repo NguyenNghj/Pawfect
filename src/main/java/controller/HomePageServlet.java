@@ -107,7 +107,7 @@ public class HomePageServlet extends HttpServlet {
                         Product product = productDAO.getProductById(cartItem.getProductId());
 
                         // Neu san pham trong gio hang vuot qua ton kho thi xoa san pham do
-                        if (cartItem.getQuantity() > product.getStock()) {
+                        if (cartItem.getQuantity() > product.getStock() || product.isActive() == false) {
                             iterator.remove(); // Xóa phần tử an toàn khi đang lặp
                             CartDAO.removeProductFromCart(product.getProductId(), customerId);
                         }

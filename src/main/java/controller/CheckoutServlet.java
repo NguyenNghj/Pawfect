@@ -5,6 +5,7 @@
 package controller;
 
 import dao.CartDAO;
+import dao.ProductDAO;
 import dao.VoucherDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,8 +16,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Iterator;
 import java.util.List;
 import model.CartItem;
+import model.Product;
 import model.Voucher;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -108,42 +111,42 @@ public class CheckoutServlet extends HttpServlet {
 
                 // Nguoc lai
             } else {
-                
+
                 // Kiem tra voucher da het han su dung hay chua?
                 Timestamp endDate = voucher.getEndDate();
                 Timestamp now = new Timestamp(System.currentTimeMillis());
-                
+
                 // Neu voucher da het han su dung
-                if(now.after(endDate)){
+                if (now.after(endDate)) {
                     System.out.println("Voucher da het han su dung!");
                     json.put("status", "outOfDateVoucher");
                     response.getWriter().write(json.toString());
                     response.getWriter().flush();
                     return;
                 }
-                
+
                 // Kiem tra voucher con hoat dong khong?
-                if(voucher.isActive() == false){
+                if (voucher.isActive() == false) {
                     System.out.println("Voucher khong con hoat dong!");
                     json.put("status", "isActiveVoucher");
                     response.getWriter().write(json.toString());
                     response.getWriter().flush();
                     return;
                 }
-                
+
                 // Lay customerId tu Cookie
                 String customerIdStr = getCustomerIdFromCookies(request);
                 int customerId = Integer.parseInt(customerIdStr);
-                
+
                 // Check xem khach da su dung voucher do hay chua?
                 int numberOfUseVoucher = voucherDAO.numberOfUseVoucher(customerId, voucherCode);
-                if(numberOfUseVoucher > 0){
+                if (numberOfUseVoucher > 0) {
                     System.out.println("Voucher da duoc su dung truoc do!");
                     json.put("status", "voucherIsUse");
                     response.getWriter().write(json.toString());
                     response.getWriter().flush();
                     return;
-                } else if(numberOfUseVoucher == 0){
+                } else if (numberOfUseVoucher == 0) {
                     System.out.println("Voucher chua duoc su dung.");
                 } else {
                     System.out.println("Loi! Khong kiem tra duoc.");
@@ -197,18 +200,79 @@ public class CheckoutServlet extends HttpServlet {
         int customerId = Integer.parseInt(customerIdStr);
 
         List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+        ProductDAO productDAO = new ProductDAO();
 
         int totalQuantity = 0;
-        if (!cartItems.isEmpty()) {
-            System.out.println("Lay gio hang thanh cong.");
-            for (CartItem cartItem : cartItems) {
-                totalQuantity += cartItem.getQuantity();
+        if (customerIdStr != null) {
+            try {
+
+                Iterator<CartItem> iterator = cartItems.iterator();
+                while (iterator.hasNext()) {
+                    CartItem cartItem = iterator.next();
+                    Product product = productDAO.getProductById(cartItem.getProductId());
+
+                    // Neu san pham trong gio hang vuot qua ton kho thi xoa san pham do
+                    if (cartItem.getQuantity() > product.getStock() || product.isActive() == false) {
+                        iterator.remove(); // Xóa phần tử an toàn khi đang lặp
+                        CartDAO.removeProductFromCart(product.getProductId(), customerId);
+                    }
+
+                    totalQuantity += cartItem.getQuantity();
+                    System.out.println("totalQuantity: " + totalQuantity);
+                }
+
+                totalQuantity = cartItems.stream().mapToInt(CartItem::getQuantity).sum();
+            } catch (NumberFormatException e) {
+                request.setAttribute("errorMessage", "Dữ liệu khách hàng không hợp lệ.");
             }
-        } else {
-            System.out.println("Khong lay duoc gio hang!");
+        }
+
+        if (cartItems.isEmpty()) {
+            response.sendRedirect("/cart?&action=view");
+            return;
         }
 
         double totalCartPrice = CartDAO.getTotalCartByCustomerId(customerId);
+
+        VoucherDAO voucherDAO = new VoucherDAO();
+        Voucher voucher = voucherDAO.getVoucherByCode("LANDAU");
+        if (voucher != null) {
+            int count = 0;
+            // Kiem tra voucher da het han su dung hay chua?
+            Timestamp endDate = voucher.getEndDate();
+            Timestamp now = new Timestamp(System.currentTimeMillis());
+
+            // Neu voucher da het han su dung
+            if (now.after(endDate)) {
+                System.out.println("Voucher da het han su dung!");
+                count++;
+            }
+
+            // Kiem tra voucher con hoat dong khong?
+            if (voucher.isActive() == false) {
+                System.out.println("Voucher khong con hoat dong!");
+                count++;
+            }
+
+            // Check xem khach da su dung voucher do hay chua?
+            int numberOfUseVoucher = voucherDAO.numberOfUseVoucher(customerId, "LANDAU");
+            if (numberOfUseVoucher > 0) {
+                System.out.println("Voucher da duoc su dung truoc do!");
+                count++;
+            } else if (numberOfUseVoucher == 0) {
+                System.out.println("Voucher chua duoc su dung.");
+            } else {
+                System.out.println("Loi! Khong kiem tra duoc.");
+                count++;
+            }
+
+            System.out.println("Count: " + count);
+            if (count == 0) {
+                request.setAttribute("voucher", voucher);
+            }
+        } else {
+            System.out.println("Voucher: " + voucher);
+        }
 
         request.setAttribute("cartItems", cartItems);
         request.setAttribute("totalCartPrice", totalCartPrice);

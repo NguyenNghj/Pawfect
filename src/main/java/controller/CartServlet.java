@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.List;
 import model.CartItem;
 import model.Product;
@@ -109,10 +110,9 @@ public class CartServlet extends HttpServlet {
         int quantity = Integer.parseInt(request.getParameter("quantity"));
         int stock = Integer.parseInt(request.getParameter("stock"));
 
-        
         System.out.println("quantity: " + quantity);
         System.out.println("stock: " + stock);
-        
+
         JSONObject json = new JSONObject();
         response.setContentType("application/json");
 
@@ -136,7 +136,7 @@ public class CartServlet extends HttpServlet {
             CartDAO.increaseProductFromCart(cartItem);
             json.put("status", "success");
             json.put("message", "Add to cart successfully!");
-            
+
             // Neu chua thi them san pham vao gio hang
         } else {
             CartItem cartItem = new CartItem(customerId, productId, quantity);
@@ -176,21 +176,39 @@ public class CartServlet extends HttpServlet {
         int customerId = Integer.parseInt(username);
 
         List<CartItem> cartItems = CartDAO.getCartByCustomerId(customerId);
+        ProductDAO productDAO = new ProductDAO();
 
         int totalQuantity = 0;
-        if (!cartItems.isEmpty()) {
-            // Tinh tong so luong san pham trong gio hang de hien thi
-            for (CartItem cartItem : cartItems) {
-                totalQuantity += cartItem.getQuantity();
+        if (username != null) {
+            try {
+
+                Iterator<CartItem> iterator = cartItems.iterator();
+                while (iterator.hasNext()) {
+                    CartItem cartItem = iterator.next();
+                    Product product = productDAO.getProductById(cartItem.getProductId());
+
+                    // Neu san pham trong gio hang vuot qua ton kho thi xoa san pham do
+                    if (cartItem.getQuantity() > product.getStock() || product.isActive() == false) {
+                        iterator.remove(); // Xóa phần tử an toàn khi đang lặp
+                        CartDAO.removeProductFromCart(product.getProductId(), customerId);
+                    }
+
+                    totalQuantity += cartItem.getQuantity();
+                    System.out.println("totalQuantity: " + totalQuantity);
+                }
+
+                totalQuantity = cartItems.stream().mapToInt(CartItem::getQuantity).sum();
+            } catch (NumberFormatException e) {
+                request.setAttribute("errorMessage", "Dữ liệu khách hàng không hợp lệ.");
             }
         }
 
         // Tinh tong gia trong gio hang de hien thi
         double totalCartPrice = CartDAO.getTotalCartByCustomerId(customerId);
 
-        ProductDAO productDAO = new ProductDAO();
-        List<Product> products = productDAO.getAllProducts();
         
+        List<Product> products = productDAO.getAllProducts();
+
         request.setAttribute("products", products);
         request.setAttribute("cartItems", cartItems);
         request.setAttribute("totalCartPrice", totalCartPrice);
