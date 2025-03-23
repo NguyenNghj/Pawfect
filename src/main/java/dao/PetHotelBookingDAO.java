@@ -473,6 +473,36 @@ public class PetHotelBookingDAO {
         }
     }
 
+    public static boolean isBookingOverlap(int petId, Timestamp checkIn, Timestamp checkOut) {
+        String query = "SELECT COUNT(*) FROM PetHotelBookings "
+                + "WHERE pet_id = ? AND status NOT IN (N'Đã hủy', N'Đã trả phòng') "
+                + "AND ((check_in <= ? AND check_out > ?) "
+                + "     OR (check_in < ? AND check_out >= ?) "
+                + "     OR (check_in >= ? AND check_out <= ?))";
+
+        try ( Connection con = new DBContext().getConnection();  PreparedStatement ps = con.prepareStatement(query)) {
+
+            // Thiết lập tham số
+            ps.setInt(1, petId);
+            ps.setTimestamp(2, checkIn);
+            ps.setTimestamp(3, checkIn);
+            ps.setTimestamp(4, checkOut);
+            ps.setTimestamp(5, checkOut);
+            ps.setTimestamp(6, checkIn);
+            ps.setTimestamp(7, checkOut);
+
+            // Thực thi truy vấn
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // Trả về true nếu có lịch trùng
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi kiểm tra lịch trùng của thú cưng: " + e.getMessage());
+        }
+        return false;
+    }
+
 //// Hàm đóng kết nối
 //    private static void closeConnection(Connection con, PreparedStatement ps, ResultSet rs) {
 //        try {

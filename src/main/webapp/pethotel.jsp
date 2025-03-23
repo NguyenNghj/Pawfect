@@ -85,8 +85,22 @@
                 }
             });
         </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var errorPetMessage = "<c:out value='${errorPetMessage}' />";
+                if (errorPetMessage && errorPetMessage.trim() !== "") {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Thú cưng đang bận",
+                        text: errorPetMessage,
+                        confirmButtonText: "OK"
+                    });
+                }
+            });
+        </script>
         <%
             session.removeAttribute("errorMessage");
+            session.removeAttribute("errorPetMessage");
         %>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="./js/pethotel.js"></script>

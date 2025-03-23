@@ -258,7 +258,23 @@
                     });
                 });
             </script>
-
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    var successMessage = "<c:out value='${successMessage}' />";
+                    if (successMessage && successMessage.trim() !== "") {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Đặt phòng thành công!",
+                            text: successMessage,
+                            confirmButtonText: "OK"
+                        });
+                    }
+                });
+            </script>
+            <%
+                session.removeAttribute("successMessage");
+            %>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
             <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

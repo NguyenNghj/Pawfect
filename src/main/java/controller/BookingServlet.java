@@ -166,6 +166,14 @@ public class BookingServlet extends HttpServlet {
             BigDecimal totalPrice = new BigDecimal(request.getParameter("totalPriceHidden"));
             String note = request.getParameter("note");
 
+            // ✅ Kiểm tra thú cưng có lịch trùng không
+            boolean isPetOverlap = PetHotelBookingDAO.isBookingOverlap(petId, checkIn, checkOut);
+            if (isPetOverlap) {
+                request.getSession().setAttribute("errorPetMessage", "Thú cưng đã có lịch đặt phòng trong khoảng thời gian này!");
+                response.sendRedirect("pethotel");
+                return;
+            }
+
             // ✅ Kiểm tra phòng trống
             boolean isAvailable = PetHotelBookingDAO.isRoomAvailable(roomId, checkIn, checkOut);
             if (!isAvailable) {
@@ -178,6 +186,7 @@ public class BookingServlet extends HttpServlet {
             boolean success = PetHotelBookingDAO.createBooking(roomId, customerId, petId, checkIn, checkOut, totalPrice, note);
 
             if (success) {
+                request.getSession().setAttribute("successMessage", "Yêu cầu sẽ được xử lý trong thời gian sớm nhất!");
                 response.sendRedirect("bookinghistory"); // Chuyển hướng nếu đặt phòng thành công
             } else {
                 request.getSession().setAttribute("errorMessage", "Đặt phòng thất bại, vui lòng thử lại!");
