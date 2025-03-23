@@ -17,6 +17,24 @@
         <link rel="stylesheet" href="./css/account.css">
     </head>
     <body>
+             <%
+    String success = request.getParameter("success");
+    if ("true".equals(success)) {
+%>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Chỉnh sửa thú cưng thành công!',
+            text: 'Bạn sẽ được chuyển hướng sau 3 giây...',
+            timer: 3000,
+            showConfirmButton: false
+        }).then(() => {
+            window.location.href = 'petviewdetail'; // Điều hướng sau khi hiển thị thông báo
+        });
+    </script>
+<%
+    }
+%>
         <div class="container py-4">
             <!-- Breadcrumb -->
             <div class="row mt-2 bg-white p-3 mb-4 d-flex align-items-center justify-content-center" 
@@ -75,7 +93,7 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="card-title fs-5" id="editPetModalLabel">Thêm thông tin thú cưng</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                      
                                         </div>
                                         <div class="modal-body edit-pet-detail">
                                             <input type="hidden" name="petId" value="${pet.petId}">

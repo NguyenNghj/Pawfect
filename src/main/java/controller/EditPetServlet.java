@@ -150,7 +150,7 @@ public class EditPetServlet extends HttpServlet {
         PetDAO petDAO = new PetDAO();
         // Cập nhật database
         petDAO.updatePet(petId, petName, petType, petBreed, petSex, petWeight, petDob, fileName);
-        response.sendRedirect("petviewdetail?petId=" + petId);
+        response.sendRedirect("editpet?success=true");
 
     }
 

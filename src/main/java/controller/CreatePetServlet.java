@@ -134,7 +134,7 @@ public class CreatePetServlet extends HttpServlet {
             PetDAO petDAO = new PetDAO();
             petDAO.addPet(customerId, petName, petType, petBreed, petSex, petWeight, petDob, fileName);
 
-            response.sendRedirect("viewpet");
+           response.sendRedirect("createpet?success=true");
         } catch (Exception e) {
             e.printStackTrace(); // Log lỗi ra console
             response.sendRedirect("viewpet?error=true");

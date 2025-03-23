@@ -26,7 +26,7 @@ public class PetDAO {
 
     public List<Pet> getAllPets(String customerId) {
         List<Pet> petList = new ArrayList<>();
-        String query = "SELECT * FROM Pets where customer_id=?";
+        String query = "SELECT * FROM Pets where customer_id=? and is_active = 1";
         try {
             conn = new DBContext().getConnection();
             pt = conn.prepareStatement(query);
@@ -55,7 +55,7 @@ public class PetDAO {
 
     public List<Pet> filterPet(String petType, int customerId) {
         List<Pet> petList = new ArrayList<>();
-        String query = "SELECT * FROM Pets WHERE pet_type = ? AND customer_id=?";
+        String query = "SELECT * FROM Pets WHERE pet_type = ? AND customer_id=? and is_active = 1 ";
 
         try {
             conn = new DBContext().getConnection();
@@ -87,7 +87,7 @@ public class PetDAO {
 
     public Pet getPetId(String petId, String customerId) {
         Pet pet = new Pet();
-        String query = "SELECT * FROM Pets where pet_id=? and customer_id=?";
+        String query = "SELECT * FROM Pets where pet_id=? and customer_id=? and is_active = 1";
         try {
             conn = new DBContext().getConnection();
             pt = conn.prepareStatement(query);
@@ -137,7 +137,7 @@ public class PetDAO {
     }
 
     public void deletePet(String petId) {
-        String sql = "DELETE FROM Pets WHERE pet_id = ?";
+        String sql = "UPDATE Pets SET is_active = 0 WHERE pet_id = ?";
 
         try {
             conn = new DBContext().getConnection();
@@ -172,7 +172,7 @@ public class PetDAO {
     }
 
     public int countPetsByCustomerId(String customerId) {
-        String query = "SELECT COUNT(*) FROM Pets WHERE customer_id = ?";
+        String query = "SELECT COUNT(*) FROM Pets WHERE customer_id = ? and is_active = 1";
         int count = 0;
         try {
             conn = new DBContext().getConnection();
@@ -204,7 +204,7 @@ public class PetDAO {
 
     public List<Pet> getPetsByCustomerId(int customerId) {
         List<Pet> petList = new ArrayList<>();
-        String query = "SELECT * FROM Pets WHERE customer_id = ?";
+        String query = "SELECT * FROM Pets WHERE customer_id = ? and is_active = 1";
 
         try {
             conn = new DBContext().getConnection();
