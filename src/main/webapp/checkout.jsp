@@ -122,14 +122,14 @@
 
                     </div>
 
-                    <!-- Main Footer -->
-                    <div class="row main-footer">
-                        <div class="d-flex justify-content-center gap-5">
-                            <a href="" data-bs-toggle="modal" data-bs-target="#hoantraModal">Chính sách hoàn trả</a>
-                            <a href="" data-bs-toggle="modal" data-bs-target="#baomatModal">Chính sách bảo mật</a>
-                            <a href="" data-bs-toggle="modal" data-bs-target="#dieukhoanModal">Điều khoản sử dụng</a>
-                        </div>
-                    </div>
+                    <!--                     Main Footer 
+                                        <div class="row main-footer">
+                                            <div class="d-flex justify-content-center gap-5">
+                                                <a href="" data-bs-toggle="modal" data-bs-target="#hoantraModal">Chính sách hoàn trả</a>
+                                                <a href="" data-bs-toggle="modal" data-bs-target="#baomatModal">Chính sách bảo mật</a>
+                                                <a href="" data-bs-toggle="modal" data-bs-target="#dieukhoanModal">Điều khoản sử dụng</a>
+                                            </div>
+                                        </div>-->
                 </div>
 
                 <!-- Sidebar -->
@@ -169,7 +169,7 @@
 
                         <!-- Price & other Cost of Order -->
                         <div class="price-and-cost d-grid gap-2">
-                            <div class="d-flex justify-content-between mb-3">
+                            <div class="d-flex justify-content-between mb-2">
                                 <div class="col-sm-9">
                                     <input id="voucher-code" type="search" class="form-control" style="height: 45px;" placeholder="Nhập mã giảm giá">                                   
                                 </div>
@@ -178,6 +178,20 @@
                                     Áp dụng
                                 </button>
                             </div>
+                            <c:if test="${voucher != null}">
+                                <div class="d-flex justify-content-between">
+                                    <div class="promo-container">
+                                        <div class="promo-title">
+                                            <span class="gift-icon"><img src="https://img.icons8.com/stencil/32/ticket.png" alt="pnr-code"/></span>
+                                            Mã Ưu Đãi
+                                        </div>
+                                        <p class="promo-description">
+                                            Nhập mã <span class="promo-code">${voucher.code}</span> khi mua hàng lần đầu để được giảm giá <f:formatNumber value="${voucher.discountAmount}" pattern="#,##0" />đ cho đơn hàng từ <f:formatNumber value="${voucher.minOrderValue}" pattern="#,##0" />đ
+                                        </p>
+                                    </div>
+                                </div>
+                            </c:if>
+
                             <div class="d-flex justify-content-between">
                                 <span>Tạm tính</span>
                                 <span id="base-price" data-price="${totalCartPrice}">
@@ -407,16 +421,16 @@
                 if (salePrice === 0) {
                     voucherId = 0;
                 }
-                
+
                 // Lay gia tien tam tinh (chua bao gom phi van chuyen)
                 let basePriceString = $('#base-price').data("price");
                 // Chuyen basePriceString sang kieu so
                 let basePrice = parseFloat(basePriceString);
-                
+
                 // **Lấy giá trị của radio button được chọn
                 const shippingMethod = $('input[name="shipping-method"]:checked').attr('id');
                 const paymentMethod = $('input[name="payment-method"]:checked').attr('id');
-                
+
 
                 let ajaxUrl = (paymentMethod === "payment-vnpay") ? "vnpay" : "order";
                 console.log("Lay gia tri ajaxUrl: " + email);
@@ -640,7 +654,7 @@
 
                 // Tinh tong gia tien cuoi cung
                 let totalPrice = basePrice + shippingCost - salePrice;
-                if(totalPrice < 0){
+                if (totalPrice < 0) {
                     totalPrice = 0;
                 }
                 console.log("Total price: " + totalPrice);

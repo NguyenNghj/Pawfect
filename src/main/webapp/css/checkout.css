@@ -140,3 +140,47 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     padding: 10px 20px;
 }
 
+/* Container styling */
+.promo-container {
+    max-width: 400px;
+    margin: 10px auto;
+    border: 2px dashed #ff6600;
+    border-radius: 10px;
+    padding: 15px 20px;
+    position: relative;
+    background-color: #fff;
+}
+
+/* Gift icon and title */
+.promo-title {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    color: #ff6600;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.gift-icon img {
+    margin-right: 12px;
+    font-size: 22px !important ;
+}
+
+/* Promo description */
+.promo-description {
+    color: #555;
+    font-size: 16px;
+    line-height: 1.4;
+    margin-bottom: 15px;
+}
+
+/* Highlighted code */
+.promo-code {
+    font-weight: bold;
+    color: #333;
+}
+
+.promo-button:hover {
+    background-color: #e55c00;
+}
+
