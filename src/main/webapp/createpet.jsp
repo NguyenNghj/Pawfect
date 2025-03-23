@@ -17,6 +17,25 @@
         <link rel="stylesheet" href="./css/account.css">
     </head>
     <body>
+        <%
+    String success = request.getParameter("success");
+    if ("true".equals(success)) {
+%>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Thêm thú cưng thành công!',
+            text: 'Bạn sẽ được chuyển hướng sau 3 giây...',
+            timer: 3000,
+            showConfirmButton: false
+        }).then(() => {
+            window.location.href = 'viewpet'; // Điều hướng sau khi hiển thị thông báo
+        });
+    </script>
+<%
+    }
+%>
+
         <div class="container py-4">
             <!-- Breadcrumb -->
             <div class="row mt-2 bg-white p-3 mb-4 d-flex align-items-center justify-content-center" 
