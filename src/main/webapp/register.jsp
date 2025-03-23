@@ -78,7 +78,7 @@
                             <!-- Nhập lại mật khẩu -->
                             <div class="mb-3 position-relative">
                                 <label for="confirmPassword" class="form-label">Nhập lại mật khẩu</label>
-                                <input type="confirmPassword" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Nhập lại mật khẩu" required>
+                                <input type="Password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Nhập lại mật khẩu" required>
                                 <i class="bi bi-eye-slash password-toggle" id="toggleConfirmPassword"></i>
                                 <div class="form-text">Mật khẩu phải có ít nhất 6 ký tự.</div>
                                 <div class="invalid-feedback">
