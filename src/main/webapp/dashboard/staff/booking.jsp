@@ -225,7 +225,7 @@
                                                                     <input type="hidden" name="bookingId" value="${booking.bookingId}">
                                                                     <input type="hidden" name="action" value="cancel">
                                                                     <button type="button" class="btn btn-sm btn-danger" data-action="cancel" onclick="confirmAction(this)" style="font-size: 12px; padding: 3px 5px;">
-                                                                        Hủy
+                                                                        Từ chối
                                                                     </button>
                                                                 </form>
                                                             </c:when>
