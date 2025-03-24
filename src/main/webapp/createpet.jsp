@@ -26,7 +26,7 @@
             icon: 'success',
             title: 'Thêm thú cưng thành công!',
             text: 'Bạn sẽ được chuyển hướng sau 3 giây...',
-            timer: 3000,
+            timer: 2000,
             showConfirmButton: false
         }).then(() => {
             window.location.href = 'viewpet'; // Điều hướng sau khi hiển thị thông báo
