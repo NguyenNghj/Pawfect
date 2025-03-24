@@ -73,7 +73,7 @@ public class PetHotelBookingManagementServlet extends HttpServlet {
         } else {
             bookings = PetHotelBookingDAO.getAllBookings();
         }
-// Sắp xếp danh sách đặt phòng theo check-in mới nhất
+        // Sắp xếp danh sách đặt phòng theo check-in mới nhất
         bookings.sort(Comparator.comparing(PetHotelBooking::getBookingDate).reversed());
         request.setAttribute("bookings", bookings);
         request.setAttribute("searchQuery", searchQuery); // Truyền lại giá trị tìm kiếm cho JSP
