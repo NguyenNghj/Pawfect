@@ -12,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 import model.Product;
 
@@ -62,42 +63,81 @@ public class ProductManagementServlet extends HttpServlet {
         try {
             ProductDAO productDAO = new ProductDAO();
             String keyword = request.getParameter("search");
+            String priceRange = request.getParameter("priceRange");
             List<Product> products;
 
+            // Lấy danh sách sản phẩm ban đầu
             if (keyword != null && !keyword.trim().isEmpty()) {
                 products = productDAO.searchProducts(keyword);
             } else {
                 products = productDAO.getAllProducts();
             }
 
+            // Lọc theo khoảng giá nếu có tham số priceRange
+            if (priceRange != null && !priceRange.trim().isEmpty() && !"all".equals(priceRange)) {
+                products = filterProductsByPrice(products, priceRange);
+            }
+
+            // Đưa danh sách sản phẩm đã lọc vào request
             request.setAttribute("productList", products);
 
+            // Chuyển tiếp đến JSP
             RequestDispatcher dispatcher = request.getRequestDispatcher("/dashboard/admin/product.jsp");
             dispatcher.forward(request, response);
+
         } catch (NullPointerException e) {
-            e.printStackTrace(); // Ghi log lỗi NullPointerException
+            e.printStackTrace();
             request.setAttribute("errorMessage", "Lỗi dữ liệu không hợp lệ hoặc thiếu: " + e.getMessage());
             RequestDispatcher errorDispatcher = request.getRequestDispatcher("/dashboard/admin/product.jsp");
             errorDispatcher.forward(request, response);
 
         } catch (IOException e) {
-            e.printStackTrace(); // Ghi log lỗi IO
+            e.printStackTrace();
             request.setAttribute("errorMessage", "Lỗi vào/ra khi xử lý request: " + e.getMessage());
             RequestDispatcher errorDispatcher = request.getRequestDispatcher("/dashboard/admin/product.jsp");
             errorDispatcher.forward(request, response);
 
         } catch (ServletException e) {
-            e.printStackTrace(); // Ghi log lỗi Servlet
+            e.printStackTrace();
             request.setAttribute("errorMessage", "Lỗi Servlet khi xử lý request: " + e.getMessage());
             RequestDispatcher errorDispatcher = request.getRequestDispatcher("/dashboard/admin/product.jsp");
             errorDispatcher.forward(request, response);
 
         } catch (Exception e) {
-            e.printStackTrace(); // Ghi log lỗi không xác định
+            e.printStackTrace();
             request.setAttribute("errorMessage", "Lỗi không xác định: " + e.getMessage());
             RequestDispatcher errorDispatcher = request.getRequestDispatcher("/dashboard/admin/product.jsp");
             errorDispatcher.forward(request, response);
         }
+    }
+
+    private List<Product> filterProductsByPrice(List<Product> productList, String priceRange) {
+        List<Product> filteredList = new ArrayList<>();
+
+        for (Product product : productList) {
+            double price = product.getProductPrice();
+            switch (priceRange) {
+                case "under100k":
+                    if (price < 100000) {
+                        filteredList.add(product);
+                    }
+                    break;
+                case "100kto300k":
+                    if (price >= 100000 && price <= 300000) {
+                        filteredList.add(product);
+                    }
+                    break;
+                case "over300k":
+                    if (price > 300000) {
+                        filteredList.add(product);
+                    }
+                    break;
+                default:
+                    filteredList.add(product); // Nếu không khớp, thêm tất cả (tương đương "all")
+                    break;
+            }
+        }
+        return filteredList;
     }
 
     /**
