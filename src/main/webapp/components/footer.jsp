@@ -40,16 +40,16 @@
                 <div>
                     <h4 class="footer-title mb-2 mt-4">Kết nối với chúng tôi</h4>
                     <div class="social-icon p-0 d-flex align-items-center gap-2">
-                        <a class="btn" href="https://www.facebook.com/GemNghj?locale=vi_VN">
+                        <a class="btn" href="https://www.facebook.com/daihocfptcantho">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/900px-Facebook_Logo_%282019%29.png" alt="">
                         </a>
-                        <a class="btn">
+                        <a class="btn" href ="https://zalo.me/1391225272460633719">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Icon_of_Zalo.svg/120px-Icon_of_Zalo.svg.png" alt="">
                         </a>
-                        <a class="btn">
+                        <a class="btn" href="https://www.tiktok.com/@daihocfptcantho">
                             <i class='bx bxl-tiktok' style="font-size: 31px"></i>
                         </a>
-                        <a class="btn">
+                        <a class="btn" href="https://www.youtube.com/c/Tr%C6%B0%E1%BB%9Dng%C4%90%E1%BA%A1iH%E1%BB%8DcFPTC%E1%BA%A7nTh%C6%A1">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/YouTube_full-color_icon_%282024%29.svg/1486px-YouTube_full-color_icon_%282024%29.svg.png" alt="">
                         </a>
                     </div>

@@ -43,7 +43,7 @@
                     <div class="col-6 col-lg">
                         <nav class="row content-header-menu align-items-center justify-content-center text-center">
                             <div class="col-auto">
-                                <a class="btn" href="aboutus.jsp">Về PawPect</a>
+                                <a class="btn" href="aboutus">Về PawPect</a>
                             </div>
 
                             <!-- Dropdown Sản phẩm cho Chó -->

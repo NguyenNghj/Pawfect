@@ -172,11 +172,11 @@ public class EditProductServlet extends HttpServlet {
                 stock = Integer.parseInt(stockParam.trim());
 
                 // Kiểm tra các giá trị hợp lệ
-                if (productId <= 0 || categoryId <= 0 || productPrice <= 0 || productPrice > 50000000 || stock < 0 || stock > 200) {
+                if (productId <= 0 || categoryId <= 0 || productPrice <= 0 || productPrice > 50000000 || stock < 0 || stock > 1000) {
                     throw new NumberFormatException();
                 }
             } catch (NumberFormatException e) {
-                request.getSession().setAttribute("errorMessage", "Giá phải từ 0 đến 50,000,000 và số lượng phải từ 0 đến 200!");
+                request.getSession().setAttribute("errorMessage", "Giá phải từ 0 đến 50,000,000 và số lượng phải từ 0 đến 1000!");
                 response.sendRedirect(request.getContextPath() + "/dashboard/admin/editproduct?productId=" + productIdParam);
                 return;
             }
