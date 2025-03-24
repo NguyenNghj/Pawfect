@@ -145,8 +145,8 @@ public class CreateProductServlet extends HttpServlet {
             if (productPrice <= 0 || productPrice > 50000000) {
                 throw new IllegalArgumentException("Giá sản phẩm phải trong khoảng 0 - 50,000,000.");
             }
-            if (stock < 0 || stock > 200) {
-                throw new IllegalArgumentException("Số lượng sản phẩm phải trong khoảng 0 - 200.");
+            if (stock < 0 || stock > 1000) {
+                throw new IllegalArgumentException("Số lượng sản phẩm phải trong khoảng 0 - 1000.");
             }
 
             boolean productActive = stock > 0 && Boolean.parseBoolean(request.getParameter("productActive"));

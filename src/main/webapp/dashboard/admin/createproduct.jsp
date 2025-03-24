@@ -89,17 +89,6 @@
                             </ol>
                         </nav>
                     </div>      
-
-                    <!--                    <div class="row">
-                                            <div class="col-3 p-0" style="margin-top: 60px;">
-                                                <button type="button" class="btn btn-primary">
-                                                    <i class="fa-solid fa-plus"></i>
-                                                    New Product
-                                                </button>
-                                            </div>        
-                                        </div>-->
-
-
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
                         <form id="createProductForm" action="/dashboard/admin/createproduct" method="post" enctype="multipart/form-data">
 
@@ -127,7 +116,7 @@
 
                             <div class="mb-3">
                                 <label for="createProductName" class="form-label">Tên sản phẩm</label>
-                                <input type="text" class="form-control" name="productName" required>
+                                <input type="text" class="form-control" name="productName" >
                             </div>
 
                             <div class="mb-3">
@@ -141,12 +130,12 @@
 
                             <div class="mb-3">
                                 <label for="createProductPrice" class="form-label">Giá</label>
-                                <input type="number" class="form-control" name="productPrice" required>                        
+                                <input type="number" class="form-control" name="productPrice" >                        
                             </div>
 
                             <div class="mb-3">
                                 <label for="createProductStock" class="form-label">Tồn kho</label>
-                                <input type="number" class="form-control" name="stock" required>
+                                <input type="number" class="form-control" name="stock" >
                             </div>
 
                             <div class="mb-3">
@@ -159,7 +148,7 @@
 
                             <div class="mb-3">
                                 <label for="createProductDescription" class="form-label">Mô tả sản phẩm</label>
-                                <textarea class="form-control" name="description" rows="5" required></textarea>
+                                <textarea class="form-control" name="description" rows="5" ></textarea>
                             </div>
 
                             <button type="submit" class="btn btn-primary">Thêm sản phẩm</button>

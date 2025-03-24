@@ -268,6 +268,10 @@
         <servlet-name>SendVoucherAdminServlet</servlet-name>
         <servlet-class>controller.SendVoucherAdminServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AboutUsServlet</servlet-name>
+        <servlet-class>controller.AboutUsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>PetHotelServlet</servlet-name>
         <url-pattern>/pethotel</url-pattern>
@@ -519,6 +523,10 @@
     <servlet-mapping>
         <servlet-name>SendVoucherAdminServlet</servlet-name>
         <url-pattern>/dashboard/admin/sendvoucher</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AboutUsServlet</servlet-name>
+        <url-pattern>/aboutus</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>

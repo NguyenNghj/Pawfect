@@ -7,7 +7,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : Nguyen Tri Nghi - CE180897
 */
 * {
-    font-family: 'Baloo 2', sans-serif !important;
+    font-family: 'Baloo 2', sans-serif;
 }
 
 body {

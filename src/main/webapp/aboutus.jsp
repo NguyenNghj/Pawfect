@@ -13,6 +13,8 @@
         <title>JSP Page</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">  
+        <link rel="stylesheet" href="./css/productlist.css">
         <style>
             :root {
                 --primary-dark: #2563eb;
@@ -113,14 +115,18 @@
     </head>
     <body>
         <!-- Breadcrumb -->
-        <div class="row bread" style="background-color: white;">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb1 m-0">
-                    <li class="breadcrumb1-item"><a href="/pawfect" style="color: #D3A376;">Trang chủ</a></li>
-                    <li class="breadcrumb1-item active" aria-current="page">&nbsp;&nbsp;/&nbsp;&nbsp;Giới thiệu</li>
-                </ol>
-            </nav>
+        <div style = "width: 1329px; margin: auto;">
+            <div class="mt-4 bg-white p-3 mb-3 d-flex align-items-center justify-content-left" 
+                 style="border-radius: 20px; height: 60px;">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0" style ="font-weight: bold;">
+                        <li class="breadcrumb-item"><a href="pawfect" class="text-decoration-none">Trang chủ</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Về Pawfect</li>
+                    </ol>
+                </nav>
+            </div>
         </div>
+
 
         <!-- Main Content -->
         <div class="mb-5 pb-3" style="background-color: #f4f4f4; border-radius: 7px">
@@ -130,22 +136,23 @@
                         <!-- Main Content -->
                         <div class="card shadow-sm">
                             <div class="card-body">
-                                <h1 class="mb-4" style="color: #8a6f5e"><b>Về PetCare</b></h1>
+                                <h1 class="mb-4" style="color: #8a6f5e"><b>Về Pawfect</b></h1>
 
                                 <p class="lead">
-                                    Chào bạn! Tại PetCare, chúng tôi luôn tâm niệm rằng thú cưng cũng là thành viên trong gia đình và chúng ta phải yêu thương, chăm sóc chúng như thế. Chính vì vậy, chúng tôi đặt sự quan tâm và chăm sóc đến thú cưng của bạn lên hàng đầu.
+                                    Pawfect tự hào là điểm đến đáng tin cậy tại số 600 Nguyễn Văn Cừ Nối Dài, An Bình, Bình Thủy, Cần Thơ. Nơi đã được rất nhiều khách hàng lựa chọn từ năm 2018 đến nay. Chúng tôi không chỉ cung cấp 
+                                    các sản phẩm dành cho thú cưng mà còn mang đến dịch vụ đặt lịch lưu trú tiện lợi, giúp bạn yên tâm gửi gắm người bạn nhỏ của mình khi cần.
                                 </p>
 
                                 <div class="my-4">
-                                    <img src="https://via.placeholder.com/700x300" alt="Pet Care Services" class="img-fluid rounded">
+                                    <h3 class="mb-4" style="color: #8a6f5e"><b>Về dịch vụ</b></h3>
                                 </div>
 
                                 <p>
-                                    Chúng tôi tự hào là địa chỉ tin cậy đã được hơn 15.000 khách hàng tin tưởng sử dụng dịch vụ và mua sắm từ năm 2017 tới nay tại số 123 Đường ABC, Thành phố XYZ.
+                                    Chúng tôi tự hào là địa chỉ tin cậy đã được hơn r khách hàng tin tưởng sử dụng dịch vụ và mua sắm từ năm 2024 tới nay tại 600 Nguyễn Văn Cừ Nối Dài, An Bình, Bình Thủy, Cần Thơ.
                                 </p>
 
                                 <p>
-                                    PetCare có đội ngũ đều là những bác sĩ thú y có trình độ, cũng là những người nuôi thú cưng nên sẽ tư vấn giúp bạn chọn lựa chọn những sản phẩm hợp nhất. Chúng tôi cung cấp nhiều loại đồ dùng, thức ăn cho thú cưng được nhập chính hãng từ các thương hiệu, nhà phân phối hàng đầu.
+                                    Pawfect có đội ngũ đều là những bác sĩ thú y có trình độ, cũng là những người nuôi thú cưng nên sẽ tư vấn giúp bạn chọn lựa chọn những sản phẩm hợp nhất. Chúng tôi cung cấp nhiều loại đồ dùng, thức ăn cho thú cưng được nhập chính hãng từ các thương hiệu, nhà phân phối hàng đầu.
                                 </p>
 
                                 <p>
@@ -159,8 +166,8 @@
                                                 <div class="mb-3">
                                                     <i class="fas fa-paw" style="font-size: 2.5rem; color: #D3A376"></i>
                                                 </div>
-                                                <h5 class="card-title">Sản phẩm chất lượng</h5>
-                                                <p class="card-text">Nhập khẩu chính hãng từ các thương hiệu uy tín hàng đầu</p>
+                                                <h5 class="card-title"><b>Sản phẩm chất lượng cao</b></h5>
+                                                <p class="card-text">Uy tín từ thương thiệu</p>
                                             </div>
                                         </div>
                                     </div>
@@ -170,8 +177,8 @@
                                                 <div class="mb-3">
                                                     <i class="fas fa-user-md" style="font-size: 2.5rem; color: #D3A376"></i>
                                                 </div>
-                                                <h5 class="card-title">Đội ngũ chuyên nghiệp</h5>
-                                                <p class="card-text">Bác sĩ thú y và nhân viên có kinh nghiệm chăm sóc thú cưng</p>
+                                                <h5 class="card-title"><b>Đội ngũ nhân viên</b></h5>
+                                                <p class="card-text">Chiều lòng khách hàng, tận tình, tận tâm</p>
                                             </div>
                                         </div>
                                     </div>
@@ -181,8 +188,8 @@
                                                 <div class="mb-3">
                                                     <i class="fas fa-truck" style="font-size: 2.5rem; color: #D3A376"></i>
                                                 </div>
-                                                <h5 class="card-title">Giao hàng nhanh chóng</h5>
-                                                <p class="card-text">Đảm bảo giao hàng đúng thời gian và địa điểm mong muốn</p>
+                                                <h5 class="card-title"><b>Giao hàng nhanh chóng</b></h5>
+                                                <p class="card-text">Tốc độ vượt mong đợi</p>
                                             </div>
                                         </div>
                                     </div>
@@ -220,16 +227,16 @@
                             <div class="card-body">
                                 <ul class="list-unstyled">
                                     <li class="mb-3">
-                                        <i class="fas fa-map-marker-alt me-2"></i> 600 Nguyễn Văn Cừ, An Bình, Bình Thủy, Cần Thơ
+                                        <i class="fas fa-map-marker-alt me-2" style ="color: #D3A376" "></i> <b>600 Nguyễn Văn Cừ, An Bình, Bình Thủy, Cần Thơ</b>
                                     </li>
                                     <li class="mb-3">
-                                        <i class="fas fa-phone-alt me-2"></i> 0967017222
+                                        <i class="fas fa-phone-alt me-2" style ="color: #D3A376"></i> <b>0967017222</b>
                                     </li>
                                     <li class="mb-3">
-                                        <i class="fas fa-envelope me-2"></i> pawfectg3@gmail.com
+                                        <i class="fas fa-envelope me-2" style ="color: #D3A376"></i> <b>pawfectg3@gmail.com</b>
                                     </li>
                                     <li>
-                                        <i class="fas fa-clock me-2"></i> 8:00 - 20:00 (Thứ 2 - Chủ nhật)
+                                        <i class="fas fa-clock me-2" style ="color: #D3A376"></i> <b>8:00 - 20:00 (Thứ 2 - Chủ nhật)</b>
                                     </li>
                                 </ul>
                             </div>
@@ -242,13 +249,13 @@
                             <div class="card-body">
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item d-flex align-items-center">
-                                        <i class="fa-solid fa-paw me-2"></i></i> Sản phẩm cho thú cưng
+                                        <i class="fa-solid fa-paw me-2" style ="color: #D3A376"></i></i> <b>Sản phẩm cho thú cưng</b>
                                     </li>
                                     <li class="list-group-item d-flex align-items-center">
-                                        <i class="fas fa-home me-2"></i> Khách sạn thú cưng
+                                        <i class="fas fa-home me-2" style ="color: #D3A376"></i> <b>Khách sạn thú cưng</b>
                                     </li>
                                     <li class="list-group-item d-flex align-items-center">
-                                        <i class="fas fa-truck me-2"></i> Giao hàng tận nơi
+                                        <i class="fas fa-truck me-2" style ="color: #D3A376"></i> <b>Giao hàng tận nơi</b>
                                     </li>
                                 </ul>
                             </div>
