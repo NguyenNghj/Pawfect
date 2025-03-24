@@ -170,9 +170,9 @@
                                                     <td>${voucher.code}</td>
                                                     <td>${voucher.description}</td>
                                                     <td>${voucher.discountPercentage}%</td>
-                                                    <td><fmt:formatNumber value="${voucher.discountAmount}" type="number" maxFractionDigits="0"/></td>
-                                                    <td><fmt:formatNumber value="${voucher.minOrderValue}" type="number" maxFractionDigits="0"/></td>
-                                                    <td><fmt:formatNumber value="${voucher.maxDiscount}" type="number" maxFractionDigits="0"/></td>
+                                                    <td><fmt:formatNumber value="${voucher.discountAmount}" type="number" maxFractionDigits="0"/>đ</td>
+                                                    <td><fmt:formatNumber value="${voucher.minOrderValue}" type="number" maxFractionDigits="0"/>đ</td>
+                                                    <td><fmt:formatNumber value="${voucher.maxDiscount}" type="number" maxFractionDigits="0"/>đ</td>
                                                     <td>${voucher.startDate}</td>
                                                     <td>${voucher.endDate}</td>
                                                     <td>

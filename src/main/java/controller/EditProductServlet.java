@@ -145,14 +145,14 @@ public class EditProductServlet extends HttpServlet {
 
         try {
             // Lấy dữ liệu từ request
-            String productIdParam = request.getParameter("productId");
-            String categoryIdParam = request.getParameter("categoryId");
-            String productPriceParam = request.getParameter("productPrice");
-            String stockParam = request.getParameter("stock");
-            String productName = request.getParameter("productName");
-            String productPetType = request.getParameter("productPetType");
-            String description = request.getParameter("description");
-            String existingImage = request.getParameter("existingImage");
+            String productIdParam = request.getParameter("productId").trim();
+            String categoryIdParam = request.getParameter("categoryId").trim();
+            String productPriceParam = request.getParameter("productPrice").trim();
+            String stockParam = request.getParameter("stock").trim().trim();
+            String productName = request.getParameter("productName").trim();
+            String productPetType = request.getParameter("productPetType").trim();
+            String description = request.getParameter("description").trim();
+            String existingImage = request.getParameter("existingImage").trim();
 
             // Kiểm tra dữ liệu không rỗng
             if (Stream.of(productIdParam, categoryIdParam, productPriceParam, stockParam, productName, productPetType, description)

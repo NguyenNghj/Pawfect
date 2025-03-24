@@ -217,6 +217,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this t
     /* border-bottom: 1px solid black; */
 }
 
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+td {
+    word-wrap: break-word;
+    white-space: normal;
+}
+
 
 /* Start: PROFILE SETTINGS */
 .profile-info h3 {

@@ -139,7 +139,7 @@
                                 <h1 class="mb-4" style="color: #8a6f5e"><b>Về Pawfect</b></h1>
 
                                 <p class="lead">
-                                    Pawfect tự hào là điểm đến đáng tin cậy tại số 600 Nguyễn Văn Cừ Nối Dài, An Bình, Bình Thủy, Cần Thơ. Nơi đã được rất nhiều khách hàng lựa chọn từ năm 2018 đến nay. Chúng tôi không chỉ cung cấp 
+                                    Pawfect tự hào là điểm đến đáng tin cậy tại số 600 Nguyễn Văn Cừ Nối Dài, An Bình, Bình Thủy, Cần Thơ. Nơi đã được rất nhiều khách hàng lựa chọn từ năm 2024 đến nay. Chúng tôi không chỉ cung cấp 
                                     các sản phẩm dành cho thú cưng mà còn mang đến dịch vụ đặt lịch lưu trú tiện lợi, giúp bạn yên tâm gửi gắm người bạn nhỏ của mình khi cần.
                                 </p>
 
@@ -148,7 +148,7 @@
                                 </div>
 
                                 <p>
-                                    Chúng tôi tự hào là địa chỉ tin cậy đã được hơn r khách hàng tin tưởng sử dụng dịch vụ và mua sắm từ năm 2024 tới nay tại 600 Nguyễn Văn Cừ Nối Dài, An Bình, Bình Thủy, Cần Thơ.
+                                    Chúng tôi tự hào là địa chỉ tin cậy đã được hơn rất nhiều khách hàng tin tưởng sử dụng dịch vụ và mua sắm từ năm 2024 tới nay tại 600 Nguyễn Văn Cừ Nối Dài, An Bình, Bình Thủy, Cần Thơ.
                                 </p>
 
                                 <p>
