@@ -112,7 +112,7 @@
                             <!-- Tên phòng -->
                             <div class="mb-3">
                                 <label for="editRoomName" class="form-label">Tên phòng</label>
-                                <input type="text" class="form-control" name="roomName" value="${room.roomName}" required>
+                                <input type="text" class="form-control" name="roomName" value="${room.roomName}" >
                             </div>
 
                             <!-- Loại phòng -->
@@ -127,31 +127,31 @@
                             <!-- Cân nặng tối thiểu -->
                             <div class="mb-3">
                                 <label for="editMinWeight" class="form-label">Cân nặng tối thiểu (kg)</label>
-                                <input type="number" class="form-control" name="minWeight" step="0.1" value="${room.minWeight}" required min="0.1">
+                                <input type="number" class="form-control" name="minWeight" step="0.1" value="${room.minWeight}" >
                             </div>
 
                             <!-- Cân nặng tối đa -->
                             <div class="mb-3">
                                 <label for="editMaxWeight" class="form-label">Cân nặng tối đa (kg)</label>
-                                <input type="number" class="form-control" name="maxWeight" step="0.1" value="${room.maxWeight}" required min="0.1">
+                                <input type="number" class="form-control" name="maxWeight" step="0.1" value="${room.maxWeight}" >
                             </div>
 
                             <!-- Số lượng phòng -->
                             <div class="mb-3">
                                 <label for="editRoomQuantity" class="form-label">Số lượng</label>
-                                <input type="number" class="form-control" name="quantity" value="${room.quantity}" required min="1">
+                                <input type="number" class="form-control" name="quantity" value="${room.quantity}" >
                             </div>
 
                             <!-- Giá mỗi đêm -->
                             <div class="mb-3">
                                 <label for="editPricePerNight" class="form-label">Giá mỗi đêm (VNĐ)</label>
-                                <input type="number" class="form-control" name="pricePerNight" step="0.01" value="${room.pricePerNight}" required min="1">
+                                <input type="number" class="form-control" name="pricePerNight" step="0.01" value="${room.pricePerNight}" >
                             </div>
 
                             <!-- Mô tả -->
                             <div class="mb-3">
                                 <label for="editRoomDescription" class="form-label">Mô tả</label>
-                                <textarea class="form-control" name="description" rows="5" required>${room.description}</textarea>
+                                <textarea class="form-control" name="description" rows="5" >${room.description}</textarea>
                             </div>
 
                             <!-- Trạng thái phòng -->
@@ -209,6 +209,74 @@
                         confirmButtonText: "OK"
                     });
                 }
+            });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            document.getElementById("editRoomForm").addEventListener("submit", function (event) {
+                event.preventDefault(); // Ngăn form submit ngay lập tức
+
+                let roomName = document.querySelector("input[name='roomName']").value.trim();
+                let minWeight = parseFloat(document.querySelector("input[name='minWeight']").value);
+                let maxWeight = parseFloat(document.querySelector("input[name='maxWeight']").value);
+                let quantity = parseInt(document.querySelector("input[name='quantity']").value);
+                let pricePerNight = parseFloat(document.querySelector("input[name='pricePerNight']").value);
+                let description = document.querySelector("textarea[name='description']").value.trim();
+                let petHotelImage = document.getElementById("editRoomImage").files.length;
+
+                // Kiểm tra tên phòng
+                if (roomName === "") {
+                    Swal.fire("Lỗi!", "Tên phòng không được để trống!", "error");
+                    return;
+                }
+
+                // Kiểm tra cân nặng
+                if (isNaN(minWeight) || minWeight <= 0) {
+                    Swal.fire("Lỗi!", "Cân nặng tối thiểu phải lớn hơn 0!", "error");
+                    return;
+                }
+
+                if (isNaN(maxWeight) || maxWeight <= 0) {
+                    Swal.fire("Lỗi!", "Cân nặng tối đa phải lớn hơn 0!", "error");
+                    return;
+                }
+
+                if (minWeight > maxWeight) {
+                    Swal.fire("Lỗi!", "Cân nặng tối thiểu phải nhỏ hơn hoặc bằng cân nặng tối đa!", "error");
+                    return;
+                }
+
+                // Kiểm tra số lượng
+                if (isNaN(quantity) || quantity < 1) {
+                    Swal.fire("Lỗi!", "Số lượng phải lớn hơn 0!", "error");
+                    return;
+                }
+
+                // Kiểm tra giá mỗi đêm
+                if (isNaN(pricePerNight) || pricePerNight < 1) {
+                    Swal.fire("Lỗi!", "Giá mỗi đêm phải lớn hơn 0 VNĐ!", "error");
+                    return;
+                }
+
+                // Kiểm tra mô tả
+                if (description === "") {
+                    Swal.fire("Lỗi!", "Mô tả không được để trống!", "error");
+                    return;
+                }
+
+                // Nếu tất cả hợp lệ, hiển thị xác nhận
+                Swal.fire({
+                    title: "Xác nhận!",
+                    text: "Bạn có chắc muốn lưu thay đổi phòng khách sạn này?",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonText: "Đồng ý",
+                    cancelButtonText: "Hủy"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        event.target.submit(); // Submit form nếu người dùng xác nhận
+                    }
+                });
             });
         </script>
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>

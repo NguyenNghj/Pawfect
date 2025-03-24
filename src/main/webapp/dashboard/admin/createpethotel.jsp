@@ -84,7 +84,7 @@
                             </ol>
                         </nav>
                     </div> 
-                                
+
                     <div class="mt-4 d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
                          style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
                         <i class="fa-solid fa-hotel fa-lg"></i>
@@ -108,13 +108,13 @@
                             <!-- Tên phòng -->
                             <div class="mb-3">
                                 <label for="roomName" class="form-label">Tên phòng</label>
-                                <input type="text" id="roomName" name="roomName" class="form-control" required>
+                                <input type="text" id="roomName" name="roomName" class="form-control" >
                             </div>
 
                             <!-- Loại phòng -->
                             <div class="mb-3">
                                 <label class="form-label">Loại phòng</label>
-                                <select class="form-select" name="roomType" required>
+                                <select class="form-select" name="roomType" >
                                     <option value="Chó">Chó</option>
                                     <option value="Mèo">Mèo</option>
                                 </select>
@@ -123,31 +123,31 @@
                             <!-- Cân nặng tối thiểu -->
                             <div class="mb-3">
                                 <label for="minWeight" class="form-label">Cân nặng tối thiểu (kg)</label>
-                                <input type="number" id="minWeight" name="minWeight" step="0.1" class="form-control" required min="0.1">
+                                <input type="number" id="minWeight" name="minWeight" step="0.1" class="form-control"  >
                             </div>
 
                             <!-- Cân nặng tối đa -->
                             <div class="mb-3">
                                 <label for="maxWeight" class="form-label">Cân nặng tối đa (kg)</label>
-                                <input type="number" id="maxWeight" name="maxWeight" step="0.1" class="form-control" required min="0.1">
+                                <input type="number" id="maxWeight" name="maxWeight" step="0.1" class="form-control" >
                             </div>
 
                             <!-- Số lượng -->
                             <div class="mb-3">
                                 <label for="quantity" class="form-label">Số lượng</label>
-                                <input type="number" id="quantity" name="quantity" class="form-control" required min="1">
+                                <input type="number" id="quantity" name="quantity" class="form-control" >
                             </div>
 
                             <!-- Giá mỗi đêm -->
                             <div class="mb-3">
                                 <label for="pricePerNight" class="form-label">Giá mỗi đêm (VNĐ)</label>
-                                <input type="number" id="pricePerNight" name="pricePerNight" step="0.01" class="form-control" required min="1">
+                                <input type="number" id="pricePerNight" name="pricePerNight" step="0.01" class="form-control" >
                             </div>
 
                             <!-- Mô tả -->
                             <div class="mb-3">
                                 <label for="description" class="form-label">Mô tả</label>
-                                <textarea class="form-control" id="description" name="description" rows="4" required></textarea>
+                                <textarea class="form-control" id="description" name="description" rows="4" ></textarea>
                             </div>
 
                             <!-- Nút hành động -->
@@ -204,7 +204,81 @@
                 }
             }
         </script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            document.getElementById("createpethotel").addEventListener("submit", function (event) {
+                event.preventDefault(); // Ngăn form submit ngay lập tức
 
+                let roomName = document.getElementById("roomName").value.trim();
+                let minWeight = parseFloat(document.getElementById("minWeight").value);
+                let maxWeight = parseFloat(document.getElementById("maxWeight").value);
+                let quantity = parseInt(document.getElementById("quantity").value);
+                let pricePerNight = parseFloat(document.getElementById("pricePerNight").value);
+                let description = document.getElementById("description").value.trim();
+                let petHotelImage = document.getElementById("petHotelImage").files.length;
+
+                // Kiểm tra ảnh
+                if (petHotelImage === 0) {
+                    Swal.fire("Lỗi!", "Vui lòng chọn một hình ảnh!", "error");
+                    return;
+                }
+
+                // Kiểm tra tên phòng
+                if (roomName === "") {
+                    Swal.fire("Lỗi!", "Tên phòng không được để trống!", "error");
+                    return;
+                }
+
+                // Kiểm tra cân nặng
+                if (isNaN(minWeight) || minWeight <= 0) {
+                    Swal.fire("Lỗi!", "Cân nặng tối thiểu phải lớn hơn 0!", "error");
+                    return;
+                }
+
+                if (isNaN(maxWeight) || maxWeight <= 0) {
+                    Swal.fire("Lỗi!", "Cân nặng tối đa phải lớn hơn 0!", "error");
+                    return;
+                }
+
+                if (minWeight > maxWeight) {
+                    Swal.fire("Lỗi!", "Cân nặng tối thiểu phải nhỏ hơn hoặc bằng cân nặng tối đa!", "error");
+                    return;
+                }
+
+
+                // Kiểm tra số lượng
+                if (isNaN(quantity) || quantity < 1) {
+                    Swal.fire("Lỗi!", "Số lượng phải lớn hơn 0!", "error");
+                    return;
+                }
+
+                // Kiểm tra giá
+                if (isNaN(pricePerNight) || pricePerNight < 1) {
+                    Swal.fire("Lỗi!", "Giá mỗi đêm phải lớn hơn 0 VNĐ!", "error");
+                    return;
+                }
+
+                // Kiểm tra mô tả
+                if (description === "") {
+                    Swal.fire("Lỗi!", "Mô tả không được để trống!", "error");
+                    return;
+                }
+
+                // Nếu tất cả hợp lệ, hiển thị xác nhận
+                Swal.fire({
+                    title: "Xác nhận!",
+                    text: "Bạn có chắc muốn thêm phòng khách sạn này?",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonText: "Đồng ý",
+                    cancelButtonText: "Hủy"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        event.target.submit(); // Submit form nếu người dùng xác nhận
+                    }
+                });
+            });
+        </script>
 
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
