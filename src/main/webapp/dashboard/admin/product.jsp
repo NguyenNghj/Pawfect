@@ -110,8 +110,6 @@
                                 </button>
                             </form>
                         </div>
-
-
                     </div>
 
                     <div class="row" style="margin-top: 20px; margin-bottom: 50px;">
@@ -122,6 +120,30 @@
                                 <h4 class="mb-0">Danh sách sản phẩm</h4>
                             </div>
                             <div style="padding: 15px 15px 25px 15px;">
+                                <div class="filter-section" style="margin-bottom: 15px;">
+                                    <ul class="nav nav-tabs" id="priceFilterTabs">
+                                        <li class="nav-item">
+                                            <a class="nav-link ${empty param.priceRange || param.priceRange == 'all' ? 'active' : ''}" 
+                                               href="javascript:filterProducts('all')" 
+                                               style="font-weight: bold; border-width: 2px;">Tất cả</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link ${param.priceRange == 'under100k' ? 'active' : ''}" 
+                                               href="javascript:filterProducts('under100k')" 
+                                               style="font-weight: bold; border-width: 2px;">Dưới 100,000đ</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link ${param.priceRange == '100kto300k' ? 'active' : ''}" 
+                                               href="javascript:filterProducts('100kto300k')" 
+                                               style="font-weight: bold; border-width: 2px;">100,000đ - 300,000đ</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link ${param.priceRange == 'over300k' ? 'active' : ''}" 
+                                               href="javascript:filterProducts('over300k')" 
+                                               style="font-weight: bold; border-width: 2px;">Trên 300,000đ</a>
+                                        </li>
+                                    </ul>
+                                </div>
                                 <table class="table">
                                     <thead>
                                         <tr>
@@ -162,7 +184,7 @@
                                                     <td>${product.categoryName}</td>
                                                     <td>${product.productName}</td>
                                                     <td>${product.productPetType}</td>
-                                                     <td><fmt:formatNumber value="${product.productPrice}" type="number" maxFractionDigits="0"/>đ</td>
+                                                    <td><fmt:formatNumber value="${product.productPrice}" type="number" maxFractionDigits="0"/>đ</td>
                                                     <td>${product.stock}</td>
                                                     <td>
                                                         <c:choose>
@@ -257,6 +279,20 @@
                         function updatePage(page) {
                             let urlParams = new URLSearchParams(window.location.search);
                             urlParams.set('page', page); // Cập nhật số trang
+                            window.location.search = urlParams.toString();
+                        }
+
+                        function filterProducts(priceRange) {
+                            // Lấy các tham số hiện tại từ URL
+                            let urlParams = new URLSearchParams(window.location.search);
+
+                            // Cập nhật hoặc thêm tham số priceRange
+                            urlParams.set('priceRange', priceRange);
+
+                            // Reset lại trang về 1 khi thay đổi bộ lọc
+                            urlParams.set('page', '1');
+
+                            // Chuyển hướng đến URL mới với các tham số đã cập nhật
                             window.location.search = urlParams.toString();
                         }
                     </script>

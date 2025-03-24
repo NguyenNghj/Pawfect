@@ -135,7 +135,6 @@
                                         <tr>
                                             <th scope="col">Id</th>
                                             <th scope="col">Mã Voucher</th>
-                                            <th scope="col">Mô tả</th>
                                             <th scope="col">Giảm giá (%)</th>
                                             <th scope="col">Số tiền giảm</th>
                                             <th scope="col">Giá trị đơn tối thiểu</th>
@@ -168,9 +167,26 @@
                                                 <tr>
                                                     <th scope="row">${voucher.voucherId}</th>
                                                     <td>${voucher.code}</td>
-                                                    <td>${voucher.description}</td>
-                                                    <td>${voucher.discountPercentage}%</td>
-                                                    <td><fmt:formatNumber value="${voucher.discountAmount}" type="number" maxFractionDigits="0"/>đ</td>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${voucher.discountPercentage == 0}">
+                                                                Giảm giá theo số tiền giảm
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                ${voucher.discountPercentage}%
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
+                                                    <td>
+                                                        <c:choose>
+                                                            <c:when test="${voucher.discountPercentage != 0}">
+                                                                Giảm giá theo phần trăm đơn hàng
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <fmt:formatNumber value="${voucher.discountAmount}" type="number" maxFractionDigits="0"/>đ
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </td>
                                                     <td><fmt:formatNumber value="${voucher.minOrderValue}" type="number" maxFractionDigits="0"/>đ</td>
                                                     <td><fmt:formatNumber value="${voucher.maxDiscount}" type="number" maxFractionDigits="0"/>đ</td>
                                                     <td>${voucher.startDate}</td>
