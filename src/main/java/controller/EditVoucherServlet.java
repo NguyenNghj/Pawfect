@@ -62,7 +62,7 @@ public class EditVoucherServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             // Lấy voucherId từ request
-            String voucherIdParam = request.getParameter("voucherId");
+            String voucherIdParam = request.getParameter("voucherId").trim();
 
             // Kiểm tra dữ liệu đầu vào
             if (voucherIdParam == null || voucherIdParam.trim().isEmpty() || !voucherIdParam.trim().matches("\\d+")) {
@@ -113,13 +113,13 @@ public class EditVoucherServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        String id = request.getParameter("voucherId");
+        String id = request.getParameter("voucherId").trim();
 
         try {
             // Lấy dữ liệu từ request
             String voucherIdParam = request.getParameter("voucherId");
-            String code = request.getParameter("code");
-            String description = request.getParameter("description");
+            String code = request.getParameter("code").trim();
+            String description = request.getParameter("description").trim();
             String discountPercentageParam = request.getParameter("discountPercentage");
             String discountAmountParam = request.getParameter("discountAmount");
             String minOrderValueParam = request.getParameter("minOrderValue");
@@ -137,6 +137,10 @@ public class EditVoucherServlet extends HttpServlet {
                     || startDateParam == null || startDateParam.trim().isEmpty()
                     || endDateParam == null || endDateParam.trim().isEmpty()) {
                 throw new IllegalArgumentException("Một số trường dữ liệu bị thiếu hoặc rỗng.");
+            }
+
+            if (!code.matches("^[a-zA-Z0-9-_]+$")) {
+                throw new IllegalArgumentException("Mã giảm giá chỉ được chứa chữ cái, số, dấu gạch ngang (-) và gạch dưới (_).");
             }
 
             // Kiểm tra voucherId hợp lệ

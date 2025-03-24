@@ -107,12 +107,12 @@ public class CreateProductServlet extends HttpServlet {
 
         try {
             // Nhận dữ liệu từ form
-            String productName = request.getParameter("productName");
-            String categoryIdStr = request.getParameter("categoryId");
-            String productPetType = request.getParameter("productPetType");
-            String productPriceStr = request.getParameter("productPrice");
-            String stockStr = request.getParameter("stock");
-            String description = request.getParameter("description");
+            String productName = request.getParameter("productName").trim();
+            String categoryIdStr = request.getParameter("categoryId").trim();
+            String productPetType = request.getParameter("productPetType").trim();
+            String productPriceStr = request.getParameter("productPrice").trim();
+            String stockStr = request.getParameter("stock").trim();
+            String description = request.getParameter("description").trim();
 
             // Kiểm tra rỗng
             if (Stream.of(productName, categoryIdStr, productPetType, productPriceStr, stockStr, description)

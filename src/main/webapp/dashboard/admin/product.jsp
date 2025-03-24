@@ -162,7 +162,7 @@
                                                     <td>${product.categoryName}</td>
                                                     <td>${product.productName}</td>
                                                     <td>${product.productPetType}</td>
-                                                    <td>${product.productPrice}</td>
+                                                     <td><fmt:formatNumber value="${product.productPrice}" type="number" maxFractionDigits="0"/>đ</td>
                                                     <td>${product.stock}</td>
                                                     <td>
                                                         <c:choose>

@@ -78,8 +78,8 @@ public class CreateVoucherServlet extends HttpServlet {
             request.setCharacterEncoding("UTF-8");
 
             // Nhận dữ liệu từ form
-            String code = request.getParameter("code");
-            String description = request.getParameter("description");
+            String code = request.getParameter("code").trim();
+            String description = request.getParameter("description").trim();
             String discountPercentageParam = request.getParameter("discountPercentage");
             String discountAmountParam = request.getParameter("discountAmount");
             String minOrderValueParam = request.getParameter("minOrderValue");
@@ -95,6 +95,10 @@ public class CreateVoucherServlet extends HttpServlet {
                     || startDateParam == null || startDateParam.trim().isEmpty()
                     || endDateParam == null || endDateParam.trim().isEmpty()) {
                 throw new IllegalArgumentException("Một số trường dữ liệu bị thiếu hoặc rỗng.");
+            }
+
+            if (!code.matches("^[a-zA-Z0-9-_]+$")) {
+                throw new IllegalArgumentException("Mã giảm giá chỉ được chứa chữ cái, số, dấu gạch ngang (-) và gạch dưới (_).");
             }
 
             // Kiểm tra giá trị số

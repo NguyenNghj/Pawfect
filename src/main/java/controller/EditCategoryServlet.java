@@ -64,7 +64,7 @@ public class EditCategoryServlet extends HttpServlet {
 
         try {
             // Lấy tham số categoryId từ request
-            String categoryIdStr = request.getParameter("categoryId");
+            String categoryIdStr = request.getParameter("categoryId").trim();
 
             // Kiểm tra nếu categoryId bị thiếu hoặc chỉ chứa khoảng trắng
             if (categoryIdStr == null || categoryIdStr.trim().isEmpty()) {

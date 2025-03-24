@@ -85,7 +85,7 @@ public class CreateCategoryServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             // Đọc dữ liệu từ request
-            String categoryName = request.getParameter("categoryName");
+            String categoryName = request.getParameter("categoryName").trim();
 
             // Kiểm tra nếu categoryName bị null hoặc rỗng
             if (categoryName == null || (categoryName = categoryName.trim()).isEmpty()) {
