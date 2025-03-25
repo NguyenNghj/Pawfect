@@ -85,12 +85,6 @@
                         </nav>
                     </div> 
 
-                    <div class="mt-4 d-flex justify-content-center align-items-center gap-3 main-dashboard-table-header"
-                         style="background-color: #8C6E63; color: white; border-top-left-radius: 6px; border-top-right-radius: 6px;">                                                 
-                        <i class="fa-solid fa-hotel fa-lg"></i>
-                        <h4 class="mb-0">Thêm phòng mới</h4>
-                    </div>
-
                     <div class="row pb-4" style="margin-top: 20px; margin-bottom: 50px;">
                         <form id="createpethotel" action="createpethotel" method="post" enctype="multipart/form-data">
                             <!-- Hình ảnh -->
@@ -223,18 +217,28 @@
                     return;
                 }
 
-                // Biểu thức kiểm tra ký tự đặc biệt (không cho phép ký tự đặc biệt ngoại trừ khoảng trắng)
-                let specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/;
+                // Biểu thức kiểm tra ký tự đặc biệt (không cho phép ký tự đặc biệt, chỉ cho phép chữ cái, số và khoảng trắng)
+                let specialCharPattern = /[^a-zA-Z0-9\s]/;
 
-                // Kiểm tra tên phòng (không chứa ký tự đặc biệt)
+                // Biểu thức kiểm tra có ít nhất một chữ cái
+                let hasLetterPattern = /[a-zA-Z]/;
+
+                // Kiểm tra tên phòng
                 if (roomName === "") {
                     Swal.fire("Lỗi!", "Tên phòng không được để trống!", "error");
                     return;
                 }
+
                 if (specialCharPattern.test(roomName)) {
                     Swal.fire("Lỗi!", "Tên phòng không được chứa ký tự đặc biệt!", "error");
                     return;
                 }
+
+                if (!hasLetterPattern.test(roomName)) {
+                    Swal.fire("Lỗi!", "Tên phòng không được là số!", "error");
+                    return;
+                }
+
 
                 // Kiểm tra cân nặng
                 if (isNaN(minWeight) || minWeight <= 0.9) {
@@ -264,13 +268,13 @@
                     Swal.fire("Lỗi!", "Giá mỗi đêm phải lớn hơn 50.000 VNĐ!", "error");
                     return;
                 }
-                
+
                 // Kiểm tra giá mỗi đêm
                 if (pricePerNight > 50000000) {
                     Swal.fire("Lỗi!", "Giá mỗi đêm phải nhỏ hơn 50.000.000 VNĐ!", "error");
                     return;
                 }
-                
+
                 // Kiểm tra mô tả
                 if (description === "") {
                     Swal.fire("Lỗi!", "Mô tả không được để trống!", "error");
@@ -292,7 +296,6 @@
                 });
             });
         </script>
-
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
