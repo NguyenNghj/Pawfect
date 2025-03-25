@@ -101,25 +101,37 @@ public class StaffAddServlet extends HttpServlet {
 
     if (fullName.isEmpty() || email.isEmpty() || password.isEmpty() || phone.isEmpty()) {
         request.setAttribute("errorMessage", "Vui lòng điền đầy đủ thông tin!");
-        request.getRequestDispatcher("createcategory.jsp").forward(request, response);
+        request.getRequestDispatcher("staffadd.jsp").forward(request, response);
         return;
     }
 
     if (!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
         request.setAttribute("errorMessage", "Email không hợp lệ!");
-        request.getRequestDispatcher("createcategory.jsp").forward(request, response);
+        request.getRequestDispatcher("staffadd.jsp").forward(request, response);
         return;
     }
+// Kiểm tra tên (chỉ cho phép chữ cái và dấu cách)
+if (!fullName.matches("^[\\p{L} ]+$")) {
+    request.setAttribute("errorMessage", "Tên không được chứa ký tự đặc biệt!");
+    request.getRequestDispatcher("staffadd.jsp").forward(request, response);
+    return;
+}
 
+// Kiểm tra địa chỉ (chỉ cho phép chữ, số, dấu cách, dấu phẩy, dấu chấm và gạch ngang)
+if (!address.matches("^[\\p{L}0-9 ,.-]+$")) {
+    request.setAttribute("errorMessage", "Địa chỉ không hợp lệ!");
+    request.getRequestDispatcher("staffadd.jsp").forward(request, response);
+    return;
+}
     if (password.length() < 6) {
-        request.setAttribute("errorMessage", "Mật khẩu phải có ít nhất 8 ký tự!");
-        request.getRequestDispatcher("createcategory.jsp").forward(request, response);
+        request.setAttribute("errorMessage", "Mật khẩu phải có ít nhất 6 ký tự!");
+        request.getRequestDispatcher("staffadd.jsp").forward(request, response);
         return;
     }
 
     if (!phone.matches("^[0-9]{10}$")) {
-        request.setAttribute("errorMessage", "Số điện thoại phải gồm 10 chữ số!");
-        request.getRequestDispatcher("createcategory.jsp").forward(request, response);
+        request.setAttribute("errorMessage", "Số điện thoại phải gồm 10 chữ số không có kí tự đặt biệt hoặc chữ!");
+        request.getRequestDispatcher("staffadd.jsp").forward(request, response);
         return;
     }
      // Xử lý ngày sinh và kiểm tra tuổi >= 16
@@ -130,7 +142,7 @@ public class StaffAddServlet extends HttpServlet {
         LocalDate birthLocalDate = birthDate.toLocalDate();
         int age = Period.between(birthLocalDate, LocalDate.now()).getYears();
 
-        if (age < 16) {
+        if (age < 18 && age>60) {
             request.setAttribute("errorMessage", "Nhân viên phải từ 16 tuổi trở lên!");
             request.getRequestDispatcher("staffadd.jsp").forward(request, response);
             return;
