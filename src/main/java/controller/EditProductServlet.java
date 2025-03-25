@@ -189,8 +189,8 @@ public class EditProductServlet extends HttpServlet {
             }
 
             // Kiểm tra định dạng tên sản phẩm
-            if (!productName.matches("^[a-zA-Z0-9\\sÀ-Ỹà-ỹ()\\-,.'’]+$")) {
-                throw new IllegalArgumentException("Tên sản phẩm không được chứa ký tự đặc biệt (chỉ cho phép chữ, số, dấu cách, dấu phẩy, dấu gạch ngang, dấu chấm và dấu nháy đơn).");
+            if (!productName.matches("^[a-zA-Z0-9\\sÀ-Ỹà-ỹ()\\-,.'’]*[a-zA-ZÀ-Ỹà-ỹ]+[a-zA-Z0-9\\sÀ-Ỹà-ỹ()\\-,.'’]*$")) {
+                throw new IllegalArgumentException("Tên sản phẩm phải chứa ít nhất một chữ cái và chỉ cho phép chữ, số, dấu cách, dấu phẩy, dấu gạch ngang, dấu chấm và dấu nháy đơn.");
             }
 
             boolean productActive = stock > 0 && Boolean.parseBoolean(request.getParameter("productActive"));

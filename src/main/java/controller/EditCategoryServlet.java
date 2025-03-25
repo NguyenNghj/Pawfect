@@ -12,9 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 import model.Category;
-import model.Product;
 
 /**
  *
@@ -118,13 +116,9 @@ public class EditCategoryServlet extends HttpServlet {
             throws ServletException, IOException {
         CategoryDAO categoryDAO = new CategoryDAO();
         ProductDAO productDAO = new ProductDAO();
-        String id = request.getParameter("categoryId");
-        try {
-            // Lấy dữ liệu từ request
-            String categoryIdStr = request.getParameter("categoryId");
-            String categoryName = request.getParameter("categoryName");
-            String activeStr = request.getParameter("isActive");
+        String categoryIdStr = request.getParameter("categoryId");
 
+        try {
             // Kiểm tra nếu categoryIdStr rỗng hoặc không hợp lệ
             if (categoryIdStr == null || categoryIdStr.trim().isEmpty()) {
                 throw new IllegalArgumentException("Thiếu ID danh mục.");
@@ -134,13 +128,14 @@ public class EditCategoryServlet extends HttpServlet {
             try {
                 categoryId = Integer.parseInt(categoryIdStr.trim());
                 if (categoryId <= 0) {
-                    throw new NumberFormatException("ID danh mục phải là số nguyên dương.");
+                    throw new NumberFormatException();
                 }
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("ID danh mục không hợp lệ. Vui lòng nhập số nguyên dương.");
             }
 
-            // Kiểm tra categoryName không rỗng và không chứa ký tự đặc biệt
+            // Lấy và kiểm tra categoryName
+            String categoryName = request.getParameter("categoryName");
             if (categoryName == null || (categoryName = categoryName.trim()).isEmpty()) {
                 throw new IllegalArgumentException("Tên danh mục không được để trống.");
             }
@@ -149,21 +144,14 @@ public class EditCategoryServlet extends HttpServlet {
                 throw new IllegalArgumentException("Tên danh mục không được quá 255 ký tự.");
             }
 
-            if (!categoryName.matches("^[a-zA-Z0-9\\sÀ-Ỹà-ỹ_-]+$")) {
-                throw new IllegalArgumentException("Tên danh mục không được chứa kí tự đặc biệt.");
+            // Kiểm tra categoryName chỉ chứa chữ cái và khoảng trắng ở giữa (có hỗ trợ tiếng Việt, không chứa số hay ký tự đặc biệt)
+            if (!categoryName.matches("^[a-zA-ZÀ-Ỹà-ỹ]+(\\s[a-zA-ZÀ-Ỹà-ỹ]+)*$")) {
+                throw new IllegalArgumentException("Tên danh mục chỉ được chứa chữ cái và khoảng trắng ở giữa!");
             }
 
-            // Kiểm tra categoryName không chỉ toàn số (phải chứa ít nhất một chữ cái)  
-            if (!categoryName.matches(".*[a-zA-ZÀ-Ỹà-ỹ].*")) {
-                throw new IllegalArgumentException("Tên danh mục phải chứa ít nhất một chữ cái.");
-            }
-
-            // Kiểm tra activeStr hợp lệ
-            if (activeStr == null || (!activeStr.equalsIgnoreCase("true") && !activeStr.equalsIgnoreCase("false"))) {
-                throw new IllegalArgumentException("Trạng thái danh mục không hợp lệ.");
-            }
-
-            boolean active = Boolean.parseBoolean(activeStr);
+            // Lấy và kiểm tra trạng thái isActive
+            String activeStr = request.getParameter("isActive");
+            boolean active = "true".equalsIgnoreCase(activeStr) || "on".equalsIgnoreCase(activeStr);
 
             // Cập nhật danh mục
             boolean updateSuccess = categoryDAO.updateCategory(categoryId, categoryName, active);
@@ -178,13 +166,12 @@ public class EditCategoryServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/dashboard/admin/category");
 
         } catch (IllegalArgumentException e) {
-            // Xử lý lỗi dữ liệu không hợp lệ
             request.getSession().setAttribute("errorMessage", e.getMessage());
-            response.sendRedirect(request.getContextPath() + "/dashboard/admin/editcategory?categoryId=" + id);
+            response.sendRedirect(request.getContextPath() + "/dashboard/admin/editcategory?categoryId=" + categoryIdStr);
 
         } catch (Exception e) {
             e.printStackTrace();
-            request.getSession().setAttribute("errorMessage", "Lỗi không xác định: " + e.getMessage());
+            request.getSession().setAttribute("errorMessage", "Đã xảy ra lỗi hệ thống. Vui lòng thử lại sau!");
             response.sendRedirect(request.getContextPath() + "/dashboard/admin/category");
         }
     }

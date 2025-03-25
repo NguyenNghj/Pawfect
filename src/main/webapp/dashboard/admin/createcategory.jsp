@@ -101,7 +101,7 @@
 
                             <div class="mb-3">
                                 <label for="categoryName" class="form-label">Tên danh mục</label>
-                                <input type="text" class="form-control" name="categoryName" required>
+                                <input type="text" class="form-control" name="categoryName">
                             </div>
 
                             <div class="mb-3">

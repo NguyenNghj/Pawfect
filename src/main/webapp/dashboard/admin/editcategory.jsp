@@ -104,7 +104,7 @@
 
                             <div class="mb-3">
                                 <label for="editCategoryName" class="form-label">Tên danh mục</label>
-                                <input type="text" class="form-control" name="categoryName" value="${category.categoryName}" required>
+                                <input type="text" class="form-control" name="categoryName" value="${category.categoryName}">
                             </div>
 
                             <div class="mb-3">

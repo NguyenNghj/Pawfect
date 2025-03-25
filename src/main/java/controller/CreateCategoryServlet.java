@@ -11,7 +11,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.regex.Pattern;
 import model.Category;
 
 /**
@@ -94,13 +93,6 @@ public class CreateCategoryServlet extends HttpServlet {
                 return;
             }
 
-            // Kiểm tra nếu categoryName chỉ chứa khoảng trắng
-            if (categoryName.replaceAll("\\s", "").isEmpty()) {
-                request.getSession().setAttribute("errorMessage", "Tên danh mục không hợp lệ!");
-                response.sendRedirect(request.getContextPath() + "/dashboard/admin/createcategory");
-                return;
-            }
-
             // Kiểm tra độ dài categoryName (giới hạn 255 ký tự)
             if (categoryName.length() > 255) {
                 request.getSession().setAttribute("errorMessage", "Tên danh mục không được quá 255 ký tự!");
@@ -108,17 +100,10 @@ public class CreateCategoryServlet extends HttpServlet {
                 return;
             }
 
-            // Kiểm tra ký tự đặc biệt (cho phép chữ, số, khoảng trắng, dấu gạch ngang (-), dấu gạch dưới (_), có hỗ trợ tiếng Việt)
-            if (!categoryName.matches("^[a-zA-Z0-9\\sÀ-Ỹà-ỹ_-]+$")) {
-                request.getSession().setAttribute("errorMessage", "Tên danh mục không được chứa kí tự đặc biệt!");
+            // Kiểm tra categoryName chỉ chứa chữ cái và khoảng trắng ở giữa (có hỗ trợ tiếng Việt, không chứa số hay ký tự đặc biệt)
+            if (!categoryName.matches("^[a-zA-ZÀ-Ỹà-ỹ]+(\\s[a-zA-ZÀ-Ỹà-ỹ]+)*$")) {
+                request.getSession().setAttribute("errorMessage", "Tên danh mục chỉ được chứa chữ cái và khoảng trắng ở giữa!");
                 request.getRequestDispatcher("/dashboard/admin/createcategory.jsp").forward(request, response);
-                return;
-            }
-
-            // Kiểm tra categoryName không chỉ toàn số (phải có ít nhất một chữ cái)
-            if (!categoryName.matches(".*[a-zA-ZÀ-Ỹà-ỹ].*")) {
-                    request.getSession().setAttribute("errorMessage", "Tên danh mục phải chứa ít nhất một chữ cái!");
-                response.sendRedirect(request.getContextPath() + "/dashboard/admin/createcategory");
                 return;
             }
 

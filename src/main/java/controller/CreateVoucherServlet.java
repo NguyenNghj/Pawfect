@@ -97,8 +97,8 @@ public class CreateVoucherServlet extends HttpServlet {
                 throw new IllegalArgumentException("Một số trường dữ liệu bị thiếu hoặc rỗng.");
             }
 
-            if (!code.matches("^[a-zA-Z0-9]+$")) {
-                throw new IllegalArgumentException("Mã giảm giá chỉ được chứa chữ cái và số.");
+            if (!code.matches("^(?=.*[a-zA-Z])[a-zA-Z0-9]+$")) {
+                throw new IllegalArgumentException("Mã giảm giá phải chứa ít nhất một chữ cái và chỉ được chứa chữ cái và số.");
             }
 
             // Kiểm tra giá trị số
