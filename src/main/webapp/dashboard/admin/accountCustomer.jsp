@@ -153,11 +153,6 @@
                                                 <button class="btn btn-primary" onclick="confirmUnban('<%= customer.getCustomerId()%>')">Mở</button>
                                                 <% }%>
 
-                                                <!-- Nút gửi mã giảm giá -->
-                                                <form action="sendvoucher" method="post">
-                                                    <input type="hidden" name="customerId" value="<%= customer.getCustomerId()%>">
-                                                    <button type="submit" class="btn btn-success">Gửi Voucher</button>
-                                                </form>
                                                 <% } else { %>
                                                 <span class="text-muted">Không có quyền</span>
                                                 <% } %>
@@ -227,43 +222,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="sendVoucherModal" tabindex="-1" aria-labelledby="sendVoucherModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="sendVoucherModalLabel">Gửi Mã Giảm Giá</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="sendVoucherForm" action="sendvoucher" method="post">
-                            <input type="hidden" name="customerId" id="customerIdInput">
 
-                            <div class="mb-3">
-                                <label for="voucherCode" class="form-label">Chọn Voucher:</label>
-                                <select class="form-control" id="voucherCode" name="voucherCode" required>
-                                    <option value="">-- Chọn voucher --</option>
-                                    <c:forEach var="voucher" items="${vouchers}">
-                                        <option value="${voucher.code}">
-                                            ${voucher.code} - 
-                                            <c:choose>
-                                                <c:when test="${voucher.discountAmount > 0}">
-                                                    Giảm ${voucher.discountAmount}đ
-                                                </c:when>
-                                                <c:when test="${voucher.discountPercentage > 0}">
-                                                    Giảm ${voucher.discountPercentage}%
-                                                </c:when>
-                                            </c:choose>
-                                        </option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-
-                            <button type="submit" class="btn btn-primary w-100">Gửi Voucher</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
         <script>
             function confirmBan(customerId) {
                 Swal.fire({
