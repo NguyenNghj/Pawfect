@@ -12,88 +12,93 @@
         <link rel="stylesheet" href="./css/bookingforcustomer.css">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
         <script>
-            function setMinDateTime() {
-                let now = new Date();
-                now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); // Điều chỉnh múi giờ
-                let minDateTime = now.toISOString().slice(0, 16);
+            document.addEventListener("DOMContentLoaded", function () {
+                const checkInInput = document.getElementById("checkIn");
+                const checkOutInput = document.getElementById("checkOut");
+                const petSelect = document.getElementById("petId");
+                const pricePerNightInput = document.getElementById("pricePerNight");
+                const totalPriceInput = document.getElementById("totalPrice");
+                const totalPriceHidden = document.getElementById("totalPriceHidden");
 
-                document.getElementById("checkIn").min = minDateTime;
-                document.getElementById("checkOut").min = minDateTime;
-            }
+                function setMinDateTime() {
+                    let now = new Date();
+                    now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); // Điều chỉnh múi giờ
+                    let minDateTime = now.toISOString().slice(0, 16);
 
-            function updateCheckOutMin() {
-                let checkIn = document.getElementById("checkIn").value;
-                if (checkIn) {
-                    document.getElementById("checkOut").min = checkIn;
-                }
-            }
-            function checkPetSelected() {
-                let petSelect = document.getElementById("petId");
-                if (!petSelect || petSelect.value === "") {
-                    showAlert("Vui lòng thêm thú cưng trước khi đặt phòng!");
-                    return false;
-                }
-                return true;
-            }
-
-            function validateCheckInOut() {
-                let checkIn = document.getElementById("checkIn").value;
-                let checkOut = document.getElementById("checkOut").value;
-                let now = new Date();
-
-                if (!checkIn) {
-                    showAlert("Vui lòng chọn ngày check-in!");
-                    return false;
+                    checkInInput.min = minDateTime;
+                    checkOutInput.min = minDateTime;
                 }
 
-                let dateIn = new Date(checkIn);
-                if (dateIn < now) {
-                    showAlert("Vui lòng chọn thời gian check-in từ thời điểm hiện tại trở đi.");
-
-                    document.getElementById("checkIn").value = "";
-                    return false;
-                }
-
-
-                let dateOut = new Date(checkOut);
-                if (dateOut <= dateIn) {
-                    showAlert("Thời gian check-out phải sau check-in!");
-                    document.getElementById("checkOut").value = "";
-                    return false;
-                }
-
-                return true;
-            }
-
-            function calculateTotalPrice() {
-                if (!validateCheckInOut())
-                    return;
-
-                const checkIn = document.getElementById("checkIn").value;
-                const checkOut = document.getElementById("checkOut").value;
-                const pricePerNight = parseFloat(document.getElementById("pricePerNight").value);
-
-                if (checkIn && checkOut) {
-                    const dateIn = new Date(checkIn);
-                    const dateOut = new Date(checkOut);
-                    const timeDiff = dateOut - dateIn;
-                    const days = timeDiff / (1000 * 60 * 60 * 24);
-
-                    if (days > 0) {
-                        let total = days * pricePerNight;
-                        document.getElementById("totalPrice").value = total.toLocaleString('vi-VN');
-                        document.getElementById("totalPriceHidden").value = total;
+                function updateCheckOutMin() {
+                    if (checkInInput.value) {
+                        checkOutInput.min = checkInInput.value;
                     }
                 }
-            }
-            function showAlert(message) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Thông tin chưa hợp lệ!",
-                    text: message
-                });
-            }
-            window.onload = setMinDateTime;
+
+                function checkPetSelected() {
+                    if (!petSelect || !petSelect.value) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Lỗi!",
+                            text: "Vui lòng chọn thú cưng trước khi đặt phòng!"
+                        });
+                        return false;
+                    }
+                    return true;
+                }
+
+                function validateCheckInOut() {
+                    let checkIn = new Date(checkInInput.value);
+                    let checkOut = new Date(checkOutInput.value);
+                    let now = new Date();
+
+                    if (isNaN(checkIn)) {
+                        Swal.fire("Lỗi!", "Vui lòng chọn ngày Check-in!", "error");
+                        return false;
+                    }
+
+                    if (checkIn < now) {
+                        Swal.fire("Lỗi!", "Ngày Check-in không được nhỏ hơn hiện tại!", "error");
+                        return false;
+                    }
+
+                    if (checkOut <= checkIn) {
+                        Swal.fire("Lỗi!", "Ngày Check-out phải sau Check-in!", "error");
+                        return false;
+                    }
+
+                    return true;
+                }
+
+                function calculateTotalPrice() {
+                    if (!validateCheckInOut())
+                        return;
+
+                    let checkIn = new Date(checkInInput.value);
+                    let checkOut = new Date(checkOutInput.value);
+                    let pricePerNight = parseFloat(pricePerNightInput.value) || 0;
+
+                    if (isNaN(checkIn) || isNaN(checkOut) || checkOut <= checkIn) {
+                        totalPriceInput.value = "";
+                        totalPriceHidden.value = "";
+                        return;
+                    }
+
+                    let diffDays = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24)); // Số ngày
+                    let totalPrice = diffDays * pricePerNight;
+
+                    totalPriceInput.value = totalPrice.toLocaleString("vi-VN");
+                    totalPriceHidden.value = totalPrice;
+                }
+
+                window.validateCheckInOut = validateCheckInOut;
+                window.checkPetSelected = checkPetSelected;
+                window.updateCheckOutMin = updateCheckOutMin;
+                window.calculateTotalPrice = calculateTotalPrice;
+
+                window.onload = setMinDateTime;
+            });
+
         </script>
     </head>
     <body>
@@ -137,12 +142,13 @@
 
                     <div class="form-group">
                         <label for="checkIn">Check-in:</label>
-                        <input type="datetime-local" name="checkIn" id="checkIn" required onchange="updateCheckOutMin(); calculateTotalPrice();">
+                        <input type="datetime-local" name="checkIn" id="checkIn" onchange="updateCheckOutMin();
+                                calculateTotalPrice();">
                     </div>
 
                     <div class="form-group">
                         <label for="checkOut">Check-out:</label>
-                        <input type="datetime-local" name="checkOut" id="checkOut" required onchange="calculateTotalPrice();">
+                        <input type="datetime-local" name="checkOut" id="checkOut" required="" onchange="calculateTotalPrice();">
                     </div>
 
 
@@ -160,7 +166,7 @@
 
                             </c:when>
                             <c:otherwise>
-                                <select name="petId" id="petId" required onchange="checkPetStatus();">
+                                <select name="petId" id="petId" onchange="checkPetStatus();">
                                     <option value="" disabled selected>Chọn thú cưng của bạn</option> <!-- Option mặc định -->
                                     <c:forEach var="pet" items="${petList}">
                                         <option value="${pet.petId}" data-status="${petStatusMap[pet.petId]}">

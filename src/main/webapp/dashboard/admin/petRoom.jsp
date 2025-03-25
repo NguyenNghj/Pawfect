@@ -133,7 +133,7 @@
                                 <table class="table table-hover">
                                     <thead class="table" style="text-align: center; vertical-align: middle; padding: 12px; font-weight: bold;">
                                         <tr>
-                                            <th scope="col">Hình ảnh</th>
+                                            <th scope="col" style="width: 12%;">Hình ảnh</th>
                                             <th scope="col">Tên phòng</th>
                                             <th scope="col">Loại</th>
                                             <th scope="col">Min (kg)</th>

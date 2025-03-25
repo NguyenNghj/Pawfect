@@ -115,6 +115,28 @@
                                                         });
                                                     });
                 </script>-->
+        <script>
+                                            document.addEventListener("DOMContentLoaded", function () {
+                                                const descriptions = document.querySelectorAll(".room-description");
+
+                                                descriptions.forEach(desc => {
+                                                    let text = desc.innerHTML;
+                                                    let iconPattern = /(🐶|🐱|🌞|✨|👑|🏡|🛏️|🎾|🧸|☀️|🌳|🍖|🥩|💕|💖|💎|🛁|⏰|🍽️)/g;
+                                                    let firstMatch = true;
+
+                                                    text = text.replace(iconPattern, (match) => {
+                                                        if (firstMatch) {
+                                                            firstMatch = false;
+                                                            return match; // Giữ nguyên icon đầu tiên
+                                                        }
+                                                        return "<br>" + match; // Thêm xuống dòng từ icon thứ hai trở đi
+                                                    });
+
+                                                    desc.innerHTML = text;
+                                                });
+                                            });
+
+        </script>
         <script src="./js/pethotel.js"></script>
 
     </body>
