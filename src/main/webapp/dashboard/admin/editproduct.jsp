@@ -173,24 +173,6 @@
                         </form>
 
                         <script>
-                            document.getElementById("editProductForm").addEventListener("submit", function (event) {
-                                event.preventDefault();
-                                Swal.fire({
-                                    title: "Đang xử lý...",
-                                    text: "Vui lòng chờ trong giây lát.",
-                                    allowOutsideClick: false,
-                                    didOpen: () => {
-                                        Swal.showLoading();
-                                    }
-                                });
-
-                                setTimeout(() => {
-                                    event.target.submit();
-                                }, 2000);
-                            });
-                        </script>
-
-                        <script>
                             function previewFile() {
                                 const fileInput = document.getElementById('editProductImage');
                                 const previewImage = document.getElementById('previewImage');
