@@ -44,7 +44,8 @@ public class CustomerFillter implements Filter {
                 || path.startsWith(contextPath + "/register")
                 || path.startsWith(contextPath + "/pawfect")
                 || path.startsWith(contextPath + "/forgetpassword")
-                || path.startsWith(contextPath + "/verify")) {
+                || path.startsWith(contextPath + "/verify")
+                || path.startsWith(contextPath + "/aboutus")) {
             
             if (path.startsWith(contextPath + "/login")) {
                 Cookie[] cookies = req.getCookies();
