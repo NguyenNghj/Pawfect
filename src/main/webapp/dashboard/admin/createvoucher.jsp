@@ -100,42 +100,42 @@
 
                             <div class="mb-3">
                                 <label for="voucherCode" class="form-label">Mã giảm giá</label>
-                                <input type="text" class="form-control" name="code" required>
+                                <input class="form-control" name="code">
                             </div>
 
                             <div class="mb-3">
                                 <label for="voucherDescription" class="form-label">Mô tả</label>
-                                <textarea class="form-control" name="description" rows="3" required></textarea>
+                                <textarea class="form-control" name="description" rows="3"></textarea>
                             </div>
 
                             <div class="mb-3">
                                 <label for="discountPercentage" class="form-label">Phần trăm giảm giá</label>
-                                <input type="number" class="form-control" name="discountPercentage" min="0" max="100" required>
+                                <input class="form-control" name="discountPercentage" min="0" max="100">
                             </div>
 
                             <div class="mb-3">
                                 <label for="discountAmount" class="form-label">Số tiền giảm giá</label>
-                                <input type="number" class="form-control" name="discountAmount" min="0" required>
+                                <input class="form-control" name="discountAmount" min="0">
                             </div>
 
                             <div class="mb-3">
                                 <label for="minOrderValue" class="form-label">Giá trị đơn hàng tối thiểu</label>
-                                <input type="number" class="form-control" name="minOrderValue" min="0" required>
+                                <input class="form-control" name="minOrderValue" min="0">
                             </div>
 
                             <div class="mb-3">
                                 <label for="maxDiscount" class="form-label">Giảm giá tối đa</label>
-                                <input type="number" class="form-control" name="maxDiscount" min="0" required>
+                                <input class="form-control" name="maxDiscount" min="0">
                             </div>
 
                             <div class="mb-3">
                                 <label for="startDate" class="form-label">Ngày bắt đầu</label>
-                                <input type="datetime-local" class="form-control" name="startDate" required>
+                                <input type="datetime-local" class="form-control" name="startDate">
                             </div>
 
                             <div class="mb-3">
                                 <label for="editEndDate" class="form-label">Ngày kết thúc</label>
-                                <input type="datetime-local" class="form-control" id="editEndDate" name="endDate" value="${voucher.endDate}" required>
+                                <input type="datetime-local" class="form-control" id="editEndDate" name="endDate" value="${voucher.endDate}">
                             </div>
                             <div class="mb-3">
                                 <label for="editVoucherActive" class="form-label">Trạng thái</label>
