@@ -131,6 +131,26 @@
         <%@include file="./components/footer.jsp" %>
     </body>
     <script>
+    document.querySelector("form").addEventListener("submit", function (event) {
+        event.preventDefault(); // Ngăn form gửi ngay lập tức
+
+        Swal.fire({
+            title: "Xác nhận đổi mật khẩu?",
+            text: "Bạn có chắc chắn muốn đổi mật khẩu không?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Đồng ý",
+            cancelButtonText: "Hủy"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                event.target.submit(); // Nếu nhấn "Đồng ý" thì submit form
+            }
+        });
+    });
+</script>
+    <script>
                         function validatePasswordForm() {
                             let isValid = true;
 
@@ -170,9 +190,7 @@
                             }
 
                             // Nếu tất cả hợp lệ, hiển thị hộp thoại xác nhận
-                            if (isValid) {
-                                return confirm("Bạn có chắc chắn muốn đổi mật khẩu không?");
-                            }
+                         
 
                             return false;
                         }
