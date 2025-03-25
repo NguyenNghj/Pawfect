@@ -121,8 +121,8 @@ public class CreateProductServlet extends HttpServlet {
             }
 
             // Kiểm tra tên sản phẩm không chứa ký tự đặc biệt (cho phép dấu cách)
-            if (!productName.matches("^[a-zA-Z0-9\\sÀ-Ỹà-ỹ()\\-,.'’]+$")) {
-                throw new IllegalArgumentException("Tên sản phẩm không được chứa ký tự đặc biệt (chỉ cho phép chữ, số, dấu cách, dấu phẩy, dấu gạch ngang, dấu chấm và dấu nháy đơn).");
+            if (!productName.matches("^[a-zA-Z0-9\\sÀ-Ỹà-ỹ()\\-,.'’]*[a-zA-ZÀ-Ỹà-ỹ]+[a-zA-Z0-9\\sÀ-Ỹà-ỹ()\\-,.'’]*$")) {
+                throw new IllegalArgumentException("Tên sản phẩm phải chứa ít nhất một chữ cái và chỉ cho phép chữ, số, dấu cách, dấu phẩy, dấu gạch ngang, dấu chấm và dấu nháy đơn.");
             }
 
             // Kiểm tra kiểu dữ liệu
