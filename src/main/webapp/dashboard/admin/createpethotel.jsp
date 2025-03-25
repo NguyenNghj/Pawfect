@@ -223,19 +223,26 @@
                     return;
                 }
 
-                // Kiểm tra tên phòng
+                // Biểu thức kiểm tra ký tự đặc biệt (không cho phép ký tự đặc biệt ngoại trừ khoảng trắng)
+                let specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/;
+
+                // Kiểm tra tên phòng (không chứa ký tự đặc biệt)
                 if (roomName === "") {
                     Swal.fire("Lỗi!", "Tên phòng không được để trống!", "error");
                     return;
                 }
+                if (specialCharPattern.test(roomName)) {
+                    Swal.fire("Lỗi!", "Tên phòng không được chứa ký tự đặc biệt!", "error");
+                    return;
+                }
 
                 // Kiểm tra cân nặng
-                if (isNaN(minWeight) || minWeight <= 1) {
+                if (isNaN(minWeight) || minWeight <= 0.9) {
                     Swal.fire("Lỗi!", "Cân nặng tối thiểu phải lớn hơn 1!", "error");
                     return;
                 }
 
-                if (isNaN(maxWeight) || maxWeight <= 1) {
+                if (isNaN(maxWeight) || maxWeight <= 0.9) {
                     Swal.fire("Lỗi!", "Cân nặng tối đa phải lớn hơn 1!", "error");
                     return;
                 }
@@ -253,11 +260,17 @@
                 }
 
                 // Kiểm tra giá
-                if (isNaN(pricePerNight) || pricePerNight < 1) {
-                    Swal.fire("Lỗi!", "Giá mỗi đêm phải lớn hơn 0 VNĐ!", "error");
+                if (isNaN(pricePerNight) || pricePerNight < 50000) {
+                    Swal.fire("Lỗi!", "Giá mỗi đêm phải lớn hơn 50.000 VNĐ!", "error");
                     return;
                 }
-
+                
+                // Kiểm tra giá mỗi đêm
+                if (pricePerNight > 50000000) {
+                    Swal.fire("Lỗi!", "Giá mỗi đêm phải nhỏ hơn 50.000.000 VNĐ!", "error");
+                    return;
+                }
+                
                 // Kiểm tra mô tả
                 if (description === "") {
                     Swal.fire("Lỗi!", "Mô tả không được để trống!", "error");

@@ -259,9 +259,15 @@
                     return;
                 }
 
+                // Kiểm tra giá
+                if (isNaN(pricePerNight) || pricePerNight < 50000) {
+                    Swal.fire("Lỗi!", "Giá mỗi đêm phải lớn hơn 50.000 VNĐ!", "error");
+                    return;
+                }
+                
                 // Kiểm tra giá mỗi đêm
-                if (isNaN(pricePerNight) || pricePerNight < 1) {
-                    Swal.fire("Lỗi!", "Giá mỗi đêm phải lớn hơn 0 VNĐ!", "error");
+                if (pricePerNight > 50000000) {
+                    Swal.fire("Lỗi!", "Giá mỗi đêm phải nhỏ hơn 50.000.000 VNĐ!", "error");
                     return;
                 }
 

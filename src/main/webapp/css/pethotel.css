@@ -227,6 +227,7 @@ h5 {
 .pethotel-card:hover {
     background-color: #8C6E63;
     transition: all 0.4s ease-in-out;
+    transform: scale(1.1);
 }
 
 /* Khi .pethotel-card hover thì các phần tử con cũng thay đổi */

@@ -13,7 +13,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Danh sách phòng cho thú cưng</title>
-        <link rel="stylesheet" href="./css/pethotel.css">
+        <link rel="stylesheet" href="./css/pethotel.css?v=123456">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
     </head>
     <body>
@@ -49,7 +49,7 @@
                     <c:when test="${not empty requestScope.roomList}">
                         <c:forEach var="room" items="${requestScope.roomList}">
                             <div class="pethotel-card">
-                                <img src="<%= request.getContextPath()%>/img/pethotel/${room.roomImage}" alt="${room.roomName}" 
+                                <img src="<%= request.getContextPath()%>/img/pethotel/${room.roomImage}" alt="${room.roomName}" style="cursor: pointer;" 
                                      onclick="window.location.href = 'pethoteldetail?id=${room.roomId}'">
                                 <div class="pethotel-name">${room.roomName}</div>
                                 <div class="pethotel-type">Dành cho ${room.roomType}</div>

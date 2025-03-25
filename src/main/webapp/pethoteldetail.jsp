@@ -18,7 +18,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Phòng ${room.roomName} dành cho ${room.roomType}</title>
-        <link rel="stylesheet" href="./css/pethoteldetail.css">
+        <link rel="stylesheet" href="./css/pethoteldetail.css?v=123456">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     </head>
@@ -71,7 +71,7 @@
                             <c:when test="${not empty similarRooms}">
                                 <c:forEach var="similarRoom" items="${similarRooms}">
                                     <div class="pethotel-card">
-                                        <img src="<%= request.getContextPath()%>/img/pethotel/${similarRoom.roomImage}" alt="${similarRoom.roomName}" onclick="window.location.href = 'pethoteldetail?id=${similarRoom.roomId}'">
+                                        <img style="cursor: pointer;" src="<%= request.getContextPath()%>/img/pethotel/${similarRoom.roomImage}" alt="${similarRoom.roomName}"  onclick="window.location.href = 'pethoteldetail?id=${similarRoom.roomId}'">
                                         <div class="pethotel-name">${similarRoom.roomName}</div>
                                         <div class="pethotel-type">Dành cho ${similarRoom.roomType}</div>
                                         <div class="pethotel-price">
