@@ -188,7 +188,8 @@ public class EditProductServlet extends HttpServlet {
             boolean productActive = (stock != 0) && Boolean.parseBoolean(request.getParameter("productActive"));
 
             // Xử lý đường dẫn lưu ảnh
-            String realPath = request.getServletContext().getRealPath("/img/products");
+            String[] context = request.getServletContext().getRealPath("").split("target");
+            String realPath = context[0] + "src" + File.separator + "main" + File.separator + "webapp" + File.separator + "img" + File.separator + "products";
 
             File uploadDir = new File(realPath);
             if (!uploadDir.exists()) {

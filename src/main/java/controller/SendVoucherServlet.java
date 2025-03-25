@@ -12,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -82,57 +83,89 @@ public class SendVoucherServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setCharacterEncoding("UTF-8");
-
-        String customerIdsParam = request.getParameter("customerIds");
-        String voucherCode = request.getParameter("voucherCode");
-
-        if (customerIdsParam == null || customerIdsParam.trim().isEmpty()
-                || voucherCode == null || voucherCode.trim().isEmpty()) {
-            request.getSession().setAttribute("errorMessage", "Vui lòng chọn ít nhất một khách hàng và voucher.");
-            response.sendRedirect(request.getContextPath() + "/dashboard/staff/viewcustomersforStaff");
-            return;
-        }
-
         try {
-            // Chuyển danh sách ID khách hàng
-            List<Integer> customerIds = Arrays.stream(customerIdsParam.split(","))
-                    .map(String::trim)
-                    .filter(s -> !s.isEmpty())
-                    .map(Integer::parseInt)
-                    .collect(Collectors.toList());
-            if (customerIds.isEmpty()) {
-                throw new IllegalArgumentException("Danh sách khách hàng không hợp lệ.");
+            request.setCharacterEncoding("UTF-8");
+
+            // Nhận dữ liệu từ request
+            String customerIdsParam = request.getParameter("customerIds");
+            String voucherCode = request.getParameter("voucherCode");
+
+            // Kiểm tra trường bắt buộc
+            if (customerIdsParam == null || customerIdsParam.trim().isEmpty()
+                    || voucherCode == null || voucherCode.trim().isEmpty()) {
+                throw new IllegalArgumentException("Vui lòng chọn ít nhất một khách hàng và nhập mã voucher.");
             }
 
-            // Truy vấn voucher một lần
+            // Kiểm tra định dạng mã voucher (ví dụ: chỉ chứa chữ cái và số)
+            if (!voucherCode.matches("^[a-zA-Z0-9]+$")) {
+                throw new IllegalArgumentException("Mã voucher chỉ được chứa chữ cái và số.");
+            }
+
+            // Chuyển đổi danh sách customerIds
+            List<Integer> customerIds;
+            try {
+                customerIds = Arrays.stream(customerIdsParam.split(","))
+                        .map(String::trim)
+                        .filter(s -> !s.isEmpty())
+                        .map(Integer::parseInt)
+                        .collect(Collectors.toList());
+                if (customerIds.isEmpty()) {
+                    throw new IllegalArgumentException("Danh sách khách hàng không hợp lệ.");
+                }
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Danh sách ID khách hàng chứa giá trị không hợp lệ.");
+            }
+
+            // Truy vấn voucher
             VoucherDAO voucherDAO = new VoucherDAO();
             Voucher voucher = voucherDAO.getVoucherByCode(voucherCode);
             if (voucher == null) {
                 throw new IllegalArgumentException("Không tìm thấy voucher với mã: " + voucherCode);
             }
 
+            // Kiểm tra tính hợp lệ của voucher (ví dụ: ngày hết hạn, trạng thái)
+            Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
+            if (voucher.getStartDate().after(currentTimestamp)) {
+                throw new IllegalArgumentException("Voucher chưa có hiệu lực.");
+            }
+            if (voucher.getEndDate().before(currentTimestamp)) {
+                throw new IllegalArgumentException("Voucher đã hết hạn.");
+            }
+            // Giả sử voucher có thuộc tính isActive
+            if (!voucher.isActive()) {
+                throw new IllegalArgumentException("Voucher không còn hoạt động.");
+            }
+
+            // Xử lý giá trị giảm giá
             double discountValue = (voucher.getDiscountAmount() != 0) ? voucher.getDiscountAmount() : voucher.getDiscountPercentage();
+            if (discountValue <= 0) {
+                throw new IllegalArgumentException("Giá trị giảm giá không hợp lệ.");
+            }
+
+            // Chuẩn bị email
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
             String voucherFrom = sdf.format(voucher.getStartDate());
             String voucherTo = sdf.format(voucher.getEndDate());
             String shopLink = "http://localhost:9999/pawfect";
             String contentEmailTemplate = Email.emailSendVoucher;
 
+            // Lấy danh sách khách hàng
             CustomersDAO customersDAO = new CustomersDAO();
             List<Customers> customers = customersDAO.getCustomersByIds(customerIds);
+            if (customers == null || customers.isEmpty()) {
+                throw new IllegalArgumentException("Không tìm thấy khách hàng nào trong danh sách.");
+            }
 
-            // Gửi email song song bằng ExecutorService
-            ExecutorService executor = Executors.newFixedThreadPool(50); //50 luồng song song
+            // Gửi email song song
+            ExecutorService executor = Executors.newFixedThreadPool(50);
             AtomicInteger successCount = new AtomicInteger(0);
 
             for (Customers customer : customers) {
-                if (customer != null) {
+                if (customer != null && customer.getEmail() != null && !customer.getEmail().trim().isEmpty()) {
                     executor.submit(() -> {
                         try {
                             String finalContentEmail = String.format(contentEmailTemplate,
                                     customer.getFullName(), voucherCode, discountValue, voucherFrom, voucherTo, shopLink);
-
                             if (Email.sendEmail(customer.getEmail(), "Ưu đãi khách hàng", finalContentEmail)) {
                                 successCount.incrementAndGet();
                             }
@@ -142,21 +175,27 @@ public class SendVoucherServlet extends HttpServlet {
                 }
             }
 
-            // Chờ tất cả email gửi xong
+            // Chờ gửi email hoàn tất
             executor.shutdown();
             executor.awaitTermination(1, TimeUnit.MINUTES);
 
-            // Gửi phản hồi
+            // Đặt thông báo thành công
             if (successCount.get() > 0) {
                 request.getSession().setAttribute("successMessage", "Đã gửi voucher thành công cho " + successCount.get() + " khách hàng.");
+            } else {
+                throw new IllegalArgumentException("Không gửi được email nào. Vui lòng kiểm tra lại.");
             }
 
-        } catch (Exception e) {
-            request.getSession().setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
-            e.printStackTrace();
-        }
+            response.sendRedirect(request.getContextPath() + "/dashboard/staff/viewcustomersforStaff");
 
-        response.sendRedirect(request.getContextPath() + "/dashboard/staff/viewcustomersforStaff");
+        } catch (IllegalArgumentException e) {
+            request.getSession().setAttribute("errorMessage", e.getMessage());
+            response.sendRedirect(request.getContextPath() + "/dashboard/staff/viewcustomersforStaff");
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.getSession().setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
+            response.sendRedirect(request.getContextPath() + "/dashboard/staff/viewcustomersforStaff");
+        }
     }
 
     /**

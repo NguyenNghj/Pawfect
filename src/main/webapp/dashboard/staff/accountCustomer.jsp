@@ -225,11 +225,11 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="form-label" id="sendVoucherSelectedLabel" style = "color: black;">Gửi Mã Giảm Giá - Danh Sách Chọn</h5>
+                        <h5 class="form-label" id="sendVoucherSelectedLabel" style="color: black;">Gửi Mã Giảm Giá - Danh Sách Chọn</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="sendVoucherSelectedForm" action="sendvoucher" method="post">
+                        <form id="sendVoucherSelectedForm" action="sendvoucher" method="post" novalidate>
                             <input type="hidden" name="customerIds" id="selectedCustomerIdsInput">
                             <div class="mb-3">
                                 <label for="searchVoucher" class="form-label">Tìm kiếm Voucher:</label>
@@ -253,6 +253,9 @@
                                         </option>
                                     </c:forEach>
                                 </select>
+                                <div id="voucherCodeSelectedError" class="invalid-feedback" style="display: none; color: #f39c12;">
+                                    Vui lòng chọn một mục trong danh sách.
+                                </div>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Gửi Voucher</button>
                         </form>
@@ -261,18 +264,16 @@
             </div>
         </div>
 
-
-
         <!-- Modal Gửi Mã Giảm Giá (Tất Cả) -->
         <div class="modal fade" id="sendVoucherAllModal" tabindex="-1" aria-labelledby="sendVoucherAllLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="form-label" id="sendVoucherAllLabel" style = "color: black;">Gửi Mã Giảm Giá - Tất Cả Khách Hàng</h5>
+                        <h5 class="form-label" id="sendVoucherAllLabel" style="color: black;">Gửi Mã Giảm Giá - Tất Cả Khách Hàng</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="sendVoucherAllForm" action="sendvoucher" method="post">
+                        <form id="sendVoucherAllForm" action="sendvoucher" method="post" novalidate>
                             <input type="hidden" name="customerIds" id="allCustomerIdsInput">
                             <div class="mb-3">
                                 <label for="searchVoucher" class="form-label">Tìm kiếm Voucher:</label>
@@ -296,6 +297,9 @@
                                         </option>
                                     </c:forEach>
                                 </select>
+                                <div id="voucherCodeAllError" class="invalid-feedback" style="display: none; color: #f39c12;">
+                                    Vui lòng chọn một mục trong danh sách.
+                                </div>
                             </div>
                             <button type="submit" class="btn btn-primary w-100">Gửi Voucher</button>
                         </form>
@@ -309,6 +313,7 @@
         <script src="https://kit.fontawesome.com/b3e08bd329.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 // Gửi mã giảm giá theo danh sách chọn
@@ -421,13 +426,56 @@
                 setupSearch("searchVoucherSelected", "voucherCodeSelected");
                 setupSearch("searchVoucherAll", "voucherCodeAll");
             });
+
+
+            document.addEventListener("DOMContentLoaded", function () {
+                // Get the forms
+                const sendVoucherSelectedForm = document.getElementById('sendVoucherSelectedForm');
+                const sendVoucherAllForm = document.getElementById('sendVoucherAllForm');
+
+                // Get the select elements
+                const voucherCodeSelected = document.getElementById('voucherCodeSelected');
+                const voucherCodeAll = document.getElementById('voucherCodeAll');
+
+                // Function to validate and show SweetAlert2 error message
+                function validateVoucherSelection(selectElement, event) {
+                    if (!selectElement.value || selectElement.value === '') {
+                        event.preventDefault(); // Prevent form submission
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Cảnh báo!",
+                            text: "Vui lòng chọn một mục trong danh sách.",
+                            confirmButtonText: "OK"
+                        });
+                        return false;
+                    }
+                    return true;
+                }
+
+                // Add submit event listener for the "Selected Customers" form
+                if (sendVoucherSelectedForm) {
+                    sendVoucherSelectedForm.addEventListener('submit', function (event) {
+                        validateVoucherSelection(voucherCodeSelected, event);
+                    });
+                }
+
+                // Add submit event listener for the "All Customers" form
+                if (sendVoucherAllForm) {
+                    sendVoucherAllForm.addEventListener('submit', function (event) {
+                        validateVoucherSelection(voucherCodeAll, event);
+                    });
+                }
+            }
+            );
+
         </script>
 
 
 
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                // Lấy thông báo thành công từ session
+            document.addEventListener("DOMContentLoaded", function ()
+            {
+// Lấy thông báo thành công từ session
                 var successMessage = "<c:out value='${sessionScope.successMessage}' />";
                 if (successMessage && successMessage.trim() !== "") {
                     Swal.fire({
@@ -437,11 +485,11 @@
                         confirmButtonText: "OK"
                     });
 
-                    // Xóa session sau khi hiển thị
+// Xóa session sau khi hiển thị
                     fetch('clear-session.jsp');
                 }
 
-                // Lấy thông báo lỗi từ session
+// Lấy thông báo lỗi từ session
                 var errorMessage = "<c:out value='${sessionScope.errorMessage}' />";
                 if (errorMessage && errorMessage.trim() !== "") {
                     Swal.fire({
@@ -451,7 +499,7 @@
                         confirmButtonText: "OK"
                     });
 
-                    // Xóa session sau khi hiển thị
+// Xóa session sau khi hiển thị
                     fetch('clear-session.jsp');
                 }
             });

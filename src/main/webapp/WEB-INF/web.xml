@@ -265,10 +265,6 @@
         <servlet-class>controller.StatisticManagement</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>SendVoucherAdminServlet</servlet-name>
-        <servlet-class>controller.SendVoucherAdminServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>AboutUsServlet</servlet-name>
         <servlet-class>controller.AboutUsServlet</servlet-class>
     </servlet>
@@ -519,10 +515,6 @@
     <servlet-mapping>
         <servlet-name>StatisticManagement</servlet-name>
         <url-pattern>/dashboard/admin/statistics</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>SendVoucherAdminServlet</servlet-name>
-        <url-pattern>/dashboard/admin/sendvoucher</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AboutUsServlet</servlet-name>
