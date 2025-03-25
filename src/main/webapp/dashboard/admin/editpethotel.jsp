@@ -224,18 +224,28 @@
                 let description = document.querySelector("textarea[name='description']").value.trim();
                 let petHotelImage = document.getElementById("editRoomImage").files.length;
 
-                // Biểu thức kiểm tra ký tự đặc biệt (không cho phép ký tự đặc biệt ngoại trừ khoảng trắng)
-                let specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/;
+                // Biểu thức kiểm tra ký tự đặc biệt (không cho phép ký tự đặc biệt, chỉ cho phép chữ cái, số và khoảng trắng)
+                let specialCharPattern = /[^a-zA-Z0-9\s]/;
 
-                // Kiểm tra tên phòng (không chứa ký tự đặc biệt)
+                // Biểu thức kiểm tra có ít nhất một chữ cái
+                let hasLetterPattern = /[a-zA-Z]/;
+
+                // Kiểm tra tên phòng
                 if (roomName === "") {
                     Swal.fire("Lỗi!", "Tên phòng không được để trống!", "error");
                     return;
                 }
+
                 if (specialCharPattern.test(roomName)) {
                     Swal.fire("Lỗi!", "Tên phòng không được chứa ký tự đặc biệt!", "error");
                     return;
                 }
+
+                if (!hasLetterPattern.test(roomName)) {
+                    Swal.fire("Lỗi!", "Tên phòng phải chứa ít nhất một chữ cái!", "error");
+                    return;
+                }
+
 
                 // Kiểm tra cân nặng
                 if (isNaN(minWeight) || minWeight <= 0.9) {
@@ -264,7 +274,7 @@
                     Swal.fire("Lỗi!", "Giá mỗi đêm phải lớn hơn 50.000 VNĐ!", "error");
                     return;
                 }
-                
+
                 // Kiểm tra giá mỗi đêm
                 if (pricePerNight > 50000000) {
                     Swal.fire("Lỗi!", "Giá mỗi đêm phải nhỏ hơn 50.000.000 VNĐ!", "error");
