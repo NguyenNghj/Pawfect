@@ -708,15 +708,15 @@
                                                                                                                             <td valign="top">
                                                                                                                                 <table border="0" cellpadding="0" cellspacing="0" role="presentation">
                                                                                                                                     <tr>
-                                                                                                                                        <th valign="top" style="font-weight: normal; text-align: left;">
+<!--                                                                                                                                        <th valign="top" style="font-weight: normal; text-align: left;">
                                                                                                                                             <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
                                                                                                                                                 <tr>
                                                                                                                                                     <td class="pc-w620-spacing-0-16-20-0" valign="top" style="padding: 0px 20px 0px 0px;">
-                                                                                                                                                        <img src="./img/products/${oi.productImage}" class="pc-w620-width-64 pc-w620-height-64 pc-w620-width-64-min" width="100" height="104" alt="" style="display: block; outline: 0; line-height: 100%; -ms-interpolation-mode: bicubic; width: 100px; height: 104px; border: 0;" />
+                                                                                                                                                        <img src="https://res.cloudinary.com/dghnftz3b/image/upload/v1742914960/Screenshot_2025-03-05_082433_dhgphr.png" class="pc-w620-width-64 pc-w620-height-64 pc-w620-width-64-min" width="100" height="104" alt="" style="display: block; outline: 0; line-height: 100%; -ms-interpolation-mode: bicubic; width: 100px; height: 104px; border: 0;" />
                                                                                                                                                     </td>
                                                                                                                                                 </tr>
                                                                                                                                             </table>
-                                                                                                                                        </th>
+                                                                                                                                        </th>-->
                                                                                                                                         <th valign="top" style="font-weight: normal; text-align: left;">
                                                                                                                                             <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
                                                                                                                                                 <tr>

@@ -16,8 +16,8 @@
         <script>
             function confirmCancel(bookingId) {
                 Swal.fire({
-                    title: "Xác nhận hủy đơn hàng?",
-                    text: "Bạn có chắc chắn muốn hủy đơn hàng này? Hành động này không thể hoàn tác!",
+                    title: "Xác nhận hủy đặt lịch?",
+                    text: "Bạn có chắc chắn muốn huỷ đặt lịch này? Hành động này không thể hoàn tác!",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#d33",

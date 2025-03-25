@@ -17,10 +17,12 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Phòng ${room.roomName} dành cho ${room.roomType}</title>
-        <link rel="stylesheet" href="./css/pethoteldetail.css?v=123456">
+        <title>Phòng ${room.roomName} dành cho ${room.roomType}</title>       
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="./css/pethoteldetail.css?v=123456">
     </head>
     <body>
         <div class="all"> 
