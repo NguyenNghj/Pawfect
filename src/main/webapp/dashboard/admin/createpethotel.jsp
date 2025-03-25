@@ -230,13 +230,13 @@
                 }
 
                 // Kiểm tra cân nặng
-                if (isNaN(minWeight) || minWeight <= 0) {
-                    Swal.fire("Lỗi!", "Cân nặng tối thiểu phải lớn hơn 0!", "error");
+                if (isNaN(minWeight) || minWeight <= 1) {
+                    Swal.fire("Lỗi!", "Cân nặng tối thiểu phải lớn hơn 1!", "error");
                     return;
                 }
 
-                if (isNaN(maxWeight) || maxWeight <= 0) {
-                    Swal.fire("Lỗi!", "Cân nặng tối đa phải lớn hơn 0!", "error");
+                if (isNaN(maxWeight) || maxWeight <= 1) {
+                    Swal.fire("Lỗi!", "Cân nặng tối đa phải lớn hơn 1!", "error");
                     return;
                 }
 

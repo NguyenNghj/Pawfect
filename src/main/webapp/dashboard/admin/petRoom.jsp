@@ -139,7 +139,7 @@
                                             <th scope="col">Min (kg)</th>
                                             <th scope="col">Max (kg)</th>
                                             <th scope="col">Giá (VNĐ)</th>
-                                            <th scope="col">Mô tả</th>
+<!--                                            <th scope="col">Mô tả</th>-->
                                             <th scope="col">Số lượng</th>
                                             <th scope="col">Trạng thái</th>
                                             <th scope="col">Hành động</th>
@@ -161,7 +161,7 @@
                                                         <td style=" width: 8%; text-align: center;">
                                                             <fmt:formatNumber value="${room.pricePerNight}" type="currency" currencyCode="VND"/>
                                                         </td>
-                                                        <td style="text-align: left;">${room.description}</td>
+<!--                                                        <td style="text-align: left;">${room.description}</td>-->
                                                         <td style="text-align: center; width: 7%;">${room.availableQuantity}/${room.quantity}</td>
                                                         <td style="width: 10%;">
                                                             <span style="font-weight: bold; padding: 5px; color: ${room.status eq 'Còn phòng' ? 'green' : 'red'};">
