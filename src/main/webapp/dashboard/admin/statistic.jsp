@@ -230,7 +230,7 @@
                                             <c:forEach var="staff" items="${topStaff}">
                                                 <div class="transaction-item">
                                                     <div class="icon success">
-                                                        <img src="./img/staffs/${staff.image}" alt="${staff.fullName}" style="width: 50px; height: 50px; object-fit: cover;" />
+                                                        <img src="<%= request.getContextPath()%>/img/staff/${staff.image}" alt="${staff.fullName}" style="width: 50px; height: 50px; object-fit: cover;" />
                                                     </div>
 
                                                     <div class="transaction-details">

@@ -142,8 +142,13 @@ if (!address.matches("^[\\p{L}0-9 ,.-]+$")) {
         LocalDate birthLocalDate = birthDate.toLocalDate();
         int age = Period.between(birthLocalDate, LocalDate.now()).getYears();
 
-        if (age < 18 && age>60) {
+        if (age < 18 ) {
             request.setAttribute("errorMessage", "Nhân viên phải từ 16 tuổi trở lên!");
+            request.getRequestDispatcher("staffadd.jsp").forward(request, response);
+            return;
+        }
+           if (age > 60 ) {
+            request.setAttribute("errorMessage", "Nhân viên phải từ 60 tuổi trở xuống!");
             request.getRequestDispatcher("staffadd.jsp").forward(request, response);
             return;
         }
