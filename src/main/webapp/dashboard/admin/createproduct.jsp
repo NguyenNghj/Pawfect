@@ -157,24 +157,6 @@
                         </form>
 
                         <script>
-                            document.getElementById("createProductForm").addEventListener("submit", function (event) {
-                                event.preventDefault();
-                                Swal.fire({
-                                    title: "Đang xử lý...",
-                                    text: "Vui lòng chờ trong giây lát.",
-                                    allowOutsideClick: false,
-                                    didOpen: () => {
-                                        Swal.showLoading();
-                                    }
-                                });
-
-                                setTimeout(() => {
-                                    event.target.submit();
-                                }, 2000);
-                            });
-                        </script>
-
-                        <script>
                             document.addEventListener("DOMContentLoaded", function () {
                                 // Lấy thông báo thành công từ session
                                 var successMessage = "<c:out value='${sessionScope.successMessage}' />";
@@ -268,7 +250,6 @@
                                 updateProductStatusOptions();
                             };
                         </script>
-
                     </div>
 
                 </div>
