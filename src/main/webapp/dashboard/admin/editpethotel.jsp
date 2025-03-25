@@ -224,20 +224,27 @@
                 let description = document.querySelector("textarea[name='description']").value.trim();
                 let petHotelImage = document.getElementById("editRoomImage").files.length;
 
-                // Kiểm tra tên phòng
+                // Biểu thức kiểm tra ký tự đặc biệt (không cho phép ký tự đặc biệt ngoại trừ khoảng trắng)
+                let specialCharPattern = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?`~]/;
+
+                // Kiểm tra tên phòng (không chứa ký tự đặc biệt)
                 if (roomName === "") {
                     Swal.fire("Lỗi!", "Tên phòng không được để trống!", "error");
                     return;
                 }
-
-                // Kiểm tra cân nặng
-                if (isNaN(minWeight) || minWeight <= 0) {
-                    Swal.fire("Lỗi!", "Cân nặng tối thiểu phải lớn hơn 0!", "error");
+                if (specialCharPattern.test(roomName)) {
+                    Swal.fire("Lỗi!", "Tên phòng không được chứa ký tự đặc biệt!", "error");
                     return;
                 }
 
-                if (isNaN(maxWeight) || maxWeight <= 0) {
-                    Swal.fire("Lỗi!", "Cân nặng tối đa phải lớn hơn 0!", "error");
+                // Kiểm tra cân nặng
+                if (isNaN(minWeight) || minWeight <= 0.9) {
+                    Swal.fire("Lỗi!", "Cân nặng tối thiểu phải lớn hơn hoặc bằng 1!", "error");
+                    return;
+                }
+
+                if (isNaN(maxWeight) || maxWeight <= 0.9) {
+                    Swal.fire("Lỗi!", "Cân nặng tối đa phải lớn hơn 1!", "error");
                     return;
                 }
 
