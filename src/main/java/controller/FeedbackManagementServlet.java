@@ -219,7 +219,7 @@ public class FeedbackManagementServlet extends HttpServlet {
                 out.println("  title: 'Cảm ơn bạn đã đánh giá.',");
                 out.println("  text: 'Vui lòng đợi giây lát!',");
                 out.println("  icon: 'success',");
-                out.println("  timer: 1500,"); // Hiển thị trong 1.5 giây
+                out.println("  timer: 2000,"); // Hiển thị trong 2 giây
                 out.println("  timerProgressBar: true,"); // Thanh tiến trình
                 out.println("  showConfirmButton: false"); // Ẩn nút OK
                 out.println("}).then(() => {");
