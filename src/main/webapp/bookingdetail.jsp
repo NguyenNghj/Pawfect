@@ -48,7 +48,7 @@
                             <a href="bookinghistory?status=tc" class="text-decoration-none">Lịch sử đặt lịch</a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">
-                            <span>Đơn hàng:  ${param.orderId + 2500000}</span>
+                            <span>Đơn đặt chi tiết</span>
                         </li>
                     </ol>
                 </nav>
