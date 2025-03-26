@@ -114,7 +114,7 @@ public class StaffDAO {
             ps = conn.prepareStatement(query);
 
             // Mã hóa mật khẩu trước khi cập nhật
-            ps.setString(1, hashPasswordMD5(staff.getPassword()));
+            ps.setString(1, staff.getPassword());
             ps.setString(2, staff.getFullName());
             ps.setString(3, staff.getEmail());
             ps.setString(4, staff.getPhone());
