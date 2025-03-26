@@ -14,7 +14,7 @@
             <div class="col-auto">
                 <h4 class="footer-title">Về chúng tôi</h4>  
                 <ul class="links">
-                    <li><a href="aboutus.jsp">Giới thiệu</a></li>
+                    <li><a href="aboutus">Giới thiệu</a></li>
                     <li><a href="register">Đăng ký thành viên</a></li>
                     <li><a href="https://mail.google.com/mail/u/0/?view=cm&to=pawfectg3@gmail.com" target="_blank">Liên hệ</a></li>
                 </ul>
