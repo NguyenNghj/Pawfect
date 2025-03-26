@@ -52,6 +52,49 @@ public class UserDAO {
         return account;
     }
 
+    public Boolean checkBan(String username) {
+
+        String query = "SELECT * FROM Customers WHERE email = ? and is_active= 0";
+        boolean check = false;
+        try {
+            conn = new DBContext().getConnection();
+            pt = conn.prepareStatement(query);
+            pt.setString(1, username);
+
+            rs = pt.executeQuery();
+
+            if (rs.next()) {
+                check = true;
+            }
+
+        } catch (SQLException e) {
+
+        }
+
+        return check;
+    }
+     public Boolean checkMail(String username) {
+
+        String query = "SELECT * FROM Customers WHERE email = ? and is_active= 1";
+        boolean check = false;
+        try {
+            conn = new DBContext().getConnection();
+            pt = conn.prepareStatement(query);
+            pt.setString(1, username);
+
+            rs = pt.executeQuery();
+
+            if (rs.next()) {
+                check = true;
+            }
+
+        } catch (SQLException e) {
+
+        }
+
+        return check;
+    }
+
     public AccountStaff loginStaff(String username, String password) {
         String query = "SELECT * FROM Staffs WHERE email = ? AND password = ? and is_active= 1";
         AccountStaff account = new AccountStaff();

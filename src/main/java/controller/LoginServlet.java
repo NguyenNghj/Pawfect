@@ -98,9 +98,15 @@ public class LoginServlet extends HttpServlet {
 
                 response.sendRedirect("pawfect");
             } else {
+                if (!userDAO.checkBan(email)){
                 request.setAttribute("error", "Sai email hoặc mật khẩu");
                 RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
                 dispatcher.forward(request, response);
+                }else{
+                 request.setAttribute("error", "tài khoản đã bị Ban");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+                dispatcher.forward(request, response);
+                }
             }
         } catch (NoSuchAlgorithmException e) {
             throw new ServletException("Lỗi mã hóa mật khẩu MD5", e);
