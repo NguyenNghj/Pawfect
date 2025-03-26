@@ -123,7 +123,7 @@
                                     <option value="Mèo" ${room.roomType == 'Mèo' ? 'selected' : ''}>Mèo</option>
                                 </select>
                             </div>
-
+                                
                             <!-- Cân nặng tối thiểu -->
                             <div class="mb-3">
                                 <label for="editMinWeight" class="form-label">Cân nặng tối thiểu (kg)</label>
@@ -170,6 +170,25 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            document.getElementById("editRoomName").addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                Swal.fire({
+                    title: "Xác nhận!",
+                    text: "Bạn có chắc muốn cập nhật thông tin phòng?",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonText: "Đồng ý",
+                    cancelButtonText: "Hủy"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        event.target.submit();
+                    }
+                });
+            });
+        </script>
 
         <script>
             function previewFile() {

@@ -158,6 +158,25 @@
                     </div>
                 </div>
             </div>
+
+            <script>
+                document.getElementById("addStaffForm").addEventListener("submit", function (event) {
+                    event.preventDefault(); // Ngăn chặn submit mặc định
+
+                    Swal.fire({
+                        title: "Xác nhận!",
+                        text: "Bạn có chắc muốn thêm nhân viên?",
+                        icon: "question",
+                        showCancelButton: true,
+                        confirmButtonText: "Đồng ý",
+                        cancelButtonText: "Hủy"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            event.target.submit(); // Gửi form nếu người dùng xác nhận
+                        }
+                    });
+                });
+            </script>
             <script>
                 document.getElementById("addStaffForm").addEventListener("submit", function (event) {
                     const fullName = document.getElementsByName("fullName")[0].value.trim();

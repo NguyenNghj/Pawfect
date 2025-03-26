@@ -58,7 +58,7 @@
                                 <span style = "color: #D3A376; font-weight: bold;"><%= staffName%></span>
                                 <a href="staffprofile">
                                     <button class="btn" type="button">
-                                        <img class="profile-img" src="/img/staff/${staff.image}" alt="">
+                                        <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
                                     </button>
                                 </a>
                             </div>                                                             
@@ -84,7 +84,7 @@
                                         <img src="/img/staff/${staff.image}" alt="avatar"
                                              class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
                                         <h5 class="my-3">${empty staff.fullName ? 'Chưa có thông tin' : staff.fullName}</h5>
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -226,7 +226,7 @@
             </div>
         </div>
         <script>
-           function validateForm() {
+            function validateForm() {
                 let isValid = true;
 
                 // Lấy giá trị input và loại bỏ khoảng trắng đầu cuối

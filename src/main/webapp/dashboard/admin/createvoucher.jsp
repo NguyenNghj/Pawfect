@@ -150,6 +150,25 @@
                         </form>    
 
                         <script>
+                            document.getElementById("addVoucherForm").addEventListener("submit", function (event) {
+                                event.preventDefault(); // Ngăn chặn submit mặc định
+
+                                Swal.fire({
+                                    title: "Xác nhận!",
+                                    text: "Bạn có chắc muốn thêm mã giảm giá?",
+                                    icon: "question",
+                                    showCancelButton: true,
+                                    confirmButtonText: "Đồng ý",
+                                    cancelButtonText: "Hủy"
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        event.target.submit(); // Gửi form nếu người dùng xác nhận
+                                    }
+                                });
+                            });
+                        </script>
+
+                        <script>
                             document.addEventListener("DOMContentLoaded", function () {
                                 const discountPercentage = document.querySelector('input[name="discountPercentage"]');
                                 const discountAmount = document.querySelector('input[name="discountAmount"]');

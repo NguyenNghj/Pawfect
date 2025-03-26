@@ -121,6 +121,25 @@
         </div>
 
         <script>
+            document.getElementById("createCategoryForm").addEventListener("submit", function (event) {
+                event.preventDefault(); // Ngăn chặn submit mặc định
+
+                Swal.fire({
+                    title: "Xác nhận!",
+                    text: "Bạn có chắc muốn thêm danh mục này?",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonText: "Đồng ý",
+                    cancelButtonText: "Hủy"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        event.target.submit(); // Gửi form nếu người dùng xác nhận
+                    }
+                });
+            });
+        </script>
+
+        <script>
             document.addEventListener("DOMContentLoaded", function () {
                 // Lấy thông báo thành công từ session
                 var successMessage = "<c:out value='${sessionScope.successMessage}' />";

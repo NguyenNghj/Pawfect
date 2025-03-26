@@ -155,6 +155,25 @@
             </div>
         </div>
         <script>
+            document.getElementById("createpethotel").addEventListener("submit", function (event) {
+                event.preventDefault(); // Ngăn chặn submit mặc định
+
+                Swal.fire({
+                    title: "Xác nhận!",
+                    text: "Bạn có chắc muốn thêm phòng?",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonText: "Đồng ý",
+                    cancelButtonText: "Hủy"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        event.target.submit(); // Gửi form nếu người dùng xác nhận
+                    }
+                });
+            });
+        </script>
+
+        <script>
             document.addEventListener("DOMContentLoaded", function () {
                 var errorMessage = "${errorMessage}";
                 if (errorMessage && errorMessage.trim() !== "") {

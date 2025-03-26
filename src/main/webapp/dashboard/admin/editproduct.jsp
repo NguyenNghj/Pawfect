@@ -173,6 +173,25 @@
                         </form>
 
                         <script>
+                            document.getElementById("editProductForm").addEventListener("submit", function (event) {
+                                event.preventDefault(); // Ngăn chặn submit mặc định
+
+                                Swal.fire({
+                                    title: "Xác nhận!",
+                                    text: "Bạn có chắc muốn cập nhật thông tin sản phẩm?",
+                                    icon: "question",
+                                    showCancelButton: true,
+                                    confirmButtonText: "Đồng ý",
+                                    cancelButtonText: "Hủy"
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        event.target.submit(); // Gửi form nếu người dùng xác nhận
+                                    }
+                                });
+                            });
+                        </script>
+
+                        <script>
                             function previewFile() {
                                 const fileInput = document.getElementById('editProductImage');
                                 const previewImage = document.getElementById('previewImage');
