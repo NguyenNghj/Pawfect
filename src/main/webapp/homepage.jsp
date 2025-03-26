@@ -282,7 +282,7 @@
                                         <!-- Phan hoi cua nhan vien --> 
                                         <div class="staff-response">
                                             <div class="staff-header">
-                                                <img src="https://randomuser.me/api/portraits/women/28.jpg" alt="Staff" class="staff-avatar">
+                                                <img src="./img/staff/default.jpg" alt="Staff" class="staff-avatar">
                                                 <div>
                                                     <h5 class="staff-name">NV ${f.staffName}</h5>
                                                     <div class="staff-position">Nhân viên cửa hàng</div>
