@@ -35,7 +35,8 @@ public class DashboardFillter implements Filter {
 
         // Cho phép truy cập vào các tài nguyên tĩnh
         if (path.startsWith(contextPath + "/css/") || path.startsWith(contextPath + "/img/")
-                || path.startsWith(contextPath + "/js/")) {
+                || path.startsWith(contextPath + "/js/")
+                || path.startsWith(contextPath + "/dashboard/staff/feedbackmanagement")) {
             chain.doFilter(request, response);
             return;
         }

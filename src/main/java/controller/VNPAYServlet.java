@@ -237,7 +237,7 @@ public class VNPAYServlet extends HttpServlet {
     }
 
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public static String vnp_ReturnUrl = "http://localhost:8080/vnpay-return.jsp";
+    public static String vnp_ReturnUrl = "http://localhost:9999/vnpay-return.jsp";
     public static String vnp_TmnCode = "VTOTZ4XT";
     public static String vnp_HashSecret = "0VMRFDNISVU9RCQWG6PS91A486PA9HK4";
     public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
