@@ -53,7 +53,7 @@
                         <h2>Phòng ${room.roomName}</h2>
                         <div class="detail">
                             <p class="room-type">Dành cho ${room.roomType}</p>
-                            <p class="room-price">Giá: <fmt:formatNumber value="${room.pricePerNight}" type="currency" currencyCode="VND"/></p>
+                            <p class="room-price">Giá: <fmt:formatNumber value="${room.pricePerNight}" type="currency" currencyCode="VND"/>/Ngày</p>
                             <p class="room-weight">Cân nặng phù hợp: ${room.minWeight} - ${room.maxWeight} kg</p>
                             <hr class="divider">
                             <p class="room-description" style="text-align: left;">${room.description}</p>
@@ -77,7 +77,7 @@
                                         <div class="pethotel-name">${similarRoom.roomName}</div>
                                         <div class="pethotel-type">Dành cho ${similarRoom.roomType}</div>
                                         <div class="pethotel-price">
-                                            <fmt:formatNumber value="${similarRoom.pricePerNight}"/>đ/đêm
+                                            <fmt:formatNumber value="${similarRoom.pricePerNight}"/>đ/Ngày
                                         </div>
                                         <div class="pethotel-weight">Cân nặng: ${similarRoom.minWeight} - ${similarRoom.maxWeight} kg</div>
                                         <a href="bookingform?id=${room.roomId}" class="booking">Đặt lịch ngay</a>
