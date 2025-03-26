@@ -476,7 +476,7 @@
                                 return;
                             }
                             // Neu khach hang chon thanh toan = tien mat
-                            window.location.href = "checkoutsuccess.jsp";
+                            window.location.href = "checkoutsuccess";
                         } else if (response.status === "error-data-email-empty") {
                             Swal.fire({
                                 position: "top",
