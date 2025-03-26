@@ -53,7 +53,7 @@
                         <h2>Phòng ${room.roomName}</h2>
                         <div class="detail">
                             <p class="room-type">Dành cho ${room.roomType}</p>
-                            <p class="room-price">Giá: <fmt:formatNumber value="${room.pricePerNight}" type="currency" currencyCode="VND"/>/Ngày</p>
+                            <p class="room-price">Giá: <fmt:formatNumber value="${room.pricePerNight}"/>đ/Ngày</p>
                             <p class="room-weight">Cân nặng phù hợp: ${room.minWeight} - ${room.maxWeight} kg</p>
                             <hr class="divider">
                             <p class="room-description" style="text-align: left;">${room.description}</p>
