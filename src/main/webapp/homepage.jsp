@@ -142,7 +142,7 @@
 
         <div class="chitiet">
             <p class=chitiet-hover>
-                <a>Chi tiết</a>
+                <a href = "aboutus">Chi tiết</a>
             </p>
         </div>
 
