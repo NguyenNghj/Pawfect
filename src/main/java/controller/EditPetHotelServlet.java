@@ -121,7 +121,7 @@ public class EditPetHotelServlet extends HttpServlet {
             String quantityStr = request.getParameter("quantity");
             String pricePerNightStr = request.getParameter("pricePerNight");
             String description = request.getParameter("description");
-            String status = request.getParameter("status");
+//            String status = request.getParameter("status");
             String existingImage = request.getParameter("existingImage");
 
             // Kiểm tra dữ liệu null hoặc rỗng
@@ -187,7 +187,7 @@ public class EditPetHotelServlet extends HttpServlet {
             // Tạo object PetHotel với ảnh mới (nếu có)
             PetHotel room = new PetHotel(roomId, roomName, newFileName != null ? newFileName : existingImage,
                     roomType, minWeight, maxWeight, quantity, availableQuantity,
-                    pricePerNight, description, status);
+                    pricePerNight, description);
 
             // Cập nhật vào database
             PetHotelDAO roomDAO = new PetHotelDAO();

@@ -154,14 +154,14 @@
                                 <textarea class="form-control" name="description" rows="5" >${room.description}</textarea>
                             </div>
 
-                            <!-- Trạng thái phòng -->
+<!--                             Trạng thái phòng 
                             <div class="mb-3">
                                 <label for="editRoomStatus">Trạng thái</label>
                                 <select class="form-select" name="status">
                                     <option value="Còn phòng" ${room.status == 'Còn phòng' ? 'selected' : ''}>Còn phòng</option>
                                     <option value="Hết phòng" ${room.status == 'Hết phòng' ? 'selected' : ''}>Hết phòng</option>
                                 </select>
-                            </div>
+                            </div>-->
 
                             <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
                             <a href="<c:url value='/dashboard/admin/pethotel'/>" class="btn btn-secondary">Trở về</a>
