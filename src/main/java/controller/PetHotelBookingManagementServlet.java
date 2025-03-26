@@ -112,23 +112,23 @@ public class PetHotelBookingManagementServlet extends HttpServlet {
                             if (!isAvailableForApproval) {
                                 request.getSession().setAttribute("errorMessage", "Vui lòng từ chối đặt lịch cho phòng này!");
                             } else {
-                                success = PetHotelBookingDAO.updateBookingStatus(bookingID, "Đã duyệt", petId, staffID);
+                                success = PetHotelBookingDAO.updateBookingStatus(bookingID, "Đã duyệt", staffID);
                             }
                             break;
 
                         case "cancel":
-                            success = PetHotelBookingDAO.updateBookingStatus(bookingID, "Đã hủy", petId, staffID);
+                            success = PetHotelBookingDAO.updateBookingStatus(bookingID, "Đã hủy", staffID);
                             break;
                         case "checkin":
                             if (PetHotelDAO.decreaseAvailableQuantity(roomId)) { // Giảm số lượng phòng trống
-                                success = PetHotelBookingDAO.updateBookingStatus(bookingID, "Đã nhận phòng", petId, staffID);
+                                success = PetHotelBookingDAO.updateBookingStatus(bookingID, "Đã nhận phòng", staffID);
                             } else {
                                 request.getSession().setAttribute("errorMessage", "Hiện tại không còn phòng trống cho loại phòng này!");
                             }
                             break;
                         case "checkout":
                             if (PetHotelDAO.increaseAvailableQuantity(roomId)) { // Tăng số lượng phòng trống
-                                success = PetHotelBookingDAO.updateBookingStatus(bookingID, "Đã trả phòng", petId, staffID);
+                                success = PetHotelBookingDAO.updateBookingStatus(bookingID, "Đã trả phòng", staffID);
                             }
                             break;
                         default:
