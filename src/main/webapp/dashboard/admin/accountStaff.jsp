@@ -155,8 +155,7 @@
                                             <td><%= staff.isActive() ? "Hoạt động" : "Đã nghỉ"%></td>
                                             <td>
                                                 <a href="editstaff?staffId=<%= staff.getStaffId()%>" 
-                                                   style="display: inline-block; padding: 5px 10px; font-size: 12px; background-color: #007bff;
-                                                   color: white; text-decoration: none; border-radius: 3px; font-weight: bold; transition: 0.3s;">
+                                                   class="btn btn-primary">
                                                     Chỉnh Sửa
                                                 </a>
 
@@ -204,10 +203,6 @@
                                         </ul>
                                     </nav>
                                 </c:if>
-
-
-
-
                             </div>
                         </div>
                     </div>          
