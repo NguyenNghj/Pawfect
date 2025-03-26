@@ -159,15 +159,7 @@
                                             </td>
                                         </tr>
                                         <%
-                                            }
-                                        } else {
-                                        %>
-                                        <tr>
-                                            <td colspan="8" class="text-center">
-                                                <div class="alert alert-warning">Không tìm thấy khách hàng.</div>
-                                            </td>
-                                        </tr>
-                                        <%
+                                                }
                                             }
                                         %>
                                     </tbody>
