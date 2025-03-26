@@ -141,6 +141,9 @@
                     <input type="hidden" name="roomId" value="${room.roomId}">
                     <input type="hidden" id="pricePerNight" value="${room.pricePerNight}">
                     <input type="hidden" name="totalPriceHidden" id="totalPriceHidden">
+                    <input type="hidden" id="roomMaxWeight" value="${room.maxWeight}">
+                    <input type="hidden" id="roomType" value="${room.roomType}">
+
 
                     <div class="form-group">
                         <label for="checkIn">Check-in:</label>
@@ -171,7 +174,7 @@
                                 <select name="petId" id="petId" onchange="checkPetStatus();">
                                     <option value="" disabled selected>Chọn thú cưng của bạn</option> <!-- Option mặc định -->
                                     <c:forEach var="pet" items="${petList}">
-                                        <option value="${pet.petId}" data-status="${petStatusMap[pet.petId]}">
+                                        <option value="${pet.petId}" data-weight="${pet.petWeight}" data-type="${pet.petType}" data-status="${petStatusMap[pet.petId]}">
                                             ${pet.petname}
                                         </option>
                                     </c:forEach>
@@ -221,24 +224,50 @@
             </div>
         </div>
         <script>
-            function checkPetStatus() {
+            document.getElementById("petId").addEventListener("change", function () {
+                checkPetWeight();
+                checkPetCompatibility();
+            });
+
+            function checkPetWeight() {
                 let petSelect = document.getElementById("petId");
                 let selectedPet = petSelect.options[petSelect.selectedIndex];
-                let petStatus = selectedPet.getAttribute("data-status");
 
-                if (petStatus === "booking") {
-                    Swal.fire({
-                        title: "Thú cưng đang có lịch đặt!",
-                        text: "Bạn có chắc chắn muốn tiếp tục đặt phòng?",
-                        icon: "warning",
-                        showCancelButton: true,
-                        confirmButtonText: "Tiếp tục",
-                        cancelButtonText: "Hủy"
-                    }).then((result) => {
-                        if (!result.isConfirmed) {
-                            petSelect.selectedIndex = 0; // Reset về chọn đầu tiên
-                        }
-                    });
+                if (selectedPet.value) {
+                    let petWeight = parseFloat(selectedPet.getAttribute("data-weight"));
+                    let roomMaxWeight = parseFloat(document.getElementById("roomMaxWeight").value);
+
+                    if (!isNaN(petWeight) && !isNaN(roomMaxWeight) && petWeight > roomMaxWeight) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Không thể đặt phòng!",
+                            text: `Cân nặng thú cưng không phù hợp!`,
+                            confirmButtonColor: "#d33",
+                        });
+
+                        petSelect.selectedIndex = 0; // Reset chọn thú cưng
+                    }
+                }
+            }
+
+            function checkPetCompatibility() {
+                let petSelect = document.getElementById("petId");
+                let selectedPet = petSelect.options[petSelect.selectedIndex];
+
+                if (selectedPet.value) {
+                    let petType = selectedPet.getAttribute("data-type");
+                    let roomType = document.getElementById("roomType").value;
+
+                    if (petType !== roomType) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Không thể đặt phòng!",
+                            text: `Phòng này chỉ dành cho ${room.roomType.toLowerCase()}.`,
+                            confirmButtonColor: "#d33",
+                        });
+
+                        petSelect.selectedIndex = 0; // Reset chọn thú cưng
+                    }
                 }
             }
         </script>

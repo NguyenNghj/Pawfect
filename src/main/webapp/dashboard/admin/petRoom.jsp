@@ -150,25 +150,25 @@
                                             <c:when test="${not empty petRooms}">
                                                 <c:forEach var="room" items="${petRooms}">
                                                     <tr>
-                                                        <td style="width: 12%; text-align: center;">
+                                                        <td style="text-align: center;">
                                                             <img src="<%= request.getContextPath()%>/img/pethotel/${room.roomImage}" alt="Hình ảnh phòng" style="max-width: 100%; height: auto; display: block; margin: auto;">
                                                         </td>
 
-                                                        <td style="text-align: center; width: 12%;">${room.roomName}</td>
-                                                        <td style="text-align: center; width: 7%;">${room.roomType}</td>
-                                                        <td style="text-align: center; width: 7%;">${room.minWeight}</td>
-                                                        <td style="text-align: center; width: 7%;">${room.maxWeight}</td>
+                                                        <td style="text-align: center;">${room.roomName}</td>
+                                                        <td style="text-align: center;">${room.roomType}</td>
+                                                        <td style="text-align: center;">${room.minWeight}</td>
+                                                        <td style="text-align: center;">${room.maxWeight}</td>
                                                         <td style=" width: 8%; text-align: center;">
                                                             <fmt:formatNumber value="${room.pricePerNight}" type="number" maxFractionDigits="0"/>đ/Ngày
                                                         </td>
 <!--                                                        <td style="text-align: left;">${room.description}</td>-->
-                                                        <td style="text-align: center; width: 7%;">${room.quantity}</td>
+                                                        <td style="text-align: center;">${room.quantity}</td>
                                                         <td style="width: 10%;">
                                                             <span style="font-weight: bold; padding: 5px; color: ${room.status eq 'Còn phòng' ? 'green' : 'red'};">
                                                                 ${room.status}
                                                             </span>
                                                         </td>
-                                                        <td style="width: 12%;">
+                                                        <td ">
                                                             <button type="button" class="btn btn-primary" onclick="editpethotel(${room.roomId})">Chỉnh sửa</button>
                                                         </td>
                                                     </tr>
