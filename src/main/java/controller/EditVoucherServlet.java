@@ -196,6 +196,14 @@ public class EditVoucherServlet extends HttpServlet {
             Timestamp startDate = new Timestamp(dateFormat.parse(startDateParam).getTime());
             Timestamp endDate = new Timestamp(dateFormat.parse(endDateParam).getTime());
 
+            // Lấy thời gian hiện tại với đầy đủ giờ và phút
+            Timestamp currentDateTime = new Timestamp(System.currentTimeMillis());
+
+            // Kiểm tra nếu startDate hoặc endDate trước thời điểm hiện tại
+            if (startDate.before(currentDateTime) || endDate.before(currentDateTime)) {
+                throw new IllegalArgumentException("Ngày bắt đầu và ngày kết thúc không thể trước thời điểm hiện tại.");
+            }
+
             if (startDate.after(endDate)) {
                 throw new IllegalArgumentException("Ngày bắt đầu không thể sau ngày kết thúc.");
             }
