@@ -345,71 +345,80 @@
 
         <!--        theo thứ trong ngày-->
 
+        <!-- Chuẩn bị dữ liệu cho biểu đồ doanh thu -->
+        <%
+            // Dữ liệu cho biểu đồ theo tuần
+            double[] ordersDataWeek = request.getAttribute("orders") != null ? (double[]) request.getAttribute("orders") : new double[]{0, 0, 0, 0, 0, 0, 0};
+            double[] bookingsDataWeek = request.getAttribute("bookings") != null ? (double[]) request.getAttribute("bookings") : new double[]{0, 0, 0, 0, 0, 0, 0};
+
+            // Dữ liệu cho biểu đồ theo tháng
+            double[] ordersDataMonth = request.getAttribute("orderss") != null ? (double[]) request.getAttribute("orderss") : new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+            double[] bookingsDataMonth = request.getAttribute("bookingss") != null ? (double[]) request.getAttribute("bookingss") : new double[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
+            // Sử dụng Gson để chuyển đổi mảng thành chuỗi JSON
+            Gson gson = new Gson();
+            String ordersDataWeekJson = gson.toJson(ordersDataWeek);
+            String bookingsDataWeekJson = gson.toJson(bookingsDataWeek);
+            String ordersDataMonthJson = gson.toJson(ordersDataMonth);
+            String bookingsDataMonthJson = gson.toJson(bookingsDataMonth);
+        %>
+
+        <!-- Gộp logic vẽ biểu đồ theo tuần và tháng -->
         <script>
-            var ordersData = <%= Arrays.toString((double[]) request.getAttribute("orders"))%>;
-            var bookingsData = <%= Arrays.toString((double[]) request.getAttribute("bookings"))%>;
-            var revenueData = <%= Arrays.toString((double[]) request.getAttribute("revenue"))%>; // Thêm dữ liệu doanh thu
+            document.addEventListener("DOMContentLoaded", function () {
+                var isMonth = new URLSearchParams(window.location.search).get("month") === "true";
 
-            var options1 = {
-                chart: {type: 'area', height: 250},
-                series: [
-                    {name: 'Đơn hàng', data: ordersData},
-                    {name: 'Đặt phòng', data: bookingsData}
+                // Lấy dữ liệu từ JSP
+                var ordersDataWeek = <%= ordersDataWeekJson%>;
+                var bookingsDataWeek = <%= bookingsDataWeekJson%>;
+                var ordersDataMonth = <%= ordersDataMonthJson%>;
+                var bookingsDataMonth = <%= bookingsDataMonthJson%>;
 
+                // Ghi log để kiểm tra dữ liệu
+                console.log("Dữ liệu đơn hàng theo tuần:", ordersDataWeek);
+                console.log("Dữ liệu đặt phòng theo tuần:", bookingsDataWeek);
+                console.log("Dữ liệu đơn hàng theo tháng:", ordersDataMonth);
+                console.log("Dữ liệu đặt phòng theo tháng:", bookingsDataMonth);
 
-                ],
-                xaxis: {categories: ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN']},
-                colors: ['#007bff', '#17a2b8'],
-                fill: {type: 'gradient'}
-            };
-            new ApexCharts(document.querySelector("#line-chart"), options1).render();
-        </script>
+                // Chọn dữ liệu và nhãn dựa trên tham số 'month'
+                var ordersData = isMonth ? ordersDataMonth : ordersDataWeek;
+                var bookingsData = isMonth ? bookingsDataMonth : bookingsDataWeek;
+                var categories = isMonth
+                        ? ["Th1", "Th2", "Th3", "Th4", "Th5", "Th6", "Th7", "Th8", "Th9", "Th10", "Th11", "Th12"]
+                        : ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
 
-        <!--        theo tháng-->
-        <script>
-            var ordersData = <%= Arrays.toString((double[]) request.getAttribute("orderss"))%>;
-            var bookingsData = <%= Arrays.toString((double[]) request.getAttribute("bookingss"))%>;
-            var revenueData = <%= Arrays.toString((double[]) request.getAttribute("revenueData"))%>; // Lấy doanh thu đúng
+                // Kiểm tra xem dữ liệu có toàn bộ là 0 hay không
+                var isOrdersEmpty = ordersData.every(val => val === 0);
+                var isBookingsEmpty = bookingsData.every(val => val === 0);
 
-            var options = {
-                chart: {type: 'area', height: 250},
-                series: [
-                    {name: 'Đơn hàng', data: ordersData},
-                    {name: 'Đặt phòng', data: bookingsData}
-                ],
-                xaxis: {
-                    categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-                },
-                colors: ['#007bff', '#17a2b8', '#28a745'],
-                fill: {type: 'gradient'}
-            };
-            new ApexCharts(document.querySelector("#line-chart"), options).render();
-        </script>
+                if (isOrdersEmpty && isBookingsEmpty) {
+                    // Hiển thị thông báo nếu không có dữ liệu
+                    document.querySelector("#line-chart").innerHTML = '<h5 style="text-align: center; color: #856404; background-color: #fff3cd; padding: 12px; border-radius: 5px;">Không có dữ liệu để hiển thị!</h5>';
+                } else {
+                    // Cấu hình biểu đồ
+                    var options = {
+                        chart: {
+                            type: 'area',
+                            height: 250
+                        },
+                        series: [
+                            {name: 'Đơn hàng', data: ordersData},
+                            {name: 'Đặt phòng', data: bookingsData}
+                        ],
+                        xaxis: {
+                            categories: categories,
+                            title: {text: isMonth ? "Tháng" : "Ngày trong tuần"}
+                        },
+                        colors: ['#007bff', '#17a2b8'],
+                        fill: {type: 'gradient'}
+                    };
 
-
-        <script>
-            var ctx = document.getElementById('financeChart').getContext('2d');
-            var financeChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                    datasets: [{
-                            label: 'Finance Growth',
-                            data: [10, 30, 20, 40, 35, 15, 25],
-                            borderColor: 'orange',
-                            borderWidth: 2,
-                            fill: false
-                        }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {beginAtZero: true}
-                    }
+                    // Vẽ biểu đồ
+                    new ApexCharts(document.querySelector("#line-chart"), options).render();
                 }
             });
         </script>
+
     </body>
 </html>
 
