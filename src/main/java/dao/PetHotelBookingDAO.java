@@ -107,11 +107,10 @@ public class PetHotelBookingDAO {
         return null;
     }
 
-    public static boolean updateBookingStatus(int bookingId, String status, int petId, int staffId) {
+    public static boolean updateBookingStatus(int bookingId,  String status, int staffId) {
         boolean success = false;
         Connection con = null;
         PreparedStatement ps = null;
-        PreparedStatement ps2 = null;
 
         try {
             con = new DBContext().getConnection();
@@ -125,20 +124,6 @@ public class PetHotelBookingDAO {
             ps.setInt(3, bookingId);
 
             if (ps.executeUpdate() > 0) {
-                // Cập nhật trạng thái của thú cưng
-                String updatePetStatusQuery = null;
-                if ("Đã nhận phòng".equals(status)) {
-                    updatePetStatusQuery = "UPDATE Pets SET pet_status = 'booking' WHERE pet_id = ?";
-                } else if ("Đã trả phòng".equals(status)) {
-                    updatePetStatusQuery = "UPDATE Pets SET pet_status = 'non-booking' WHERE pet_id = ?";
-                }
-
-                if (updatePetStatusQuery != null) {
-                    ps2 = con.prepareStatement(updatePetStatusQuery);
-                    ps2.setInt(1, petId);
-                    ps2.executeUpdate();
-                }
-
                 con.commit(); // Xác nhận transaction
                 success = true;
             } else {
@@ -157,9 +142,6 @@ public class PetHotelBookingDAO {
             try {
                 if (ps != null) {
                     ps.close();
-                }
-                if (ps2 != null) {
-                    ps2.close();
                 }
                 if (con != null) {
                     con.close();
@@ -218,11 +200,11 @@ public class PetHotelBookingDAO {
         return success;
     }
 
-    //Booking
     public static boolean createBooking(int roomId, int customerId, int petId, Timestamp checkIn, Timestamp checkOut, BigDecimal totalPrice, String note) {
         boolean success = false;
         Connection con = null;
         PreparedStatement ps = null;
+        PreparedStatement ps2 = null; // Chuẩn bị lệnh cập nhật pet status
 
         try {
             con = new DBContext().getConnection();
@@ -241,8 +223,17 @@ public class PetHotelBookingDAO {
             ps.setString(8, "Chờ xác nhận"); // Trạng thái booking mới
 
             if (ps.executeUpdate() > 0) {
-                con.commit(); // Xác nhận transaction
-                success = true;
+                // Cập nhật trạng thái của thú cưng thành 'booking'
+                String updatePetStatusQuery = "UPDATE Pets SET pet_status = 'booking' WHERE pet_id = ?";
+                ps2 = con.prepareStatement(updatePetStatusQuery);
+                ps2.setInt(1, petId);
+
+                if (ps2.executeUpdate() > 0) {
+                    con.commit(); // Xác nhận transaction
+                    success = true;
+                } else {
+                    con.rollback(); // Hoàn tác nếu cập nhật pet_status thất bại
+                }
             } else {
                 con.rollback(); // Hoàn tác nếu thêm booking thất bại
             }
@@ -259,6 +250,9 @@ public class PetHotelBookingDAO {
             try {
                 if (ps != null) {
                     ps.close();
+                }
+                if (ps2 != null) {
+                    ps2.close();
                 }
                 if (con != null) {
                     con.close();

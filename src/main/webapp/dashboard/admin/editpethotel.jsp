@@ -123,7 +123,7 @@
                                     <option value="Mèo" ${room.roomType == 'Mèo' ? 'selected' : ''}>Mèo</option>
                                 </select>
                             </div>
-                                
+
                             <!-- Cân nặng tối thiểu -->
                             <div class="mb-3">
                                 <label for="editMinWeight" class="form-label">Cân nặng tối thiểu (kg)</label>
@@ -243,28 +243,19 @@
                 let description = document.querySelector("textarea[name='description']").value.trim();
                 let petHotelImage = document.getElementById("editRoomImage").files.length;
 
-                // Biểu thức kiểm tra ký tự đặc biệt (không cho phép ký tự đặc biệt, chỉ cho phép chữ cái, số và khoảng trắng)
-                let specialCharPattern = /[^a-zA-Z0-9\s]/;
-
-                // Biểu thức kiểm tra có ít nhất một chữ cái
-                let hasLetterPattern = /[a-zA-Z]/;
+                // Biểu thức kiểm tra ký tự đặc biệt (chỉ cho phép chữ cái, số và khoảng trắng)
+                let specialCharPattern = /^[\p{L} ]+$/u;
 
                 // Kiểm tra tên phòng
-                if (roomName === "") {
+                if (roomName.trim() === "") {
                     Swal.fire("Lỗi!", "Tên phòng không được để trống!", "error");
                     return;
                 }
 
-                if (specialCharPattern.test(roomName)) {
-                    Swal.fire("Lỗi!", "Tên phòng không được chứa ký tự đặc biệt!", "error");
+                if (!specialCharPattern.test(roomName)) {
+                    Swal.fire("Lỗi!", "Tên phòng không được có ký tự đặc biệt hoặc số!", "error");
                     return;
                 }
-
-                if (!hasLetterPattern.test(roomName)) {
-                    Swal.fire("Lỗi!", "Tên phòng phải chứa ít nhất một chữ cái!", "error");
-                    return;
-                }
-
 
                 // Kiểm tra cân nặng
                 if (isNaN(minWeight) || minWeight <= 0.9) {

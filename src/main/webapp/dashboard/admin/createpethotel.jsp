@@ -236,27 +236,20 @@
                     return;
                 }
 
-                // Biểu thức kiểm tra ký tự đặc biệt (không cho phép ký tự đặc biệt, chỉ cho phép chữ cái, số và khoảng trắng)
-                let specialCharPattern = /[^a-zA-Z0-9\s]/;
-
-                // Biểu thức kiểm tra có ít nhất một chữ cái
-                let hasLetterPattern = /[a-zA-Z]/;
+                // Biểu thức kiểm tra ký tự đặc biệt (chỉ cho phép chữ cái, số và khoảng trắng)
+                let specialCharPattern = /^[\p{L} ]+$/u;
 
                 // Kiểm tra tên phòng
-                if (roomName === "") {
+                if (roomName.trim() === "") {
                     Swal.fire("Lỗi!", "Tên phòng không được để trống!", "error");
                     return;
                 }
 
-                if (specialCharPattern.test(roomName)) {
-                    Swal.fire("Lỗi!", "Tên phòng không được chứa ký tự đặc biệt!", "error");
+                if (!specialCharPattern.test(roomName)) {
+                    Swal.fire("Lỗi!", "Tên phòng không được có ký tự đặc biệt hoặc số!", "error");
                     return;
                 }
 
-                if (!hasLetterPattern.test(roomName)) {
-                    Swal.fire("Lỗi!", "Tên phòng không được là số!", "error");
-                    return;
-                }
 
 
                 // Kiểm tra cân nặng
