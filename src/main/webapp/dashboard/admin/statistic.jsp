@@ -237,9 +237,9 @@
                                                         <h4>${staff.fullName}</h4>
                                                     </div>
                                                     <div style="display: flex; flex-direction: column">
-                                                        <div class="transaction-amount total">Tổng: + <fmt:formatNumber value="${staff.totalRevenue}" type="currency" currencySymbol="đ"/></div>
-                                                        <div class="transaction-amount order">Đơn hàng: + <fmt:formatNumber value="${staff.totalOrder}" type="currency" currencySymbol="đ"/></div>
-                                                        <div class="transaction-amount booking">Phòng: + <fmt:formatNumber value="${staff.totalBooking}" type="currency" currencySymbol="đ"/></div>
+                                                        <div class="transaction-amount total">Tổng: + <fmt:formatNumber value="${staff.totalRevenue}" type="currency" currencySymbol="đ" maxFractionDigits="0"/></div>
+                                                        <div class="transaction-amount order">Đơn hàng: + <fmt:formatNumber value="${staff.totalOrder}" type="currency" currencySymbol="đ" maxFractionDigits="0"/></div>
+                                                        <div class="transaction-amount booking">Phòng: + <fmt:formatNumber value="${staff.totalBooking}" type="currency" currencySymbol="đ" maxFractionDigits="0"/></div>
                                                     </div>  
                                                 </div>
                                             </c:forEach>
