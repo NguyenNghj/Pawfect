@@ -28,7 +28,7 @@
 <% } %>
         <form action="verify" method="post">
             <h1>Xác nhận tài khoản</h1>
-
+            <p>Vui lòng nhập mã xác minh đã được gửi đến email của bạn để hoàn tất quá trình xác thực.</p>
             <% if (request.getAttribute("error") != null) { %>
                 <p style="color:red; text-align: center;"><%= request.getAttribute("error") %></p>
             <% } %>
