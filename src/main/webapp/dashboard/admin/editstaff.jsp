@@ -175,81 +175,81 @@
         </div>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-                                                    document.getElementById("editStaffForm").addEventListener("submit", function (event) {
-                                                        event.preventDefault(); // Ngăn form submit ngay lập tức
+                                            document.getElementById("editStaffForm").addEventListener("submit", function (event) {
+                                                event.preventDefault(); // Ngăn form submit ngay lập tức
 
-                                                        // Lấy dữ liệu từ form
-                                                        const fullName = document.getElementsByName("fullName")[0].value.trim();
-                                                        const email = document.getElementsByName("email")[0].value.trim();
-                                                        const password = document.getElementsByName("password")[0].value;
-                                                        const phone = document.getElementsByName("phone")[0].value.trim();
-                                                        const address = document.getElementsByName("address")[0].value.trim();
-                                                        const birthDate = document.getElementsByName("birthDate")[0].value;
+                                                // Lấy dữ liệu từ form
+                                                const fullName = document.getElementsByName("fullName")[0].value.trim();
+                                                const email = document.getElementsByName("email")[0].value.trim();
+                                                const password = document.getElementsByName("password")[0].value;
+                                                const phone = document.getElementsByName("phone")[0].value.trim();
+                                                const address = document.getElementsByName("address")[0].value.trim();
+                                                const birthDate = document.getElementsByName("birthDate")[0].value;
 
-                                                        // Biểu thức regex
-                                                        const nameRegex = /^[\p{L} ]+$/u; // Chỉ chứa chữ cái và dấu cách
-                                                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                                                        const phoneRegex = /^[0-9]{10}$/;
-                                                        const addressRegex = /^[\p{L}0-9 ,.-]+$/u; // Chữ, số, dấu phẩy, dấu chấm, gạch ngang
+                                                // Biểu thức regex
+                                                const nameRegex = /^[\p{L} ]+$/u; // Chỉ chứa chữ cái và dấu cách
+                                                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                                                const phoneRegex = /^[0-9]{10}$/;
+                                                const addressRegex = /^[\p{L}0-9 ,.-]+$/u; // Chữ, số, dấu phẩy, dấu chấm, gạch ngang
 
-                                                        // Kiểm tra Họ và Tên
-                                                        if (fullName === "" || !nameRegex.test(fullName)) {
-                                                            Swal.fire("Lỗi!", "Họ và Tên không hợp lệ! Chỉ chứa chữ cái và dấu cách.", "error");
-                                                            return;
-                                                        }
+                                                // Kiểm tra Họ và Tên
+                                                if (fullName === "" || !nameRegex.test(fullName)) {
+                                                    Swal.fire("Lỗi!", "Họ và Tên không hợp lệ! Chỉ chứa chữ cái và dấu cách.", "error");
+                                                    return;
+                                                }
 
-                                                        // Kiểm tra địa chỉ
-                                                        if (address === "" || !addressRegex.test(address)) {
-                                                            Swal.fire("Lỗi!", "Địa chỉ không hợp lệ! Không chứa ký tự đặc biệt.", "error");
-                                                            return;
-                                                        }
+                                                // Kiểm tra địa chỉ
+                                                if (address === "" || !addressRegex.test(address)) {
+                                                    Swal.fire("Lỗi!", "Địa chỉ không hợp lệ! Không chứa ký tự đặc biệt.", "error");
+                                                    return;
+                                                }
 
-                                                        // Kiểm tra email hợp lệ
-                                                        if (!emailRegex.test(email)) {
-                                                            Swal.fire("Lỗi!", "Email không hợp lệ!", "error");
-                                                            return;
-                                                        }
+                                                // Kiểm tra email hợp lệ
+                                                if (!emailRegex.test(email)) {
+                                                    Swal.fire("Lỗi!", "Email không hợp lệ!", "error");
+                                                    return;
+                                                }
 
-                                                        // Kiểm tra mật khẩu có ít nhất 6 ký tự
-                                                        if (password.length < 6) {
-                                                            Swal.fire("Lỗi!", "Mật khẩu phải có ít nhất 6 ký tự!", "error");
-                                                            return;
-                                                        }
+                                                // Kiểm tra mật khẩu có ít nhất 6 ký tự
+                                                if (password.length < 6) {
+                                                    Swal.fire("Lỗi!", "Mật khẩu phải có ít nhất 6 ký tự!", "error");
+                                                    return;
+                                                }
 
-                                                        // Kiểm tra số điện thoại (phải có 10 chữ số)
-                                                        if (!phoneRegex.test(phone)) {
-                                                            Swal.fire("Lỗi!", "Số điện thoại phải gồm 10 chữ số và không có ký tự khác!", "error");
-                                                            return;
-                                                        }
+                                                // Kiểm tra số điện thoại (phải có 10 chữ số)
+                                                if (!phoneRegex.test(phone)) {
+                                                    Swal.fire("Lỗi!", "Số điện thoại phải gồm 10 chữ số và không có ký tự khác!", "error");
+                                                    return;
+                                                }
 
-                                                        // Kiểm tra tuổi (18 - 65)
-                                                        if (birthDate) {
-                                                            let birthYear = new Date(birthDate).getFullYear();
-                                                            let currentYear = new Date().getFullYear();
-                                                            let age = currentYear - birthYear;
-                                                            if (age < 18 || age > 65) {
-                                                                Swal.fire("Lỗi!", "Nhân viên phải từ 18 đến 65 tuổi!", "error");
-                                                                return;
-                                                            }
-                                                        } else {
-                                                            Swal.fire("Lỗi!", "Vui lòng chọn ngày sinh!", "error");
-                                                            return;
-                                                        }
+                                                // Kiểm tra tuổi (18 - 65)
+                                                if (birthDate) {
+                                                    let birthYear = new Date(birthDate).getFullYear();
+                                                    let currentYear = new Date().getFullYear();
+                                                    let age = currentYear - birthYear;
+                                                    if (age < 18 || age > 65) {
+                                                        Swal.fire("Lỗi!", "Nhân viên phải từ 18 đến 65 tuổi!", "error");
+                                                        return;
+                                                    }
+                                                } else {
+                                                    Swal.fire("Lỗi!", "Vui lòng chọn ngày sinh!", "error");
+                                                    return;
+                                                }
 
-                                                        // Nếu tất cả hợp lệ, xác nhận trước khi submit
-                                                        Swal.fire({
-                                                            title: "Xác nhận!",
-                                                            text: "Bạn có chắc muốn cập nhật thông tin nhân viên?",
-                                                            icon: "question",
-                                                            showCancelButton: true,
-                                                            confirmButtonText: "Đồng ý",
-                                                            cancelButtonText: "Hủy"
-                                                        }).then((result) => {
-                                                            if (result.isConfirmed) {
-                                                                event.target.submit(); // Submit form nếu người dùng xác nhận
-                                                            }
-                                                        });
-                                                    });
+                                                // Nếu tất cả hợp lệ, xác nhận trước khi submit
+                                                Swal.fire({
+                                                    title: "Xác nhận!",
+                                                    text: "Bạn có chắc muốn cập nhật thông tin nhân viên?",
+                                                    icon: "question",
+                                                    showCancelButton: true,
+                                                    confirmButtonText: "Đồng ý",
+                                                    cancelButtonText: "Hủy"
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        event.target.submit(); // Submit form nếu người dùng xác nhận
+                                                    }
+                                                });
+                                            });
         </script>
 
         <script>

@@ -159,7 +159,7 @@
                                                         <td style="text-align: center; width: 7%;">${room.minWeight}</td>
                                                         <td style="text-align: center; width: 7%;">${room.maxWeight}</td>
                                                         <td style=" width: 8%; text-align: center;">
-                                                            <fmt:formatNumber value="${room.pricePerNight}" type="currency" currencyCode="VND"/>
+                                                            <fmt:formatNumber value="${room.pricePerNight}" type="number" maxFractionDigits="0"/>đ/Ngày
                                                         </td>
 <!--                                                        <td style="text-align: left;">${room.description}</td>-->
                                                         <td style="text-align: center; width: 7%;">${room.quantity}</td>

@@ -120,6 +120,25 @@
                         </form>
 
                         <script>
+                            document.getElementById("editCategoryForm").addEventListener("submit", function (event) {
+                                event.preventDefault(); // Ngăn chặn submit mặc định
+
+                                Swal.fire({
+                                    title: "Xác nhận!",
+                                    text: "Bạn có chắc muốn cập nhật thông tin danh mục?",
+                                    icon: "question",
+                                    showCancelButton: true,
+                                    confirmButtonText: "Đồng ý",
+                                    cancelButtonText: "Hủy"
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        event.target.submit(); // Gửi form nếu người dùng xác nhận
+                                    }
+                                });
+                            });
+                        </script>
+
+                        <script>
                             document.addEventListener("DOMContentLoaded", function () {
                                 const selectStatus = document.querySelector("select[name='isActive']");
                                 const form = document.getElementById("editCategoryForm");

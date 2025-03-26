@@ -65,6 +65,7 @@
                                         <span style="color: #D3A376; font-weight: bold;"><%= staffName%></span>
                                         <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                             <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
+
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <li>
@@ -80,7 +81,7 @@
                                         <span style = "color: #D3A376; font-weight: bold;"><%= staffName%></span>
                                         <a href="staffprofile">
                                             <button class="btn" type="button">
-                                                <img class="profile-img" src="${staff.image}" alt="">
+                                                <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
                                             </button>
                                         </a>
                                     </div>
