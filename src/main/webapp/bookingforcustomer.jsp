@@ -119,7 +119,7 @@
             </div>
         </div>
 
-        <h3>THÔNG TIN ĐẶT LỊCH</h3>
+        <h3>BIỂU MẪU ĐẶT LỊCH</h3>
 
         <div class="container">
             <div class="info-container">
