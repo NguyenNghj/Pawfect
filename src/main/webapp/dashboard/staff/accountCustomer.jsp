@@ -210,13 +210,9 @@
                                         </ul>
                                     </nav>
                                 </c:if>
-
-
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>

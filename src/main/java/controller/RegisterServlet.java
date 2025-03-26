@@ -12,12 +12,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.User;
 import util.EmailVerify;
 
 /**
