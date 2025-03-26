@@ -78,8 +78,7 @@ public class ForgetPasswordServlet extends HttpServlet {
             throws ServletException, IOException {
         String email = request.getParameter("email");
         UserDAO userDAO = new UserDAO();
-        String pass = userDAO.getPassword(email);
-        if (pass != null) {
+        if (userDAO.checkMail(email)) {
            String newPassword = String.format("%06d", new Random().nextInt(999999));
         HttpSession session = request.getSession();
          
@@ -94,7 +93,7 @@ public class ForgetPasswordServlet extends HttpServlet {
             String messageText =  newPassword;
             SendMail.sendEmail(email, subject, messageText);
 
-            request.setAttribute("message", "A new password has been sent to your email.");
+            request.setAttribute("message", "Mật khẩu mới đã được gửi vô mail của bạn");
         } else {
             request.setAttribute("error", "Email not found!");
         }

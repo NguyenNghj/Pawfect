@@ -58,7 +58,7 @@
                                 <span style = "color: #D3A376; font-weight: bold;"><%= staffName%></span>
                                 <a href="staffprofile">
                                     <button class="btn" type="button">
-                                        <img class="profile-img" src="${staff.image}" alt="">
+                                        <img class="profile-img" src="/img/staff/${staff.image}" alt="">
                                     </button>
                                 </a>
                             </div>                                                             
@@ -81,14 +81,10 @@
                             <div class="col-lg-4">
                                 <div class="card mb-4">
                                     <div class="card-body text-center">
-                                        <img src="${staff.image}" alt="avatar"
+                                        <img src="/img/staff/${staff.image}" alt="avatar"
                                              class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
                                         <h5 class="my-3">${empty staff.fullName ? 'Chưa có thông tin' : staff.fullName}</h5>
-                                        <button type="button" class="btn btn-success" 
-                                                data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                            Chỉnh sửa thông tin
-                                        </button>
-
+                                        
                                     </div>
                                 </div>
                             </div>
