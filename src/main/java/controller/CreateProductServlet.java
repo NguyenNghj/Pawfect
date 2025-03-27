@@ -125,6 +125,11 @@ public class CreateProductServlet extends HttpServlet {
                 throw new IllegalArgumentException("Tên sản phẩm phải chứa ít nhất một chữ cái và chỉ cho phép chữ, số, dấu cách, dấu phẩy, dấu gạch ngang, dấu chấm và dấu nháy đơn.");
             }
 
+            ProductDAO productDAO = new ProductDAO();
+            if (productDAO.isExistProduct(productName)) {
+                throw new IllegalArgumentException("Tên sản phẩm " + productName + " đã tồn tại. Vui lòng chọn tên khác.");
+            }
+
             // Kiểm tra kiểu dữ liệu
             int categoryId;
             double productPrice;
@@ -196,7 +201,6 @@ public class CreateProductServlet extends HttpServlet {
             Product product = new Product(categoryId, productName, productPetType,
                     productPrice, fileName, stock, description, productActive);
 
-            ProductDAO productDAO = new ProductDAO();
             boolean createSuccess = productDAO.createProduct(product);
 
             if (createSuccess) {
