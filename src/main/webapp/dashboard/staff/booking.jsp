@@ -179,7 +179,8 @@
                                         <tbody id="bookingTable">
                                             <c:forEach var="booking" items="${bookings}">
                                                 <tr class="booking-row" data-status="${booking.status}">
-                                                        <td style="font-size: 15px; width: 120px; text-align: center; vertical-align: middle;">
+                                                    <td style="cursor: pointer; color: blue; text-decoration: underline;"
+                                                        onclick="showPopup(${booking.bookingId})">
                                                         ${booking.bookingId}
                                                     </td>
                                                     <td style="font-size: 15px; width: 120px; text-align: center; vertical-align: middle;">
@@ -286,6 +287,56 @@
                 </div>
             </div>
         </div>
+        <!-- Popup hiển thị chi tiết Booking -->
+        <div id="bookingPopup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+             background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.3);">
+            <h3>Chi Tiết Booking</h3>
+            <p><strong>ID:</strong> <span id="popupBookingId"></span></p>
+            <p><strong>Khách hàng:</strong> <span id="popupCustomerName"></span></p>
+            <p><strong>Điện thoại:</strong> <span id="popupCustomerPhone"></span></p>
+            <p><strong>Email:</strong> <span id="popupCustomerEmail"></span></p>
+            <p><strong>Tên thú cưng:</strong> <span id="popupPetName"></span></p>
+            <p><strong>Loại:</strong> <span id="popupPetType"></span></p>
+            <p><strong>Giống loài:</strong> <span id="popupPetBreed"></span></p>
+            <p><strong>Cân nặng:</strong> <span id="popupPetWeight"></span></p>
+            <p><strong>Check-in:</strong> <span id="popupCheckIn"></span></p>
+            <p><strong>Check-out:</strong> <span id="popupCheckOut"></span></p>
+            <p><strong>Ghi chú:</strong> <span id="popupNote"></span></p>
+            <p><strong>Tổng tiền:</strong> <span id="popupTotalPrice"></span></p>
+            <button onclick="closePopup()">Đóng</button>
+        </div>
+
+
+
+        <script>
+            function showPopup(bookingId) {
+                fetch("pethotelbooking?bookingId=" + bookingId)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data) {
+                                document.getElementById("popupBookingId").textContent = data.bookingId;
+                                document.getElementById("popupCustomerName").textContent = data.customerName;
+                                document.getElementById("popupCustomerPhone").textContent = data.customerPhone;
+                                document.getElementById("popupCustomerEmail").textContent = data.customerEmail;
+                                document.getElementById("popupPetName").textContent = data.petName;
+                                document.getElementById("popupPetType").textContent = data.petType;
+                                document.getElementById("popupPetBreed").textContent = data.petBreed;
+                                document.getElementById("popupPetWeight").textContent = data.petWeight;
+                                document.getElementById("popupCheckIn").textContent = data.checkIn;
+                                document.getElementById("popupCheckOut").textContent = data.checkOut;
+                                document.getElementById("popupNote").textContent = data.note;
+                                document.getElementById("popupTotalPrice").textContent = data.totalPrice + " ₫";
+                                document.getElementById("bookingPopup").style.display = "block";
+                            }
+                        })
+                        .catch(error => console.error("Lỗi khi lấy booking:", error));
+            }
+
+            function closePopup() {
+                document.getElementById("bookingPopup").style.display = "none";
+            }
+        </script>
+
 
         <script>
             document.addEventListener("DOMContentLoaded", function () {
