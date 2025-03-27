@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.List;
 import model.PetHotel;
 
 @MultipartConfig(
@@ -68,6 +69,8 @@ public class CreatePetHotelServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        List<PetHotel> roomList = PetHotelDAO.getAllPetRooms(); // Lấy danh sách phòng từ DAO
+        request.setAttribute("roomList", roomList);
         RequestDispatcher dispatcher = request.getRequestDispatcher("createpethotel.jsp");
         dispatcher.forward(request, response);
     }

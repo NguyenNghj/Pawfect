@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.List;
 import model.PetHotel;
 
 @MultipartConfig(
@@ -85,6 +86,8 @@ public class EditPetHotelServlet extends HttpServlet {
 
             // Kiểm tra xem room có tồn tại không
             if (room != null) {
+                List<PetHotel> roomList = PetHotelDAO.getAllPetRooms(); // Lấy danh sách phòng từ DAO
+                request.setAttribute("roomList", roomList);
                 request.setAttribute("room", room);
                 RequestDispatcher dispatcher = request.getRequestDispatcher("editpethotel.jsp");
                 dispatcher.forward(request, response);

@@ -108,7 +108,7 @@
                             <!-- Loại phòng -->
                             <div class="mb-3">
                                 <label class="form-label">Loại phòng</label>
-                                <select class="form-select" name="roomType" >
+                                <select class="form-select" name="roomType" id="roomType" >
                                     <option value="Chó">Chó</option>
                                     <option value="Mèo">Mèo</option>
                                 </select>
@@ -217,12 +217,31 @@
                 }
             }
         </script>
+        <script>
+            // Tạo danh sách phòng từ dữ liệu lấy từ Servlet
+            const petHotelRooms = [
+            <%
+                List<PetHotel> rooms = (List<PetHotel>) request.getAttribute("roomList");
+                for (int i = 0; i < rooms.size(); i++) {
+                    PetHotel room = rooms.get(i);
+                    out.print("{ roomName: \"" + room.getRoomName() + "\", roomType: \"" + room.getRoomType() + "\" }");
+                    if (i < rooms.size() - 1) {
+                        out.print(",");
+                    }
+                }
+            %>
+            ];
+
+            console.log("Danh sách phòng từ database:", petHotelRooms);
+        </script>
+
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             document.getElementById("createpethotel").addEventListener("submit", function (event) {
                 event.preventDefault(); // Ngăn form submit ngay lập tức
 
                 let roomName = document.getElementById("roomName").value.trim();
+                let roomType = document.getElementById("roomType").value.trim();
                 let minWeight = parseFloat(document.getElementById("minWeight").value);
                 let maxWeight = parseFloat(document.getElementById("maxWeight").value);
                 let quantity = parseInt(document.getElementById("quantity").value);
@@ -250,19 +269,37 @@
                     return;
                 }
 
+                // Kiểm tra trùng lặp (tên + loại)
+                let isDuplicate = petHotelRooms.some(room =>
+                    room.roomName.toLowerCase() === roomName.toLowerCase() &&
+                            room.roomType.toLowerCase() === roomType.toLowerCase()
+                );
 
+                if (isDuplicate) {
+                    Swal.fire("Lỗi!", "Phòng đã tồn tại!", "error");
+                    return;
+                }
 
                 // Kiểm tra cân nặng
                 if (isNaN(minWeight) || minWeight <= 0.9) {
-                    Swal.fire("Lỗi!", "Cân nặng tối thiểu phải lớn hơn 1!", "error");
+                    Swal.fire("Lỗi!", "Cân nặng tối thiểu phải lớn hơn hoặc bằng 1kg!", "error");
+                    return;
+                }
+
+                if (isNaN(minWeight) || minWeight > 40) {
+                    Swal.fire("Lỗi!", "Cân nặng tối thiểu phải từ 40kg trở xuống!", "error");
                     return;
                 }
 
                 if (isNaN(maxWeight) || maxWeight <= 0.9) {
-                    Swal.fire("Lỗi!", "Cân nặng tối đa phải lớn hơn 1!", "error");
+                    Swal.fire("Lỗi!", "Cân nặng tối đa phải lớn hơn 1kg!", "error");
                     return;
                 }
 
+                if (isNaN(maxWeight) || maxWeight > 50) {
+                    Swal.fire("Lỗi!", "Cân nặng tối đa phải từ 50kg trở xuống!", "error");
+                    return;
+                }
                 if (minWeight > maxWeight) {
                     Swal.fire("Lỗi!", "Cân nặng tối thiểu phải nhỏ hơn hoặc bằng cân nặng tối đa!", "error");
                     return;
@@ -272,6 +309,10 @@
                 // Kiểm tra số lượng
                 if (isNaN(quantity) || quantity < 1) {
                     Swal.fire("Lỗi!", "Số lượng phải lớn hơn 0!", "error");
+                    return;
+                }
+                if (isNaN(quantity) || quantity > 50) {
+                    Swal.fire("Lỗi!", "Số lượng phải nhỏ hơn 50!", "error");
                     return;
                 }
 
