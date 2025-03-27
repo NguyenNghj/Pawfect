@@ -162,10 +162,12 @@ public class EditVoucherServlet extends HttpServlet {
                 }
             }
 
-            if (discountAmountParam != null && !discountAmountParam.trim().isEmpty()) {
-                discountAmount = Double.parseDouble(discountAmountParam);
-                if (discountAmount < 0 || discountAmount > 5000000) {
-                    throw new IllegalArgumentException("Số tiền giảm giá phải lớn hơn 0 và không vượt quá 5.000.000.");
+            if (Double.parseDouble(discountAmountParam) != 0) {
+                if (discountAmountParam != null && !discountAmountParam.trim().isEmpty()) {
+                    discountAmount = Double.parseDouble(discountAmountParam);
+                    if (discountAmount < 1000 || discountAmount > 5000000) {
+                        throw new IllegalArgumentException("Số tiền giảm giá phải lớn hơn 1000 và không vượt quá 5.000.000.");
+                    }
                 }
             }
 
@@ -175,8 +177,8 @@ public class EditVoucherServlet extends HttpServlet {
             }
 
             // Kiểm tra giảm giá tối đa
-            if (maxDiscount <= 0 || maxDiscount > 5000000) {
-                throw new IllegalArgumentException("Giảm giá tối đa phải lớn hơn 0 và không vượt quá 5.000.000.");
+            if (maxDiscount < 1000 || maxDiscount > 5000000) {
+                throw new IllegalArgumentException("Giảm giá tối đa phải lớn hơn 1000 và không vượt quá 5.000.000.");
             }
 
             // Nếu nhập số tiền giảm giá, giảm giá tối đa không được nhỏ hơn số đó
@@ -189,6 +191,12 @@ public class EditVoucherServlet extends HttpServlet {
                 throw new IllegalArgumentException("Giảm giá tối đa không được nhỏ hơn số tiền giảm từ phần trăm.");
             }
 
+            // Kiểm tra mã giảm giá đã tồn tại chưa
+            VoucherDAO voucherDAO = new VoucherDAO();
+            if (voucherDAO.isCodeExists(code, voucherId)) {
+                throw new IllegalArgumentException("Mã giảm giá đã tồn tại.");
+            }
+
             // Kiểm tra ngày hợp lệ
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
             dateFormat.setLenient(false);
@@ -198,6 +206,13 @@ public class EditVoucherServlet extends HttpServlet {
 
             // Lấy thời gian hiện tại với đầy đủ giờ và phút
             Timestamp currentDateTime = new Timestamp(System.currentTimeMillis());
+
+            Timestamp existingStartDate = voucherDAO.getVoucherById(voucherId).getStartDate();
+            if (!startDate.equals(existingStartDate)) { // Nếu ngày bắt đầu bị thay đổi
+                if (startDate.before(currentDateTime)) {
+                    throw new IllegalArgumentException("Ngày bắt đầu không thể được sửa thành trước thời điểm hiện tại.");
+                }
+            }
 
             // Kiểm tra nếu startDate hoặc endDate trước thời điểm hiện tại
             if (startDate.before(currentDateTime) || endDate.before(currentDateTime)) {
@@ -209,12 +224,6 @@ public class EditVoucherServlet extends HttpServlet {
             }
 
             boolean isActive = Boolean.parseBoolean(isActiveParam);
-
-            // Kiểm tra mã giảm giá đã tồn tại chưa
-            VoucherDAO voucherDAO = new VoucherDAO();
-            if (voucherDAO.isCodeExists(code, voucherId)) {
-                throw new IllegalArgumentException("Mã giảm giá đã tồn tại.");
-            }
 
             // Cập nhật vào DB
             Voucher voucher = new Voucher(voucherId, code, description, discountPercentage, discountAmount,
