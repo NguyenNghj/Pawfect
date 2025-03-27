@@ -112,10 +112,12 @@ public class CreateVoucherServlet extends HttpServlet {
                 }
             }
 
-            if (discountAmountParam != null && !discountAmountParam.trim().isEmpty()) {
-                discountAmount = Double.parseDouble(discountAmountParam);
-                if (discountAmount <= 0 || discountAmount > 5000000) {
-                    throw new IllegalArgumentException("Số tiền giảm giá phải lớn hơn 0 và không vượt quá 5.000.000.");
+            if (Double.parseDouble(discountAmountParam) != 0) {
+                if (discountAmountParam != null && !discountAmountParam.trim().isEmpty()) {
+                    discountAmount = Double.parseDouble(discountAmountParam);
+                    if (discountAmount < 1000 || discountAmount > 5000000) {
+                        throw new IllegalArgumentException("Số tiền giảm giá phải lớn hơn 1000 và không vượt quá 5.000.000.");
+                    }
                 }
             }
 
@@ -130,8 +132,8 @@ public class CreateVoucherServlet extends HttpServlet {
             }
 
             double maxDiscount = Double.parseDouble(maxDiscountParam);
-            if (maxDiscount <= 0 || maxDiscount > 5000000) {
-                throw new IllegalArgumentException("Giảm giá tối đa phải lớn hơn 0 và không vượt quá 5.000.000.");
+            if (maxDiscount < 1000 || maxDiscount > 5000000) {
+                throw new IllegalArgumentException("Giảm giá tối đa phải lớn hơn 1000 và không vượt quá 5.000.000.");
             }
 
             // Nếu nhập số tiền giảm giá, maxDiscount không thể nhỏ hơn discountAmount
