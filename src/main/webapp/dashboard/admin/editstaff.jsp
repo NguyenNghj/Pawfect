@@ -187,15 +187,14 @@
                                                 const birthDate = document.getElementsByName("birthDate")[0].value;
 
                                                 // Biểu thức regex
-                                                const nameRegex = /^[\p{L} ]+$/u; // Chỉ chứa chữ cái và dấu cách
+                                                const nameRegex = /^[\p{L}]+(?: [\p{L}]+)*$/u; // Chỉ chữ cái và dấu cách (không có khoảng trắng thừa)
                                                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                                                 const phoneRegex = /^[0-9]{10}$/;
                                                 const addressRegex = /^[\p{L}0-9 ,.-]+$/u; // Chữ, số, dấu phẩy, dấu chấm, gạch ngang
                                                 const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{6,}$/; // Ít nhất 1 chữ, 1 số, 1 ký tự đặc biệt, tối thiểu 6 ký tự
 
-                                                // Kiểm tra Họ và Tên
-                                                if (fullName === "" || !nameRegex.test(fullName)) {
-                                                    Swal.fire("Lỗi!", "Họ và Tên không hợp lệ! Chỉ chứa chữ cái và dấu cách.", "error");
+                                                if (!nameRegex.test(fullName)) {
+                                                    Swal.fire("Lỗi!", "Họ và Tên không hợp lệ! Chỉ chứa chữ cái và dấu cách, không có số hoặc ký tự đặc biệt.", "error");
                                                     return;
                                                 }
 
