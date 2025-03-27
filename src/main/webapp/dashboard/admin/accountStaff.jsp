@@ -83,7 +83,7 @@
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
                                 <li class="breadcrumb-item">Bảng điều khiển</li>
                                 <li class="breadcrumb-item">Quản trị viên</li>
-                                <li class="breadcrumb-item active" aria-current="page">Quản lí nhân viên</li>
+                                <li class="breadcrumb-item active" aria-current="page">Quản lý nhân viên</li>
                             </ol>
                         </nav>
                     </div>         

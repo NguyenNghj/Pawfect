@@ -59,7 +59,7 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Quản lí khách sạn thú cưng</h1>
+                                <h1>Quản lý khách sạn thú cưng</h1>
                             </div>
                             <div class="dropdown d-flex align-items-center gap-2">
                                 <span style = "color: #D3A376; font-weight: bold;"><%= staffName%></span>
@@ -84,7 +84,7 @@
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
                                 <li class="breadcrumb-item">Bảng điều khiển</li>
                                 <li class="breadcrumb-item">Quản trị viên</li>
-                                <li class="breadcrumb-item active" aria-current="page">Quản lí khách sạn thú cưng</li>
+                                <li class="breadcrumb-item active" aria-current="page">Quản lý khách sạn thú cưng</li>
                             </ol>
                         </nav>
                     </div> 

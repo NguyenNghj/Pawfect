@@ -33,7 +33,7 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Quản lí khách hàng</h1>
+                                <h1>Quản lý khách hàng</h1>
                                 <%
                                     Cookie[] cookies = request.getCookies();
                                     String staffRole = "";
@@ -70,7 +70,7 @@
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <li>
                                                 <a class="dropdown-item d-flex align-items-center gap-2" href="/dashboard/admin/statistics">
-                                                    <i class="fa-solid fa-repeat"></i> Chuyển qua giao diện quản lí
+                                                    <i class="fa-solid fa-repeat"></i> Chuyển qua giao diện quản lý
                                                 </a>
                                             </li>
                                         </ul>
@@ -98,7 +98,7 @@
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
                                 <li class="breadcrumb-item">Bảng điều khiển</li>
                                 <li class="breadcrumb-item">Nhân viên</li>
-                                <li class="breadcrumb-item active" aria-current="page">Quản lí khách hàng</li>
+                                <li class="breadcrumb-item active" aria-current="page">Quản lý khách hàng</li>
                             </ol>
                         </nav>
                     </div>   

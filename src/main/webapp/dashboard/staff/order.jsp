@@ -92,7 +92,7 @@
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
                                 <li class="breadcrumb-item">Bảng điều khiển</li>
                                 <li class="breadcrumb-item">Nhân viên</li>                            
-                                <li class="breadcrumb-item active" aria-current="page">Quản lí đơn hàng</li>
+                                <li class="breadcrumb-item active" aria-current="page">Quản lý đơn hàng</li>
                             </ol>
                         </nav>
                     </div>        
@@ -192,7 +192,15 @@
                                                     <td class="bodycolor-name-address-total align-middle">
                                                         <c:choose>
                                                             <c:when test="${o.discountAmount != 0}">
-                                                                <f:formatNumber value="${o.discountAmount}" pattern="#,##0" />đ
+                                                                <c:choose>
+                                                                    <c:when test="${o.totalAmount - o.discountAmount < 0}">
+                                                                        <f:formatNumber value="0" pattern="#,##0" />đ
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
+                                                                    </c:otherwise>
+                                                                </c:choose>
+
                                                             </c:when>
                                                             <c:otherwise>
                                                                 <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
