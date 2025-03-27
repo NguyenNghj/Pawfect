@@ -176,7 +176,7 @@
                                                             </span>
                                                         </td>
 
-                                                        <td ">
+                                                        <td>
                                                             <button type="button" class="btn btn-primary" onclick="editpethotel(${room.roomId})">Chỉnh sửa</button>
                                                         </td>
                                                     </tr>
