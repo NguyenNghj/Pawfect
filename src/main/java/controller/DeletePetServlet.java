@@ -60,7 +60,7 @@ public class DeletePetServlet extends HttpServlet {
     String petStatus = request.getParameter("petStatus");
     
     if ("booking".equals(petStatus)) {
-        request.setAttribute("errorMessage", "Không thể xóa thú cưng vì đang trong trạng thái booking.");
+        request.setAttribute("errorMessage", "Bạn không thể xóa thú cưng đã từng được đặt lịch");
         request.getRequestDispatcher("petviewdetail").forward(request, response);
     } else {
         PetDAO petDAO = new PetDAO();
@@ -68,7 +68,7 @@ public class DeletePetServlet extends HttpServlet {
         response.sendRedirect("viewpet");
     }
 } catch (Exception e) {
-    e.printStackTrace(); // Log lỗi ra console
+    e.printStackTrace(); 
     response.sendRedirect("viewpet?err=true");
 }
 
