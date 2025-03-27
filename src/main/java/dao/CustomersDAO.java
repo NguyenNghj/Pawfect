@@ -13,18 +13,40 @@ public class CustomersDAO {
 
     // SQL Queries
     protected static final String Get_All_Customers = "SELECT * FROM Customers";
+    protected static final String Get_Active_All_Customers = "SELECT * FROM Customers where is_active = 1 ";
     protected static final String Get_Customer_By_Id = "SELECT * FROM Customers WHERE customer_id = ?";
     protected static final String Insert_Customer = "INSERT INTO Customers (password, full_name, email, phone, address, gender, birth_date, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, 1)";
     protected static final String Update_Customer = "UPDATE Customers SET full_name = ?, phone = ?, address = ?, gender = ?, birth_date = ?, is_active = ? WHERE customer_id = ?";
     protected static final String Ban_Customer = "UPDATE Customers SET is_active = 0 WHERE customer_id = ?";
     protected static final String UnBan_Customer = "UPDATE Customers SET is_active = 1 WHERE customer_id = ?";
     protected static final String Search_Customer = "SELECT * FROM Customers WHERE LOWER(full_name) LIKE LOWER(N'%' + ? + '%')";
+    protected static final String Search_Customer_forstaff = "SELECT * FROM Customers WHERE  LOWER(full_name) LIKE LOWER(N'%' + 'Nguyễn Trí Nghị' + '%') and is_active=1 ";
 
     public static List<Customers> getAllCustomers() {
         List<Customers> list = new ArrayList<>();
         try {
             Con = new DBContext().getConnection();
             PreparedStatement ps = Con.prepareStatement(Get_All_Customers);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(mapResultSetToCustomer(rs));
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
+        }
+        return list;
+    }
+
+    public static List<Customers> getAllActiveCustomers() {
+        List<Customers> list = new ArrayList<>();
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Get_Active_All_Customers);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -162,7 +184,28 @@ public class CustomersDAO {
         }
         return list;
     }
+    // Search customers by name or email
+    public static List<Customers> searchCustomersForStaff(String keyword) {
+        List<Customers> list = new ArrayList<>();
 
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Search_Customer_forstaff);
+            ps.setString(1, "%" + keyword + "%");  // Chỉ tìm theo tên khách hàng
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(mapResultSetToCustomer(rs));
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
+        }
+        return list;
+    }
     private static void closeConnection() {
         try {
             if (Con != null) {

@@ -123,11 +123,21 @@ if (!address.matches("^[\\p{L}0-9 ,.-]+$")) {
     request.getRequestDispatcher("staffadd.jsp").forward(request, response);
     return;
 }
-    if (password.length() < 6) {
-        request.setAttribute("errorMessage", "Mật khẩu phải có ít nhất 6 ký tự!");
-        request.getRequestDispatcher("staffadd.jsp").forward(request, response);
-        return;
-    }
+    // Kiểm tra độ dài tối thiểu
+if (password.length() < 6) {
+    request.setAttribute("errorMessage", "Mật khẩu phải có ít nhất 6 ký tự!");
+    request.getRequestDispatcher("staffadd.jsp").forward(request, response);
+    return;
+}
+
+// Kiểm tra mật khẩu có ít nhất 1 chữ cái, 1 số, 1 ký tự đặc biệt
+String passwordPattern = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{6,}$";
+
+if (!password.matches(passwordPattern)) {
+    request.setAttribute("errorMessage", "Mật khẩu phải chứa ít nhất 1 chữ cái, 1 số và 1 ký tự đặc biệt!");
+    request.getRequestDispatcher("staffadd.jsp").forward(request, response);
+    return;
+}
 
     if (!phone.matches("^[0-9]{10}$")) {
         request.setAttribute("errorMessage", "Số điện thoại phải gồm 10 chữ số không có kí tự đặt biệt hoặc chữ!");

@@ -69,7 +69,7 @@ public class ViewCustomersForStaffServlet extends HttpServlet {
         if (keyword != null && !keyword.trim().isEmpty()) {
             customerList = CustomersDAO.searchCustomers(keyword);
         } else {
-            customerList = CustomersDAO.getAllCustomers();
+            customerList = CustomersDAO.getAllActiveCustomers();
         }
 
         // Phân trang
