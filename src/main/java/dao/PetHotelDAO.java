@@ -14,14 +14,50 @@ public class PetHotelDAO {
     protected static Connection Con = null;
 
     // Câu lệnh SQL
-    protected static String Get_All_PetRooms = "SELECT * FROM PetHotel WHERE is_active = 1";
+    protected static String Get_All_PetRooms = "SELECT * FROM PetHotel";
+    protected static String Get_PetRooms = "SELECT * FROM PetHotel WHERE is_active = 1";
     protected static String Get_PetRoom_By_Id = "SELECT * FROM PetHotel WHERE room_id = ?";
     protected static String INSERT_PETROOM = "INSERT INTO PetHotel (room_name, room_image, room_type, min_weight, max_weight, quantity, available_quantity, price_per_night, description, status, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, N'Còn phòng', ?)";
-    protected static String Update_PetRoom = "UPDATE PetHotel SET room_name = ?, room_image = ?, room_type = ?, min_weight = ?, max_weight = ?, quantity = ?, available_quantity = ?, price_per_night = ?, description = ?, status = ?, is_active = 1 WHERE room_id = ?";
+    protected static String Update_PetRoom = "UPDATE PetHotel SET room_name = ?, room_image = ?, room_type = ?, min_weight = ?, max_weight = ?, quantity = ?, available_quantity = ?, price_per_night = ?, description = ?, is_active = ? WHERE room_id = ?";
     protected static String Delete_PetRoom = "UPDATE PetHotel SET is_active = 0 WHERE room_id = ?";
 
     // Lấy danh sách tất cả phòng
     public static List<PetHotel> getAllPetRooms() {
+        List<PetHotel> list = new ArrayList<>();
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Get_All_PetRooms);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                PetHotel room = new PetHotel(
+                        rs.getInt("room_id"),
+                        rs.getString("room_name"),
+                        rs.getString("room_image"),
+                        rs.getString("room_type"),
+                        rs.getDouble("min_weight"),
+                        rs.getDouble("max_weight"),
+                        rs.getInt("quantity"),
+                        rs.getInt("available_quantity"),
+                        rs.getDouble("price_per_night"),
+                        rs.getString("description"),
+                        rs.getString("status"),
+                        rs.getBoolean("is_active")
+                );
+                list.add(room);
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection();
+        }
+        return list;
+    }
+    
+    // Lấy danh sách tất cả phòng
+    public static List<PetHotel> getPetRooms() {
         List<PetHotel> list = new ArrayList<>();
         try {
             Con = new DBContext().getConnection();
@@ -190,7 +226,7 @@ public class PetHotelDAO {
             ps.setInt(7, room.getAvailableQuantity());
             ps.setDouble(8, room.getPricePerNight());
             ps.setString(9, room.getDescription());
-            ps.setString(10, room.getStatus());
+            ps.setBoolean(10, room.isIsActive()); // Thêm cập nhật is_active
             ps.setInt(11, room.getRoomId());
 
             success = ps.executeUpdate() > 0;
@@ -232,7 +268,7 @@ public class PetHotelDAO {
             ps.setInt(7, room.getQuantity()); // Đặt available_quantity = quantity            
             ps.setDouble(8, room.getPricePerNight());
             ps.setString(9, room.getDescription());
-            ps.setBoolean(10, room.isActive());
+            ps.setBoolean(10, room.isIsActive());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();

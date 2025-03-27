@@ -141,6 +141,7 @@
                                             <th scope="col">Giá (VNĐ)</th>
                                             <!--                                            <th scope="col">Mô tả</th>-->
                                             <th scope="col">Số lượng</th>
+                                            <th scope="col">Hiện trạng</th>
                                             <th scope="col">Trạng thái</th>
                                             <th scope="col">Hành động</th>
                                         </tr>
@@ -164,10 +165,16 @@
 <!--                                                        <td style="text-align: left;">${room.description}</td>-->
                                                         <td style="text-align: center;">${room.quantity}</td>
                                                         <td style="width: 10%;">
-                                                            <span style="font-weight: bold; padding: 5px; color: ${room.status eq 'Còn phòng' ? 'green' : 'red'};">
+                                                            <span style="padding: 5px; color: ${room.status eq 'Còn phòng' ? 'green' : 'red'};">
                                                                 ${room.status}
                                                             </span>
                                                         </td>
+                                                        <td style="width: 10%; text-align: center;">
+                                                            <span style="padding: 5px; color: ${room.isActive ? 'green' : 'red'};">
+                                                                ${room.isActive ? 'Còn hoạt động' : 'Ngừng hoạt động'}
+                                                            </span>
+                                                        </td>
+
                                                         <td ">
                                                             <button type="button" class="btn btn-primary" onclick="editpethotel(${room.roomId})">Chỉnh sửa</button>
                                                         </td>

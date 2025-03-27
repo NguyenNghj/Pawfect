@@ -121,8 +121,8 @@ public class EditPetHotelServlet extends HttpServlet {
             String quantityStr = request.getParameter("quantity");
             String pricePerNightStr = request.getParameter("pricePerNight");
             String description = request.getParameter("description");
-//            String status = request.getParameter("status");
             String existingImage = request.getParameter("existingImage");
+            String isActiveParam = request.getParameter("isActive");
 
             // Kiểm tra dữ liệu null hoặc rỗng
             if (roomIdParam == null || roomIdParam.trim().isEmpty()
@@ -145,6 +145,7 @@ public class EditPetHotelServlet extends HttpServlet {
             int quantity = Integer.parseInt(quantityStr.trim());
             double pricePerNight = Double.parseDouble(pricePerNightStr.trim());
             int availableQuantity = quantity;
+            boolean isActive = isActiveParam != null && isActiveParam.equals("1");
 
             if (description == null) {
                 description = "Không có mô tả";
@@ -174,20 +175,12 @@ public class EditPetHotelServlet extends HttpServlet {
             // Nếu có ảnh mới, lưu ảnh và cập nhật đường dẫn
             if (newFileName != null) {
                 filePart.write(realPath + File.separator + newFileName);
-
-//                // Xóa ảnh cũ nếu tồn tại
-//                if (existingImage != null && !existingImage.isEmpty()) {
-//                    File oldImageFile = new File(realPath + File.separator + existingImage);
-//                    if (oldImageFile.exists()) {
-//                        oldImageFile.delete();
-//                    }
-//                }
             }
 
-            // Tạo object PetHotel với ảnh mới (nếu có)
+            // Tạo object PetHotel với ảnh mới (nếu có) và trạng thái isActive
             PetHotel room = new PetHotel(roomId, roomName, newFileName != null ? newFileName : existingImage,
                     roomType, minWeight, maxWeight, quantity, availableQuantity,
-                    pricePerNight, description);
+                    pricePerNight, description, isActive);
 
             // Cập nhật vào database
             PetHotelDAO roomDAO = new PetHotelDAO();
