@@ -142,13 +142,20 @@ public class StaffAddServlet extends HttpServlet {
                 request.setAttribute("errorMessage", "Mật khẩu phải chứa ít nhất 1 chữ cái, 1 số và 1 ký tự đặc biệt!");
                 request.getRequestDispatcher("staffadd.jsp").forward(request, response);
                 return;
-            }
+            }StaffDAO staffDAO = new StaffDAO();
+
+            if (staffDAO.isEmailOrPhoneExists(email, phone)) {
+    request.setAttribute("errorMessage", "Email hoặc số điện thoại đã tồn tại, vui lòng nhập thông tin khác!");
+    request.getRequestDispatcher("staffadd.jsp").forward(request, response);
+    return;
+}
 
             if (!phone.matches("^[0-9]{10}$")) {
                 request.setAttribute("errorMessage", "Số điện thoại phải gồm 10 chữ số không có kí tự đặt biệt hoặc chữ!");
                 request.getRequestDispatcher("staffadd.jsp").forward(request, response);
                 return;
             }
+            
             // Xử lý ngày sinh và kiểm tra tuổi >= 16
             Date birthDate = null;
             if (birthDateStr != null && !birthDateStr.isEmpty()) {
@@ -158,7 +165,7 @@ public class StaffAddServlet extends HttpServlet {
                 int age = Period.between(birthLocalDate, LocalDate.now()).getYears();
 
                 if (age < 18) {
-                    request.setAttribute("errorMessage", "Nhân viên phải từ 16 tuổi trở lên!");
+                    request.setAttribute("errorMessage", "Nhân viên phải từ 18 tuổi trở lên!");
                     request.getRequestDispatcher("staffadd.jsp").forward(request, response);
                     return;
                 }
@@ -214,7 +221,6 @@ public class StaffAddServlet extends HttpServlet {
             Staff staff = new Staff(hashPassword, fullName, email, phone, address, gender, birthDate, image, true);
 
             // Gọi DAO để thêm nhân viên vào database
-            StaffDAO staffDAO = new StaffDAO();
             boolean isAdded = staffDAO.addStaff(staff);
 
             if (isAdded) {
