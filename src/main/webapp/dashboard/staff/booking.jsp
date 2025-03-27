@@ -199,7 +199,7 @@
                                                         <fmt:formatDate value="${booking.checkOut}" pattern="HH:mm dd/MM/yy"/>
                                                     </td>
                                                     <td style="font-size: 15px; width: 110px; text-align: center; vertical-align: middle;">
-                                                        <fmt:formatNumber value="${booking.totalPrice}" type="currency" currencySymbol="₫"/>
+                                                        <fmt:formatNumber value="${booking.totalPrice}" type="number" maxFractionDigits="0"/>đ
                                                     </td>
                                                     <td style="font-size: 15px; width: 110px; text-align: center; vertical-align: middle;">
                                                         <fmt:formatDate value="${booking.bookingDate}" pattern="HH:mm dd/MM/yy"/>
