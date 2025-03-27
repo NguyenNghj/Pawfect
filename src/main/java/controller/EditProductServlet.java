@@ -193,6 +193,11 @@ public class EditProductServlet extends HttpServlet {
                 throw new IllegalArgumentException("Tên sản phẩm phải chứa ít nhất một chữ cái và chỉ cho phép chữ, số, dấu cách, dấu phẩy, dấu gạch ngang, dấu chấm và dấu nháy đơn.");
             }
 
+            ProductDAO productDAO = new ProductDAO();
+            if (productDAO.isExistProductWithSameNameDifferentId(productName, productId)) {
+                throw new IllegalArgumentException("Tên sản phẩm " + productName + " đã tồn tại. Vui lòng chọn tên khác.");
+            }
+
             boolean productActive = stock > 0 && Boolean.parseBoolean(request.getParameter("productActive"));
 
             // Xử lý ảnh tải lên
@@ -239,7 +244,6 @@ public class EditProductServlet extends HttpServlet {
                     productPrice, fileName, stock, description, productActive);
 
             // Cập nhật sản phẩm
-            ProductDAO productDAO = new ProductDAO();
             boolean updateSuccess = productDAO.updateProduct(product);
 
             if (updateSuccess) {

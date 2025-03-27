@@ -81,6 +81,25 @@ public class CategoryDAO {
         return false;
     }
 
+    public boolean isCategoryExists(String categoryName, int excludeId) {
+        String query = "SELECT COUNT(*) FROM Category WHERE LOWER(category_name) = LOWER(?) AND category_id != ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+
+            ps.setString(1, categoryName);
+            ps.setInt(2, excludeId);
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public Category getCategoryById(int categoryId) {
         String query = "SELECT category_id, category_name, is_active FROM Category WHERE category_id = ?";
         try {

@@ -116,7 +116,7 @@ public class ProductDAO {
         List<Object> params = new ArrayList<>();
 
         if (searchKeyword != null && !searchKeyword.trim().isEmpty()) {
-                query.append(" AND (p.product_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? OR p.product_petType COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? OR c.category_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ?)");
+            query.append(" AND (p.product_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? OR p.product_petType COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? OR c.category_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ?)");
             String keywordParam = "%" + searchKeyword + "%";
             params.add(keywordParam);
             params.add(keywordParam);
@@ -241,11 +241,11 @@ public class ProductDAO {
 
     public List<Product> searchProducts(String keyword) {
         List<Product> productList = new ArrayList<>();
-            String query = "SELECT p.product_id, p.category_id, c.category_name, p.product_name, p.product_petType, \n"
-                    + "                p.product_price, p.product_image, p.stock, p.description, p.is_active \n"
-                    + "                FROM Products p \n"
-                    + "               JOIN Category c ON p.category_id = c.category_id \n"
-                    + "                WHERE p.product_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? OR p.product_petType COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? OR c.category_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ?";
+        String query = "SELECT p.product_id, p.category_id, c.category_name, p.product_name, p.product_petType, \n"
+                + "                p.product_price, p.product_image, p.stock, p.description, p.is_active \n"
+                + "                FROM Products p \n"
+                + "               JOIN Category c ON p.category_id = c.category_id \n"
+                + "                WHERE p.product_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? OR p.product_petType COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ? OR c.category_name COLLATE SQL_Latin1_General_CP1_CI_AI LIKE ?";
         try {
             conn = new DBContext().getConnection();
             ps = conn.prepareStatement(query);
@@ -323,4 +323,50 @@ public class ProductDAO {
         return false;
     }
 
+    public boolean isExistProduct(String productName) {
+        String query = "SELECT COUNT(*) FROM Products WHERE product_name = ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setString(1, productName);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Trả về true nếu sản phẩm tồn tại
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false; // Trả về false nếu không tìm thấy hoặc có lỗi
+    }
+
+    public boolean isExistProductWithSameNameDifferentId(String productName, int productId) {
+        String query = "SELECT COUNT(*) FROM Products WHERE product_name = ? AND product_id != ?";
+        try {
+            conn = new DBContext().getConnection();
+            ps = conn.prepareStatement(query);
+            ps.setString(1, productName);
+            ps.setInt(2, productId);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Trả về true nếu tồn tại sản phẩm khác có cùng tên
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return false; // Trả về false nếu không tìm thấy hoặc có lỗi
+    }
 }
