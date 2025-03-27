@@ -10,7 +10,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>đổi mật khẩu</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="./css/account.css">
@@ -151,55 +151,40 @@
                         });
     </script>
     <script>
-        function validatePasswordForm() {
-            let isValid = true;
+      function validatePasswordForm() {
+            let oldPassword = document.getElementById("oldPassword").value;
+            let newPassword = document.getElementById("newPassword").value;
+            let confirmPassword = document.getElementById("confirmPassword").value;
 
-            // Lấy giá trị input
-            let oldPassword = document.getElementById("oldPassword").value.trim();
-            let newPassword = document.getElementById("newPassword").value.trim();
-            let confirmPassword = document.getElementById("confirmPassword").value.trim();
+            let oldPasswordError = document.getElementById("oldPasswordError");
+            let newPasswordError = document.getElementById("newPasswordError");
+            let confirmPasswordError = document.getElementById("confirmPasswordError");
 
-            // Xóa thông báo lỗi cũ
-            document.getElementById("oldPasswordError").innerHTML = "";
-            document.getElementById("newPasswordError").innerHTML = "";
-            document.getElementById("confirmPasswordError").innerHTML = "";
+            oldPasswordError.textContent = "";
+            newPasswordError.textContent = "";
+            confirmPasswordError.textContent = "";
 
-            // Kiểm tra Mật khẩu cũ
-            if (oldPassword === "") {
-                document.getElementById("oldPasswordError").innerHTML = "Vui lòng nhập mật khẩu cũ!";
-                isValid = false;
+            // Kiểm tra mật khẩu mới có ít nhất 6 ký tự, 1 chữ cái, 1 số và 1 ký tự đặc biệt
+            let passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+
+            if (newPassword === "") {
+                newPasswordError.textContent = "Vui lòng nhập mật khẩu mới.";
+                return false;
             }
-            if (oldPassword.length < 6) {
-                document.getElementById("oldPasswordError").innerHTML = "Mật khẩu phải có ít nhất 6 ký tự!";
-                isValid = false;
+            if (!passwordRegex.test(newPassword)) {
+                newPasswordError.textContent = "Mật khẩu mới phải có ít nhất 6 ký tự, 1 chữ cái, 1 số và 1 ký tự đặc biệt.";
+                return false;
             }
-
-            // Kiểm tra Mật khẩu mới
-            const newPassword = document.getElementById("newPassword").value;
-            const passwordError = document.getElementById("newPasswordError");
-            const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,}$/;
-
-            if (!passwordPattern.test(newPassword)) {
-                passwordError.innerHTML = "Mật khẩu phải có ít nhất 6 ký tự, gồm chữ, số và ký tự đặc biệt!";
-                isValid = false;
-            } else {
-                passwordError.innerHTML = "";
-            }
-
-            // Kiểm tra Xác nhận mật khẩu
             if (confirmPassword === "") {
-                document.getElementById("confirmPasswordError").innerHTML = "Vui lòng nhập lại mật khẩu!";
-                isValid = false;
-            } else if (confirmPassword !== newPassword) {
-                document.getElementById("confirmPasswordError").innerHTML = "Mật khẩu xác nhận không khớp!";
-                isValid = false;
+                confirmPasswordError.textContent = "Vui lòng xác nhận lại mật khẩu.";
+                return false;
+            }
+            if (newPassword !== confirmPassword) {
+                confirmPasswordError.textContent = "Mật khẩu xác nhận không khớp.";
+                return false;
             }
 
-            // Nếu tất cả hợp lệ, hiển thị hộp thoại xác nhận
-
-
-            return false;
+            return true;
         }
-
     </script>
 </html>

@@ -11,32 +11,32 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Sửa pet</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="./css/account.css">
     </head>
     <body>
-             <%
-    String success = request.getParameter("success");
-    if ("true".equals(success)) {
-%>
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'Chỉnh sửa thú cưng thành công!',
-            text: 'Bạn sẽ được chuyển hướng sau 2 giây...',
-            allowOutsideClick: false, 
-            allowEscapeKey: false,
-            timer: 2000,
-            showConfirmButton: false
-        }).then(() => {
-            window.location.href = 'petviewdetail'; // Điều hướng sau khi hiển thị thông báo
-        });
-    </script>
-<%
-    }
-%>
+        <%
+            String success = request.getParameter("success");
+            if ("true".equals(success)) {
+        %>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Chỉnh sửa thú cưng thành công!',
+                text: 'Bạn sẽ được chuyển hướng sau 2 giây...',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                timer: 2000,
+                showConfirmButton: false
+            }).then(() => {
+                window.location.href = 'petviewdetail'; // Điều hướng sau khi hiển thị thông báo
+            });
+        </script>
+        <%
+            }
+        %>
         <div class="container py-4">
             <!-- Breadcrumb -->
             <div class="row mt-2 bg-white p-3 mb-4 d-flex align-items-center justify-content-center" 
@@ -95,7 +95,7 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="card-title fs-5" id="editPetModalLabel">Thêm thông tin thú cưng</h5>
-                                      
+
                                         </div>
                                         <div class="modal-body edit-pet-detail">
                                             <input type="hidden" name="petId" value="${pet.petId}">
@@ -261,8 +261,7 @@
 
                 let whitespaceRegex = /^\s*$/;
 
-                const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/; // Các ký tự đặc biệt không hợp lệ
-
+                const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/; 
                 if (petName === "" || whitespaceRegex.test(petName)) {
                     petNameError.innerText = "Tên thú cưng không được để trống hoặc chỉ chứa khoảng trắng.";
                     isValid = false;
@@ -270,7 +269,7 @@
                     petNameError.innerText = "Tên thú cưng không được chứa ký tự đặc biệt.";
                     isValid = false;
                 } else {
-                    petNameError.innerText = ""; // Xóa lỗi nếu hợp lệ
+                    petNameError.innerText = ""; 
                 }
 
                 if (petBreed === "" || whitespaceRegex.test(petBreed)) {
@@ -287,14 +286,24 @@
                     isValid = false;
                 }
 
-                let today = new Date().toISOString().split("T")[0];
+                let today = new Date().toISOString().split("T")[0]; 
+
+
+                let minDate = new Date();
+                minDate.setMonth(minDate.getMonth() - 1);
+                let minDateString = minDate.toISOString().split("T")[0];
+
                 if (petDob === "") {
                     petDobError.innerText = "Vui lòng chọn ngày sinh.";
                     isValid = false;
                 } else if (petDob > today) {
                     petDobError.innerText = "Ngày sinh không được lớn hơn ngày hiện tại.";
                     isValid = false;
+                } else if (petDob > minDateString) {
+                    petDobError.innerText = "Thú cưng phải ít nhất 1 tháng tuổi.";
+                    isValid = false;
                 }
+
 
 
                 if (petImage === 0 && existingImage === "") {
