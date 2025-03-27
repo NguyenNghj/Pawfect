@@ -45,6 +45,9 @@
                 </div>
                 <div class="col-md-6 form-side d-flex align-items-center justify-content-center">
                     <h1 class="title">Pawfect - Đăng nhập cho nhân viên</h1>
+                    <% if (request.getAttribute("error") != null) {%>
+                        <p style="color: red;"><%= request.getAttribute("error")%></p>
+                        <% }%>
                     <p style="text-align: center;">Xin chào, vui lòng nhập thông tin đăng nhập</p>
                     <div class="login-form text-center">                     
                         <% if (request.getParameter("error") != null) { %>  
