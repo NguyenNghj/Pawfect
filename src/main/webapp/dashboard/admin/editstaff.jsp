@@ -191,6 +191,7 @@
                                                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                                                 const phoneRegex = /^[0-9]{10}$/;
                                                 const addressRegex = /^[\p{L}0-9 ,.-]+$/u; // Chữ, số, dấu phẩy, dấu chấm, gạch ngang
+                                                const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{6,}$/; // Ít nhất 1 chữ, 1 số, 1 ký tự đặc biệt, tối thiểu 6 ký tự
 
                                                 // Kiểm tra Họ và Tên
                                                 if (fullName === "" || !nameRegex.test(fullName)) {
@@ -210,9 +211,8 @@
                                                     return;
                                                 }
 
-                                                // Kiểm tra mật khẩu có ít nhất 6 ký tự
-                                                if (password.length < 6) {
-                                                    Swal.fire("Lỗi!", "Mật khẩu phải có ít nhất 6 ký tự!", "error");
+                                                if (!passwordRegex.test(password)) {
+                                                    Swal.fire("Lỗi!", "Mật khẩu phải có ít nhất 6 ký tự, chứa ít nhất 1 chữ cái, 1 số và 1 ký tự đặc biệt!", "error");
                                                     return;
                                                 }
 
