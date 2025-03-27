@@ -6,6 +6,7 @@ package controller;
 
 import dao.GoogleDAO;
 import dao.UserDAO;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -47,10 +48,17 @@ public class GoogleLoginServlet extends HttpServlet {
             response.addCookie(customerId);
             response.sendRedirect("/pawfect");
         } else {
+            if(userDAO.checkBan(acc.getEmail()))
+            {
+            request.setAttribute("error", "tài khoản đã bị Ban");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
+                dispatcher.forward(request, response);
+            }else{
              HttpSession session = request.getSession();
     session.setAttribute("ggEmail", acc.getEmail());
      session.setAttribute("ggName", acc.getName());
     response.sendRedirect("/registergoogle");
+            }
 //            userDAO.insertGoogleAcc(acc);
 //            String customer = userDAO.getCustomerId(acc.getId());
 //            Cookie customerId = new Cookie("customerId", customer);

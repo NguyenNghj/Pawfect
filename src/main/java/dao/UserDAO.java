@@ -123,7 +123,7 @@ public class UserDAO {
 
     public boolean checkGoogleExists(String Email) {
         boolean isValid = false;
-        String sql = "SELECT * FROM Customers WHERE email = ?  ";
+        String sql = "SELECT * FROM Customers WHERE email = ? and is_active =1  ";
         try {
             conn = new DBContext().getConnection();
             pt = conn.prepareStatement(sql);
