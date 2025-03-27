@@ -173,6 +173,8 @@
                 </div>
             </div>
         </div>
+        <% Staff staff = (Staff) request.getAttribute("staff");%>
+        <input type="hidden" id="oldPassword" value="<%= staff.getPassword()%>">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
                                             document.getElementById("editStaffForm").addEventListener("submit", function (event) {
@@ -182,20 +184,21 @@
                                                 const fullName = document.getElementsByName("fullName")[0].value.trim();
                                                 const email = document.getElementsByName("email")[0].value.trim();
                                                 const password = document.getElementsByName("password")[0].value;
+                                                const oldPassword = document.getElementById("oldPassword").value.trim();
                                                 const phone = document.getElementsByName("phone")[0].value.trim();
                                                 const address = document.getElementsByName("address")[0].value.trim();
                                                 const birthDate = document.getElementsByName("birthDate")[0].value;
 
                                                 // Biểu thức regex
-                                                const nameRegex = /^[\p{L} ]+$/u; // Chỉ chứa chữ cái và dấu cách
+                                                const nameRegex = /^[\p{L}]+(?: [\p{L}]+)*$/u; // Chỉ chữ cái và dấu cách (không có khoảng trắng thừa)
                                                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                                                 const phoneRegex = /^[0-9]{10}$/;
                                                 const addressRegex = /^[\p{L}0-9 ,.-]+$/u; // Chữ, số, dấu phẩy, dấu chấm, gạch ngang
                                                 const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@#$%^&+=!]).{6,}$/; // Ít nhất 1 chữ, 1 số, 1 ký tự đặc biệt, tối thiểu 6 ký tự
 
                                                 // Kiểm tra Họ và Tên
-                                                if (fullName === "" || !nameRegex.test(fullName)) {
-                                                    Swal.fire("Lỗi!", "Họ và Tên không hợp lệ! Chỉ chứa chữ cái và dấu cách.", "error");
+                                                if (!nameRegex.test(fullName)) {
+                                                    Swal.fire("Lỗi!", "Họ và Tên không hợp lệ! Chỉ chứa chữ cái và dấu cách, không có số hoặc ký tự đặc biệt.", "error");
                                                     return;
                                                 }
 
@@ -211,9 +214,11 @@
                                                     return;
                                                 }
 
-                                                if (!passwordRegex.test(password)) {
-                                                    Swal.fire("Lỗi!", "Mật khẩu phải có ít nhất 6 ký tự, chứa ít nhất 1 chữ cái, 1 số và 1 ký tự đặc biệt!", "error");
-                                                    return;
+                                                if (password !== "" && password !== oldPassword) {
+                                                    if (!passwordRegex.test(password)) {
+                                                        Swal.fire("Lỗi!", "Mật khẩu phải có ít nhất 6 ký tự, chứa ít nhất 1 chữ cái, 1 số và 1 ký tự đặc biệt!", "error");
+                                                        return;
+                                                    }
                                                 }
 
                                                 // Kiểm tra số điện thoại (phải có 10 chữ số)

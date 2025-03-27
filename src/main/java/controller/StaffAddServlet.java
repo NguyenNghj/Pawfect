@@ -85,7 +85,6 @@ public class StaffAddServlet extends HttpServlet {
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
-        
 
         try {
             // Lấy dữ liệu từ form
@@ -97,76 +96,82 @@ public class StaffAddServlet extends HttpServlet {
             String gender = request.getParameter("gender");
             String birthDateStr = request.getParameter("birthDate");
             String image = null; // Xử lý upload ảnh
-        
 
-    if (fullName.isEmpty() || email.isEmpty() || password.isEmpty() || phone.isEmpty()) {
-        request.setAttribute("errorMessage", "Vui lòng điền đầy đủ thông tin!");
-        request.getRequestDispatcher("staffadd.jsp").forward(request, response);
-        return;
-    }
+            if (fullName.isEmpty() || email.isEmpty() || password.isEmpty() || phone.isEmpty()) {
+                request.setAttribute("errorMessage", "Vui lòng điền đầy đủ thông tin!");
+                request.getRequestDispatcher("staffadd.jsp").forward(request, response);
+                return;
+            }
 
-    if (!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
-        request.setAttribute("errorMessage", "Email không hợp lệ!");
-        request.getRequestDispatcher("staffadd.jsp").forward(request, response);
-        return;
-    }
-// Kiểm tra tên (chỉ cho phép chữ cái và dấu cách)
-if (!fullName.matches("^[\\p{L} ]+$")) {
-    request.setAttribute("errorMessage", "Tên không được chứa ký tự đặc biệt!");
-    request.getRequestDispatcher("staffadd.jsp").forward(request, response);
-    return;
-}
+            if (!email.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+                request.setAttribute("errorMessage", "Email không hợp lệ!");
+                request.getRequestDispatcher("staffadd.jsp").forward(request, response);
+                return;
+            }
+// Kiểm tra tên (chỉ cho phép chữ cái và dấu cách, không chứa khoảng trắng thừa)
+            if (!fullName.matches("^[\\p{L}]+(?: [\\p{L}]+)*$")) {
+                request.setAttribute("errorMessage", "Tên không hợp lệ! Chỉ chứa chữ cái và dấu cách, không có số hoặc ký tự đặc biệt.");
+                request.getRequestDispatcher("staffadd.jsp").forward(request, response);
+                return;
+            }
+
+// Kiểm tra độ dài tối thiểu 2 ký tự và tối đa 50 ký tự
+            if (fullName.length() < 2 || fullName.length() > 50) {
+                request.setAttribute("errorMessage", "Tên phải có từ 2 đến 50 ký tự!");
+                request.getRequestDispatcher("staffadd.jsp").forward(request, response);
+                return;
+            }
 
 // Kiểm tra địa chỉ (chỉ cho phép chữ, số, dấu cách, dấu phẩy, dấu chấm và gạch ngang)
-if (!address.matches("^[\\p{L}0-9 ,.-]+$")) {
-    request.setAttribute("errorMessage", "Địa chỉ không hợp lệ!");
-    request.getRequestDispatcher("staffadd.jsp").forward(request, response);
-    return;
-}
-    // Kiểm tra độ dài tối thiểu
-if (password.length() < 6) {
-    request.setAttribute("errorMessage", "Mật khẩu phải có ít nhất 6 ký tự!");
-    request.getRequestDispatcher("staffadd.jsp").forward(request, response);
-    return;
-}
+            if (!address.matches("^[\\p{L}0-9 ,.-]+$")) {
+                request.setAttribute("errorMessage", "Địa chỉ không hợp lệ!");
+                request.getRequestDispatcher("staffadd.jsp").forward(request, response);
+                return;
+            }
+            // Kiểm tra độ dài tối thiểu
+            if (password.length() < 6) {
+                request.setAttribute("errorMessage", "Mật khẩu phải có ít nhất 6 ký tự!");
+                request.getRequestDispatcher("staffadd.jsp").forward(request, response);
+                return;
+            }
 
 // Kiểm tra mật khẩu có ít nhất 1 chữ cái, 1 số, 1 ký tự đặc biệt
-String passwordPattern = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{6,}$";
+            String passwordPattern = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[@#$%^&+=!]).{6,}$";
 
-if (!password.matches(passwordPattern)) {
-    request.setAttribute("errorMessage", "Mật khẩu phải chứa ít nhất 1 chữ cái, 1 số và 1 ký tự đặc biệt!");
-    request.getRequestDispatcher("staffadd.jsp").forward(request, response);
-    return;
-}
+            if (!password.matches(passwordPattern)) {
+                request.setAttribute("errorMessage", "Mật khẩu phải chứa ít nhất 1 chữ cái, 1 số và 1 ký tự đặc biệt!");
+                request.getRequestDispatcher("staffadd.jsp").forward(request, response);
+                return;
+            }
 
-    if (!phone.matches("^[0-9]{10}$")) {
-        request.setAttribute("errorMessage", "Số điện thoại phải gồm 10 chữ số không có kí tự đặt biệt hoặc chữ!");
-        request.getRequestDispatcher("staffadd.jsp").forward(request, response);
-        return;
-    }
-     // Xử lý ngày sinh và kiểm tra tuổi >= 16
-    Date birthDate = null;
-    if (birthDateStr != null && !birthDateStr.isEmpty()) {
-        birthDate = Date.valueOf(birthDateStr);
+            if (!phone.matches("^[0-9]{10}$")) {
+                request.setAttribute("errorMessage", "Số điện thoại phải gồm 10 chữ số không có kí tự đặt biệt hoặc chữ!");
+                request.getRequestDispatcher("staffadd.jsp").forward(request, response);
+                return;
+            }
+            // Xử lý ngày sinh và kiểm tra tuổi >= 16
+            Date birthDate = null;
+            if (birthDateStr != null && !birthDateStr.isEmpty()) {
+                birthDate = Date.valueOf(birthDateStr);
 
-        LocalDate birthLocalDate = birthDate.toLocalDate();
-        int age = Period.between(birthLocalDate, LocalDate.now()).getYears();
+                LocalDate birthLocalDate = birthDate.toLocalDate();
+                int age = Period.between(birthLocalDate, LocalDate.now()).getYears();
 
-        if (age < 18 ) {
-            request.setAttribute("errorMessage", "Nhân viên phải từ 16 tuổi trở lên!");
-            request.getRequestDispatcher("staffadd.jsp").forward(request, response);
-            return;
-        }
-           if (age > 60 ) {
-            request.setAttribute("errorMessage", "Nhân viên phải từ 60 tuổi trở xuống!");
-            request.getRequestDispatcher("staffadd.jsp").forward(request, response);
-            return;
-        }
-    } else {
-        request.setAttribute("errorMessage", "Vui lòng nhập ngày sinh!");
-        request.getRequestDispatcher("staffadd.jsp").forward(request, response);
-        return;
-    }
+                if (age < 18) {
+                    request.setAttribute("errorMessage", "Nhân viên phải từ 16 tuổi trở lên!");
+                    request.getRequestDispatcher("staffadd.jsp").forward(request, response);
+                    return;
+                }
+                if (age > 60) {
+                    request.setAttribute("errorMessage", "Nhân viên phải từ 60 tuổi trở xuống!");
+                    request.getRequestDispatcher("staffadd.jsp").forward(request, response);
+                    return;
+                }
+            } else {
+                request.setAttribute("errorMessage", "Vui lòng nhập ngày sinh!");
+                request.getRequestDispatcher("staffadd.jsp").forward(request, response);
+                return;
+            }
 
             // Kiểm tra dữ liệu đầu vào
             if (password == null || password.trim().isEmpty()
@@ -183,7 +188,6 @@ if (!password.matches(passwordPattern)) {
             String hashPassword = StaffDAO.hashPasswordMD5(password);
 
             // Xử lý ngày sinh
-           
             if (birthDateStr != null && !birthDateStr.isEmpty()) {
                 birthDate = Date.valueOf(birthDateStr);
             }
