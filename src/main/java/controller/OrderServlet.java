@@ -122,6 +122,22 @@ public class OrderServlet extends HttpServlet {
                 System.out.println("Cap nhat don hang vnpay that bai!");
             } else {
                 System.out.println("Cap nhat don hang vnpay thanh cong!");
+                
+                boolean remove = CartDAO.removeCart(customerId);
+                ProductDAO productDAO = new ProductDAO();
+                            
+                if (remove) {
+                    System.out.println("Xoa gio hang thanh cong.");
+                    List<OrderItem> orderitems = OrderDAO.getOrderItemsByOrderId(orderId);
+                    for (OrderItem orderitem : orderitems) {
+                        Product product = productDAO.getProductById(orderitem.getProductId());
+                        product.setStock(product.getStock() - orderitem.getQuantity());
+                        productDAO.updateProduct(product);
+                    }
+                } else {
+                System.out.println("Xoa gio hang that bai!!");
+                }
+                
             }
             
             List<Order> orders = OrderDAO.getOrderByOrderId(orderId);
@@ -170,13 +186,6 @@ public class OrderServlet extends HttpServlet {
             int orderId = Integer.parseInt(request.getParameter("orderId"));
             System.out.println("orderId: " + orderId);
 
-            ProductDAO productDAO = new ProductDAO();
-            List<OrderItem> orderitems = OrderDAO.getOrderItemsByOrderId(orderId);
-            for (OrderItem orderitem : orderitems) {
-                Product product = productDAO.getProductById(orderitem.getProductId());
-                product.setStock(product.getStock() + orderitem.getQuantity());
-                productDAO.updateProduct(product);
-            }
 
             boolean deleteOrderItem = OrderDAO.deleteOrderItem(orderId);
             if (deleteOrderItem) {
@@ -300,6 +309,8 @@ public class OrderServlet extends HttpServlet {
                 reasonCancel = "Thanh toán thất bại hoặc bị gián đoạn";
             }
 
+            System.out.println("totalCartPrice 123: " + totalCartPrice);
+            
             Order order = new Order(customerId, paymentMethod_id, shippingMethod_id, name, phone, address, note, totalCartPrice, reasonCancel ,status);
             int orderId = 0;
             orderId = OrderDAO.insertOrder(order);
