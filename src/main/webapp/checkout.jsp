@@ -41,7 +41,7 @@
                             <!-- Fieldset -->
                             <div class="fieldset">
                                 <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+                                    <input type="email" class="form-control" id="email" placeholder="name@example.com" value="${emailCustomer}" readonly>
                                     <label for="email">Email</label>
                                 </div>
                                 <div class="form-floating mb-3">
@@ -433,7 +433,7 @@
 
 
                 let ajaxUrl = (paymentMethod === "payment-vnpay") ? "vnpay" : "order";
-                console.log("Lay gia tri ajaxUrl: " + email);
+                console.log("Lay gia tri ajaxUrl: " + ajaxUrl);
 
                 console.log("Gui du lieu email: " + email);
                 console.log("Gui du lieu name: " + name);

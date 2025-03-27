@@ -319,9 +319,7 @@ public class OrderServlet extends HttpServlet {
                         return;
                     }
                 }
-
-                boolean remove = CartDAO.removeCart(customerId);
-
+               
                 ProductDAO productDAO = new ProductDAO();
 
                 List<OrderItem> orderitems = OrderDAO.getOrderItemsByOrderId(orderId);
@@ -364,6 +362,8 @@ public class OrderServlet extends HttpServlet {
 
                 executor.shutdown();
 
+                boolean remove = CartDAO.removeCart(customerId);
+                
                 json.put("status", "success");
                 if (remove) {
                     System.out.println("Xoa gio hang thanh cong.");

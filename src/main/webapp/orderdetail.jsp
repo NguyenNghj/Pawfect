@@ -223,9 +223,9 @@
 
                                         <div class="border-top pt-3">
                                             <div class="d-flex justify-content-between mb-2">
-                                                <div class="text-secondary">Tạm tính</div>
+                                                <div class="text-secondary">Tạm tính (vào thời điểm đặt)</div>
                                                 <div>
-                                                    <f:formatNumber value="${basicPrice}" pattern="#,##0" />đ                                                 
+                                                    <f:formatNumber value="${o.totalAmount - o.shippingMethodFee}" pattern="#,##0" />đ                                                 
                                                 </div>
                                             </div>
                                             <!-- Phí Ship -->

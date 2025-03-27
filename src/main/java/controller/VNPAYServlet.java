@@ -193,8 +193,13 @@ public class VNPAYServlet extends HttpServlet {
             int shippingMethod_id = shippingMethod.equals("shipping-hoatoc") ? 2 : 1;
             int paymentMethod_id = paymentMethod.equals("payment-cash") ? 1 : 2;
             String status = paymentMethod.equals("payment-cash") ? "Chờ xác nhận" : "Đã huỷ";
+            
+            String reasonCancel = null;
+            if(status.equals("Đã huỷ")){
+                reasonCancel = "Thanh toán thất bại hoặc bị gián đoạn";
+            }
 
-            Order order = new Order(customerId, paymentMethod_id, shippingMethod_id, name, phone, address, note, totalCartPrice + salePrice, "Thanh toán thất bại hoặc bị gián đoạn", status);
+            Order order = new Order(customerId, paymentMethod_id, shippingMethod_id, name, phone, address, note, totalCartPrice + salePrice, reasonCancel, status);
             int orderId = 0;
             orderId = OrderDAO.insertOrder(order);
             // Tao don hang thanh cong

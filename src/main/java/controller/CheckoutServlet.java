@@ -5,6 +5,7 @@
 package controller;
 
 import dao.CartDAO;
+import dao.CustomersDAO;
 import dao.ProductDAO;
 import dao.VoucherDAO;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
 import model.CartItem;
+import model.Customers;
 import model.Product;
 import model.Voucher;
 import org.json.JSONException;
@@ -104,17 +106,18 @@ public class CheckoutServlet extends HttpServlet {
             VoucherDAO voucherDAO = new VoucherDAO();
             Voucher voucher = voucherDAO.getVoucherByCode(voucherCode);
 
+            // Kiem tra voucher da het han su dung hay chua?
+            Timestamp endDate = voucher.getEndDate();
+            Timestamp startDate = voucher.getStartDate();
+            Timestamp now = new Timestamp(System.currentTimeMillis());
+
             // Neu voucher khong hop le
-            if (voucher == null) {
+            if (voucher == null || now.before(startDate)) {
                 System.out.println("Ma khuyen mai khong hop le hoac khong ton tai!");
                 json.put("status", "error");
 
                 // Nguoc lai
             } else {
-
-                // Kiem tra voucher da het han su dung hay chua?
-                Timestamp endDate = voucher.getEndDate();
-                Timestamp now = new Timestamp(System.currentTimeMillis());
 
                 // Neu voucher da het han su dung
                 if (now.after(endDate)) {
@@ -274,6 +277,9 @@ public class CheckoutServlet extends HttpServlet {
             System.out.println("Voucher: " + voucher);
         }
 
+        Customers customers = CustomersDAO.getCustomerById(customerId);
+        request.setAttribute("emailCustomer", customers.getEmail());
+        
         request.setAttribute("cartItems", cartItems);
         request.setAttribute("totalCartPrice", totalCartPrice);
         request.setAttribute("totalQuantity", totalQuantity);
