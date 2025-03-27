@@ -50,6 +50,20 @@ public class PetHotel {
         this.description = description;
     }
 
+    public PetHotel(int roomId, String roomName, String roomImage, String roomType, double minWeight, double maxWeight, int quantity, int availableQuantity, double pricePerNight, String description, boolean isActive) {
+        this.roomId = roomId;
+        this.roomName = roomName;
+        this.roomImage = roomImage;
+        this.roomType = roomType;
+        this.minWeight = minWeight;
+        this.maxWeight = maxWeight;
+        this.quantity = quantity;
+        this.availableQuantity = availableQuantity;
+        this.pricePerNight = pricePerNight;
+        this.description = description;
+        this.isActive = isActive;
+    }
+
     public PetHotel() {
     }
 
@@ -179,14 +193,6 @@ public class PetHotel {
         this.status = status;
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean isActive) {
-        this.isActive = isActive;
-    }
-
     public boolean isIsActive() {
         return isActive;
     }
@@ -194,6 +200,7 @@ public class PetHotel {
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
     }
+
 
     public int getTimeBooking() {
         return timeBooking;

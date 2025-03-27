@@ -307,8 +307,8 @@
                     <p><strong>Loại:</strong> <span id="popupPetType"></span></p>
                     <p><strong>Giống loài:</strong> <span id="popupPetBreed"></span></p>
                     <p><strong>Cân nặng:</strong> <span id="popupPetWeight"></span></p>
-                    <p><strong>Ngày check-in:</strong> <span id="popupCheckIn"></span></p>
-                    <p><strong>Ngày check-out:</strong> <span id="popupCheckOut"></span></p>
+                    <p><strong>Ngày check-in:</strong> <br><span id="popupCheckIn"></span></p>
+                    <p><strong>Ngày check-out:</strong> <br><span id="popupCheckOut"></span></p>
                 </div>
 
                 <!-- Cột thông tin tổng tiền -->
@@ -333,7 +333,18 @@
             function formatNumber(number) {
                 return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             }
-
+            function formatDateTime(dateString) {
+                if (!dateString)
+                    return "";
+                const date = new Date(dateString);
+                return new Intl.DateTimeFormat("vi-VN", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "2-digit"
+                }).format(date);
+            }
             function showPopup(bookingId) {
                 fetch("pethotelbooking?bookingId=" + bookingId)
                         .then(response => response.json())
@@ -347,8 +358,11 @@
                                 document.getElementById("popupPetType").textContent = data.petType;
                                 document.getElementById("popupPetBreed").textContent = data.petBreed;
                                 document.getElementById("popupPetWeight").textContent = data.petWeight;
-                                document.getElementById("popupCheckIn").textContent = data.checkIn;
-                                document.getElementById("popupCheckOut").textContent = data.checkOut;
+
+                                // Format ngày check-in & check-out
+                                document.getElementById("popupCheckIn").textContent = formatDateTime(data.checkIn);
+                                document.getElementById("popupCheckOut").textContent = formatDateTime(data.checkOut);
+
                                 document.getElementById("popupNote").textContent = data.note;
                                 document.getElementById("popupTotalPrice").textContent = formatNumber(data.totalPrice) + "₫";
                                 document.getElementById("bookingPopup").style.display = "block";
@@ -356,6 +370,7 @@
                         })
                         .catch(error => console.error("Lỗi khi lấy booking:", error));
             }
+
 
             function closePopup() {
                 document.getElementById("bookingPopup").style.display = "none";

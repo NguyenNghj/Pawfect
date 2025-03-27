@@ -154,14 +154,27 @@
                                 <textarea class="form-control" name="description" rows="5" >${room.description}</textarea>
                             </div>
 
-<!--                             Trạng thái phòng 
+                            <!--                             Trạng thái phòng 
+                                                        <div class="mb-3">
+                                                            <label for="editRoomStatus">Trạng thái</label>
+                                                            <select class="form-select" name="status">
+                                                                <option value="Còn phòng" ${room.status == 'Còn phòng' ? 'selected' : ''}>Còn phòng</option>
+                                                                <option value="Hết phòng" ${room.status == 'Hết phòng' ? 'selected' : ''}>Hết phòng</option>
+                                                            </select>
+                                                        </div>-->
+
+                            <!-- Trạng thái hoạt động -->
                             <div class="mb-3">
-                                <label for="editRoomStatus">Trạng thái</label>
-                                <select class="form-select" name="status">
-                                    <option value="Còn phòng" ${room.status == 'Còn phòng' ? 'selected' : ''}>Còn phòng</option>
-                                    <option value="Hết phòng" ${room.status == 'Hết phòng' ? 'selected' : ''}>Hết phòng</option>
-                                </select>
-                            </div>-->
+                                <label class="form-label">Trạng thái hoạt động</label><br>
+
+                                <!-- Lưu giá trị ban đầu của isActive -->
+                                <input type="hidden" id="originalIsActive" name="originalIsActive" value="${room.isActive ? '1' : '0'}">
+
+                                <!-- Checkbox để thay đổi trạng thái -->
+                                <input type="checkbox" class="form-check-input" id="editIsActive" name="isActive" value="1" ${room.isActive ? 'checked' : ''}>
+                                <label class="form-check-label" for="editIsActive">Hoạt động</label>
+                            </div>
+
 
                             <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
                             <a href="<c:url value='/dashboard/admin/pethotel'/>" class="btn btn-secondary">Trở về</a>
@@ -170,6 +183,18 @@
                 </div>
             </div>
         </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                let isActiveCheckbox = document.getElementById("editIsActive");
+                let hiddenIsActiveInput = document.getElementById("hiddenIsActive");
+
+                // Khi checkbox thay đổi trạng thái thì cập nhật giá trị hidden input
+                isActiveCheckbox.addEventListener("change", function () {
+                    hiddenIsActiveInput.value = this.checked ? "1" : "0";
+                });
+            });
+
+        </script>
 
         <script>
             document.getElementById("editRoomName").addEventListener("submit", function (event) {
