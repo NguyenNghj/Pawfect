@@ -218,8 +218,8 @@ public class EditVoucherServlet extends HttpServlet {
                 }
             }
 
-            // Kiểm tra nếu startDate hoặc endDate trước thời điểm hiện tại
-            if (startDate.before(currentDateTime) || endDate.before(currentDateTime)) {
+            // Kiểm tra nếu endDate trước thời điểm hiện tại
+            if (endDate.before(currentDateTime)) {
                 throw new IllegalArgumentException("Ngày bắt đầu và ngày kết thúc không thể trước thời điểm hiện tại.");
             }
 
