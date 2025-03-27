@@ -954,7 +954,6 @@
                                                                                                             <td valign="top" align="right">
                                                                                                                 <div class="pc-font-alt" style="text-decoration: none;">
                                                                                                                     <div style="font-size: 16px;line-height: 20px;text-align:right;text-align-last:right;color:#001942;font-weight:600;font-style:normal;">
-
                                                                                                                         <c:choose>
                                                                                                                             <c:when test="${o.discountAmount != 0}">
                                                                                                                                 <div class="d-flex align-items-center gap-3">
@@ -981,7 +980,6 @@
                                                                                                                                 </div>
                                                                                                                             </c:otherwise>
                                                                                                                         </c:choose>
-
                                                                                                                     </div>
                                                                                                                 </div>
                                                                                                             </td>

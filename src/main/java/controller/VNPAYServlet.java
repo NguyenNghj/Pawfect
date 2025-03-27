@@ -193,13 +193,15 @@ public class VNPAYServlet extends HttpServlet {
             int shippingMethod_id = shippingMethod.equals("shipping-hoatoc") ? 2 : 1;
             int paymentMethod_id = paymentMethod.equals("payment-cash") ? 1 : 2;
             String status = paymentMethod.equals("payment-cash") ? "Chờ xác nhận" : "Đã huỷ";
-            
+
             String reasonCancel = null;
-            if(status.equals("Đã huỷ")){
+            if (status.equals("Đã huỷ")) {
                 reasonCancel = "Thanh toán thất bại hoặc bị gián đoạn";
             }
+            
+            System.out.println("totalCartPrice 456: " + totalCartPrice);
 
-            Order order = new Order(customerId, paymentMethod_id, shippingMethod_id, name, phone, address, note, totalCartPrice + salePrice, reasonCancel, status);
+            Order order = new Order(customerId, paymentMethod_id, shippingMethod_id, name, phone, address, note, totalCartPrice, reasonCancel, status);
             int orderId = 0;
             orderId = OrderDAO.insertOrder(order);
             // Tao don hang thanh cong
@@ -211,7 +213,7 @@ public class VNPAYServlet extends HttpServlet {
                 // Neu tim duoc voucher thi ap dung voucher
                 if (voucherId != 0) {
                     DiscountOrderDAO discountOrderDAO = new DiscountOrderDAO();
-                    DiscountOrder discountOrder = new DiscountOrder(orderId, voucherId, totalCartPrice);
+                    DiscountOrder discountOrder = new DiscountOrder(orderId, voucherId, salePrice);
                     boolean check = discountOrderDAO.addDiscountOrder(discountOrder);
                     if (check) {
                         System.out.println("Them DiscountOrder thanh cong.");
@@ -220,29 +222,27 @@ public class VNPAYServlet extends HttpServlet {
                     }
                 }
 
-                boolean remove = CartDAO.removeCart(customerId);
+//                boolean remove = CartDAO.removeCart(customerId);
+//                ProductDAO productDAO = new ProductDAO();
+//
+//                List<OrderItem> orderitems = OrderDAO.getOrderItemsByOrderId(orderId);
+//                for (OrderItem orderitem : orderitems) {
+//                    Product product = productDAO.getProductById(orderitem.getProductId());
+//                    product.setStock(product.getStock() - orderitem.getQuantity());
+//                    productDAO.updateProduct(product);
+//                }
+//                if (remove) {
+//                System.out.println("Xoa gio hang thanh cong.");
 
-                ProductDAO productDAO = new ProductDAO();
+                String vnpayUrl = createVnPayPayment(totalCartPrice, String.valueOf(orderId + 2500000), String.valueOf(customerId));
+                System.out.println("createVnPayPayment: " + vnpayUrl);
 
-                List<OrderItem> orderitems = OrderDAO.getOrderItemsByOrderId(orderId);
-                for (OrderItem orderitem : orderitems) {
-                    Product product = productDAO.getProductById(orderitem.getProductId());
-                    product.setStock(product.getStock() - orderitem.getQuantity());
-                    productDAO.updateProduct(product);
-                }
-
-                if (remove) {
-                    System.out.println("Xoa gio hang thanh cong.");
-
-                    String vnpayUrl = createVnPayPayment(totalCartPrice, String.valueOf(orderId + 2500000), String.valueOf(customerId));
-                    System.out.println("createVnPayPayment: " + vnpayUrl);
-
-                    json.put("vnpayUrl", vnpayUrl);
-                    json.put("status", "success");
-                } else {
-                    System.out.println("Xoa gio hang that bai!!");
-                    json.put("status", "error");
-                }
+                json.put("vnpayUrl", vnpayUrl);
+                json.put("status", "success");
+//                } else {
+//                System.out.println("Xoa gio hang that bai!!");
+//                json.put("status", "error");
+//                }
             } else {
                 System.out.println("Them don hang that bai!!");
                 json.put("status", "error");
