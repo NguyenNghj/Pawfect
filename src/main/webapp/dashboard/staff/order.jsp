@@ -182,7 +182,7 @@
                                                 <tr>
                                                     <!-- Mã đơn hàng -->
                                                     <th class="align-middle" scope="row">
-                                                        <a style="text-decoration: none;" href="ordermanagement?&action=viewdetail&orderId=${o.orderId}">#${o.orderId + 2500000}</a>
+                                                        <a style="text-decoration: none; color : #D3A376;" href="ordermanagement?&action=viewdetail&orderId=${o.orderId}">#${o.orderId + 2500000}</a>
                                                     </th>
                                                     <!-- Họ tên đặt -->
                                                     <td class="bodycolor-name-address-total align-middle">${o.customerName}</td>

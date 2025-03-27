@@ -179,7 +179,7 @@
                                         <tbody id="bookingTable">
                                             <c:forEach var="booking" items="${bookings}">
                                                 <tr class="booking-row" data-status="${booking.status}">
-                                                    <td style="cursor: pointer; color: blue; text-decoration: underline;"
+                                                    <td style="cursor: pointer; color: black; text-decoration: none; font-weight: bold; color: #D3A376;"
                                                         onclick="showPopup(${booking.bookingId})">
                                                         ${booking.bookingId}
                                                     </td>
@@ -288,27 +288,52 @@
             </div>
         </div>
         <!-- Popup hiển thị chi tiết Booking -->
-        <div id="bookingPopup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-             background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.3);">
-            <h3>Chi Tiết Booking</h3>
-            <p><strong>ID:</strong> <span id="popupBookingId"></span></p>
-            <p><strong>Khách hàng:</strong> <span id="popupCustomerName"></span></p>
-            <p><strong>Điện thoại:</strong> <span id="popupCustomerPhone"></span></p>
-            <p><strong>Email:</strong> <span id="popupCustomerEmail"></span></p>
-            <p><strong>Tên thú cưng:</strong> <span id="popupPetName"></span></p>
-            <p><strong>Loại:</strong> <span id="popupPetType"></span></p>
-            <p><strong>Giống loài:</strong> <span id="popupPetBreed"></span></p>
-            <p><strong>Cân nặng:</strong> <span id="popupPetWeight"></span></p>
-            <p><strong>Check-in:</strong> <span id="popupCheckIn"></span></p>
-            <p><strong>Check-out:</strong> <span id="popupCheckOut"></span></p>
-            <p><strong>Ghi chú:</strong> <span id="popupNote"></span></p>
-            <p><strong>Tổng tiền:</strong> <span id="popupTotalPrice"></span></p>
-            <button onclick="closePopup()">Đóng</button>
+        <div id="bookingPopup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); max-width: 1000px; margin: auto; background: #f8f9fa; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); padding: 20px;">
+            <h5 style="text-align: center; font-size: 24px; font-weight: bold; color: #D3A376; margin-bottom: 20px;">Chi tiết đặt phòng</h5>
+            <div style = "text-align: center; font-weight: bold; font-size:20px;" >Mã đơn #<span id="popupBookingId"></span></div>
+            <div style="display: flex; flex-direction: row; justify-content: space-between; gap: 20px;">
+                <!-- Cột thông tin khách hàng -->
+                <div style="flex: 1; background: #eee; padding: 15px; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);">
+                    <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #D3A376;">Thông tin khách hàng</h5>
+                    <p><strong>Họ tên:</strong> <span id="popupCustomerName"></span></p>
+                    <p><strong>Số điện thoại:</strong> <span id="popupCustomerPhone"></span></p>
+                    <p><strong>Email:</strong> <span id="popupCustomerEmail"></span></p>
+                </div>
+
+                <!-- Cột thông tin đặt phòng -->
+                <div style="flex: 1; background: #eee; padding: 15px; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);">
+                    <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #D3A376;">Thông tin đặt phòng</h5>
+                    <p><strong>Tên thú cưng:</strong> <span id="popupPetName"></span></p>
+                    <p><strong>Loại:</strong> <span id="popupPetType"></span></p>
+                    <p><strong>Giống loài:</strong> <span id="popupPetBreed"></span></p>
+                    <p><strong>Cân nặng:</strong> <span id="popupPetWeight"></span></p>
+                    <p><strong>Ngày check-in:</strong> <span id="popupCheckIn"></span></p>
+                    <p><strong>Ngày check-out:</strong> <span id="popupCheckOut"></span></p>
+                </div>
+
+                <!-- Cột thông tin tổng tiền -->
+                <div style="flex: 1; background: #eee; padding: 15px; border-radius: 8px; box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);">
+                    <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #D3A376;">Thông tin bổ sung</h5>
+                    <p><strong>Ghi chú:</strong> <span id="popupNote"></span></p>
+                    <h5 style="font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #D3A376;">Tổng chi phí</h5>
+                    <p style="font-size: 20px; font-weight: bold; color: black;"><span id="popupTotalPrice"></span></p>
+                </div>
+            </div>
+
+            <!-- Nút đóng -->
+            <div style="display: flex; justify-content: center; margin-top: 20px;">
+                <button onclick="closePopup()" style="padding: 10px 15px; border-radius: 5px; font-size: 14px; font-weight: bold; background-color: #6c757d; color: white; border: none;">Đóng</button>
+            </div>
         </div>
 
 
 
         <script>
+            // Hàm định dạng số với dấu phẩy phân cách hàng nghìn
+            function formatNumber(number) {
+                return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+
             function showPopup(bookingId) {
                 fetch("pethotelbooking?bookingId=" + bookingId)
                         .then(response => response.json())
@@ -325,7 +350,7 @@
                                 document.getElementById("popupCheckIn").textContent = data.checkIn;
                                 document.getElementById("popupCheckOut").textContent = data.checkOut;
                                 document.getElementById("popupNote").textContent = data.note;
-                                document.getElementById("popupTotalPrice").textContent = data.totalPrice + " ₫";
+                                document.getElementById("popupTotalPrice").textContent = formatNumber(data.totalPrice) + "₫";
                                 document.getElementById("bookingPopup").style.display = "block";
                             }
                         })
