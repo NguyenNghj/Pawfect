@@ -162,9 +162,9 @@ public class EditVoucherServlet extends HttpServlet {
                 }
             }
 
-            if (Double.parseDouble(discountAmountParam) != 0) {
-                if (discountAmountParam != null && !discountAmountParam.trim().isEmpty()) {
-                    discountAmount = Double.parseDouble(discountAmountParam);
+            if (discountAmountParam != null && !discountAmountParam.trim().isEmpty()) {
+                discountAmount = Double.parseDouble(discountAmountParam);
+                if (discountAmount != 0) {
                     if (discountAmount < 1000 || discountAmount > 5000000) {
                         throw new IllegalArgumentException("Số tiền giảm giá phải lớn hơn 1000 và không vượt quá 5.000.000.");
                     }

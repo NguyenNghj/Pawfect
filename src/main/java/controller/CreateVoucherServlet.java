@@ -112,9 +112,9 @@ public class CreateVoucherServlet extends HttpServlet {
                 }
             }
 
-            if (Double.parseDouble(discountAmountParam) != 0) {
-                if (discountAmountParam != null && !discountAmountParam.trim().isEmpty()) {
-                    discountAmount = Double.parseDouble(discountAmountParam);
+            if (discountAmountParam != null && !discountAmountParam.trim().isEmpty()) {
+                discountAmount = Double.parseDouble(discountAmountParam);
+                if (discountAmount != 0) {
                     if (discountAmount < 1000 || discountAmount > 5000000) {
                         throw new IllegalArgumentException("Số tiền giảm giá phải lớn hơn 1000 và không vượt quá 5.000.000.");
                     }
@@ -178,7 +178,6 @@ public class CreateVoucherServlet extends HttpServlet {
             // Tạo đối tượng Voucher
             Voucher voucher = new Voucher(code, description, discountPercentage, discountAmount, minOrderValue, maxDiscount, startDate, endDate, isActive);
             boolean insertSuccess = voucherDAO.createVoucher(voucher);
-
             if (insertSuccess) {
                 request.getSession().setAttribute("successMessage", "Tạo mã giảm giá thành công.");
                 response.sendRedirect(request.getContextPath() + "/dashboard/admin/voucher");
@@ -196,6 +195,7 @@ public class CreateVoucherServlet extends HttpServlet {
             request.getSession().setAttribute("errorMessage", e.getMessage());
             response.sendRedirect(request.getContextPath() + "/dashboard/admin/createvoucher");
         } catch (Exception e) {
+            System.out.println("DAy ne" + e);
             e.printStackTrace();
             request.getSession().setAttribute("errorMessage", "Lỗi hệ thống: " + e.getMessage());
             response.sendRedirect(request.getContextPath() + "/dashboard/admin/createvoucher");
