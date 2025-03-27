@@ -147,7 +147,15 @@
                                 <label for="editPricePerNight" class="form-label">Giá mỗi đêm (VNĐ)</label>
                                 <input type="number" class="form-control" name="pricePerNight" step="0.01" value="${room.pricePerNight}" >
                             </div>
-
+                            <!-- Trạng thái hoạt động -->
+                            <div class="mb-3">
+                                <label class="form-label">Trạng thái hoạt động</label><br>
+                                <!-- Select option để thay đổi trạng thái -->
+                                <select class="form-select" id="isActive" name="isActive">
+                                    <option value="1" ${room.isActive == '1' ? 'selected' : ''}>Hoạt động</option>
+                                    <option value="0" ${room.isActive == '0' ? 'selected' : ''}>Không hoạt động</option>
+                                </select>
+                            </div>
                             <!-- Mô tả -->
                             <div class="mb-3">
                                 <label for="editRoomDescription" class="form-label">Mô tả</label>
@@ -163,17 +171,8 @@
                                                             </select>
                                                         </div>-->
 
-                            <!-- Trạng thái hoạt động -->
-                            <div class="mb-3">
-                                <label class="form-label">Trạng thái hoạt động</label><br>
 
-                                <!-- Lưu giá trị ban đầu của isActive -->
-                                <input type="hidden" id="originalIsActive" name="originalIsActive" value="${room.isActive ? '1' : '0'}">
 
-                                <!-- Checkbox để thay đổi trạng thái -->
-                                <input type="checkbox" class="form-check-input" id="editIsActive" name="isActive" value="1" ${room.isActive ? 'checked' : ''}>
-                                <label class="form-check-label" for="editIsActive">Hoạt động</label>
-                            </div>
 
 
                             <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
@@ -183,18 +182,19 @@
                 </div>
             </div>
         </div>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                let isActiveCheckbox = document.getElementById("editIsActive");
-                let hiddenIsActiveInput = document.getElementById("hiddenIsActive");
-
-                // Khi checkbox thay đổi trạng thái thì cập nhật giá trị hidden input
-                isActiveCheckbox.addEventListener("change", function () {
-                    hiddenIsActiveInput.value = this.checked ? "1" : "0";
-                });
-            });
-
-        </script>
+        <!--        <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        let isActiveSelect = document.getElementById("editIsActive");
+                        let hiddenIsActiveInput = document.getElementById("hiddenIsActive");
+        
+                        // Khi chọn option, cập nhật giá trị hidden input
+                        isActiveSelect.addEventListener("change", function () {
+                            hiddenIsActiveInput.value = this.value;
+                        });
+                    });
+        
+        
+                </script>-->
 
         <script>
             document.getElementById("editRoomName").addEventListener("submit", function (event) {
