@@ -196,6 +196,66 @@ public class StaffDAO {
         }
         return staffList;
     }
+    public boolean isEmailOrPhoneExists(String email, String phone) {
+    String query = "SELECT COUNT(*) FROM Staffs WHERE email = ? OR phone = ?";
+    
+    try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(query)) {
+        
+        ps.setString(1, email);
+        ps.setString(2, phone);
+        
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0; // Nếu có ít nhất 1 kết quả, nghĩa là đã tồn tại
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+    public boolean isEmailOrPhoneExistsForUpdate(int staffId, String email, String phone) {
+    String query = "SELECT COUNT(*) FROM Staffs WHERE (email = ? OR phone = ?) AND staff_id != ?";
+
+    try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(query)) {
+
+        ps.setString(1, email);
+        ps.setString(2, phone);
+        ps.setInt(3, staffId);
+
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return rs.getInt(1) > 0; // Nếu có kết quả, nghĩa là email/phone đã có nhân viên khác dùng
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+public boolean updateStaff(int staffId, String fullName, String email, String phone) {
+    if (isEmailOrPhoneExistsForUpdate(staffId, email, phone)) {
+        System.out.println("Email hoặc số điện thoại đã tồn tại!");
+        return false; // Ngăn cập nhật nếu trùng
+    }
+
+    String query = "UPDATE Staffs SET fullName = ?, email = ?, phone = ? WHERE staff_id = ?";
+    try (Connection conn = new DBContext().getConnection();
+         PreparedStatement ps = conn.prepareStatement(query)) {
+
+        ps.setString(1, fullName);
+        ps.setString(2, email);
+        ps.setString(3, phone);
+        ps.setInt(4, staffId);
+
+        return ps.executeUpdate() > 0; // Trả về true nếu cập nhật thành công
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
+
 
     /**
      * Hashes a password using MD5 algorithm
@@ -221,5 +281,6 @@ public class StaffDAO {
         }
         return hashedPassword;
     }
+    
 
 }
