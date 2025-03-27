@@ -147,8 +147,8 @@ public class CreateProductServlet extends HttpServlet {
             if (categoryId <= 0) {
                 throw new IllegalArgumentException("Danh mục không hợp lệ.");
             }
-            if (productPrice <= 0 || productPrice > 50000000) {
-                throw new IllegalArgumentException("Giá sản phẩm phải trong khoảng 0 - 50,000,000.");
+            if (productPrice <= 1000 || productPrice > 50000000) {
+                throw new IllegalArgumentException("Giá sản phẩm phải trong khoảng 1000 - 50,000,000.");
             }
             if (stock < 0 || stock > 1000) {
                 throw new IllegalArgumentException("Số lượng sản phẩm phải trong khoảng 0 - 1000.");
