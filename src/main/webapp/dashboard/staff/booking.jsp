@@ -22,7 +22,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="../../css/dashboard.css">
-        <title>Quản lí đặt phòng</title>
+        <title>Quản lý đặt phòng</title>
     </head>
     <body>
         <div class="container-fluid">
@@ -61,7 +61,7 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Quản lí các yêu cầu đặt phòng</h1>
+                                <h1>Quản lý các yêu cầu đặt phòng</h1>
                             </div>
                             <c:choose>
                                 <c:when test="${staffRole eq 'Admin'}">
@@ -99,7 +99,7 @@
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
                                 <li class="breadcrumb-item">Bảng điều khiển</li>
                                 <li class="breadcrumb-item">Nhân viên</li>
-                                <li class="breadcrumb-item active" aria-current="page">Quản lí yêu cầu đặt phòng</li>
+                                <li class="breadcrumb-item active" aria-current="page">Quản lý yêu cầu đặt phòng</li>
                             </ol>
                         </nav>
                     </div> 

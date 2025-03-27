@@ -18,7 +18,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="../../css/dashboard.css">
-        <title>Quản Lí Khách Hàng</title>
+        <title>Quản Lý Khách Hàng</title>
     </head>
     <body>
         <div class="container-fluid">
@@ -33,7 +33,7 @@
                     <div class="row pt-4">
                         <div class="d-flex align-items-center justify-content-between" style="padding: 0;">
                             <div>
-                                <h1>Quản lí khách hàng</h1>
+                                <h1>Quản lý khách hàng</h1>
                                 <%
                                     Cookie[] cookies = request.getCookies();
                                     String staffRole = "";
@@ -98,7 +98,7 @@
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
                                 <li class="breadcrumb-item">Bảng điều khiển</li>
                                 <li class="breadcrumb-item">Nhân viên</li>
-                                <li class="breadcrumb-item active" aria-current="page">Quản lí khách hàng</li>
+                                <li class="breadcrumb-item active" aria-current="page">Quản lý khách hàng</li>
                             </ol>
                         </nav>
                     </div>   
