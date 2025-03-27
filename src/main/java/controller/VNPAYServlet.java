@@ -109,7 +109,7 @@ public class VNPAYServlet extends HttpServlet {
 
         JSONObject json = new JSONObject();
         response.setContentType("application/json");
-        
+
         String customerIdStr = getCustomerIdFromCookies(request);
         int customerId = Integer.parseInt(customerIdStr);
 
@@ -125,10 +125,10 @@ public class VNPAYServlet extends HttpServlet {
             double totalCartPrice = Double.parseDouble(request.getParameter("totalPrice"));
             double salePrice = Double.parseDouble(request.getParameter("salePrice"));
             int voucherId = Integer.parseInt(request.getParameter("voucherId"));
-            
+
             System.out.println("totalCartPrice: " + totalCartPrice);
             System.out.println("salePrice: " + salePrice);
-            
+
             // Kiem tra du lieu dau vao
             try {
                 if (email == null || email.isEmpty()) {
@@ -138,19 +138,48 @@ public class VNPAYServlet extends HttpServlet {
                     throw new IllegalArgumentException("error-data-email-valid");
                 }
 
+                if (!isValidEmailLength(email)) {
+                    throw new IllegalArgumentException("error-data-email-length");
+                }
+
                 if (name == null || name.isEmpty()) {
                     throw new IllegalArgumentException("error-data-name-empty");
+                }
+
+                if (!isValidName(name)) {
+                    throw new IllegalArgumentException("error-data-name-valid");
+                }
+
+                if (!isValidNameLength(name)) {
+                    throw new IllegalArgumentException("error-data-name-length");
                 }
 
                 if (phone == null || phone.isEmpty()) {
                     throw new IllegalArgumentException("error-data-phone-empty");
                 }
+
                 if (!isValidPhone(phone)) {
                     throw new IllegalArgumentException("error-data-phone-valid");
                 }
 
                 if (address == null || address.isEmpty()) {
                     throw new IllegalArgumentException("error-data-address-empty");
+                }
+
+                if (!isValidAddressCharacters(address)) {
+                    throw new IllegalArgumentException("error-data-address-valid");
+                }
+
+                if (!isValidAddressLength(address)) {
+                    throw new IllegalArgumentException("error-data-address-lenght");
+                }
+
+                if (!isValidAddressNotOnlyNumbers(address)) {
+                    throw new IllegalArgumentException("error-data-address-number");
+                }
+
+                if (!isValidOrderNoteLength(note)) {
+                    throw new IllegalArgumentException("error-data-note-valid");
                 }
 
             } catch (IllegalArgumentException e) {
@@ -160,25 +189,12 @@ public class VNPAYServlet extends HttpServlet {
                 return;
             }
 
-            String status = "";
-            int shippingMethod_id = 0;
-            int paymentMethod_id = 0;
+            // Lay phuong thuc dat hang, thanh toan va trang thai don hang
+            int shippingMethod_id = shippingMethod.equals("shipping-hoatoc") ? 2 : 1;
+            int paymentMethod_id = paymentMethod.equals("payment-cash") ? 1 : 2;
+            String status = paymentMethod.equals("payment-cash") ? "Chờ xác nhận" : "Đã huỷ";
 
-            if (shippingMethod.equals("shipping-hoatoc")) {
-                shippingMethod_id = 2;
-            } else {
-                shippingMethod_id = 1;
-            }
-
-            if (paymentMethod.equals("payment-cash")) {
-                paymentMethod_id = 1;
-                status = "Chờ xác nhận";
-            } else {
-                paymentMethod_id = 2;
-                status = "Chờ lấy hàng";
-            }
-
-            Order order = new Order(customerId, paymentMethod_id, shippingMethod_id, name, phone, address, note, totalCartPrice + salePrice, status);
+            Order order = new Order(customerId, paymentMethod_id, shippingMethod_id, name, phone, address, note, totalCartPrice + salePrice, "Thanh toán thất bại hoặc bị gián đoạn", status);
             int orderId = 0;
             orderId = OrderDAO.insertOrder(order);
             // Tao don hang thanh cong
@@ -209,13 +225,13 @@ public class VNPAYServlet extends HttpServlet {
                     product.setStock(product.getStock() - orderitem.getQuantity());
                     productDAO.updateProduct(product);
                 }
-                
+
                 if (remove) {
                     System.out.println("Xoa gio hang thanh cong.");
-                    
+
                     String vnpayUrl = createVnPayPayment(totalCartPrice, String.valueOf(orderId + 2500000), String.valueOf(customerId));
                     System.out.println("createVnPayPayment: " + vnpayUrl);
-                    
+
                     json.put("vnpayUrl", vnpayUrl);
                     json.put("status", "success");
                 } else {
@@ -368,12 +384,28 @@ public class VNPAYServlet extends HttpServlet {
         }
     }
 
-    // Phương thức kiểm tra email hợp lệ
+    // Phương thức kiểm tra fullname hợp lệ
+    private boolean isValidName(String name) {
+        String nameRegex = "^[A-Za-zÀ-Ỹà-ỹ\\s]+$"; // Chỉ cho phép chữ cái và khoảng trắng
+        return name.matches(nameRegex);
+    }
+
+    // Phuong thuc kiem tra ten khong vuot qua 100 ky tu
+    private boolean isValidNameLength(String name) {
+        return name != null && name.length() <= 100;
+    }
+
+    // Phương thức kiểm tra email hợp lệ (không bắt đầu bằng số)
     private boolean isValidEmail(String email) {
-        String emailRegex = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
+        String emailRegex = "^[A-Za-z][A-Za-z0-9._%+-]*@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
         Pattern pattern = Pattern.compile(emailRegex);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    // Phuong thuc kiem tra email khong vuot qua 255 ky tu
+    private boolean isValidEmailLength(String email) {
+        return email != null && email.length() <= 255;
     }
 
     // Phương thức kiểm tra số điện thoại hợp lệ (10-11 chữ số)
@@ -382,6 +414,26 @@ public class VNPAYServlet extends HttpServlet {
         Pattern pattern = Pattern.compile(phoneRegex);
         Matcher matcher = pattern.matcher(phone);
         return matcher.matches();
+    }
+
+    // Kiểm tra địa chỉ chỉ chứa chữ cái, số và khoảng trắng (không chứa ký tự đặc biệt)
+    private boolean isValidAddressCharacters(String address) {
+        return address != null && address.matches("^[a-zA-ZÀ-ỹ0-9\\s,.]+$");
+    }
+
+    // Kiểm tra địa chỉ không phải toàn số
+    private boolean isValidAddressNotOnlyNumbers(String address) {
+        return address != null && !address.matches("^\\d+$");
+    }
+
+    // Kiểm tra địa chỉ không vượt quá 255 ký tự
+    private boolean isValidAddressLength(String address) {
+        return address != null && address.length() <= 255;
+    }
+
+    // Phuong thuc kiem tra ghi chu khong vuot qua 500 ky tu
+    private boolean isValidOrderNoteLength(String orderNote) {
+        return orderNote != null && orderNote.length() <= 500;
     }
 
     /**

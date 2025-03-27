@@ -25,7 +25,9 @@
         Swal.fire({
             icon: 'success',
             title: 'Thêm thú cưng thành công!',
-            text: 'Bạn sẽ được chuyển hướng sau 3 giây...',
+            text: 'Bạn sẽ được chuyển hướng sau 2 giây...',
+            allowOutsideClick: false, 
+            allowEscapeKey: false,
             timer: 2000,
             showConfirmButton: false
         }).then(() => {
