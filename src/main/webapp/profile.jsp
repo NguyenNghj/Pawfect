@@ -212,13 +212,13 @@
 
                 // Lấy giá trị input và loại bỏ khoảng trắng đầu cuối
                 let fullName = document.getElementsByName("fullName")[0].value.trim();
-                let birthDate = document.getElementsByName("birthDate")[0].value.trim();
+                let birthDateInput = document.getElementsByName("birthDate")[0].value.trim();
                 let phoneNumber = document.getElementsByName("phoneNumber")[0].value.trim();
                 let address = document.getElementsByName("address")[0].value.trim();
 
                 // Định dạng kiểm tra
-                let phonePattern = /^[0-9]{9,}$/;
-                let today = new Date().toISOString().split("T")[0];
+                let phonePattern = /^[0-9]{10,}$/; // Số điện thoại phải có ít nhất 10 chữ số
+                let today = new Date();
 
                 // Xóa thông báo lỗi cũ
                 document.getElementById("fullNameError").innerHTML = "";
@@ -227,29 +227,45 @@
                 document.getElementById("addressError").innerHTML = "";
 
                 // Kiểm tra Họ tên (không được chỉ có khoảng trắng và phải có ít nhất 3 ký tự)
-                if (fullName.length < 3 || fullName.replace(/\s/g, "").length === 0) {
-                    document.getElementById("fullNameError").innerHTML = "Họ tên phải có ít nhất 3 ký tự và không được chỉ có khoảng trắng!";
+                if (
+                        fullName.length < 3 ||
+                        fullName.replace(/\s/g, "").length === 0 ||
+                        /[^a-zA-ZÀ-ỹ\s]/.test(fullName) // Chặn ký tự đặc biệt, chỉ cho phép chữ cái và khoảng trắng
+                        ) {
+                    document.getElementById("fullNameError").innerHTML = "Họ tên phải có ít nhất 3 ký tự, không được chứa ký tự đặc biệt và không chỉ có khoảng trắng!";
                     isValid = false;
                 }
 
                 // Kiểm tra Ngày sinh
-                if (!birthDate) {
+                const birthDate = new Date(birthDateInput);
+                const age = today.getFullYear() - birthDate.getFullYear();
+                const monthDiff = today.getMonth() - birthDate.getMonth();
+                const dayDiff = today.getDate() - birthDate.getDate();
+
+                if (!birthDateInput) {
                     document.getElementById("birthDateError").innerHTML = "Vui lòng chọn ngày sinh!";
                     isValid = false;
                 } else if (birthDate > today) {
                     document.getElementById("birthDateError").innerHTML = "Ngày sinh không thể lớn hơn ngày hiện tại!";
                     isValid = false;
+                } else if (age < 18 || (age === 18 && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)))) {
+                    document.getElementById("birthDateError").innerHTML = "Bạn phải trên 18 tuổi!";
+                    isValid = false;
                 }
 
-                // Kiểm tra Số điện thoại (phải có ít nhất 9 chữ số)
+                // Kiểm tra Số điện thoại (phải có ít nhất 10 chữ số)
                 if (!phonePattern.test(phoneNumber)) {
-                    document.getElementById("phoneError").innerHTML = "Số điện thoại phải có ít nhất 9 chữ số!";
+                    document.getElementById("phoneError").innerHTML = "Số điện thoại phải có ít nhất 10 chữ số!";
                     isValid = false;
                 }
 
                 // Kiểm tra Địa chỉ (không được chỉ có khoảng trắng và phải có ít nhất 5 ký tự)
-                if (address.length < 5 || address.replace(/\s/g, "").length === 0) {
-                    document.getElementById("addressError").innerHTML = "Địa chỉ phải có ít nhất 5 ký tự và không được chỉ có khoảng trắng!";
+                if (
+                        address.length < 5 ||
+                        address.replace(/\s/g, "").length === 0 ||
+                        /[^a-zA-Z0-9À-ỹ\s,.-]/.test(address) // Chặn ký tự đặc biệt không mong muốn
+                        ) {
+                    document.getElementById("addressError").innerHTML = "Địa chỉ phải có ít nhất 5 ký tự, không được chứa ký tự đặc biệt và không chỉ có khoảng trắng!";
                     isValid = false;
                 }
 

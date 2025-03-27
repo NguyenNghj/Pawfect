@@ -131,69 +131,75 @@
         <%@include file="./components/footer.jsp" %>
     </body>
     <script>
-    document.querySelector("form").addEventListener("submit", function (event) {
-        event.preventDefault(); // Ngăn form gửi ngay lập tức
+                        document.querySelector("form").addEventListener("submit", function (event) {
+                            event.preventDefault(); // Ngăn form gửi ngay lập tức
 
-        Swal.fire({
-            title: "Xác nhận đổi mật khẩu?",
-            text: "Bạn có chắc chắn muốn đổi mật khẩu không?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Đồng ý",
-            cancelButtonText: "Hủy"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                event.target.submit(); // Nếu nhấn "Đồng ý" thì submit form
-            }
-        });
-    });
-</script>
+                            Swal.fire({
+                                title: "Xác nhận đổi mật khẩu?",
+                                text: "Bạn có chắc chắn muốn đổi mật khẩu không?",
+                                icon: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#3085d6",
+                                cancelButtonColor: "#d33",
+                                confirmButtonText: "Đồng ý",
+                                cancelButtonText: "Hủy"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    event.target.submit(); // Nếu nhấn "Đồng ý" thì submit form
+                                }
+                            });
+                        });
+    </script>
     <script>
-                        function validatePasswordForm() {
-                            let isValid = true;
+        function validatePasswordForm() {
+            let isValid = true;
 
-                            // Lấy giá trị input
-                            let oldPassword = document.getElementById("oldPassword").value.trim();
-                            let newPassword = document.getElementById("newPassword").value.trim();
-                            let confirmPassword = document.getElementById("confirmPassword").value.trim();
+            // Lấy giá trị input
+            let oldPassword = document.getElementById("oldPassword").value.trim();
+            let newPassword = document.getElementById("newPassword").value.trim();
+            let confirmPassword = document.getElementById("confirmPassword").value.trim();
 
-                            // Xóa thông báo lỗi cũ
-                            document.getElementById("oldPasswordError").innerHTML = "";
-                            document.getElementById("newPasswordError").innerHTML = "";
-                            document.getElementById("confirmPasswordError").innerHTML = "";
+            // Xóa thông báo lỗi cũ
+            document.getElementById("oldPasswordError").innerHTML = "";
+            document.getElementById("newPasswordError").innerHTML = "";
+            document.getElementById("confirmPasswordError").innerHTML = "";
 
-                            // Kiểm tra Mật khẩu cũ
-                            if (oldPassword === "") {
-                                document.getElementById("oldPasswordError").innerHTML = "Vui lòng nhập mật khẩu cũ!";
-                                isValid = false;
-                            }
-                            if (oldPassword.length < 6) {
-                                document.getElementById("oldPasswordError").innerHTML = "Mật khẩu phải có ít nhất 6 ký tự!";
-                                isValid = false;
-                            }
+            // Kiểm tra Mật khẩu cũ
+            if (oldPassword === "") {
+                document.getElementById("oldPasswordError").innerHTML = "Vui lòng nhập mật khẩu cũ!";
+                isValid = false;
+            }
+            if (oldPassword.length < 6) {
+                document.getElementById("oldPasswordError").innerHTML = "Mật khẩu phải có ít nhất 6 ký tự!";
+                isValid = false;
+            }
 
-                            // Kiểm tra Mật khẩu mới
-                            if (newPassword.length < 6) {
-                                document.getElementById("newPasswordError").innerHTML = "Mật khẩu mới phải có ít nhất 6 ký tự!";
-                                isValid = false;
-                            }
+            // Kiểm tra Mật khẩu mới
+            const newPassword = document.getElementById("newPassword").value;
+            const passwordError = document.getElementById("newPasswordError");
+            const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,}$/;
 
-                            // Kiểm tra Xác nhận mật khẩu
-                            if (confirmPassword === "") {
-                                document.getElementById("confirmPasswordError").innerHTML = "Vui lòng nhập lại mật khẩu!";
-                                isValid = false;
-                            } else if (confirmPassword !== newPassword) {
-                                document.getElementById("confirmPasswordError").innerHTML = "Mật khẩu xác nhận không khớp!";
-                                isValid = false;
-                            }
+            if (!passwordPattern.test(newPassword)) {
+                passwordError.innerHTML = "Mật khẩu phải có ít nhất 6 ký tự, gồm chữ, số và ký tự đặc biệt!";
+                isValid = false;
+            } else {
+                passwordError.innerHTML = "";
+            }
 
-                            // Nếu tất cả hợp lệ, hiển thị hộp thoại xác nhận
-                         
+            // Kiểm tra Xác nhận mật khẩu
+            if (confirmPassword === "") {
+                document.getElementById("confirmPasswordError").innerHTML = "Vui lòng nhập lại mật khẩu!";
+                isValid = false;
+            } else if (confirmPassword !== newPassword) {
+                document.getElementById("confirmPasswordError").innerHTML = "Mật khẩu xác nhận không khớp!";
+                isValid = false;
+            }
 
-                            return false;
-                        }
+            // Nếu tất cả hợp lệ, hiển thị hộp thoại xác nhận
+
+
+            return false;
+        }
 
     </script>
 </html>
