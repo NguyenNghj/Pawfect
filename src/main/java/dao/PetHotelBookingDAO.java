@@ -29,6 +29,17 @@ public class PetHotelBookingDAO {
     protected static final String Create_Booking = "INSERT INTO PetHotelBookings (room_id, customer_id, pet_id, check_in, check_out, total_price, note, status, booking_date, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, GETDATE(), 1)";
     protected static final String Delete_Booking = "UPDATE PetHotelBookings SET is_active = 0 WHERE booking_id = ?";
     protected static final String Search_Bookings_By_Customer_Name = Get_All_Bookings + " AND c.full_name LIKE ?";
+    protected static final String Get_By_Id_For_Staff = "SELECT p.booking_id, p.room_id, r.room_name, "
+            + "p.customer_id, c.full_name AS customer_name, c.phone AS customer_phone, c.email AS customer_email, "
+            + "p.staff_id, s.full_name AS staff_name, "
+            + "p.pet_id, pet.pet_name, pet.pet_type AS pet_type, pet.pet_weigth AS pet_weight, pet.pet_breed AS pet_breed, pet.pet_status AS pet_status, "
+            + "p.check_in, p.check_out, p.total_price, p.note, p.status, p.booking_date, p.is_active "
+            + "FROM PetHotelBookings p "
+            + "JOIN PetHotel r ON p.room_id = r.room_id "
+            + "JOIN Customers c ON p.customer_id = c.customer_id "
+            + "LEFT JOIN Staffs s ON p.staff_id = s.staff_id "
+            + "JOIN Pets pet ON p.pet_id = pet.pet_id "
+            + "WHERE p.booking_id = ?";
 
     // Lấy danh sách tất cả Booking
     public static List<PetHotelBooking> getAllBookings() {
@@ -69,6 +80,64 @@ public class PetHotelBookingDAO {
         return list;
     }
 
+// Lấy Booking theo ID dành cho nhân viên
+    public static PetHotelBooking getBookingByIdForStaff(int bookingId) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            con = new DBContext().getConnection();
+            ps = con.prepareStatement(Get_By_Id_For_Staff);
+            ps.setInt(1, bookingId);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new PetHotelBooking(
+                        rs.getInt("booking_id"),
+                        rs.getInt("room_id"),
+                        rs.getString("room_name"),
+                        rs.getInt("customer_id"),
+                        rs.getString("customer_name"),
+                        rs.getString("customer_phone"), // Thêm số điện thoại khách hàng
+                        rs.getString("customer_email"), // Thêm email khách hàng
+                        rs.getObject("staff_id") != null ? rs.getInt("staff_id") : null, // Xử lý null
+                        rs.getString("staff_name"),
+                        rs.getInt("pet_id"),
+                        rs.getString("pet_name"),
+                        rs.getString("pet_type"), // Thêm loại thú cưng
+                        rs.getString("pet_weight"), // Thêm cân nặng thú cưng
+                        rs.getString("pet_breed"), // Thêm giống thú cưng
+                        rs.getString("pet_status"), // Thêm trạng thái thú cưng
+                        rs.getTimestamp("check_in"),
+                        rs.getTimestamp("check_out"),
+                        rs.getBigDecimal("total_price"),
+                        rs.getString("note"),
+                        rs.getString("status"),
+                        rs.getTimestamp("booking_date"),
+                        rs.getBoolean("is_active")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null; // Nếu không tìm thấy booking, trả về null
+    }
+
     // Lấy Booking theo ID
     public static PetHotelBooking getBookingById(int bookingId) {
         try {
@@ -107,7 +176,7 @@ public class PetHotelBookingDAO {
         return null;
     }
 
-    public static boolean updateBookingStatus(int bookingId,  String status, int staffId) {
+    public static boolean updateBookingStatus(int bookingId, String status, int staffId) {
         boolean success = false;
         Connection con = null;
         PreparedStatement ps = null;

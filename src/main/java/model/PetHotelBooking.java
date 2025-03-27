@@ -10,10 +10,15 @@ public class PetHotelBooking {
     private String roomName;
     private int customerId;
     private String customerName;
+    private String customerPhone;
+    private String customerEmail;
     private Integer staffId; // Có thể null
     private String staffName;
     private int petId;
     private String petName;
+    private String petType;
+    private String petWeight;
+    private String petBreed;
     private String petStatus;
     private Timestamp checkIn;
     private Timestamp checkOut;
@@ -29,6 +34,36 @@ public class PetHotelBooking {
 
     public void setPetStatus(String petStatus) {
         this.petStatus = petStatus;
+    }
+
+    //detail
+    public PetHotelBooking(int bookingId, int roomId, String roomName, int customerId, String customerName,
+            String customerPhone, String customerEmail, Integer staffId, String staffName,
+            int petId, String petName, String petType, String petWeight, String petBreed,
+            String petStatus, Timestamp checkIn, Timestamp checkOut, BigDecimal totalPrice,
+            String note, String status, Timestamp bookingDate, boolean isActive) {
+        this.bookingId = bookingId;
+        this.roomId = roomId;
+        this.roomName = roomName;
+        this.customerId = customerId;
+        this.customerName = customerName;
+        this.customerPhone = customerPhone;
+        this.customerEmail = customerEmail;
+        this.staffId = staffId;
+        this.staffName = staffName;
+        this.petId = petId;
+        this.petName = petName;
+        this.petType = petType;
+        this.petWeight = petWeight;
+        this.petBreed = petBreed;
+        this.petStatus = petStatus;
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+        this.totalPrice = totalPrice;
+        this.note = note;
+        this.status = status;
+        this.bookingDate = bookingDate;
+        this.isActive = isActive;
     }
 
     // có petStatus

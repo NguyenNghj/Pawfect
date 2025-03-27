@@ -4,6 +4,7 @@
  */
 package controller;
 
+import com.google.gson.Gson;
 import dao.PetHotelBookingDAO;
 import dao.PetHotelDAO;
 import java.io.IOException;
@@ -65,7 +66,8 @@ public class PetHotelBookingManagementServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String searchQuery = request.getParameter("search"); // Lấy tham số tìm kiếm từ request
+        String searchQuery = request.getParameter("search");
+        String bookingId = request.getParameter("bookingId");
         List<PetHotelBooking> bookings;
 
         if (searchQuery != null && !searchQuery.trim().isEmpty()) {
@@ -73,10 +75,34 @@ public class PetHotelBookingManagementServlet extends HttpServlet {
         } else {
             bookings = PetHotelBookingDAO.getAllBookings();
         }
-        // Sắp xếp danh sách đặt phòng theo check-in mới nhất
+
+        // Sắp xếp theo ngày đặt phòng mới nhất
         bookings.sort(Comparator.comparing(PetHotelBooking::getBookingDate).reversed());
+
+        // Kiểm tra nếu chỉ lấy chi tiết booking (AJAX request)
+        if (bookingId != null && !bookingId.trim().isEmpty()) {
+            try {
+                int id = Integer.parseInt(bookingId);
+                PetHotelBooking bookingdetail = PetHotelBookingDAO.getBookingByIdForStaff(id);
+
+                if (bookingdetail != null) {
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    PrintWriter out = response.getWriter();
+                    out.print(new Gson().toJson(bookingdetail)); // Trả JSON về client
+                    out.flush();
+                    return; // Kết thúc luôn, không forward sang JSP
+                }
+            } catch (NumberFormatException e) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                return;
+            }
+        }
+
+        // Trường hợp load trang bình thường
         request.setAttribute("bookings", bookings);
-        request.setAttribute("searchQuery", searchQuery); // Truyền lại giá trị tìm kiếm cho JSP
+        request.setAttribute("searchQuery", searchQuery);
+
         request.getRequestDispatcher("booking.jsp").forward(request, response);
     }
 
@@ -168,3 +194,6 @@ public class PetHotelBookingManagementServlet extends HttpServlet {
     }
 
 }
+
+
+
