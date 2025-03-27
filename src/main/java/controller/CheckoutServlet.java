@@ -106,13 +106,21 @@ public class CheckoutServlet extends HttpServlet {
             VoucherDAO voucherDAO = new VoucherDAO();
             Voucher voucher = voucherDAO.getVoucherByCode(voucherCode);
 
+            if (voucher == null) {
+                System.out.println("Ma khuyen mai khong hop le hoac khong ton tai!");
+                json.put("status", "error");
+                response.getWriter().write(json.toString());
+                response.getWriter().flush();
+                return;
+            }
+
             // Kiem tra voucher da het han su dung hay chua?
             Timestamp endDate = voucher.getEndDate();
             Timestamp startDate = voucher.getStartDate();
             Timestamp now = new Timestamp(System.currentTimeMillis());
 
             // Neu voucher khong hop le
-            if (voucher == null || now.before(startDate)) {
+            if (now.before(startDate)) {
                 System.out.println("Ma khuyen mai khong hop le hoac khong ton tai!");
                 json.put("status", "error");
 
@@ -279,7 +287,7 @@ public class CheckoutServlet extends HttpServlet {
 
         Customers customers = CustomersDAO.getCustomerById(customerId);
         request.setAttribute("emailCustomer", customers.getEmail());
-        
+
         request.setAttribute("cartItems", cartItems);
         request.setAttribute("totalCartPrice", totalCartPrice);
         request.setAttribute("totalQuantity", totalQuantity);
