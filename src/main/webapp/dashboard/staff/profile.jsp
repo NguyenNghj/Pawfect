@@ -69,8 +69,9 @@
                          style="border-radius: 20px; height: 60px;">
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
-                                <li class="breadcrumb-item">Dashboard</li>
-                                <li class="breadcrumb-item active" aria-current="page">Hồ sơ người dùng</li>
+                                <li class="breadcrumb-item">Bảng điều khiển</li>
+                                <li class="breadcrumb-item">Nhân viên</li>
+                                <li class="breadcrumb-item active" aria-current="page">Hồ sơ</li>
                             </ol>
                         </nav>
                     </div>                     
@@ -83,8 +84,7 @@
                                     <div class="card-body text-center">
                                         <img src="/img/staff/${staff.image}" alt="avatar"
                                              class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
-                                        <h5 class="my-3">${empty staff.fullName ? 'Chưa có thông tin' : staff.fullName}</h5>
-
+                                        <h5 class="my-3" style="font-weight: bold;">${empty staff.fullName ? 'Chưa có thông tin' : staff.fullName}</h5>
                                     </div>
                                 </div>
                             </div>
@@ -134,57 +134,6 @@
                         </div>
                     </div>  
 
-
-                    <!-- Modal of Update User Info -->
-                    <div class="modal fade" id="exampleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <form action="staffprofile" method="POST" onsubmit="return validateStaffForm()">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Chỉnh sửa thông tin</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" name="name" value="${staff.fullName}" placeholder="Họ và tên">
-                                            <label>Full name</label>
-                                            <span id="nameError" class="text-danger"></span>
-                                        </div>
-
-                                        <div class="form-floating mb-3">
-                                            <input type="tel" class="form-control" name="phone" value="${staff.phone}" placeholder="Số điện thoại">
-                                            <label>Phone</label>
-                                            <span id="phoneError" class="text-danger"></span>
-                                        </div>
-
-                                        <div class="form-floating mb-3">
-                                            <input type="text" class="form-control" name="address" value="${staff.address}" placeholder="Địa chỉ">
-                                            <label>Address</label>
-                                            <span id="addressError" class="text-danger"></span>
-                                        </div>
-
-                                        <div class="form-floating mb-3">
-                                            <select class="form-select" name="gender">
-                                                <option value="Nam" ${staff.gender == 'Nam' ? "selected" : ""}>Nam</option>
-                                                <option value="Nữ" ${staff.gender == 'Nữ' ? "selected" : ""}>Nữ</option>
-                                            </select>
-                                            <label>Gender</label>
-                                        </div>
-
-                                        <div class="form-floating mb-3">
-                                            <input type="date" class="form-control" name="birthdate" value="${staff.birthDate}">
-                                            <label>Birthday</label>
-                                            <span id="birthdateError" class="text-danger"></span>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                        <input type="submit" value="Lưu" class="btn btn-primary">
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
 
                     <!-- Modal Change Password -->
                     <div class="modal fade" id="changePassModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="changePassModalLabel" aria-hidden="true">
