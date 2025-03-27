@@ -85,7 +85,7 @@
                                         <a href="staffprofile">
                                             <button class="btn" type="button">
                                                 <img class="profile-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTf74k9hxcTCkLN2gyhCr9lzuzZax5iy0uDOA&s" alt="">
-                                          </button>
+                                            </button>
                                         </a>
                                     </div>
                                 </c:otherwise>
@@ -163,6 +163,7 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
+                                                <th scope="col" style="text-align: center; vertical-align: middle;">Mã đặt lịch</th>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;">Khách hàng</th>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;">Thú cưng</th>
                                                 <th scope="col" style="text-align: center; vertical-align: middle;">Tên phòng</th>
@@ -178,6 +179,9 @@
                                         <tbody id="bookingTable">
                                             <c:forEach var="booking" items="${bookings}">
                                                 <tr class="booking-row" data-status="${booking.status}">
+                                                        <td style="font-size: 15px; width: 120px; text-align: center; vertical-align: middle;">
+                                                        ${booking.bookingId}
+                                                    </td>
                                                     <td style="font-size: 15px; width: 120px; text-align: center; vertical-align: middle;">
                                                         ${booking.customerName}
                                                     </td>

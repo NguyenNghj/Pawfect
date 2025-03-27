@@ -146,9 +146,8 @@
                             </div>
                             <div class="mb-3">
                                 <label for="editProductPrice" class="form-label">Giá</label>
-                                <input type="number" class="form-control" name="productPrice" value="${product.productPrice}" required>
+                                <input type="number" class="form-control" name="productPrice" value="${product.productPrice}" maxFractionDigits='0' required>
                             </div>
-
 
                             <div class="mb-3">
                                 <label for="editProductStock" class="form-label">Tồn kho</label>
@@ -171,6 +170,17 @@
                             <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
                             <a href="<c:url value='/dashboard/admin/product'/>" class="btn btn-secondary" id="back">Trở về</a>
                         </form>
+
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                let priceInput = document.querySelector("input[name='productPrice']");
+                                if (priceInput) {
+                                    priceInput.value = Math.floor(parseFloat(priceInput.value)); // Loại bỏ phần thập phân
+                                }
+                            });
+                        </script>
+
 
                         <script>
                             document.getElementById("editProductForm").addEventListener("submit", function (event) {

@@ -144,6 +144,16 @@
                         </form>
 
                         <script>
+                            document.addEventListener("DOMContentLoaded", function () {
+                                let inputs = document.querySelectorAll("input[type='number']");
+                                inputs.forEach(input => {
+                                    input.value = Math.floor(parseFloat(input.value) || 0); // Loại bỏ phần thập phân
+                                });
+                            });
+                        </script>
+
+
+                        <script>
                             document.getElementById("editVoucherForm").addEventListener("submit", function (event) {
                                 event.preventDefault(); // Ngăn chặn submit mặc định
 
