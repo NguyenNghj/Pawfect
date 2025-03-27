@@ -253,7 +253,7 @@ public class VoucherDAO {
             ps.setInt(2, voucherId);
             try ( ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0; // Nếu số lượng > 0, nghĩa là code đã tồn tại
+                    return rs.getInt(1) > 0;
                 }
             }
         } catch (Exception e) {

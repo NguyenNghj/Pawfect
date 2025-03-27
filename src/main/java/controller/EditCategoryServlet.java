@@ -149,6 +149,11 @@ public class EditCategoryServlet extends HttpServlet {
                 throw new IllegalArgumentException("Tên danh mục chỉ được chứa chữ cái và khoảng trắng ở giữa!");
             }
 
+            // Kiểm tra danh mục đã tồn tại chưa
+            if (categoryDAO.isCategoryExists(categoryName, categoryId)) {
+                throw new IllegalArgumentException("Danh mục đã tồn tại! Vui lòng nhập danh mục khác!");
+            }
+
             // Lấy và kiểm tra trạng thái isActive
             String activeStr = request.getParameter("isActive");
             boolean active = "true".equalsIgnoreCase(activeStr) || "on".equalsIgnoreCase(activeStr);
