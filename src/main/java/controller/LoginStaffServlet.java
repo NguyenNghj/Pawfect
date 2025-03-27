@@ -143,7 +143,17 @@ public class LoginStaffServlet extends HttpServlet {
                     response.sendRedirect("dashboard/staff/viewcustomersforStaff");
                 }
             } else {
-                response.sendRedirect("loginadmin.jsp?error=Invalid Credentials");
+                   if (!userDAO.checkBanStaff(email)){
+                request.setAttribute("error", "Sai email hoặc mật khẩu");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("loginadmin.jsp");
+                dispatcher.forward(request, response);
+                }else{
+                 request.setAttribute("error", "tài khoản không hợp lệ");
+                RequestDispatcher dispatcher = request.getRequestDispatcher("loginadmin.jsp");
+                dispatcher.forward(request, response);
+                }
+
+              
             }
         } catch (NoSuchAlgorithmException e) {
             throw new ServletException("Lỗi mã hóa mật khẩu MD5", e);

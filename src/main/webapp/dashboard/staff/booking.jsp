@@ -333,7 +333,6 @@
             function formatNumber(number) {
                 return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             }
-
             function formatDateTime(dateString) {
                 if (!dateString)
                     return "";
@@ -346,7 +345,6 @@
                     year: "2-digit"
                 }).format(date);
             }
-
             function showPopup(bookingId) {
                 fetch("pethotelbooking?bookingId=" + bookingId)
                         .then(response => response.json())

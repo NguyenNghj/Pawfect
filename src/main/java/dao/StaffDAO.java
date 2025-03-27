@@ -20,7 +20,7 @@ public class StaffDAO {
 
     public List<Staff> getAllStaffs() {
         List<Staff> staffList = new ArrayList<>();
-        String query = "SELECT * FROM Staffs WHERE is_active = 1 AND role_name ='Staff'";
+        String query = "SELECT * FROM Staffs WHERE role_name ='Staff'";
 
         try {
             conn = new DBContext().getConnection();

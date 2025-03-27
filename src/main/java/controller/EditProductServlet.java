@@ -181,8 +181,8 @@ public class EditProductServlet extends HttpServlet {
             if (categoryId <= 0) {
                 throw new IllegalArgumentException("Danh mục không hợp lệ.");
             }
-            if (productPrice <= 0 || productPrice > 50000000) {
-                throw new IllegalArgumentException("Giá sản phẩm phải trong khoảng 0 - 50,000,000.");
+            if (productPrice <= 1000 || productPrice > 50000000) {
+                throw new IllegalArgumentException("Giá sản phẩm phải trong khoảng 1000 - 50,000,000.");
             }
             if (stock < 0 || stock > 1000) {
                 throw new IllegalArgumentException("Số lượng sản phẩm phải trong khoảng 0 - 1000.");
@@ -191,6 +191,11 @@ public class EditProductServlet extends HttpServlet {
             // Kiểm tra định dạng tên sản phẩm
             if (!productName.matches("^[a-zA-Z0-9\\sÀ-Ỹà-ỹ()\\-,.'’]*[a-zA-ZÀ-Ỹà-ỹ]+[a-zA-Z0-9\\sÀ-Ỹà-ỹ()\\-,.'’]*$")) {
                 throw new IllegalArgumentException("Tên sản phẩm phải chứa ít nhất một chữ cái và chỉ cho phép chữ, số, dấu cách, dấu phẩy, dấu gạch ngang, dấu chấm và dấu nháy đơn.");
+            }
+
+            ProductDAO productDAO = new ProductDAO();
+            if (productDAO.isExistProductWithSameNameDifferentId(productName, productId)) {
+                throw new IllegalArgumentException("Tên sản phẩm " + productName + " đã tồn tại. Vui lòng chọn tên khác.");
             }
 
             boolean productActive = stock > 0 && Boolean.parseBoolean(request.getParameter("productActive"));
@@ -239,7 +244,6 @@ public class EditProductServlet extends HttpServlet {
                     productPrice, fileName, stock, description, productActive);
 
             // Cập nhật sản phẩm
-            ProductDAO productDAO = new ProductDAO();
             boolean updateSuccess = productDAO.updateProduct(product);
 
             if (updateSuccess) {

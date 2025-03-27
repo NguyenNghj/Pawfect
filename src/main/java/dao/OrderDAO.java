@@ -24,6 +24,7 @@ import model.OrderItem;
 public class OrderDAO {
 
     protected static Connection Con = null;
+    
 
     protected static String Delete_Order = "DELETE FROM Orders WHERE order_id = ?";
 
@@ -71,8 +72,8 @@ public class OrderDAO {
             + "    reason_cancel = ?\n"
             + "WHERE order_id = ?";
 
-    protected static String Create_Order = "INSERT INTO Orders (customer_id, paymentMethod_id, shippingMethod_id, recipient_name, recipient_phone, shipping_address, delivery_notes, total_amount, status) "
-            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    protected static String Create_Order = "INSERT INTO Orders (customer_id, paymentMethod_id, shippingMethod_id, recipient_name, recipient_phone, shipping_address, delivery_notes, total_amount, reason_cancel, status) "
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     protected static String Create_Order_Item = "INSERT INTO OrderItems (order_id, product_id, quantity) VALUES (?, ?, ?)";
 
@@ -175,6 +176,24 @@ public class OrderDAO {
             + "    Orders AS o ON oi.order_id = o.order_id\n"
             + "WHERE\n"
             + "    oi.order_id = ?";
+    
+    
+    
+    public static boolean UpdateOrderVNPAYSuccess(String status, String reasonCancel, int orderId) {
+        boolean update = false;
+        try {
+            Con = new DBContext().getConnection();
+            PreparedStatement ps = Con.prepareStatement(Cancel_Order);
+            ps.setString(1, status);
+            ps.setString(2, reasonCancel);
+            ps.setInt(3, orderId);
+            update = ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return update;
+    }
+    
 
     public static boolean deleteOrderItem(int orderId) {
         boolean rs = false;
@@ -674,7 +693,8 @@ public class OrderDAO {
             ps.setString(6, order.getAddress());
             ps.setString(7, order.getNote());
             ps.setDouble(8, order.getTotalAmount());
-            ps.setString(9, order.getStatus());
+            ps.setString(9, order.getReasonCancel());
+            ps.setString(10, order.getStatus());
             success = ps.executeUpdate() > 0;
             if (!success) {
                 System.out.println("Loi khi insert data Order!!");

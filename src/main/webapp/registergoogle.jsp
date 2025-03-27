@@ -78,7 +78,7 @@
                                     <i class="bi bi-eye-slash password-toggle" id="togglePassword"></i>
                                     <div class="form-text">Mật khẩu phải có ít nhất 6 ký tự.</div>
                                     <div class="invalid-feedback">
-                                        Vui lòng nhập mật khẩu.
+                                        Mật khẩu phải có ít nhất 1 số 1 ký tự đặc biệt và 1 chữ cái.
                                     </div>
                                 </div>
 
@@ -116,7 +116,7 @@
                                     <label for="birthdate" class="form-label">Ngày tháng năm sinh</label>
                                     <input type="date" class="form-control" name="birthDate" id="birthdate" required>
                                     <div class="invalid-feedback">
-                                         ngày sinh không được lớn hơn ngày hiện tại.
+                                        bạn phải đủ 18 tuổi .
                                     </div>
                                 </div>
 
@@ -125,7 +125,7 @@
                                     <label for="address" class="form-label">Địa chỉ</label>
                                     <textarea class="form-control" id="address" name="address" rows="3" placeholder="Nhập địa chỉ đầy đủ" required></textarea>
                                     <div class="invalid-feedback">
-                                        Vui lòng nhập địa chỉ.
+                                        Vui lòng nhập địa chỉ và địa chỉ không được có ký tự đặc biệt.
                                     </div>
                                 </div>
 
@@ -166,13 +166,15 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
             <!-- Custom JavaScript -->
-             <script>
+            <script>
                                 function validateForm() {
                                     let isValid = true;
 
                                     // Kiểm tra họ tên
                                     const fullName = document.getElementById("fullName");
-                                    if (fullName.value.trim() === "") {
+                                    const namePattern = /^[A-Za-zÀ-Ỹà-ỹ\s]+$/; // Chỉ cho phép chữ cái và dấu cách
+
+                                    if (fullName.value.trim() === "" || !namePattern.test(fullName.value)) {
                                         fullName.classList.add("is-invalid");
                                         isValid = false;
                                     } else {
@@ -181,7 +183,9 @@
 
                                     // Kiểm tra mật khẩu
                                     const password = document.getElementById("password");
-                                    if (password.value.length < 6) {
+                                    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{6,}$/;
+
+                                    if (!passwordPattern.test(password.value)) {
                                         password.classList.add("is-invalid");
                                         isValid = false;
                                     } else {
@@ -209,8 +213,19 @@
 
                                     // Kiểm tra ngày sinh
                                     const birthDate = document.getElementById("birthdate");
-                                    const today = new Date().toISOString().split("T")[0]; // Lấy ngày hiện tại (YYYY-MM-DD)
-                                    if (birthDate.value.trim() === "" || birthDate.value > today) {
+                                    const today = new Date();
+                                    const birthDateValue = new Date(birthDate.value);
+                                    const minDate = new Date("1900-01-01");
+                                    const age = today.getFullYear() - birthDateValue.getFullYear();
+                                    const monthDiff = today.getMonth() - birthDateValue.getMonth();
+                                    const dayDiff = today.getDate() - birthDateValue.getDate();
+                                    const isUnder18 = age < 18 || (age === 18 && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)));
+                                    if (
+                                            birthDate.value.trim() === "" ||
+                                            birthDateValue > today ||
+                                            birthDateValue < minDate ||
+                                            isUnder18
+                                            ) {
                                         birthDate.classList.add("is-invalid");
                                         isValid = false;
                                     } else {
@@ -219,12 +234,17 @@
 
                                     // Kiểm tra địa chỉ
                                     const address = document.getElementById("address");
+                                    const addressPattern = /^[A-Za-zÀ-Ỹà-ỹ0-9\s,.-_]+$/; 
                                     if (address.value.trim() === "") {
+                                        address.classList.add("is-invalid");
+                                        isValid = false;
+                                    } else if (!addressPattern.test(address.value)) {
                                         address.classList.add("is-invalid");
                                         isValid = false;
                                     } else {
                                         address.classList.remove("is-invalid");
                                     }
+
 
                                     return isValid; // Nếu có lỗi, ngăn form submit
                                 }

@@ -73,6 +73,27 @@ public class UserDAO {
 
         return check;
     }
+     public Boolean checkBanStaff(String username) {
+
+        String query = "SELECT * FROM Staffs WHERE email = ? and is_active= 0";
+        boolean check = false;
+        try {
+            conn = new DBContext().getConnection();
+            pt = conn.prepareStatement(query);
+            pt.setString(1, username);
+
+            rs = pt.executeQuery();
+
+            if (rs.next()) {
+                check = true;
+            }
+
+        } catch (SQLException e) {
+
+        }
+
+        return check;
+    }
      public Boolean checkMail(String username) {
 
         String query = "SELECT * FROM Customers WHERE email = ? and is_active= 1";
@@ -123,7 +144,7 @@ public class UserDAO {
 
     public boolean checkGoogleExists(String Email) {
         boolean isValid = false;
-        String sql = "SELECT * FROM Customers WHERE email = ?  ";
+        String sql = "SELECT * FROM Customers WHERE email = ? and is_active =1  ";
         try {
             conn = new DBContext().getConnection();
             pt = conn.prepareStatement(sql);

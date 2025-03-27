@@ -125,6 +125,11 @@ public class CreateProductServlet extends HttpServlet {
                 throw new IllegalArgumentException("Tên sản phẩm phải chứa ít nhất một chữ cái và chỉ cho phép chữ, số, dấu cách, dấu phẩy, dấu gạch ngang, dấu chấm và dấu nháy đơn.");
             }
 
+            ProductDAO productDAO = new ProductDAO();
+            if (productDAO.isExistProduct(productName)) {
+                throw new IllegalArgumentException("Tên sản phẩm " + productName + " đã tồn tại. Vui lòng chọn tên khác.");
+            }
+
             // Kiểm tra kiểu dữ liệu
             int categoryId;
             double productPrice;
@@ -142,8 +147,8 @@ public class CreateProductServlet extends HttpServlet {
             if (categoryId <= 0) {
                 throw new IllegalArgumentException("Danh mục không hợp lệ.");
             }
-            if (productPrice <= 0 || productPrice > 50000000) {
-                throw new IllegalArgumentException("Giá sản phẩm phải trong khoảng 0 - 50,000,000.");
+            if (productPrice <= 1000 || productPrice > 50000000) {
+                throw new IllegalArgumentException("Giá sản phẩm phải trong khoảng 1000 - 50,000,000.");
             }
             if (stock < 0 || stock > 1000) {
                 throw new IllegalArgumentException("Số lượng sản phẩm phải trong khoảng 0 - 1000.");
@@ -196,7 +201,6 @@ public class CreateProductServlet extends HttpServlet {
             Product product = new Product(categoryId, productName, productPetType,
                     productPrice, fileName, stock, description, productActive);
 
-            ProductDAO productDAO = new ProductDAO();
             boolean createSuccess = productDAO.createProduct(product);
 
             if (createSuccess) {
