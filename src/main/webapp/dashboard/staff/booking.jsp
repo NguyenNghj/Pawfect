@@ -179,7 +179,7 @@
                                         <tbody id="bookingTable">
                                             <c:forEach var="booking" items="${bookings}">
                                                 <tr class="booking-row" data-status="${booking.status}">
-                                                    <td style="cursor: pointer; color: black; text-decoration: none; font-weight: bold; color: #D3A376;"
+                                                    <td style="width: 120px; cursor: pointer; text-decoration: none; font-weight: bold; color: #D3A376;"
                                                         onclick="showPopup(${booking.bookingId})">
                                                         ${booking.bookingId}
                                                     </td>
