@@ -70,7 +70,7 @@
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                             <li>
                                                 <a class="dropdown-item d-flex align-items-center gap-2" href="/dashboard/admin/statistics">
-                                                    <i class="fa-solid fa-repeat"></i> Chuyển qua giao diện quản lí
+                                                    <i class="fa-solid fa-repeat"></i> Chuyển qua giao diện quản lý
                                                 </a>
                                             </li>
                                         </ul>

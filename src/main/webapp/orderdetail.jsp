@@ -225,7 +225,7 @@
                                             <div class="d-flex justify-content-between mb-2">
                                                 <div class="text-secondary">Tạm tính (vào thời điểm đặt)</div>
                                                 <div>
-                                                    <f:formatNumber value="${o.totalAmount - o.shippingMethodFee}" pattern="#,##0" />đ                                                 
+                                                    <f:formatNumber value="${o.totalAmount + o.discountAmount - o.shippingMethodFee}" pattern="#,##0" />đ                                                 
                                                 </div>
                                             </div>
                                             <!-- Phí Ship -->
@@ -255,7 +255,7 @@
                                                     <c:when test="${o.discountAmount != 0}">
                                                         <div class="d-flex align-items-center gap-3">
                                                             <div class="h5 m-0" style="text-decoration: line-through">
-                                                                <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
+                                                                <f:formatNumber value="${o.totalAmount + o.discountAmount}" pattern="#,##0" />đ
                                                             </div>
                                                             <div class="h3 m-0 text-danger">
                                                                 <c:choose>
@@ -263,7 +263,7 @@
                                                                         <f:formatNumber value="0" pattern="#,##0" />đ
                                                                     </c:when>
                                                                     <c:otherwise>
-                                                                        <f:formatNumber value="${o.totalAmount - o.discountAmount}" pattern="#,##0" />đ
+                                                                        <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
                                                                     </c:otherwise>
                                                                 </c:choose>
 

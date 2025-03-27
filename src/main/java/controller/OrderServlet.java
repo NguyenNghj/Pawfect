@@ -224,7 +224,7 @@ public class OrderServlet extends HttpServlet {
             String phone = request.getParameter("phone").trim();
             String shippingMethod = request.getParameter("shippingMethod").trim();
             String paymentMethod = request.getParameter("paymentMethod").trim();
-//            double totalCartPrice = Double.parseDouble(request.getParameter("totalPrice"));
+            double totalCartPrice = Double.parseDouble(request.getParameter("totalPrice"));
             double salePrice = Double.parseDouble(request.getParameter("salePrice"));
             int voucherId = Integer.parseInt(request.getParameter("voucherId"));
             double shippingCost = Double.parseDouble(request.getParameter("shippingCost"));
@@ -300,7 +300,7 @@ public class OrderServlet extends HttpServlet {
                 reasonCancel = "Thanh toán thất bại hoặc bị gián đoạn";
             }
 
-            Order order = new Order(customerId, paymentMethod_id, shippingMethod_id, name, phone, address, note, basePrice + shippingCost, reasonCancel ,status);
+            Order order = new Order(customerId, paymentMethod_id, shippingMethod_id, name, phone, address, note, totalCartPrice, reasonCancel ,status);
             int orderId = 0;
             orderId = OrderDAO.insertOrder(order);
             // Tao don hang thanh cong

@@ -708,15 +708,15 @@
                                                                                                                             <td valign="top">
                                                                                                                                 <table border="0" cellpadding="0" cellspacing="0" role="presentation">
                                                                                                                                     <tr>
-<!--                                                                                                                                        <th valign="top" style="font-weight: normal; text-align: left;">
-                                                                                                                                            <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
-                                                                                                                                                <tr>
-                                                                                                                                                    <td class="pc-w620-spacing-0-16-20-0" valign="top" style="padding: 0px 20px 0px 0px;">
-                                                                                                                                                        <img src="https://res.cloudinary.com/dghnftz3b/image/upload/v1742914960/Screenshot_2025-03-05_082433_dhgphr.png" class="pc-w620-width-64 pc-w620-height-64 pc-w620-width-64-min" width="100" height="104" alt="" style="display: block; outline: 0; line-height: 100%; -ms-interpolation-mode: bicubic; width: 100px; height: 104px; border: 0;" />
-                                                                                                                                                    </td>
-                                                                                                                                                </tr>
-                                                                                                                                            </table>
-                                                                                                                                        </th>-->
+                                                                                                                                        <!--                                                                                                                                        <th valign="top" style="font-weight: normal; text-align: left;">
+                                                                                                                                                                                                        <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+                                                                                                                                                                                                        <tr>
+                                                                                                                                                                                                        <td class="pc-w620-spacing-0-16-20-0" valign="top" style="padding: 0px 20px 0px 0px;">
+                                                                                                                                                                                                        <img src="https://res.cloudinary.com/dghnftz3b/image/upload/v1742914960/Screenshot_2025-03-05_082433_dhgphr.png" class="pc-w620-width-64 pc-w620-height-64 pc-w620-width-64-min" width="100" height="104" alt="" style="display: block; outline: 0; line-height: 100%; -ms-interpolation-mode: bicubic; width: 100px; height: 104px; border: 0;" />
+                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                        </tr>
+                                                                                                                                                                                                        </table>
+                                                                                                                                                                                                        </th>-->
                                                                                                                                         <th valign="top" style="font-weight: normal; text-align: left;">
                                                                                                                                             <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
                                                                                                                                                 <tr>
@@ -824,7 +824,7 @@
                                                                                                             <td valign="top" align="left">
                                                                                                                 <div class="pc-font-alt" style="text-decoration: none;">
                                                                                                                     <div style="font-size: 16px;line-height: 23.8px;text-align:left;text-align-last:left;color:#001942;font-weight:400;font-style:normal;">
-                                                                                                                        <div><span style="font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 17px; line-height: 140%; letter-spacing: -0.03em;" class="pc-w620-font-size-16px pc-w620-line-height-26px">Tạm tính</span>
+                                                                                                                        <div><span style="font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 17px; line-height: 140%; letter-spacing: -0.03em;" class="pc-w620-font-size-16px pc-w620-line-height-26px">Tạm tính (vào thời điểm đặt)</span>
                                                                                                                         </div>
                                                                                                                     </div>
                                                                                                                 </div>
@@ -838,7 +838,7 @@
                                                                                                             <td valign="top" align="right">
                                                                                                                 <div class="pc-font-alt" style="text-decoration: none;">
                                                                                                                     <div style="font-size: 16px;line-height: 20px;text-align:right;text-align-last:right;color:#001942;font-weight:400;font-style:normal;">
-                                                                                                                        <div><span style="font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 17px; line-height: 140%; letter-spacing: -0.03em;" class="pc-w620-font-size-16px pc-w620-line-height-20px"><f:formatNumber value="${basicPrice}" pattern="#,##0" />đ</span>
+                                                                                                                        <div><span style="font-family: 'Fira Sans', Arial, Helvetica, sans-serif; font-size: 17px; line-height: 140%; letter-spacing: -0.03em;" class="pc-w620-font-size-16px pc-w620-line-height-20px"><f:formatNumber value="${o.totalAmount + o.discountAmount - o.shippingMethodFee}" pattern="#,##0" />đ</span>
                                                                                                                         </div>
                                                                                                                     </div>
                                                                                                                 </div>
@@ -959,7 +959,7 @@
                                                                                                                             <c:when test="${o.discountAmount != 0}">
                                                                                                                                 <div class="d-flex align-items-center gap-3">
                                                                                                                                     <div class="h5 m-0" style="text-decoration: line-through">
-                                                                                                                                        <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
+                                                                                                                                        <f:formatNumber value="${o.totalAmount + o.discountAmount}" pattern="#,##0" />đ
                                                                                                                                     </div>
                                                                                                                                     <div class="h3 m-0 text-danger">
                                                                                                                                         <c:choose>
@@ -967,7 +967,7 @@
                                                                                                                                                 <f:formatNumber value="0" pattern="#,##0" />đ
                                                                                                                                             </c:when>
                                                                                                                                             <c:otherwise>
-                                                                                                                                                <f:formatNumber value="${o.totalAmount - o.discountAmount}" pattern="#,##0" />đ
+                                                                                                                                                <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
                                                                                                                                             </c:otherwise>
                                                                                                                                         </c:choose>
 

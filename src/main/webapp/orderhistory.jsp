@@ -110,7 +110,7 @@
                                                                                 <f:formatNumber value="0" pattern="#,##0" />đ
                                                                             </c:when>
                                                                             <c:otherwise>
-                                                                                <f:formatNumber value="${o.totalAmount - o.discountAmount}" pattern="#,##0" />đ
+                                                                                <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
                                                                             </c:otherwise>
                                                                         </c:choose>
                                                                         

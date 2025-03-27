@@ -56,6 +56,8 @@
                             text: "<%= request.getAttribute("message")%>",
                             showConfirmButton: false,
                             timer: 2000
+                        }).then(() => {
+                            window.location.href = "login";
                         });
                 </script>
                 <% } %>

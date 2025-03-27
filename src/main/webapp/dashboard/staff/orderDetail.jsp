@@ -91,7 +91,7 @@
                         <nav style="--bs-breadcrumb-divider: '>'; padding: 0 5px;" aria-label="breadcrumb">
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
                                 <li class="breadcrumb-item">Dashboard</li>
-                                <li class="breadcrumb-item"><a href="ordermanagement?&action=view&status=tc">Quản lí đơn hàng</a></li>
+                                <li class="breadcrumb-item"><a href="ordermanagement?&action=view&status=tc">Quản lý đơn hàng</a></li>
                                 <li class="breadcrumb-item active" aria-current="page">Chi tiết đơn hàng</li>
                             </ol>
                         </nav>
@@ -466,7 +466,7 @@
                                                 <div class="d-flex justify-content-between mb-2">
                                                     <div class="text-secondary">Tạm tính (vào thời điểm đặt)</div>
                                                     <div>
-                                                        <f:formatNumber value="${o.totalAmount - o.shippingMethodFee}" pattern="#,##0" />đ
+                                                        <f:formatNumber value="${o.totalAmount + o.discountAmount - o.shippingMethodFee}" pattern="#,##0" />đ
                                                     </div>
                                                 </div>
                                                 <!-- Phí Ship -->
@@ -481,7 +481,7 @@
                                                     <div class="text-success">
                                                         <c:choose>
                                                             <c:when test="${o.discountAmount != 0}">
-                                                                - <f:formatNumber value="${o.totalAmount - o.discountAmount}" pattern="#,##0" />đ
+                                                                - <f:formatNumber value="${o.discountAmount}" pattern="#,##0" />đ
                                                             </c:when>
                                                             <c:otherwise>
                                                                 - <f:formatNumber value="0" pattern="#,##0" />đ
@@ -494,23 +494,31 @@
                                                     <h5 class="text-primary m-0">TỔNG TIỀN</h5>
 
                                                     <c:choose>
-                                                        <c:when test="${o.discountAmount != 0}">
-                                                            <div class="d-flex align-items-center gap-3">
-                                                                <div class="h5 m-0" style="text-decoration: line-through">
-                                                                    <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
-                                                                </div>
-                                                                <div class="h3 m-0 text-danger">
-                                                                    <f:formatNumber value="${o.discountAmount}" pattern="#,##0" />đ
-                                                                </div>
+                                                    <c:when test="${o.discountAmount != 0}">
+                                                        <div class="d-flex align-items-center gap-3">
+                                                            <div class="h5 m-0" style="text-decoration: line-through">
+                                                                <f:formatNumber value="${o.totalAmount + o.discountAmount}" pattern="#,##0" />đ
                                                             </div>
+                                                            <div class="h3 m-0 text-danger">
+                                                                <c:choose>
+                                                                    <c:when test="${o.totalAmount - o.discountAmount < 0}">
+                                                                        <f:formatNumber value="0" pattern="#,##0" />đ
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
+                                                                    </c:otherwise>
+                                                                </c:choose>
 
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <div class="h3 m-0">
-                                                                <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
                                                             </div>
-                                                        </c:otherwise>
-                                                    </c:choose>                                                                                                       
+                                                        </div>
+
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <div class="h3 m-0">
+                                                            <f:formatNumber value="${o.totalAmount}" pattern="#,##0" />đ
+                                                        </div>
+                                                    </c:otherwise>
+                                                </c:choose>                                                                                                       
 
                                                 </div>
                                             </div>
