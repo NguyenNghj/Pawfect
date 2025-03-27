@@ -133,6 +133,7 @@
                                 <table class="table table-hover">
                                     <thead class="table" style="text-align: center; vertical-align: middle; padding: 12px; font-weight: bold;">
                                         <tr>
+                                            <th scope="col">Mã phòng</th>
                                             <th scope="col">Hình ảnh</th>
                                             <th scope="col">Tên phòng</th>
                                             <th scope="col">Loại</th>
@@ -151,10 +152,10 @@
                                             <c:when test="${not empty petRooms}">
                                                 <c:forEach var="room" items="${petRooms}">
                                                     <tr>
+                                                        <td style="text-align: center;">${room.roomId}</td>
                                                         <td style="text-align: center;">
-                                                            <img src="<%= request.getContextPath()%>/img/pethotel/${room.roomImage}" alt="Hình ảnh phòng" style="max-width: 100%; height: auto; display: block; margin: auto;">
-                                                        </td>
-
+                                                            <img src="<%= request.getContextPath()%>/img/pethotel/${room.roomImage}" alt="Hình ảnh phòng" style="width: 70px; height: auto; display: block; margin: auto;">
+                                                        </td>                                                      
                                                         <td style="text-align: center;">${room.roomName}</td>
                                                         <td style="text-align: center;">${room.roomType}</td>
                                                         <td style="text-align: center;">${room.minWeight}</td>
