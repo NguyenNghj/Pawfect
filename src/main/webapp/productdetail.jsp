@@ -723,6 +723,8 @@
                             title: "Thành công!",
                             text: "Đánh giá đã được gửi.",
                             icon: "success",
+                            allowOutsideClick: false, 
+                            allowEscapeKey: false,
                             timer: 1500,
                             showConfirmButton: false
                         }).then(() => {

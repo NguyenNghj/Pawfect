@@ -219,6 +219,8 @@ public class FeedbackManagementServlet extends HttpServlet {
                 out.println("  title: 'Cảm ơn bạn đã đánh giá.',");
                 out.println("  text: 'Vui lòng đợi giây lát!',");
                 out.println("  icon: 'success',");
+                out.println("  allowOutsideClick: false,");
+                out.println("  allowEscapeKey: false,");
                 out.println("  timer: 2000,"); // Hiển thị trong 2 giây
                 out.println("  timerProgressBar: true,"); // Thanh tiến trình
                 out.println("  showConfirmButton: false"); // Ẩn nút OK

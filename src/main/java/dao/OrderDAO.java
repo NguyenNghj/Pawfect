@@ -91,7 +91,7 @@ public class OrderDAO {
             + "LEFT JOIN PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
             + "LEFT JOIN ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
             + "LEFT JOIN DiscountOrders do ON o.order_id = do.order_id\n"
-            + "WHERE o.customer_id = ? AND o.status = ?\n"
+            + "WHERE o.customer_id = ? AND o.status = ? AND NOT (o.paymentMethod_id = 2 AND o.status = N'Đã huỷ')\n"
             + "ORDER BY o.order_id DESC;";
 
     protected static String Get_All_Order_By_Status = "SELECT \n"
@@ -108,7 +108,7 @@ public class OrderDAO {
             + "LEFT JOIN PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
             + "LEFT JOIN ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
             + "LEFT JOIN DiscountOrders do ON o.order_id = do.order_id\n"
-            + "WHERE o.status = ?\n"
+            + "WHERE o.status = ? AND NOT (o.paymentMethod_id = 2 AND o.status = N'Đã huỷ')\n"
             + "ORDER BY o.order_id DESC;";
 
     protected static String Get_All_Order = "SELECT \n"
@@ -125,6 +125,7 @@ public class OrderDAO {
             + "LEFT JOIN PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
             + "LEFT JOIN ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
             + "LEFT JOIN DiscountOrders do ON o.order_id = do.order_id\n"
+            + "WHERE NOT (o.paymentMethod_id = 2 AND o.status = N'Đã huỷ')\n"
             + "ORDER BY o.order_id DESC;";
 
     protected static String Get_Order_By_CustomerId = "SELECT \n"
@@ -141,7 +142,7 @@ public class OrderDAO {
             + "LEFT JOIN PaymentMethods pm ON o.paymentMethod_id = pm.paymentMethod_id\n"
             + "LEFT JOIN ShippingMethods sm ON o.shippingMethod_id = sm.shippingMethod_id\n"
             + "LEFT JOIN DiscountOrders do ON o.order_id = do.order_id\n"
-            + "WHERE o.customer_id = ?\n"
+            + "WHERE o.customer_id = ? AND NOT (o.paymentMethod_id = 2 AND o.status = N'Đã huỷ')\n"
             + "ORDER BY o.order_id DESC;";
 
     protected static String Get_Order_By_OrderId = "SELECT \n"
