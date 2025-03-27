@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="../../css/dashboard.css">
-        <title>JSP Page</title>
+        <title>Quản lý đơn hàng</title>
     </head>
     <body>
         <div class="container-fluid">
@@ -92,7 +92,7 @@
                             <ol class="breadcrumb mb-0" style ="font-weight: bold;">
                                 <li class="breadcrumb-item">Bảng điều khiển</li>
                                 <li class="breadcrumb-item">Nhân viên</li>                            
-                                <li class="breadcrumb-item active" aria-current="page">Quản lí đơn hàng</li>
+                                <li class="breadcrumb-item active" aria-current="page">Quản lý đơn hàng</li>
                             </ol>
                         </nav>
                     </div>        

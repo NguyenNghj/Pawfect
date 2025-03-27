@@ -21,7 +21,7 @@
         <link rel="stylesheet" href="../../css/dashboard.css">
         <link rel="stylesheet" href="../../css/statistic.css">
         <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-        <title>JSP Page</title>
+        <title>Thống kê</title>
     </head>
     <body>
         <div class="container-fluid">
