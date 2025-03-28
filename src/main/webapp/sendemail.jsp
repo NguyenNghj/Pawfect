@@ -922,7 +922,7 @@
                                                                                 </td>
                                                                             </tr>
                                                                         </table>
-                                                                        <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+<!--                                                                        <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
                                                                             <tr>
                                                                                 <td style="padding: 0px 0px 32px 0px;">
                                                                                     <table class="pc-w620-tableCollapsed-0" border="0" cellpadding="0" cellspacing="0" role="presentation" bgcolor="#ffffff" style="width: 100%; background-color:#ffffff; border-radius: 10px 10px 10px 10px;">
@@ -991,7 +991,7 @@
                                                                                     </table>
                                                                                 </td>
                                                                             </tr>
-                                                                        </table>
+                                                                        </table>-->
                                                                         <table class="pc-width-fill pc-w620-gridCollapsed-1" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
                                                                             <tr class="pc-grid-tr-first pc-grid-tr-last">
                                                                                 <td class="pc-grid-td-first pc-w620-itemsSpacings-0-30" align="left" valign="top" style="width: 50%; padding-top: 0px; padding-right: 20px; padding-bottom: 0px; padding-left: 0px;">

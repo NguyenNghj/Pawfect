@@ -141,13 +141,8 @@ public class CreateVoucherServlet extends HttpServlet {
                 throw new IllegalArgumentException("Giảm giá tối đa không thể nhỏ hơn số tiền giảm giá.");
             }
 
-            // Nếu nhập phần trăm giảm giá, đảm bảo maxDiscount đủ lớn
-            if (discountPercentage > 0 && maxDiscount < (minOrderValue * discountPercentage / 100)) {
-                throw new IllegalArgumentException("Giảm giá tối đa không được nhỏ hơn số tiền giảm từ phần trăm.");
-            }
-
             if (discountAmount >= minOrderValue) {
-                throw new IllegalArgumentException("Số tiền giảm không lớn hơn hoặc bằng giảm giá tối đa.");
+                throw new IllegalArgumentException("Số tiền giảm không lớn hơn hoặc bằng giá trị đơn hàng tối thiểu.");
             }
 
             // Kiểm tra và xử lý ngày tháng

@@ -64,6 +64,7 @@ public class ViewCustomersForStaffServlet extends HttpServlet {
         String keyword = request.getParameter("search");
         List<Customers> customerList;
         VoucherDAO voucherDAO = new VoucherDAO();
+         voucherDAO.updateExpiredVouchers();
         List<Voucher> vouchers = voucherDAO.getAllActiveVouchers();
 
         if (keyword != null && !keyword.trim().isEmpty()) {
