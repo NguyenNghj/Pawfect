@@ -1,0 +1,947 @@
+DROP TABLE OrderItems;
+DROP TABLE Feedbacks;
+DROP TABLE DiscountOrders;
+DROP TABLE Voucher ;
+DROP TABLE PetHotelBookings;
+DROP TABLE PetHotel;
+DROP TABLE CartItems;
+DROP TABLE Products;
+DROP TABLE Orders;
+DROP TABLE PaymentMethods;
+DROP TABLE ShippingMethods;
+DROP TABLE Category;
+DROP TABLE Pets;
+DROP TABLE Customers;
+DROP TABLE Staffs;
+
+
+CREATE TABLE Customers (
+    customer_id INT PRIMARY KEY IDENTITY(1,1),
+    password NVARCHAR(255) NOT NULL,
+    full_name NVARCHAR(100),
+    email NVARCHAR(100) UNIQUE NOT NULL,
+    phone VARCHAR(15),
+    address NVARCHAR(255),
+    gender NVARCHAR(10),
+    birth_date DATE,
+    is_active BIT DEFAULT 1
+);
+
+CREATE TABLE Staffs (
+    staff_id INT PRIMARY KEY IDENTITY(1,1),
+    role_name NVARCHAR(30) NOT NULL,
+    password NVARCHAR(255) NOT NULL,
+    full_name NVARCHAR(100),
+    email NVARCHAR(100) UNIQUE NOT NULL,
+    phone VARCHAR(15),
+    address NVARCHAR(255),
+    gender NVARCHAR(10),
+    birth_date DATE,
+    image NVARCHAR(MAX),
+    is_active BIT DEFAULT 1
+);
+
+
+CREATE TABLE Pets (
+    pet_id INT IDENTITY(1,1) PRIMARY KEY,
+    customer_id INT NOT NULL FOREIGN KEY REFERENCES Customers(customer_id),
+    pet_name NVARCHAR(50) NOT NULL,
+    pet_type NVARCHAR(20) NOT NULL,
+    pet_breed NVARCHAR(50) NOT NULL,
+    pet_sex NVARCHAR(10) NOT NULL,
+    pet_weigth DECIMAL(5,2) NOT NULL,
+    pet_dob DATE NOT NULL,
+    pet_status NVARCHAR(50),
+    pet_image NVARCHAR(MAX),
+    is_active BIT DEFAULT 1
+);
+
+
+CREATE TABLE Category (
+    category_id INT PRIMARY KEY IDENTITY(1,1),
+    category_name NVARCHAR(50) NOT NULL,
+    is_active BIT DEFAULT 1
+);
+
+CREATE TABLE Products (
+    product_id INT PRIMARY KEY IDENTITY(1,1),
+    category_id INT FOREIGN KEY REFERENCES Category(category_id),
+    product_name NVARCHAR(255) NOT NULL,
+    product_petType NVARCHAR(30) NOT NULL,
+    product_price DECIMAL(12, 2) NOT NULL,
+    product_image NVARCHAR(MAX),
+    stock INT NOT NULL,
+    description NVARCHAR(MAX),
+    is_active BIT DEFAULT 1
+);
+
+
+
+CREATE TABLE PaymentMethods (
+    paymentMethod_id INT PRIMARY KEY IDENTITY(1,1),
+    name NVARCHAR(50) NOT NULL
+);
+
+
+CREATE TABLE ShippingMethods (
+    shippingMethod_id INT PRIMARY KEY IDENTITY(1,1),
+    name NVARCHAR(50) NOT NULL,
+    shipping_fee DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE Orders (
+    order_id INT PRIMARY KEY IDENTITY(1,1),
+    customer_id INT NOT NULL FOREIGN KEY REFERENCES Customers(customer_id),
+    staff_id INT FOREIGN KEY REFERENCES Staffs(staff_id),
+    paymentMethod_id INT NOT NULL FOREIGN KEY REFERENCES  PaymentMethods(paymentMethod_id),
+    shippingMethod_id INT NOT NULL FOREIGN KEY REFERENCES ShippingMethods(shippingMethod_id),
+    recipient_name NVARCHAR(100) NOT NULL,
+    recipient_phone NVARCHAR(15) NOT NULL,
+    shipping_address NVARCHAR(255) NOT NULL,
+    delivery_notes NVARCHAR(MAX),
+    total_amount DECIMAL(12, 2) NOT NULL,
+	 reason_cancel NVARCHAR(255),
+	 request_cancel BIT DEFAULT 0,
+    status NVARCHAR(30),
+    order_date DATETIME DEFAULT GETDATE(),
+    finished_date DATETIME
+);
+
+
+CREATE TABLE OrderItems (
+    orderItem_id INT PRIMARY KEY IDENTITY(1,1),
+    order_id INT NOT NULL FOREIGN KEY REFERENCES Orders(order_id),
+    product_id INT NOT NULL FOREIGN KEY REFERENCES Products(product_id),
+    quantity INT NOT NULL
+);
+
+CREATE TABLE CartItems (
+    cartItem_id INT PRIMARY KEY IDENTITY(1,1),
+    customer_id INT NOT NULL FOREIGN KEY REFERENCES Customers(customer_id),
+    product_id INT NOT NULL FOREIGN KEY REFERENCES Products(product_id),
+    quantity INT NOT NULL
+);
+
+CREATE TABLE PetHotel (
+    room_id INT PRIMARY KEY IDENTITY(1,1),
+    room_name NVARCHAR(100) NOT NULL,
+    room_image NVARCHAR(MAX),
+    room_type NVARCHAR(20) NOT NULL,
+    min_weight DECIMAL(5, 0) NOT NULL,
+	 max_weight DECIMAL(5, 0) NOT NULL,
+    quantity INT NOT NULL,
+ available_quantity INT NOT NULL DEFAULT 0,
+    price_per_night DECIMAL(12, 0) NOT NULL,
+    description NVARCHAR(MAX) NOT NULL,
+    status NVARCHAR(30),
+    is_active BIT DEFAULT 1
+);
+
+CREATE TABLE PetHotelBookings (
+    booking_id INT PRIMARY KEY IDENTITY(1,1),
+    room_id INT FOREIGN KEY REFERENCES PetHotel(room_id),
+    customer_id INT FOREIGN KEY REFERENCES Customers(customer_id),
+    staff_id INT NULL FOREIGN KEY REFERENCES Staffs(staff_id),
+    pet_id INT FOREIGN KEY REFERENCES Pets(pet_id),
+    check_in DATETIME NOT NULL,
+    check_out DATETIME NOT NULL,
+    total_price DECIMAL(12, 2) NOT NULL,
+	  note NVARCHAR(MAX),
+    status NVARCHAR(30),
+	  booking_date DATETIME DEFAULT GETDATE(),
+    is_active BIT DEFAULT 1	
+);
+
+CREATE TABLE Feedbacks (
+    feedback_id INT PRIMARY KEY IDENTITY(1,1),
+    customer_id INT NOT NULL FOREIGN KEY REFERENCES Customers(customer_id),
+    staff_id INT FOREIGN KEY REFERENCES Staffs(staff_id),
+    product_id INT NOT NULL FOREIGN KEY REFERENCES Products(product_id),
+	 order_id INT NOT NULL FOREIGN KEY REFERENCES Orders(order_id),
+    rating INT NOT NULL,
+    comment NVARCHAR(MAX),
+    reply NVARCHAR(MAX),
+    image_path NVARCHAR(MAX),
+    feedback_date DATETIME DEFAULT GETDATE(),
+    is_visible BIT DEFAULT 1
+);
+
+CREATE TABLE Voucher (
+    voucher_id INT PRIMARY KEY IDENTITY(1,1),
+    code NVARCHAR(50) UNIQUE NOT NULL,
+    description NVARCHAR(MAX),
+    discount_percentage INT,
+    discount_amount DECIMAL(12,2),
+    min_order_value DECIMAL(12,2),
+    max_discount DECIMAL(12,2),
+    start_date DATETIME NOT NULL,
+    end_date DATETIME NOT NULL,
+    is_active BIT DEFAULT 1
+);
+
+CREATE TABLE DiscountOrders (
+    discountOrder_id INT PRIMARY KEY IDENTITY(1,1),
+    order_id INT NOT NULL FOREIGN KEY REFERENCES Orders(order_id),
+    voucher_id INT NOT NULL FOREIGN KEY REFERENCES Voucher(voucher_id),
+    discount_amount DECIMAL(12,2) NOT NULL
+);
+
+
+
+
+-- Thêm dữ liệu vào bảng Category
+SET IDENTITY_INSERT [dbo].[Category] ON 
+INSERT [dbo].[Category] ([category_id], [category_name], [is_active]) VALUES (1, N'Pate', 1)
+INSERT [dbo].[Category] ([category_id], [category_name], [is_active]) VALUES (2, N'Hạt', 1)
+INSERT [dbo].[Category] ([category_id], [category_name], [is_active]) VALUES (3, N'Súp thưởng', 1)
+INSERT [dbo].[Category] ([category_id], [category_name], [is_active]) VALUES (4, N'Đồ chơi', 1)
+INSERT [dbo].[Category] ([category_id], [category_name], [is_active]) VALUES (5, N'Cát', 1)
+INSERT [dbo].[Category] ([category_id], [category_name], [is_active]) VALUES (6, N'Sữa tắm', 1)
+INSERT [dbo].[Category] ([category_id], [category_name], [is_active]) VALUES (7, N'Gel dinh dưỡng', 1)
+INSERT [dbo].[Category] ([category_id], [category_name], [is_active]) VALUES (8, N'Thuốc thú ý', 1)
+SET IDENTITY_INSERT [dbo].[Category] OFF
+
+-- Thêm dữ liệu vào bảng Product
+SET IDENTITY_INSERT [dbo].[Products] ON 
+
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (1, 1, N'Pate Cho Mèo Meowow - 80g', N'Chó', CAST(25000.00 AS Decimal(12, 2)), N'ca-ngu-ga.jpg', 100, N'🐱 Pate Cho Mèo Meowow - 80g 🥫
+
+✨ Mô tả sản phẩm:
+🥩 Chứa thành phần thịt tươi ngon, giàu protein giúp mèo phát triển khỏe mạnh.
+🍗 Công thức bổ sung vitamin và khoáng chất, hỗ trợ hệ tiêu hóa.
+😻 Hương vị thơm ngon, kích thích vị giác, phù hợp với cả mèo kén ăn.
+💧 Cung cấp độ ẩm giúp hỗ trợ hệ tiết niệu và lông mượt hơn.
+
+📦 Đóng gói: Hộp 80g tiện lợi, dễ bảo quản.
+📌 Thích hợp cho: Mèo từ 2 tháng tuổi trở lên.
+
+Bạn có muốn thêm thông tin nào khác không? 😊', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (2, 1, N'Pate Cho Chó Mèo King’s Pet Hỗn Hợp Gà - Lon 380g', N'Chó và Mèo', CAST(55000.00 AS Decimal(12, 2)), N'hon-hop-ga-1.jpg', 55, N'🐶🐱 Pate Cho Chó Mèo King’s Pet Hỗn Hợp Gà - Lon 380g 🥫
+
+✨ Mô tả sản phẩm:
+🍗 Thành phần chính: Thịt gà tươi, gan, rau củ, vitamin và khoáng chất giúp cung cấp dinh dưỡng đầy đủ.
+🥩 Giàu protein: Hỗ trợ phát triển cơ bắp, tăng cường sức khỏe cho chó mèo.
+😋 Hương vị thơm ngon: Kích thích vị giác, phù hợp với cả thú cưng kén ăn.
+💧 Bổ sung độ ẩm: Hỗ trợ hệ tiêu hóa và giúp lông mượt hơn.
+
+📦 Dung tích: Lon 380g tiện lợi, dễ bảo quản.
+📌 Thích hợp cho: Chó mèo từ 2 tháng tuổi trở lên.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (3, 1, N'Pate Cho Mèo Vị Nước Sốt Gan WHISKAS Liver Flavour Sauce', N'Mèo', CAST(30000.00 AS Decimal(12, 2)), N'pate-cho-meo-vi-nuoc-sot-gan-whiskas-liver-flavour-sauce.png', 148, N'🐱 Pate Cho Mèo Vị Nước Sốt Gan WHISKAS Liver Flavour Sauce 🥫
+
+✨ Mô tả sản phẩm:
+🍖 Thành phần dinh dưỡng: Chứa gan tươi, thịt và các khoáng chất thiết yếu giúp mèo khỏe mạnh.
+😻 Hương vị hấp dẫn: Sốt gan thơm ngon, kích thích vị giác, phù hợp với cả mèo kén ăn.
+💪 Bổ sung vitamin & khoáng chất: Hỗ trợ hệ miễn dịch, xương chắc khỏe và lông óng mượt.
+💧 Giữ ẩm & hỗ trợ tiêu hóa: Công thức giúp cải thiện hệ tiêu hóa và cung cấp đủ nước cho mèo.
+
+📦 Trọng lượng: Gói tiện lợi, dễ dàng sử dụng.
+📌 Thích hợp cho: Mèo từ 2 tháng tuổi trở lên.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (4, 1, N'Pate Cho Mèo WANPY (95g) - Pate Dinh Dưỡng Giúp Tăng Cân, Tăng Cường Ăn Uống', N'Mèo', CAST(35000.00 AS Decimal(12, 2)), N'3-1728637149694.jpg', 50, N'🐱 Pate Cho Mèo WANPY (95g) – Pate Dinh Dưỡng Giúp Tăng Cân, Tăng Cường Ăn Uống 🥫
+
+✨ Mô tả sản phẩm:
+🥩 Giàu dinh dưỡng: Chứa thịt tươi, gan động vật và các dưỡng chất cần thiết giúp mèo khỏe mạnh.
+😻 Kích thích vị giác: Công thức đặc biệt giúp mèo ăn ngon miệng hơn, phù hợp với mèo biếng ăn.
+💪 Hỗ trợ tăng cân: Bổ sung protein và chất béo giúp mèo đạt cân nặng lý tưởng.
+💧 Cung cấp độ ẩm: Giúp hỗ trợ tiêu hóa và cải thiện sức khỏe lông, da.
+
+📦 Trọng lượng: 95g – Đóng gói tiện lợi, dễ sử dụng.
+📌 Thích hợp cho: Mèo từ 2 tháng tuổi trở lên, đặc biệt là mèo gầy yếu, kém ăn.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (5, 1, N'Pate Cho Mèo Mọi Lứa Tuổi LaPaw Gourmet Dạng Thạch - 85g', N'Mèo', CAST(30000.00 AS Decimal(12, 2)), N'pate-cho-meo-lapaw-gourmet-dang-thach-ga-va-ca-tuyet-85g.jpg', 25, N'✨ Mô tả sản phẩm:
+🍖 Giàu dinh dưỡng: Chứa thịt tươi, gan động vật và các dưỡng chất thiết yếu giúp mèo phát triển khỏe mạnh.
+😻 Kết cấu dạng thạch: Mềm mịn, dễ ăn, phù hợp với cả mèo con và mèo trưởng thành.
+🥩 Hương vị thơm ngon: Kích thích vị giác, giúp mèo ăn ngon miệng hơn.
+💧 Bổ sung độ ẩm: Hỗ trợ hệ tiêu hóa, giúp lông mềm mượt và khỏe mạnh.
+💪 Tăng cường sức đề kháng: Cung cấp vitamin và khoáng chất giúp mèo luôn tràn đầy năng lượng.
+
+📦 Trọng lượng: 85g – Gói tiện lợi, dễ sử dụng và bảo quản.
+📌 Thích hợp cho: Mèo ở mọi lứa tuổi, đặc biệt mèo biếng ăn hoặc cần bổ sung dinh dưỡng.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (6, 1, N'Pate Cho Chó Mèo Alpha Pet Lon 400g - Vị Bò và Nha Đam', N'Chó và Mèo', CAST(55000.00 AS Decimal(12, 2)), N'pate-cho-cho-meo-alpha-pet-lon-400g-vi-bo-va-nha-dam.jpg', 55, N'✨ Mô tả sản phẩm:
+🥩 Giàu đạm từ thịt bò: Cung cấp protein chất lượng cao, giúp phát triển cơ bắp và tăng cường sức khỏe.
+🌿 Chiết xuất nha đam: Hỗ trợ tiêu hóa, tăng cường hệ miễn dịch và giúp da lông khỏe mạnh.
+😻 Hương vị thơm ngon: Kích thích vị giác, phù hợp với cả chó mèo biếng ăn.
+💧 Bổ sung độ ẩm: Giúp hỗ trợ hệ tiêu hóa và cung cấp nước cần thiết.
+💪 Tăng cường sức đề kháng: Cung cấp vitamin và khoáng chất giúp thú cưng khỏe mạnh và tràn đầy năng lượng.
+
+📦 Trọng lượng: 400g – Lon tiện lợi, dễ bảo quản.
+📌 Thích hợp cho: Chó mèo từ 2 tháng tuổi trở lên.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (7, 1, N'Pate SmartHeart Cho Chó Vị Thịt Bò và Gan - Lon 400g', N'Chó', CAST(45000.00 AS Decimal(12, 2)), N'thu-y-viet-duc-pate-smh-bo-gan.png', 45, N'✨ Mô tả sản phẩm:
+🥩 Giàu đạm từ thịt bò & gan: Cung cấp protein chất lượng cao, giúp phát triển cơ bắp và tăng cường sức khỏe.
+😋 Hương vị thơm ngon: Kích thích vị giác, phù hợp với cả chó kén ăn.
+💪 Bổ sung vitamin & khoáng chất: Hỗ trợ hệ miễn dịch, giúp xương chắc khỏe và lông bóng mượt.
+💧 Cung cấp độ ẩm: Hỗ trợ tiêu hóa và duy trì sức khỏe đường ruột.
+🍀 Công thức dinh dưỡng đầy đủ: Đáp ứng nhu cầu năng lượng hằng ngày cho chó ở mọi độ tuổi.
+
+📦 Trọng lượng: 400g – Lon tiện lợi, dễ sử dụng và bảo quản.
+📌 Thích hợp cho: Chó ở mọi lứa tuổi, đặc biệt chó trưởng thành cần bổ sung năng lượng.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (8, 1, N'Pate Cho Chó Lớn Pedigree Vị Gà Nấu Sốt - 130g (Hộp 12 Gói)', N'Chó', CAST(250000.00 AS Decimal(12, 2)), N'pate-cho-cho-lon-pedigree-vi-ga-nau-sot-130g.jpg', 20, N'✨ Mô tả sản phẩm:
+🍗 Giàu protein từ thịt gà: Giúp phát triển cơ bắp, cung cấp năng lượng cho chó hoạt động cả ngày.
+😋 Hương vị thơm ngon: Sốt đậm đà kích thích vị giác, phù hợp với chó kén ăn.
+💪 Bổ sung vitamin & khoáng chất: Hỗ trợ hệ miễn dịch, giúp xương chắc khỏe và lông mềm mượt.
+💧 Cung cấp độ ẩm: Hỗ trợ tiêu hóa, giúp hấp thụ dinh dưỡng tốt hơn.
+🍀 Công thức cân bằng: Đáp ứng nhu cầu dinh dưỡng hằng ngày cho chó lớn.
+
+💰 Giá: 250.000 VNĐ (Hộp 12 gói)
+📦 Trọng lượng: 130g/gói – Đóng gói tiện lợi, dễ sử dụng.
+📌 Thích hợp cho: Chó trưởng thành từ 12 tháng tuổi trở lên.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (9, 1, N'Pate Cho Chó Wanpy Premium Vị Gà và Rau Củ', N'Chó', CAST(40000.00 AS Decimal(12, 2)), N'pate-cho-cho-wanpy-premium-vi-ga-rau-cu.jpg', 40, N'✨ Mô tả sản phẩm:
+🍗 Giàu đạm từ thịt gà tươi: Cung cấp protein chất lượng cao, giúp cơ bắp săn chắc và phát triển khỏe mạnh.
+🥦 Bổ sung rau củ: Cung cấp chất xơ, vitamin và khoáng chất giúp hỗ trợ tiêu hóa và tăng cường miễn dịch.
+😋 Hương vị thơm ngon: Công thức đặc biệt giúp kích thích vị giác, phù hợp với cả chó kén ăn.
+💧 Bổ sung độ ẩm: Hỗ trợ hệ tiêu hóa, giúp lông mềm mượt và da khỏe mạnh.
+💪 Dinh dưỡng cân bằng: Giúp duy trì năng lượng cho chó hoạt động mỗi ngày.
+
+📦 Trọng lượng: Lon tiện lợi, dễ bảo quản.
+📌 Thích hợp cho: Chó từ 2 tháng tuổi trở lên, đặc biệt là chó trưởng thành cần bổ sung dinh dưỡng.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (10, 1, N'Pate Cho Chó Mọi Lứa Tuổi LaPaw Vị Bò và Rau Củ - Lon 375g', N'Chó', CAST(50000.00 AS Decimal(12, 2)), N'pate-cho-lapaw-bo-va-rau-cu-375gr.jpg', 25, N'✨ Mô tả sản phẩm:
+🥩 Giàu đạm từ thịt bò tươi: Cung cấp protein chất lượng cao, giúp phát triển cơ bắp và tăng cường sức khỏe.
+🥦 Bổ sung rau củ: Chứa chất xơ, vitamin và khoáng chất giúp hỗ trợ tiêu hóa và tăng cường hệ miễn dịch.
+😋 Hương vị thơm ngon: Công thức đặc biệt kích thích vị giác, phù hợp với cả chó kén ăn.
+💧 Cung cấp độ ẩm: Giúp hỗ trợ tiêu hóa, hạn chế tình trạng mất nước và giúp lông bóng mượt.
+💪 Dinh dưỡng cân bằng: Đáp ứng nhu cầu năng lượng hàng ngày cho chó ở mọi lứa tuổi.
+
+📦 Trọng lượng: 375g – Lon tiện lợi, dễ bảo quản.
+📌 Thích hợp cho: Chó từ 2 tháng tuổi trở lên, đặc biệt chó cần bổ sung dinh dưỡng.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (11, 1, N'Pate Cho Chó Vị Bò và Gà Nướng Sốt Cà Rốt - JERHIGH Chicken Beef Grilled Chunks Carrot In Gravy', N'Chó', CAST(35000.00 AS Decimal(12, 2)), N'pate-cho-cho-vi-bo-ga-nuong-sot-ca-rot-jerhigh-chicken-beef-grilled-chunks-carrot-in-gravy.jpg', 24, N'✨ Mô tả sản phẩm:
+🍗 Thịt gà & bò nướng thơm ngon: Cung cấp protein chất lượng cao giúp phát triển cơ bắp và tăng cường thể lực.
+🥕 Sốt cà rốt bổ dưỡng: Giàu vitamin A, giúp tăng cường thị lực và hỗ trợ hệ tiêu hóa.
+😋 Hương vị hấp dẫn: Công thức đặc biệt kích thích vị giác, phù hợp với cả chó biếng ăn.
+💧 Bổ sung độ ẩm: Giúp hỗ trợ hệ tiêu hóa và giữ lông bóng mượt.
+💪 Dinh dưỡng cân bằng: Bổ sung vitamin và khoáng chất giúp chó khỏe mạnh, năng động cả ngày.
+
+📦 Trọng lượng: Gói tiện lợi, dễ sử dụng và bảo quản.
+📌 Thích hợp cho: Chó từ 3 tháng tuổi trở lên.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (12, 2, N'Thức Ăn Hạt WHISKAS Cho Mèo - Dinh Dưỡng Hoàn Hảo Cho Mèo Cưng', N'Mèo', CAST(50000.00 AS Decimal(12, 2)), N'hieuunganh-com-5e9066b48c276.jpg', 25, N'✨ Mô tả sản phẩm:
+🥩 Giàu đạm từ thịt & cá: Cung cấp protein chất lượng cao giúp phát triển cơ bắp và tăng cường sức khỏe.
+🐟 Omega 3 & 6: Giúp lông mèo mềm mượt và da khỏe mạnh.
+💪 Bổ sung vitamin & khoáng chất: Tăng cường hệ miễn dịch, hỗ trợ tiêu hóa tốt hơn.
+😻 Hương vị thơm ngon: Kích thích vị giác, phù hợp với cả mèo kén ăn.
+🦷 Hỗ trợ răng & nướu khỏe mạnh: Hạt giòn giúp làm sạch răng và giảm mảng bám.
+
+📦 Trọng lượng: Có các loại 450g, 1.2kg, 3kg, 7kg.
+📌 Thích hợp cho: Mèo từ 2 tháng tuổi trở lên, có các dòng dành cho mèo con, mèo trưởng thành và mèo trên 7 tuổi.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (13, 2, N'Thức Ăn Hạt Cho Mèo CATSRANG 400g - Dành Cho Mọi Lứa Tuổi', N'Mèo', CAST(60000.00 AS Decimal(12, 2)), N'thuc-an-hat-cho-meo-catsrang.jpg', 45, N'✨ Mô tả sản phẩm:
+🥩 Giàu đạm từ thịt và cá: Cung cấp protein chất lượng cao, giúp mèo phát triển cơ bắp khỏe mạnh.
+🐟 Omega 3 & 6: Hỗ trợ da khỏe mạnh, lông mềm mượt và óng ả.
+💪 Bổ sung vitamin & khoáng chất: Giúp tăng cường hệ miễn dịch và cải thiện hệ tiêu hóa.
+😻 Hương vị thơm ngon: Hạt giòn, kích thích vị giác, phù hợp với cả mèo kén ăn.
+🦷 Hỗ trợ răng & nướu: Kết cấu hạt giúp làm sạch răng, giảm mảng bám.
+🚫 Ít gây dị ứng: Công thức hạn chế thành phần dễ gây dị ứng, phù hợp với mèo nhạy cảm.
+
+📦 Trọng lượng: 400g – Túi zip tiện lợi, dễ bảo quản.
+📌 Thích hợp cho: Mèo từ 2 tháng tuổi trở lên, bao gồm mèo con, mèo trưởng thành và mèo già.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (14, 2, N'Thức Ăn Hạt Cho Mèo Kit Cat Kitten và Pregnant Cat - 1.2kg', N'Mèo', CAST(250000.00 AS Decimal(12, 2)), N'thuc-an-hat-cho-meo-kit-cat-kitten-pregnant-cat-1-2kg.jpg', 41, N'✨ Mô tả sản phẩm:
+🥩 Giàu đạm từ thịt & cá: Cung cấp protein chất lượng cao giúp mèo con phát triển khỏe mạnh và hỗ trợ mẹ bầu có đủ dinh dưỡng.
+🐟 DHA & Omega-3, 6: Hỗ trợ sự phát triển trí não, giúp da khỏe mạnh và lông mềm mượt.
+💪 Bổ sung vitamin & khoáng chất: Tăng cường hệ miễn dịch, hỗ trợ tiêu hóa tốt hơn.
+🍼 Canxi & Taurine: Giúp xương chắc khỏe, bảo vệ mắt sáng và tăng cường thể chất.
+😻 Hương vị thơm ngon: Công thức đặc biệt kích thích vị giác, phù hợp với cả mèo kén ăn.
+🚫 Không chứa ngô, lúa mì, đậu nành: Giảm nguy cơ dị ứng, an toàn cho hệ tiêu hóa nhạy cảm.
+
+📦 Trọng lượng: 1.2kg – Túi zip tiện lợi, dễ bảo quản.
+📌 Thích hợp cho: Mèo con từ 2 tháng tuổi trở lên và mèo mang thai, mèo đang cho con bú.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (15, 2, N'Catpy - Hạt Thức Ăn Cho Mèo Con 1.5kg', N'Mèo', CAST(250000.00 AS Decimal(12, 2)), N'107469e7-3a08-4a22-ae52-97243a386fa8.png', 45, N'✨ Mô tả sản phẩm:
+🥩 Giàu đạm từ thịt & cá: Hỗ trợ phát triển cơ bắp và cung cấp năng lượng cho mèo con.
+🍼 Bổ sung canxi & DHA: Giúp xương chắc khỏe, hỗ trợ trí não và thị lực phát triển tốt.
+🐟 Omega 3 & 6: Dưỡng da, giúp lông mềm mượt và óng ả.
+💪 Vitamin & khoáng chất: Tăng cường hệ miễn dịch, hỗ trợ hệ tiêu hóa khỏe mạnh.
+😻 Hương vị thơm ngon: Hạt giòn dễ ăn, kích thích vị giác, phù hợp với mèo con kén ăn.
+🚫 Không chứa chất bảo quản & phụ gia có hại: An toàn cho hệ tiêu hóa nhạy cảm của mèo con.
+
+📦 Trọng lượng: Túi zip tiện lợi, dễ bảo quản.
+📌 Thích hợp cho: Mèo con từ 2 tháng tuổi trở lên.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (16, 2, N'Hạt Cho Mèo Indigo Urinary và Gut Health - 2kg', N'Mèo', CAST(420000.00 AS Decimal(12, 2)), N'2_b3dfad4f-a7db-474b-93ae-e04b74af2c0d.jpg', 20, N'✨ Mô tả sản phẩm:
+💧 Hỗ trợ hệ tiết niệu: Công thức đặc biệt giúp giảm nguy cơ sỏi thận, cân bằng pH nước tiểu.
+🦠 Cải thiện tiêu hóa: Chứa prebiotics và probiotics giúp hệ tiêu hóa khỏe mạnh, ngăn ngừa rối loạn đường ruột.
+🥩 Giàu protein từ thịt & cá: Hỗ trợ cơ bắp săn chắc, cung cấp năng lượng cho mèo hoạt động.
+🐟 Omega 3 & 6: Dưỡng da, giúp lông mềm mượt và óng ả.
+💪 Vitamin & khoáng chất: Tăng cường hệ miễn dịch, giúp mèo khỏe mạnh hơn.
+🚫 Giảm nguy cơ dị ứng: Không chứa ngô, lúa mì, đậu nành – an toàn cho mèo nhạy cảm.
+😻 Hương vị thơm ngon: Kích thích vị giác, phù hợp với cả mèo kén ăn.
+
+📦 Trọng lượng: 2kg – Túi zip tiện lợi, dễ bảo quản.
+📌 Thích hợp cho: Mèo trưởng thành cần hỗ trợ sức khỏe tiết niệu và tiêu hóa.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (17, 2, N'Hạt Catchy Cho Mèo - Túi 400g', N'Mèo', CAST(50000.00 AS Decimal(12, 2)), N'catchy_26ac278597b04f22b6097e5b1eb521d1_master.png', 40, N'✨ Mô tả sản phẩm:
+🥩 Giàu protein từ thịt & cá: Giúp mèo phát triển cơ bắp khỏe mạnh và cung cấp năng lượng dồi dào.
+🐟 Omega 3 & 6: Dưỡng da, giúp lông bóng mượt và giảm rụng lông.
+💪 Vitamin & khoáng chất: Hỗ trợ hệ miễn dịch, giúp mèo luôn khỏe mạnh.
+🦷 Hỗ trợ răng & nướu: Hạt giòn giúp làm sạch răng, giảm mảng bám và mùi hôi miệng.
+😻 Hương vị thơm ngon: Công thức đặc biệt kích thích vị giác, phù hợp với cả mèo kén ăn.
+🚫 Không chứa chất bảo quản & phẩm màu nhân tạo: Đảm bảo an toàn cho hệ tiêu hóa của mèo.
+
+📦 Trọng lượng: 400g – Túi zip tiện lợi, dễ bảo quản.
+📌 Thích hợp cho: Mèo từ 2 tháng tuổi trở lên.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (18, 2, N'Hạt Natural Core C1 Kitten - Thức Ăn Cho Mèo Con 400g', N'Mèo', CAST(120000.00 AS Decimal(12, 2)), N'thuc-an-natural-core-c1-bene-kitten-cho-meo-con-9949.jpg', 40, N'✨ Mô tả sản phẩm:
+🥩 Giàu protein từ thịt gà & cá hồi: Cung cấp đạm chất lượng cao, giúp mèo con phát triển cơ bắp và xương chắc khỏe.
+🍼 DHA & Taurine: Hỗ trợ phát triển trí não, tăng cường thị lực và sức khỏe tim mạch.
+🐟 Omega 3 & 6: Giúp lông mềm mượt, da khỏe mạnh.
+💪 Vitamin & khoáng chất: Cải thiện hệ miễn dịch, hỗ trợ tiêu hóa khỏe mạnh.
+🦴 Canxi & Phốt pho: Hỗ trợ phát triển xương và răng chắc khỏe.
+😻 Hương vị thơm ngon: Hạt mềm, dễ ăn, phù hợp với mèo con đang tập nhai.
+🚫 Không chứa ngô, lúa mì, đậu nành & chất bảo quản nhân tạo: An toàn cho hệ tiêu hóa nhạy cảm của mèo con.
+
+📦 Trọng lượng: 400g – Túi zip tiện lợi, dễ bảo quản.
+📌 Thích hợp cho: Mèo con từ 2 tháng đến 12 tháng tuổi.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (19, 2, N'Thức Ăn Hạt SmartHeart Dành Cho Chó Con - Vị Bò và Sữa', N'Chó', CAST(400000.00 AS Decimal(12, 2)), N'thuc-an-hat-smartheart-danh-cho-cho-con-vi-bo-va-sua-.jpg', 20, N'✨ Mô tả sản phẩm:
+🥩 Giàu đạm từ thịt bò: Giúp chó con phát triển cơ bắp khỏe mạnh.
+🍼 Bổ sung sữa: Cung cấp canxi giúp xương và răng chắc khỏe.
+🐟 DHA & Omega-3, 6: Hỗ trợ phát triển trí não và giúp lông mềm mượt.
+💪 Vitamin & khoáng chất: Tăng cường hệ miễn dịch, giúp chó con phát triển toàn diện.
+🦴 Canxi & Phốt pho: Giúp xương phát triển chắc khỏe, hỗ trợ chó con trong giai đoạn tăng trưởng.
+😋 Hương vị thơm ngon: Công thức đặc biệt kích thích vị giác, phù hợp với chó con kén ăn.
+🚫 Không chứa chất bảo quản độc hại: An toàn cho hệ tiêu hóa non yếu của chó con.
+
+📦 Trọng lượng: 3kg
+📌 Thích hợp cho: Chó con từ 2 tháng tuổi trở lên.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (20, 2, N'Thức Ăn Hạt Hoàn Chỉnh Cho Chó Mọi Lứa Tuổi - Kitchen Flavor 10kg', N'Chó', CAST(500000.00 AS Decimal(12, 2)), N'Jpet47222130-1-scaled.jpg', 20, N'✨ Mô tả sản phẩm:
+🥩 Giàu đạm từ thịt bò, gà & cá: Cung cấp protein chất lượng cao giúp phát triển cơ bắp và duy trì thể lực.
+🍎 Bổ sung rau củ & trái cây: Cung cấp vitamin, chất xơ hỗ trợ tiêu hóa và tăng cường sức đề kháng.
+🐟 Omega 3 & 6: Giúp da khỏe mạnh, lông bóng mượt.
+💪 Vitamin & khoáng chất: Hỗ trợ hệ miễn dịch, xương và răng chắc khỏe.
+🦷 Hạt giòn giúp làm sạch răng: Giảm mảng bám và mùi hôi miệng.
+😋 Hương vị thơm ngon: Công thức đặc biệt kích thích vị giác, phù hợp với cả chó kén ăn.
+🚫 Không chứa chất tạo màu & chất bảo quản nhân tạo: An toàn cho hệ tiêu hóa.
+
+📦 Trọng lượng: 10kg
+📌 Thích hợp cho: Chó ở mọi lứa tuổi, từ chó con đến chó trưởng thành.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (21, 2, N'Hạt Zoi Dog - Thức Ăn Dinh Dưỡng Cho Chó (1kg)', N'Chó', CAST(100000.00 AS Decimal(12, 2)), N'ezgif-5-1e317ae8fd-800x800.jpg', 30, N'✨ Mô tả sản phẩm:
+🥩 Giàu đạm từ thịt gà & bò: Cung cấp protein chất lượng cao giúp chó phát triển cơ bắp và duy trì năng lượng.
+🐟 Omega 3 & 6: Hỗ trợ da khỏe mạnh, lông mềm mượt và óng ả.
+💪 Vitamin & khoáng chất: Giúp tăng cường hệ miễn dịch, hỗ trợ hệ tiêu hóa và hấp thụ dinh dưỡng tốt hơn.
+🦴 Canxi & Phốt pho: Hỗ trợ phát triển xương và răng chắc khỏe.
+😋 Hương vị thơm ngon: Công thức đặc biệt kích thích vị giác, phù hợp với cả chó kén ăn.
+🚫 Không chứa chất bảo quản & phẩm màu nhân tạo: An toàn cho hệ tiêu hóa của chó.
+
+📦 Trọng lượng: 1kg – Túi zip tiện lợi, dễ bảo quản.
+📌 Thích hợp cho: Chó từ 2 tháng tuổi trở lên.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (22, 2, N'Hạt Ganador Puppy - Thức Ăn Cho Chó Con Vị Sữa và DHA 20kg', N'Chó', CAST(1200000.00 AS Decimal(12, 2)), N'ganadordha.png', 10, N'✨ Mô tả sản phẩm:
+🥛 Bổ sung sữa: Cung cấp canxi giúp xương và răng chắc khỏe, hỗ trợ chó con phát triển toàn diện.
+🧠 DHA & Omega 3, 6: Giúp phát triển trí não, tăng cường trí nhớ và duy trì lông mềm mượt.
+🥩 Giàu đạm từ thịt gà & cá: Hỗ trợ cơ bắp chắc khỏe và cung cấp năng lượng dồi dào.
+💪 Vitamin & khoáng chất: Giúp hệ miễn dịch khỏe mạnh, hỗ trợ tiêu hóa tốt hơn.
+🦴 Canxi & Phốt pho: Hỗ trợ phát triển xương và khớp, giúp chó con vận động linh hoạt.
+😋 Hương vị thơm ngon: Công thức đặc biệt giúp kích thích vị giác, phù hợp với cả chó con kén ăn.
+🚫 Không chứa chất bảo quản & phẩm màu nhân tạo: An toàn cho hệ tiêu hóa non nớt của chó con.
+
+📦 Trọng lượng: 20kg
+📌 Thích hợp cho: Chó con từ 2 tháng tuổi trở lên.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (23, 2, N'Thức Ăn Hạt Cho Chó Lớn Royal Canin Poodle Adult - Túi 1.5kg', N'Chó', CAST(365000.00 AS Decimal(12, 2)), N'hat-cho-cho-lon-Royal-Canin-Poodle-Adult-1.jpg', 20, N'✨ Mô tả sản phẩm:
+🥩 Giàu đạm từ thịt gà & cá: Hỗ trợ phát triển cơ bắp săn chắc, duy trì vóc dáng cân đối.
+🐟 DHA & EPA từ dầu cá: Giúp lông chó Poodle mềm mượt, óng ả và hỗ trợ trí não.
+🦴 Canxi & Phốt pho: Tăng cường xương và khớp, hỗ trợ vận động linh hoạt.
+🦷 Hạt có thiết kế đặc biệt: Giúp làm sạch răng, hạn chế cao răng và hôi miệng.
+💪 Bổ sung vitamin & chất chống oxy hóa: Tăng cường hệ miễn dịch, giúp chó luôn khỏe mạnh.
+😋 Hương vị thơm ngon: Kích thích vị giác, phù hợp với Poodle kén ăn.
+
+📦 Trọng lượng: 1.5kg – Túi zip tiện lợi, dễ bảo quản.
+📌 Thích hợp cho: Chó Poodle trưởng thành (trên 10 tháng tuổi).', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (24, 2, N'Hạt Keos - Thức Ăn Cho Chó Mọi Lứa Tuổi 1.5kg', N'Chó', CAST(97000.00 AS Decimal(12, 2)), N'hat-cho-cho-moi-lua-tuoi-keos.jpg', 25, N'✨ Mô tả sản phẩm:
+🥩 Giàu protein từ thịt gà & bò: Hỗ trợ phát triển cơ bắp, cung cấp năng lượng dồi dào.
+🐟 Omega 3 & 6: Dưỡng da, giúp lông mềm mượt và óng ả.
+💪 Vitamin & khoáng chất: Tăng cường hệ miễn dịch, giúp chó luôn khỏe mạnh.
+🦷 Hạt giòn hỗ trợ làm sạch răng: Giảm mảng bám và mùi hôi miệng.
+🦴 Bổ sung canxi & phốt pho: Giúp xương và răng chắc khỏe, hỗ trợ vận động linh hoạt.
+😋 Hương vị thơm ngon: Kích thích vị giác, phù hợp với cả chó kén ăn.
+🚫 Không chứa chất bảo quản & phẩm màu nhân tạo: Đảm bảo an toàn cho hệ tiêu hóa.
+
+📦 Trọng lượng: 1.5kg – Túi zip tiện lợi, dễ bảo quản.
+📌 Thích hợp cho: Chó mọi lứa tuổi, từ chó con đến chó trưởng thành.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (25, 2, N'Thức Ăn Hạt Cho Chó Mọi Lứa Tuổi - Dog Mania Premium 1kg', N'Chó', CAST(120000.00 AS Decimal(12, 2)), N'hat-dog-mania-premium-1kg-01.jpg', 40, N'✨ Mô tả sản phẩm:
+🥩 Giàu protein từ thịt gà & bò: Giúp chó phát triển cơ bắp chắc khỏe, cung cấp năng lượng dồi dào.
+🐟 Omega 3 & 6: Hỗ trợ da khỏe mạnh, lông mềm mượt và óng ả.
+💪 Vitamin & khoáng chất: Tăng cường hệ miễn dịch, hỗ trợ tiêu hóa tốt hơn.
+🦴 Bổ sung canxi & phốt pho: Giúp xương và răng chắc khỏe, hỗ trợ vận động linh hoạt.
+🦷 Hạt giòn hỗ trợ làm sạch răng: Giảm mảng bám và mùi hôi miệng.
+😋 Hương vị thơm ngon: Công thức đặc biệt giúp kích thích vị giác, phù hợp với cả chó kén ăn.
+🚫 Không chứa chất bảo quản & phẩm màu nhân tạo: An toàn cho hệ tiêu hóa của chó.
+
+📦 Trọng lượng: 1kg – Túi zip tiện lợi, dễ bảo quản.
+📌 Thích hợp cho: Chó ở mọi lứa tuổi, từ chó con đến chó trưởng thành.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (26, 3, N'Súp Thưởng Wanpy Cho Mèo - Vị Cá Ngừ và Cá Tuyết (5x14g)', N'Mèo', CAST(60000.00 AS Decimal(12, 2)), N'6927749871125.png', 50, N'✨ Mô tả sản phẩm:
+🐟 Giàu đạm từ cá ngừ & cá tuyết: Cung cấp protein chất lượng cao giúp mèo khỏe mạnh, lông mượt.
+💧 Cung cấp độ ẩm: Hỗ trợ hệ tiết niệu, bổ sung nước giúp mèo không bị mất nước.
+💪 Vitamin & khoáng chất: Tăng cường hệ miễn dịch, giúp mèo hấp thụ dinh dưỡng tốt hơn.
+😋 Kết cấu sánh mịn, dễ ăn: Phù hợp với cả mèo con, mèo lớn tuổi hoặc mèo kén ăn.
+🚫 Không chứa chất bảo quản, phẩm màu nhân tạo: An toàn cho hệ tiêu hóa nhạy cảm.
+
+📦 Quy cách đóng gói: 5 gói x 14g
+📌 Thích hợp cho: Mèo mọi lứa tuổi', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (27, 3, N'Súp Thưởng Bioline Cho Mèo - Vị Gà và Cá Hồi', N'Mèo', CAST(60000.00 AS Decimal(12, 2)), N'8hplzknq.png', 50, N'✨ Mô tả sản phẩm:
+🥩 Giàu đạm từ thịt gà & cá hồi: Cung cấp năng lượng, hỗ trợ phát triển cơ bắp.
+🐟 Omega 3 & 6: Giúp lông mềm mượt, da khỏe mạnh.
+💧 Cung cấp độ ẩm: Hỗ trợ hệ tiết niệu, bổ sung nước giúp mèo không bị mất nước.
+💪 Vitamin & khoáng chất: Tăng cường hệ miễn dịch, giúp mèo hấp thụ dinh dưỡng tốt hơn.
+😋 Kết cấu sánh mịn, dễ ăn: Phù hợp với mèo con, mèo lớn tuổi hoặc mèo kén ăn.
+🚫 Không chứa chất bảo quản, phẩm màu nhân tạo: An toàn cho hệ tiêu hóa nhạy cảm.
+
+📦 Quy cách đóng gói: Hộp 5 gói (tùy loại)
+📌 Thích hợp cho: Mèo mọi lứa tuổi', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (28, 4, N'Đồ Chơi Cho Mèo PAW Happy Pet Circle', N'Mèo', CAST(150000.00 AS Decimal(12, 2)), N'do-choi-cho-meo-paw-happy-pet-circle.png', 20, N'✨ Mô tả sản phẩm:
+🎡 Thiết kế vòng tròn thông minh: Kích thích bản năng săn mồi và tò mò của mèo.
+🐾 Chất liệu an toàn: Nhựa ABS cao cấp, bền bỉ, không độc hại.
+😻 Giúp mèo vận động & giảm stress: Hỗ trợ rèn luyện phản xạ, giúp mèo luôn vui vẻ và khỏe mạnh.
+🧶 Tích hợp bóng lăn bên trong: Mèo có thể đẩy, vồ bắt, tạo sự hứng thú khi chơi.
+🏡 Kích thước nhỏ gọn: Dễ dàng đặt ở nhiều không gian trong nhà.
+
+📦 Trọng lượng: Nhẹ, dễ di chuyển
+📌 Phù hợp cho: Mèo mọi lứa tuổi', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (29, 4, N'Đồ Chơi Cho Mèo - Banh Lồng Chuột', N'Mèo', CAST(55000.00 AS Decimal(12, 2)), N'94ca816b-a1df-4580-be43-ab3a37e12c4e-jpeg.png', 20, N'✨ Mô tả sản phẩm:
+🎾 Thiết kế độc đáo: Quả bóng dạng lồng với chuột bông bên trong, kích thích bản năng săn mồi của mèo.
+🐾 Chất liệu an toàn: Nhựa cao cấp + lông mềm, bền bỉ và không độc hại.
+😻 Tăng cường vận động: Giúp mèo rèn luyện phản xạ, giảm stress và tránh béo phì.
+🐭 Chuột bông di chuyển linh hoạt: Khi mèo vồ hoặc lắc, chuột bên trong sẽ đung đưa tạo sự hứng thú.
+🏡 Nhỏ gọn & tiện lợi: Phù hợp cho mọi không gian, dễ dàng mang theo khi di chuyển.
+
+📦 Kích thước: Đường kính khoảng 6-7cm x4
+📌 Phù hợp cho: Mèo mọi lứa tuổi', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (30, 4, N'Đồ Chơi Bông Chút Chít ELITE Hình Cá Sấu', N'Chó và Mèo', CAST(150000.00 AS Decimal(12, 2)), N'do-choi-cho-cho-meo-bang-bong-chut-chit-elite-hinh-ca-sau.png', 20, N'🐊 Thiết kế đáng yêu: Hình cá sấu ngộ nghĩnh, thu hút sự chú ý của thú cưng.
+🎶 Phát ra tiếng chút chít: Kích thích bản năng vui chơi, giúp chó mèo hứng thú hơn.
+🧸 Chất liệu bông mềm mại: An toàn, không gây hại cho răng và nướu.
+💪 Bền bỉ, khó rách: Phù hợp cho cả chó mèo thích cắn nhai.
+😻🐶 Giúp thú cưng giảm stress: Giải tỏa năng lượng, tránh nhàm chán khi ở một mình.
+
+📦 Kích thước: 25cm
+📌 Phù hợp cho: Cả chó & mèo ở mọi lứa tuổi', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (31, 4, N'Thức Ăn và Đồ Chơi Tốc Độ Chậm Cho Thú Cưng - Đồ Chơi Tương Tác Lâu Dài Cho Mèo', N'Chó và Mèo', CAST(400000.00 AS Decimal(12, 2)), N'Pet-Interactive-Durable-Dig-Puppy-Cat-Toy-Food-Slow-Feeder-Toy.jpg', 10, N'🐾 Thiết kế mê cung thông minh: Giúp chó mèo ăn chậm hơn, tránh nguy cơ sặc và hỗ trợ tiêu hóa tốt hơn.
+🍖 Giảm nguy cơ béo phì: Kiểm soát tốc độ ăn, tránh ăn quá nhanh gây đầy bụng.
+🛡️ Chất liệu an toàn: Nhựa ABS cao cấp, bền bỉ và không độc hại.
+🎯 Chống trượt: Đế chống trượt giúp bát không bị xê dịch khi ăn.
+
+📦 Kích thước: Đa dạng theo từng loại thú cưng', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (32, 4, N'Đồ Chơi Bằng Nhựa Cho Chó', N'Chó', CAST(50000.00 AS Decimal(12, 2)), N'cad063319d05cdb65f21cb0db928c8db.jpg', 50, N'🦴 Chất liệu nhựa an toàn: ABS cao cấp, không độc hại, bền bỉ và chịu lực tốt.
+🐕 Đa dạng thiết kế: Bóng nhựa, xương nhai, vòng cắn, đồ chơi phát ra âm thanh, và nhiều loại khác.
+🎶 Phát ra tiếng chút chít (tùy loại): Kích thích sự tò mò, giúp chó thích thú khi chơi.
+💪 Hỗ trợ rèn luyện cơ hàm: Giúp chó cắn, nhai, giảm stress và hạn chế gặm phá đồ đạc trong nhà.
+🏃 Giúp chó vận động: Tăng cường sức khỏe, hạn chế béo phì và duy trì thể lực tốt.
+🎯 Chống buồn chán: Phù hợp cho chó chơi một mình hoặc tương tác cùng chủ.
+
+📦 Kích thước & mẫu mã: Đa dạng, phù hợp với mọi giống chó
+📌 Phù hợp cho: Chó con & chó trưởng thành', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (33, 5, N'Cát Vệ Sinh Cho Mèo Nhật Đen - Hương Cà Phê (8L)', N'Mèo', CAST(160000.00 AS Decimal(12, 2)), N'Cat-Nhat-den-huong-ca-phe-8L-15L.jpg', 120, N'✨ Mô tả sản phẩm:
+🖤 Khả năng vón cục nhanh: Hấp thụ nước tốt, dễ dàng dọn dẹp, tiết kiệm thời gian.
+☕ Hương cà phê dịu nhẹ: Giúp khử mùi hiệu quả, mang lại không gian sạch sẽ.
+🌿 Không bụi, an toàn cho mèo: Giảm kích ứng đường hô hấp, phù hợp với mèo nhạy cảm.
+💪 Kiểm soát mùi vượt trội: Giữ hộp vệ sinh luôn thơm tho suốt cả ngày.
+♻️ Thân thiện với môi trường: Dễ phân hủy, không gây hại cho thú cưng.
+
+📦 Dung tích: 8L (~3-4 tuần sử dụng tùy số lượng mèo)
+📌 Phù hợp cho: Mèo mọi lứa tuổi', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (34, 5, N'Cát Vệ Sinh Cho Mèo Nhật Bản - CAT LITTER (10L)', N'Mèo', CAST(180000.00 AS Decimal(12, 2)), N'1566891804_cat-nhat-10l.jpg', 40, N'✨ Mô tả sản phẩm:
+🌟 Khả năng vón cục nhanh: Hút ẩm tốt, giúp dọn dẹp dễ dàng và tiết kiệm cát.
+🛡️ Khử mùi hiệu quả: Giảm mùi hôi nhanh chóng, giữ không gian sạch sẽ.
+🌿 Ít bụi, an toàn cho mèo: Không gây kích ứng hệ hô hấp, phù hợp với mèo nhạy cảm.
+♻️ Thân thiện với môi trường: Dễ phân hủy, không gây hại cho thú cưng.
+😺 Độ bền cao: Sử dụng lâu dài, tiết kiệm chi phí.
+
+📦 Dung tích: 10L (~4-5 tuần sử dụng tùy số lượng mèo)
+📌 Phù hợp cho: Mèo mọi lứa tuổi', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (35, 5, N'Cát Vệ Sinh Cho Mèo - Đất Sét Moomoopet Vón Cực Thơm', N'Mèo', CAST(150000.00 AS Decimal(12, 2)), N'tao.png', 40, N'💨 Siêu vón cục: Hút ẩm nhanh, giúp dọn dẹp dễ dàng và tiết kiệm cát.
+🌸 Hương thơm dễ chịu: Giúp khử mùi hiệu quả, giữ không gian luôn thơm tho.
+🌿 Ít bụi, an toàn cho mèo: Không gây kích ứng hệ hô hấp, phù hợp với mèo nhạy cảm.
+🛡️ Kiểm soát mùi vượt trội: Hấp thụ và khóa chặt mùi hôi trong thời gian dài.
+♻️ Dễ phân hủy, thân thiện với môi trường: Giúp bạn yên tâm sử dụng lâu dài.
+
+📦 SKU: DS
+📌 Dung tích: 10L
+📌 Phù hợp cho: Mèo mọi lứa tuổi', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (36, 5, N'Cát Vệ Sinh Cho Mèo Catchy - Hương Đào (8L)', N'Mèo', CAST(120000.00 AS Decimal(12, 2)), N'thie-t-ke-chu-a-co-te-n-(6).png', 20, N'✨ Mô tả sản phẩm:
+🌟 Vón cục nhanh, hút ẩm cực tốt: Giúp dọn dẹp dễ dàng, tiết kiệm cát.
+🍑 Hương đào dịu nhẹ: Khử mùi hiệu quả, giữ không gian luôn thơm mát.
+🌿 Ít bụi, an toàn cho mèo: Không gây kích ứng hệ hô hấp, phù hợp với mèo nhạy cảm.
+🛡️ Kiểm soát mùi vượt trội: Hấp thụ và khóa chặt mùi hôi trong thời gian dài.
+♻️ Thân thiện với môi trường: Dễ phân hủy, không gây hại cho thú cưng.
+
+📦 Dung tích: 8L (~3-4 tuần sử dụng tùy số lượng mèo)
+📌 Phù hợp cho: Mèo mọi lứa tuổi', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (37, 5, N'Cát Vệ Sinh Cho Mèo LaPaw - Đất Sét Tự Nhiên', N'Mèo', CAST(160000.00 AS Decimal(12, 2)), N'cat-ve-sinh-cho-meo-lapaw-dat-set-tu-nhien-ca-phe-10l.jpg', 20, N'🌍 Thành phần đất sét tự nhiên: An toàn, không hóa chất độc hại, thân thiện với môi trường.
+⚡ Vón cục nhanh, hút ẩm tốt: Giúp dọn dẹp dễ dàng, tiết kiệm cát.
+🛡️ Khử mùi hiệu quả: Hấp thụ và khóa mùi hôi, giữ hộp vệ sinh luôn sạch sẽ.
+🌿 Ít bụi, không gây kích ứng: Phù hợp với mèo nhạy cảm và không làm bẩn không gian sống.
+♻️ Dễ phân hủy: Giúp bạn yên tâm khi sử dụng lâu dài.
+
+📦 Dung tích: 10L
+📌 Phù hợp cho: Mèo mọi lứa tuổi', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (38, 5, N'Cát Vệ Sinh Tofu và Bentonite CATURE (7L)', N'Mèo', CAST(140000.00 AS Decimal(12, 2)), N'cat-dau-nanh-tofu-sua3.png', 30, N'🌿 Kết hợp đậu nành (Tofu) & Bentonite: Vón cục nhanh, thấm hút mạnh và kiểm soát mùi hiệu quả.
+⚡ Siêu vón cục, dễ dọn dẹp: Tiết kiệm cát, hạn chế lãng phí.
+🍃 Khử mùi tối đa: Hấp thụ và khóa mùi hôi nhanh chóng, giữ không gian sạch sẽ.
+💨 Ít bụi, an toàn cho mèo: Không gây kích ứng hệ hô hấp, phù hợp với mèo nhạy cảm.
+♻️ Thân thiện với môi trường: Dễ phân hủy, có thể xả vào toilet.
+😺 Kết cấu hạt mịn: Êm ái cho chân mèo, không gây khó chịu khi sử dụng.
+
+📦 Dung tích: 7L (~3-4 tuần sử dụng tùy số lượng mèo)
+📌 Phù hợp cho: Mèo mọi lứa tuổi', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (39, 5, N'Cát Vệ Sinh Cho Mèo Tofu Zeolite CATURE (7L)', N'Mèo', CAST(180000.00 AS Decimal(12, 2)), N'tofu-do.png', 30, N'🌿 Công thức kết hợp Tofu & Zeolite: Vón cục nhanh, thấm hút mạnh, giúp kiểm soát mùi tối đa.
+⚡ Siêu vón cục, dễ dọn dẹp: Hấp thụ chất lỏng nhanh chóng, tiết kiệm cát.
+🍃 Khử mùi hiệu quả: Zeolite giúp hấp thụ mùi hôi tự nhiên, giữ không gian sạch sẽ.
+💨 Ít bụi, an toàn cho mèo: Không gây kích ứng hệ hô hấp, phù hợp với mèo nhạy cảm.
+♻️ Thân thiện với môi trường: Cát dễ phân hủy, có thể xả vào toilet.
+😺 Hạt cát nhẹ, mềm mại: Êm ái cho chân mèo, không gây khó chịu khi sử dụng.
+
+📦 Dung tích: 7L (~3-4 tuần sử dụng tùy số lượng mèo)
+📌 Phù hợp cho: Mèo mọi lứa tuổi', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (40, 6, N'Sữa Tắm Gội DAVIS Mỹ Baking Soda và Oatmeal - Khử Mùi Cực Hiệu Quả', N'Chó và Mèo', CAST(250000.00 AS Decimal(12, 2)), N'baking-soda-12-oz-oatmeal-shampoo-for-dogs-davis-700x700.jpg', 20, N'🛁 Sữa Tắm Gội DAVIS Mỹ Baking Soda & Oatmeal – Khử Mùi Cực Hiệu Quả 🐶🐱
+
+✨ Mô tả sản phẩm:
+🛡️ Công thức Baking Soda & Yến Mạch: Giúp khử mùi mạnh mẽ, làm dịu da và giảm ngứa hiệu quả.
+🌿 Dưỡng ẩm sâu: Yến mạch giúp làm mềm lông, giữ ẩm cho da, giảm tình trạng khô ráp.
+🦠 Loại bỏ bụi bẩn & bã nhờn: Làm sạch lông hiệu quả mà không gây kích ứng.
+🐾 Giúp thú cưng thơm lâu: Hương thơm dịu nhẹ, duy trì độ tươi mát suốt nhiều ngày.
+🌱 Thành phần an toàn, không chứa hóa chất độc hại: Phù hợp với mọi giống chó mèo, kể cả thú cưng có da nhạy cảm.
+
+📦 Dung tích: 355ml
+📌 Phù hợp cho: Chó & mèo mọi lứa tuổi', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (41, 6, N'Sữa Tắm Gội và Dầu Xả Forbis - Chăm Sóc Lông Toàn Diện Cho Thú Cưng', N'Chó', CAST(270000.00 AS Decimal(12, 2)), N'14-u5551-d20170811-t171408-257369.jpg', 50, N'🛁 Sữa Tắm Gội & Dầu Xả Forbis – Chăm Sóc Lông Toàn Diện Cho Thú Cưng 🐶🐱
+
+✨ Mô tả sản phẩm:
+🌿 Kết hợp dầu gội & dầu xả: Tiện lợi, giúp làm sạch lông và dưỡng ẩm sâu chỉ trong một bước.
+🛡️ Làm sạch hiệu quả: Loại bỏ bụi bẩn, bã nhờn mà không làm khô da.
+🐾 Dưỡng lông mềm mượt: Công thức dưỡng ẩm giúp lông thú cưng luôn bóng khỏe và suôn mượt.
+💨 Hương thơm dịu nhẹ: Giúp thú cưng thơm lâu, dễ chịu sau khi tắm.
+🌱 Thành phần an toàn, không gây kích ứng: Phù hợp cho thú cưng có làn da nhạy cảm.
+
+📦 Dung tích: 750ml
+📌 Phù hợp cho: Chó & mèo mọi lứa tuổi', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (42, 6, N'Sữa Tắm Gội SOS Đài Loan Dành Cho Mèo (530ml)', N'Mèo', CAST(220000.00 AS Decimal(12, 2)), N'7adfaa9525452f312c16a27477fe43ef.jpg', 30, N'🛁 Sữa Tắm Gội SOS Đài Loan Dành Cho Mèo (530ml) 🐱✨
+
+🌿 Mô tả sản phẩm:
+🛡️ Làm sạch sâu, khử mùi hiệu quả: Giúp loại bỏ bụi bẩn, dầu nhờn và mùi hôi khó chịu.
+🌱 Công thức dịu nhẹ, an toàn: Không gây kích ứng, phù hợp cho mèo có da nhạy cảm.
+🐾 Dưỡng lông mềm mượt: Cung cấp độ ẩm, giúp lông óng ả, giảm rụng và xơ rối.
+💨 Hương thơm dễ chịu, lưu hương lâu: Giúp mèo cưng luôn thơm mát sau khi tắm.
+🚫 Không chứa hóa chất độc hại: An toàn cho mèo, kể cả mèo con và mèo đang mang thai.
+
+📌 Thông tin sản phẩm:
+📦 Dung tích: 530ml
+🐱 Phù hợp cho: Mèo mọi lứa tuổi, kể cả mèo con và mèo có da nhạy cảm.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (43, 7, N'Gel Dinh Dưỡng Cho Chó - BIOLINE Nutrition Supplement (100g)', N'Chó', CAST(130000.00 AS Decimal(12, 2)), N'vn-11134207-7r98o-m09uvi0moanh36.jpg', 30, N'🦴 Gel Dinh Dưỡng Cho Chó - BIOLINE Nutrition Supplement (100g) 🐶✨
+
+🌿 Mô tả sản phẩm:
+🛡️ Tăng cường hệ miễn dịch: Bổ sung vitamin và khoáng chất giúp cún cưng khỏe mạnh hơn.
+💪 Hỗ trợ tiêu hóa: Chứa chất xơ và lợi khuẩn giúp cân bằng đường ruột, ngăn ngừa rối loạn tiêu hóa.
+🐾 Bổ sung năng lượng: Phù hợp cho chó con, chó già, hoặc chó đang phục hồi sức khỏe.
+🍯 Hương vị thơm ngon: Dễ ăn, có thể trộn vào thức ăn hoặc cho liếm trực tiếp.
+🌱 An toàn, không chứa chất bảo quản độc hại.
+
+📌 Thông tin sản phẩm:
+📦 Dung tích: 100g
+💰 Giá: ~150.000 - 180.000 VNĐ
+🐶 Phù hợp cho: Chó con, chó trưởng thành, chó già, chó biếng ăn hoặc đang phục hồi sức khỏe.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (44, 7, N'Gel Dinh Dưỡng Bioline Dành Cho Chó - Hỗ Trợ Sức Khỏe Toàn Diện', N'Chó', CAST(135000.00 AS Decimal(12, 2)), N'4decc251c0bac00ef52752d0d64be7ca.jpg', 25, N'🦴 Gel Dinh Dưỡng Bioline Dành Cho Chó – Hỗ Trợ Sức Khỏe Toàn Diện 🐶✨
+
+🌿 Mô tả sản phẩm:
+🛡️ Tăng cường hệ miễn dịch: Chứa vitamin và khoáng chất giúp chó khỏe mạnh, ít ốm vặt.
+💪 Hỗ trợ tiêu hóa: Giàu chất xơ và lợi khuẩn giúp cân bằng hệ tiêu hóa, giảm rối loạn đường ruột.
+🐾 Bổ sung năng lượng: Phù hợp cho chó con, chó già, chó biếng ăn hoặc đang phục hồi sức khỏe.
+🍯 Hương vị thơm ngon: Dễ ăn, có thể trộn vào thức ăn hoặc cho liếm trực tiếp.
+🌱 Dưỡng lông & da: Giúp lông bóng mượt, da khỏe mạnh, giảm rụng lông.
+🚫 An toàn, không chứa hóa chất độc hại.
+
+📌 Thông tin sản phẩm:
+📦 Dung tích: 100g
+🐶 Phù hợp cho: Chó con, chó trưởng thành, chó già, chó biếng ăn hoặc đang phục hồi sức khỏe.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (45, 7, N'Nutri Plus Gel - Gel Dinh Dưỡng Cao Cấp Cho Chó Mèo', N'Chó và Mèo', CAST(252000.00 AS Decimal(12, 2)), N'virbac-nutri-plus-gel-nutritional-supplement-for-dogs-and-cats-120g.jpg', 20, N'🦴 Nutri Plus Gel – Gel Dinh Dưỡng Cao Cấp Cho Chó Mèo 🐶🐱✨
+
+🌿 Mô tả sản phẩm:
+🛡️ Bổ sung dinh dưỡng toàn diện: Chứa vitamin, khoáng chất và năng lượng giúp thú cưng luôn khỏe mạnh.
+💪 Tăng cường sức đề kháng: Giúp thú cưng mau hồi phục sau bệnh, phẫu thuật hoặc thời kỳ suy nhược.
+🐾 Hỗ trợ tiêu hóa & hấp thụ dưỡng chất tốt hơn.
+🔥 Cung cấp năng lượng nhanh chóng: Phù hợp cho thú cưng biếng ăn, còi cọc, hoặc đang phục hồi sức khỏe.
+🍯 Dễ ăn, hương vị thơm ngon: Có thể trộn vào thức ăn hoặc cho liếm trực tiếp.
+🌱 An toàn, không chứa chất bảo quản độc hại.
+
+📌 Thông tin sản phẩm:
+📦 Dung tích: 120.5g
+🐶🐱 Phù hợp cho: Chó & mèo mọi lứa tuổi, đặc biệt hữu ích cho thú cưng đang ốm, còi cọc, hoặc cần bổ sung dinh dưỡng.', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (46, 8, N'(1 viên) Nexgard Spectra Cho Chó 7.6 - 15kg - Viên Nhai Trị Ve, Ghẻ, Sổ Giun', N'Chó', CAST(300000.00 AS Decimal(12, 2)), N'1568695074_nexgard-spectra-7.5---15kg.jpg', 30, N'🦴 [1 viên] Nexgard Spectra Cho Chó 7.6 - 15kg – Viên Nhai Trị Ve, Ghẻ, Sổ Giun 🐶✨
+
+🌿 Mô tả sản phẩm:
+🛡️ Phòng & trị ve, bọ chét: Tiêu diệt ve, bọ chét nhanh chóng trong vòng 8 tiếng.
+🐛 Sổ giun hiệu quả: Tiêu diệt nhiều loại giun ký sinh như giun đũa, giun móc, giun phổi, giun tim.
+🔥 Hỗ trợ trị ghẻ Demodex & Sarcoptes: Giúp cải thiện tình trạng da do ký sinh trùng gây ra.
+🍖 Dạng viên nhai, vị thịt bò thơm ngon: Dễ dàng cho chó ăn mà không cần trộn vào thức ăn.
+📅 Hiệu quả kéo dài 30 ngày: Chỉ cần 1 viên/tháng để bảo vệ chó toàn diện.
+🌱 An toàn, dễ sử dụng: Được kiểm nghiệm và chứng nhận an toàn cho chó từ 8 tuần tuổi trở lên.
+
+📌 Thông tin sản phẩm:
+📦 Số lượng: 1 viên
+⚖️ Dành cho chó: 7.6 - 15kg
+📆 Tần suất sử dụng: 1 viên/tháng', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (47, 8, N'Fronil Extra - Nhỏ Gáy Trị Ve Rận Cho Chó (10 - 20kg)', N'Chó', CAST(150000.00 AS Decimal(12, 2)), N'fronil-extra-nho-gay-cho-1020kg-402.jpg', 20, N'🦴 Fronil Extra – Nhỏ Gáy Trị Ve Rận Cho Chó (10 - 20kg) 🐶✨
+
+🌿 Mô tả sản phẩm:
+🛡️ Tiêu diệt ve, bọ chét nhanh chóng: Diệt sạch ve rận chỉ sau 24 - 48 giờ.
+🔥 Ngăn ngừa tái nhiễm lên đến 4 tuần: Bảo vệ chó khỏi ve, rận, bọ chét trong thời gian dài.
+🦠 Hỗ trợ phòng ngừa bệnh do ký sinh trùng gây ra: Giảm nguy cơ nhiễm bệnh truyền nhiễm qua ve rận.
+📌 Dễ sử dụng, không gây kích ứng: Chỉ cần nhỏ trực tiếp lên gáy chó.
+🌱 An toàn, phù hợp với chó từ 8 tuần tuổi trở lên.
+
+📌 Thông tin sản phẩm:
+📦 Dung tích: 1 ống
+⚖️ Dành cho chó: 10 - 20kg
+📆 Tần suất sử dụng: 1 lần/tháng', 1)
+INSERT [dbo].[Products] ([product_id], [category_id], [product_name], [product_petType], [product_price], [product_image], [stock], [description], [is_active]) VALUES (48, 8, N'VIME FRONDOG - Dung Dịch Tắm Trị Ve, Rận, Bọ Chét Cho Chó (250ml)', N'Chó và Mèo', CAST(200000.00 AS Decimal(12, 2)), N'frondog_41a9072a1c6649d4ab630f123ad17c6d.png', 30, N'🛁 VIME FRONDOG – Dung Dịch Tắm Trị Ve, Rận, Bọ Chét Cho Chó (250ml) 🐶✨
+
+🌿 Mô tả sản phẩm:
+🛡️ Tiêu diệt & phòng ngừa ve, rận, bọ chét hiệu quả – Giúp làm sạch và loại bỏ ký sinh trùng trên da chó.
+🔥 Giảm ngứa, viêm da do ve rận gây ra – Hỗ trợ phục hồi da tổn thương, giúp chó bớt khó chịu.
+🌿 Chiết xuất thảo dược an toàn – Không gây kích ứng, phù hợp với chó có làn da nhạy cảm.
+💨 Làm sạch lông & khử mùi – Giúp lông mềm mượt, thơm tho sau khi tắm.
+📌 Dễ sử dụng, có thể dùng định kỳ để ngăn ngừa tái nhiễm.
+
+📌 Thông tin sản phẩm:
+📦 Dung tích: 250ml
+🐶 Phù hợp cho: Chó từ 8 tuần tuổi trở lên, đặc biệt là chó bị ve rận, bọ chét.
+📆 Tần suất sử dụng: 1 - 2 lần/tuần tùy theo tình trạng ve rận.', 1)
+SET IDENTITY_INSERT [dbo].[Products] OFF
+
+
+-- Thêm dữ liệu vào bảng Customers
+SET IDENTITY_INSERT [dbo].[Customers] ON 
+
+INSERT [dbo].[Customers] ([customer_id], [password], [full_name], [email], [phone], [address], [gender], [birth_date], [is_active]) VALUES (1, N'e10adc3949ba59abbe56e057f20f883e', N'Nguyễn Trí Nghị', N'gemnghj@gmail.com', N'0123456789', N'Cần Thơ', N'Nam', CAST(N'1990-05-15' AS Date), 1)
+INSERT [dbo].[Customers] ([customer_id], [password], [full_name], [email], [phone], [address], [gender], [birth_date], [is_active]) VALUES (2, N'e10adc3949ba59abbe56e057f20f883e', N'Nguyễn Trí Nghi', N'remtn7@gmail.com', N'0987654321', N'Hà Nội', N'Nam', CAST(N'1995-08-21' AS Date), 1)
+INSERT [dbo].[Customers] ([customer_id], [password], [full_name], [email], [phone], [address], [gender], [birth_date], [is_active]) VALUES (3, N'e10adc3949ba59abbe56e057f20f883e', N'Lê Văn Cường', N'levancuong@example.com', N'0934567890', N'Đà Nẵng', N'Nam', CAST(N'1988-12-10' AS Date), 1)
+INSERT [dbo].[Customers] ([customer_id], [password], [full_name], [email], [phone], [address], [gender], [birth_date], [is_active]) VALUES (4, N'e10adc3949ba59abbe56e057f20f883e', N'Phạm Thị Dung', N'phamthidung@example.com', N'0971122334', N'Hải Phòng', N'Nữ', CAST(N'1992-07-18' AS Date), 1)
+INSERT [dbo].[Customers] ([customer_id], [password], [full_name], [email], [phone], [address], [gender], [birth_date], [is_active]) VALUES (5, N'e10adc3949ba59abbe56e057f20f883e', N'Đặng Quốc Hùng', N'dangquochung@example.com', N'0902233445', N'Hồ Chí Minh', N'Nam', CAST(N'1993-11-22' AS Date), 1)
+INSERT [dbo].[Customers] ([customer_id], [password], [full_name], [email], [phone], [address], [gender], [birth_date], [is_active]) VALUES (6, N'e10adc3949ba59abbe56e057f20f883e', N'Võ Thị Hạnh', N'vothihanh@example.com', N'0913344556', N'Bình Dương', N'Nữ', CAST(N'1996-03-30' AS Date), 1)
+INSERT [dbo].[Customers] ([customer_id], [password], [full_name], [email], [phone], [address], [gender], [birth_date], [is_active]) VALUES (7, N'e10adc3949ba59abbe56e057f20f883e', N'Hoàng Minh Tuấn', N'hoangminhtuan@example.com', N'0944455667', N'Đồng Nai', N'Nam', CAST(N'1985-09-05' AS Date), 1)
+INSERT [dbo].[Customers] ([customer_id], [password], [full_name], [email], [phone], [address], [gender], [birth_date], [is_active]) VALUES (8, N'e10adc3949ba59abbe56e057f20f883e', N'Bùi Thị Lan', N'buithilan@example.com', N'0925566778', N'Bắc Ninh', N'Nữ', CAST(N'1991-06-25' AS Date), 1)
+INSERT [dbo].[Customers] ([customer_id], [password], [full_name], [email], [phone], [address], [gender], [birth_date], [is_active]) VALUES (9, N'e10adc3949ba59abbe56e057f20f883e', N'Ngô Văn Khánh', N'ngovankhanh@example.com', N'0936677889', N'Huế', N'Nam', CAST(N'1989-02-14' AS Date), 1)
+INSERT [dbo].[Customers] ([customer_id], [password], [full_name], [email], [phone], [address], [gender], [birth_date], [is_active]) VALUES (10, N'e10adc3949ba59abbe56e057f20f883e', N'Đỗ Thị Mai', N'dothimai@example.com', N'0957788990', N'Cà Mau', N'Nữ', CAST(N'1994-12-03' AS Date), 1)
+INSERT [dbo].[Customers] ([customer_id], [password], [full_name], [email], [phone], [address], [gender], [birth_date], [is_active]) VALUES (11, N'e10adc3949ba59abbe56e057f20f883e', N'Vũ Quang Đức', N'vuquangduc1404@gmail.com', N'0907258855', N'Nguyễn Văn Cừ', N'Nam', CAST(N'2004-02-27' AS Date), 1)
+SET IDENTITY_INSERT [dbo].[Customers] OFF
+
+
+
+-- Thêm dữ liệu vào bảng Staffs
+SET IDENTITY_INSERT [dbo].[Staffs] ON 
+
+INSERT [dbo].[Staffs] ([staff_id], [role_name], [password], [full_name], [email], [phone], [address], [gender], [birth_date], [image], [is_active]) VALUES (1, N'Admin', N'e10adc3949ba59abbe56e057f20f883e', N'Admin', N'admin@example.com', N'0905123456', N'Cần Thơ', N'Nam', CAST(N'1985-07-30' AS Date), NULL, 1)
+INSERT [dbo].[Staffs] ([staff_id], [role_name], [password], [full_name], [email], [phone], [address], [gender], [birth_date], [image], [is_active]) VALUES (2, N'Staff', N'e10adc3949ba59abbe56e057f20f883e', N'Vũ Quang Đức', N'vuquangduc1404@gmail.com', N'1234567890', N'Cần Thơ', N'Nam', CAST(N'2004-01-26' AS Date), N'pngtree-banker-flat-icon-vector-png-image_6680116.png', 1)
+INSERT [dbo].[Staffs] ([staff_id], [role_name], [password], [full_name], [email], [phone], [address], [gender], [birth_date], [image], [is_active]) VALUES (3, N'Staff', N'e10adc3949ba59abbe56e057f20f883e', N'Trần Đức Thành', N'tranducthanh@gmail.com', N'1234567890', N'Cần Thơ', N'Nam', CAST(N'2004-01-24' AS Date), N'pngtree-banker-flat-icon-vector-png-image_6680116.png', 1)
+INSERT [dbo].[Staffs] ([staff_id], [role_name], [password], [full_name], [email], [phone], [address], [gender], [birth_date], [image], [is_active]) VALUES (4, N'Staff', N'e10adc3949ba59abbe56e057f20f883e', N'Nguyễn Tiến Thành', N'nguyentienthanh@gmail.com', N'1234567890', N'Cần Thơ', N'Nam', CAST(N'2004-01-26' AS Date), N'pngtree-banker-flat-icon-vector-png-image_6680116.png', 1)
+INSERT [dbo].[Staffs] ([staff_id], [role_name], [password], [full_name], [email], [phone], [address], [gender], [birth_date], [image], [is_active]) VALUES (5, N'Staff', N'e10adc3949ba59abbe56e057f20f883e', N'Đại Gia Vỹ', N'daigiavy@gmail.com', N'1234567890', N'Cần Thơ', N'Nam', CAST(N'2004-03-01' AS Date), N'pngtree-banker-flat-icon-vector-png-image_6680116.png', 1)
+SET IDENTITY_INSERT [dbo].[Staffs] OFF
+
+-- Thêm dữ liệu vào bảng Pets
+SET IDENTITY_INSERT [dbo].[Pets] ON 
+
+INSERT [dbo].[Pets] ([pet_id], [customer_id], [pet_name], [pet_type], [pet_breed], [pet_sex], [pet_weigth], [pet_dob], [pet_status], [pet_image], [is_active]) VALUES (1, 1, N'Tí ', N'Chó', N'Husky', N'Đực', CAST(14.00 AS Decimal(5, 2)), CAST(N'2022-02-08' AS Date), N'booking', N'husky.jpg', 1)
+INSERT [dbo].[Pets] ([pet_id], [customer_id], [pet_name], [pet_type], [pet_breed], [pet_sex], [pet_weigth], [pet_dob], [pet_status], [pet_image], [is_active]) VALUES (2, 2, N'Tina ', N'Chó', N'Pull Pháp ', N'Cái', CAST(5.00 AS Decimal(5, 2)), CAST(N'2024-01-16' AS Date), N'booking', N'pullphap.jpg', 1)
+INSERT [dbo].[Pets] ([pet_id], [customer_id], [pet_name], [pet_type], [pet_breed], [pet_sex], [pet_weigth], [pet_dob], [pet_status], [pet_image], [is_active]) VALUES (3, 3, N'Quắn ', N'Chó', N'Poodle', N'Đực', CAST(4.00 AS Decimal(5, 2)), CAST(N'2024-08-22' AS Date), N'booking', N'poodle.jpg', 1)
+INSERT [dbo].[Pets] ([pet_id], [customer_id], [pet_name], [pet_type], [pet_breed], [pet_sex], [pet_weigth], [pet_dob], [pet_status], [pet_image], [is_active]) VALUES (4, 4, N'Jack ', N'Chó', N'Corgi', N'Đực', CAST(9.00 AS Decimal(5, 2)), CAST(N'2023-12-29' AS Date), N'booking', N'corgi.jsp.jpg', 1)
+SET IDENTITY_INSERT [dbo].[Pets] OFF
+
+
+-- Thêm dữ liệu vào bảng PaymentMethods
+INSERT INTO PaymentMethods (name) VALUES
+(N'Thanh toán tiền mặt'),
+(N'Thanh toán VNPAY');
+
+
+-- Thêm dữ liệu vào bảng ShippingMethods
+INSERT INTO ShippingMethods (name, shipping_fee) VALUES
+(N'Giao hàng tiết kiệm', 30000), 
+(N'Giao hàng hỏa tốc', 45000);
+
+
+-- Thêm dữ liệu vào bảng Orders
+SET IDENTITY_INSERT [dbo].[Orders] ON 
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (1, 11, NULL, 1, 1, N'Vũ Quang Đức', N'0912322328', N'600 Nguyễn Văn Cừ, Cần Thơ', N'', CAST(410000.00 AS Decimal(12, 2)), NULL, 0, N'Chờ xác nhận', CAST(N'2025-03-27T12:46:46.503' AS DateTime), NULL)
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (2, 11, 2, 1, 2, N'Trương Văn Khang', N'0912802301', N'100 Nguyễn Trung Trực', N'Giao hàng vào buổi sáng', CAST(515000.00 AS Decimal(12, 2)), NULL, 0, N'Chờ lấy hàng', CAST(N'2025-03-27T12:55:18.443' AS DateTime), NULL)
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (3, 11, 3, 1, 1, N'Nguyễn Trí Nghị', N'0912546328', N'359 Nguyễn Văn Cừ', N'', CAST(450000.00 AS Decimal(12, 2)), NULL, 0, N'Hoàn thành', CAST(N'2025-03-27T12:56:36.773' AS DateTime), CAST(N'2025-03-27T16:20:44.860' AS DateTime))
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (4, 11, 2, 2, 1, N'Lê Minh Khoa', N'0960238237', N'300 Điện Biên Phủ, Quận Bình Thạnh, TP. Hồ Chí Minh', N'', CAST(540000.00 AS Decimal(12, 2)), NULL, 0, N'Hoàn thành', CAST(N'2025-03-27T12:59:33.917' AS DateTime), CAST(N'2025-03-27T13:00:36.090' AS DateTime))
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (5, 11, NULL, 2, 1, N'Lê Trọng Luân', N'0932238237', N'95 Lê Lợi, TP. Huế, Thừa Thiên Huế', N'Giao hàng sớm giúp tôi', CAST(270000.00 AS Decimal(12, 2)), N'Thanh toán thất bại hoặc bị gián đoạn', 0, N'Đã huỷ', CAST(N'2025-03-27T13:02:06.317' AS DateTime), NULL)
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (6, 1, 3, 1, 1, N'Nguyễn Văn Hưng', N'0918654321', N'95 Lê Lợi, TP. Huế, Thừa Thiên Huế', N'', CAST(760000.00 AS Decimal(12, 2)), NULL, 0, N'Hoàn thành', CAST(N'2025-03-27T13:44:19.220' AS DateTime), CAST(N'2025-03-27T13:44:43.607' AS DateTime))
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (7, 1, 3, 1, 1, N'Nguyễn Văn An', N'0966789123', N'256 Lý Tự Trọng, Quận Ninh Kiều, Cần Thơ', N'Giao hàng trước 2/4 giúp em ạ!', CAST(650000.00 AS Decimal(12, 2)), NULL, 1, N'Hoàn thành', CAST(N'2025-03-27T13:49:30.143' AS DateTime), CAST(N'2025-03-27T16:20:36.297' AS DateTime))
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (8, 11, NULL, 2, 1, N'Vũ Quang Đức', N'0888999666', N'22A Nguyễn Huệ, TP. Tuy Hòa, Phú Yên', N'', CAST(130000.00 AS Decimal(12, 2)), N'Thanh toán thất bại hoặc bị gián đoạn', 0, N'Đã huỷ', CAST(N'2025-03-27T14:57:12.460' AS DateTime), NULL)
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (9, 2, 3, 2, 1, N'Hoàng Ngọc Bích', N'0777456123', N'78 Trần Phú, Quận Hải Châu, Đà Nẵng', N'', CAST(630000.00 AS Decimal(12, 2)), NULL, 0, N'Hoàn thành', CAST(N'2025-03-27T15:14:30.043' AS DateTime), CAST(N'2025-03-27T16:20:28.917' AS DateTime))
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (10, 2, 3, 2, 1, N'Đặng Thanh Tùng', N'0325987654', N'12 Lê Hồng Phong, TP. Nha Trang, Khánh Hòa', N'', CAST(330000.00 AS Decimal(12, 2)), N'Tôi không có nhu cầu mua nữa', 1, N'Đã huỷ', CAST(N'2025-03-27T15:16:31.067' AS DateTime), NULL)
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (11, 2, NULL, 2, 1, N'Đặng Thanh Tùng', N'0325987654', N'12 Lê Hồng Phong, TP. Nha Trang, Khánh Hòa', N'Giao hàng buổi chiều', CAST(210000.00 AS Decimal(12, 2)), N'Thanh toán thất bại hoặc bị gián đoạn', 0, N'Đã huỷ', CAST(N'2025-03-27T15:18:29.980' AS DateTime), NULL)
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (12, 4, NULL, 2, 1, N'Dương Quốc Bảo', N'0902123456', N'68 Hoàng Văn Thụ, TP. Thái Nguyên, Thái Nguyên', N'', CAST(570000.00 AS Decimal(12, 2)), N'Thanh toán thất bại hoặc bị gián đoạn', 0, N'Đã huỷ', CAST(N'2025-03-27T15:39:11.960' AS DateTime), NULL)
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (13, 11, NULL, 1, 2, N'Vũ Quang Đức', N'0912802301', N'600 Nguyễn Văn Cừ, Cần Thơ', N'', CAST(155000.00 AS Decimal(12, 2)), N'Thay đổi đơn hàng', 0, N'Đã huỷ', CAST(N'2025-03-27T15:53:01.910' AS DateTime), NULL)
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (14, 2, 3, 1, 2, N'Trần Thị Bích', N'0777456123', N'78 Trần Phú, Quận Hải Châu, Đà Nẵng', N'', CAST(455000.00 AS Decimal(12, 2)), NULL, 0, N'Hoàn thành', CAST(N'2025-03-27T16:21:28.947' AS DateTime), CAST(N'2025-03-27T16:21:45.747' AS DateTime))
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (15, 3, 3, 1, 1, N'Lê Văn Cường', N'0935127468', N'45 Nguyễn Trãi, Quận Thanh Xuân, Hà Nội', N'', CAST(177000.00 AS Decimal(12, 2)), NULL, 0, N'Hoàn thành', CAST(N'2025-03-27T16:23:34.260' AS DateTime), CAST(N'2025-03-27T16:24:18.407' AS DateTime))
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (16, 3, 3, 1, 1, N'Lê Văn Cường', N'0935127468', N'45 Nguyễn Trãi, Quận Thanh Xuân, Hà Nội', N'', CAST(150000.00 AS Decimal(12, 2)), NULL, 0, N'Hoàn thành', CAST(N'2025-03-27T16:28:29.620' AS DateTime), CAST(N'2025-03-27T16:28:56.327' AS DateTime))
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (17, 4, 3, 1, 2, N'Phạm Thị Dung', N'0987654321', N'34 Nguyễn Văn Cừ, Phường An Hòa, TP. Rạch Giá, Tỉnh Kiên Giang', N'', CAST(135000.00 AS Decimal(12, 2)), NULL, 0, N'Hoàn thành', CAST(N'2025-03-27T16:32:49.477' AS DateTime), CAST(N'2025-03-27T16:33:16.377' AS DateTime))
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (18, 4, 3, 1, 1, N'Phạm Thị Dung', N'0369258147', N'78 Trần Phú, Phường Lộc Thọ, TP. Nha Trang, Tỉnh Khánh Hòa', N'', CAST(185000.00 AS Decimal(12, 2)), NULL, 0, N'Hoàn thành', CAST(N'2025-03-27T16:39:56.980' AS DateTime), CAST(N'2025-03-27T16:40:24.830' AS DateTime))
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (19, 5, 4, 1, 2, N'Đặng Quốc Hùng', N'0912345678', N'15 Lê Lợi, Phường Hòa Phú, TP. Thủ Dầu Một, Tỉnh Bình Dương', N'', CAST(190000.00 AS Decimal(12, 2)), NULL, 0, N'Hoàn thành', CAST(N'2025-03-27T16:45:39.820' AS DateTime), CAST(N'2025-03-27T16:46:03.207' AS DateTime))
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (20, 5, 4, 1, 1, N'Đặng Quốc Hùng', N'0912345678', N'15 Lê Lợi, Phường Hòa Phú, TP. Thủ Dầu Một, Tỉnh Bình Dương', N'', CAST(235000.00 AS Decimal(12, 2)), NULL, 0, N'Hoàn thành', CAST(N'2025-03-27T16:50:12.650' AS DateTime), CAST(N'2025-03-27T16:50:27.487' AS DateTime))
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (21, 6, 5, 1, 1, N'Võ Thị Hạnh', N'0773182950', N'102 Phạm Văn Đồng, Phường Vỹ Dạ, TP. Huế, Tỉnh Thừa Thiên Huế', N'', CAST(402000.00 AS Decimal(12, 2)), NULL, 0, N'Chờ giao hàng', CAST(N'2025-03-27T16:54:04.380' AS DateTime), NULL)
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (22, 6, NULL, 1, 1, N'Võ Thị Hạnh', N'0773182950', N'102 Phạm Văn Đồng, Phường Vỹ Dạ, TP. Huế, Tỉnh Thừa Thiên Huế', N'', CAST(310000.00 AS Decimal(12, 2)), NULL, 0, N'Chờ xác nhận', CAST(N'2025-03-27T16:55:23.567' AS DateTime), NULL)
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (23, 6, 5, 1, 1, N'Võ Thị Hạnh', N'0773182950', N'102 Phạm Văn Đồng, Phường Vỹ Dạ, TP. Huế, Tỉnh Thừa Thiên Huế', N'', CAST(530000.00 AS Decimal(12, 2)), NULL, 0, N'Chờ lấy hàng', CAST(N'2025-03-27T16:56:28.343' AS DateTime), NULL)
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (24, 7, 5, 1, 2, N'Hoàng Minh Tuấn', N'0903876549', N'19 Trần Hưng Đạo, Phường Tân Thành, TP. Buôn Ma Thuột, Tỉnh Đắk Lắk', N'', CAST(1245000.00 AS Decimal(12, 2)), NULL, 0, N'Chờ giao hàng', CAST(N'2025-03-27T16:59:16.833' AS DateTime), NULL)
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (25, 7, NULL, 1, 1, N'Hoàng Minh Tuấn', N'0903876549', N'19 Trần Hưng Đạo, Phường Tân Thành, TP. Buôn Ma Thuột, Tỉnh Đắk Lắk', N'Giao hàng sớm giúp mình nha shop', CAST(495000.00 AS Decimal(12, 2)), NULL, 0, N'Chờ xác nhận', CAST(N'2025-03-27T17:00:14.113' AS DateTime), NULL)
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (26, 7, NULL, 1, 1, N'Hoàng Minh Tuấn', N'0903876549', N'19 Trần Hưng Đạo, Phường Tân Thành, TP. Buôn Ma Thuột, Tỉnh Đắk Lắk', N'', CAST(180000.00 AS Decimal(12, 2)), NULL, 0, N'Chờ xác nhận', CAST(N'2025-03-27T17:01:33.723' AS DateTime), NULL)
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (27, 8, NULL, 1, 1, N'Bùi Thị Lan', N'0903876549', N'8 Hoàng Diệu, Phường Linh Chiểu, Quận Thủ Đức, TP. Hồ Chí Minh', N'Shop cứ từ từ giao thôi ạ :>', CAST(830000.00 AS Decimal(12, 2)), NULL, 0, N'Chờ xác nhận', CAST(N'2025-03-27T17:05:19.223' AS DateTime), NULL)
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (28, 8, 4, 1, 1, N'Bùi Thị Lan', N'0903876549', N'8 Hoàng Diệu, Phường Linh Chiểu, Quận Thủ Đức, TP. Hồ Chí Minh', N'', CAST(270000.00 AS Decimal(12, 2)), NULL, 0, N'Chờ giao hàng', CAST(N'2025-03-27T17:05:43.840' AS DateTime), NULL)
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (29, 8, NULL, 2, 1, N'Bùi Thị Lan', N'0903876549', N'8 Hoàng Diệu, Phường Linh Chiểu, Quận Thủ Đức, TP. Hồ Chí Minh', N'', CAST(295000.00 AS Decimal(12, 2)), N'Thanh toán thất bại hoặc bị gián đoạn', 0, N'Đã huỷ', CAST(N'2025-03-27T17:06:57.027' AS DateTime), NULL)
+
+INSERT [dbo].[Orders] ([order_id], [customer_id], [staff_id], [paymentMethod_id], [shippingMethod_id], [recipient_name], [recipient_phone], [shipping_address], [delivery_notes], [total_amount], [reason_cancel], [request_cancel], [status], [order_date], [finished_date]) VALUES (30, 8, 4, 1, 1, N'Bùi Thị Lan', N'0903876549', N'8 Hoàng Diệu, Phường Linh Chiểu, Quận Thủ Đức, TP. Hồ Chí Minh', N'', CAST(205000.00 AS Decimal(12, 2)), N'Người bán không trả lời thắc mắc / yêu cầu của tôi', 1, N'Yêu cầu huỷ...', CAST(N'2025-03-27T17:08:04.160' AS DateTime), NULL)
+SET IDENTITY_INSERT [dbo].[Orders] OFF
+
+
+-- Thêm dữ liệu vào bảng OrderItems
+
+SET IDENTITY_INSERT [dbo].[OrderItems] ON 
+
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (1, 1, 7, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (2, 1, 8, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (3, 1, 5, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (4, 1, 6, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (5, 2, 16, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (6, 2, 17, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (7, 3, 28, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (8, 3, 44, 2)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (9, 4, 26, 2)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (10, 4, 27, 2)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (11, 4, 41, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (13, 6, 20, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (14, 6, 32, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (15, 6, 34, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (16, 7, 13, 2)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (17, 7, 15, 2)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (19, 9, 42, 2)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (20, 9, 33, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (21, 10, 47, 2)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (26, 13, 6, 2)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (27, 14, 40, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (28, 14, 37, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (29, 15, 32, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (30, 15, 24, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (31, 16, 13, 2)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (32, 17, 26, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (33, 17, 5, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (34, 18, 7, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (35, 18, 13, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (36, 18, 10, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (37, 19, 13, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (38, 19, 10, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (39, 19, 11, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (40, 20, 35, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (41, 20, 29, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (42, 21, 44, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (43, 21, 38, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (44, 21, 24, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (45, 22, 33, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (46, 22, 36, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (47, 23, 8, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (48, 23, 14, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (49, 24, 22, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (50, 25, 23, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (51, 25, 21, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (52, 26, 17, 3)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (53, 27, 19, 2)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (54, 28, 26, 2)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (55, 28, 27, 2)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (59, 30, 1, 1)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (60, 30, 2, 2)
+INSERT [dbo].[OrderItems] ([orderItem_id], [order_id], [product_id], [quantity]) VALUES (61, 30, 5, 1)
+SET IDENTITY_INSERT [dbo].[OrderItems] OFF
+
+
+-- Thêm dữ liệu vào bảng CartItems
+
+
+-- Thêm dữ liệu vào bảng PetHotel
+INSERT INTO PetHotel (room_name, room_image, room_type, min_weight, max_weight, quantity, available_quantity, price_per_night, description, status, is_active) VALUES
+(N'Tiêu chuẩn nhỏ', 'tieuchuandog1.jpg', N'Chó', 1, 5, 5, 5, 100000, N'🛏️ Phòng Tiêu Chuẩn được thiết kế đơn giản nhưng vẫn đảm bảo sự thoải mái. 🌞 Có cửa sổ đón ánh sáng tự nhiên. 🎾 Đồ chơi cơ bản như bóng và dây kéo. 🍖 Dịch vụ chăm sóc bao gồm cho ăn và dạo chơi.', N'Còn phòng', 1),
+(N'Tiêu chuẩn vừa', 'tieuchuandog1.jpg', N'Chó', 6, 15, 5, 5, 150000, N'🛏️ Phòng rộng rãi, giường êm ái. 🌞 Có cửa sổ thoáng mát. 🎾 Đồ chơi vui nhộn. 🍖 Chăm sóc hàng ngày, đảm bảo thú cưng luôn vui vẻ.', N'Còn phòng', 1),
+(N'Tiêu chuẩn lớn', 'tieuchuandog1.jpg', N'Chó', 16, 30, 5, 5, 200000, N'🛏️ Không gian rộng rãi, phù hợp với chó lớn. 🌞 Cửa sổ đón nắng, giúp thư giãn. 🎾 Đồ chơi đầy đủ. 🍖 Chăm sóc tận tình.', N'Còn phòng', 1),
+(N'VIP nhỏ', 'VIPdog1.jpg', N'Chó', 1, 5, 5, 5, 180000, N'🏡 Phòng VIP với nội thất cao cấp. 🛏️ Giường ngủ sang trọng. 🎾 Đồ chơi phong phú. 🍽️ Bữa ăn dinh dưỡng. 🛁 Chăm sóc sức khỏe đặc biệt.', N'Còn phòng', 1),
+(N'VIP vừa', 'VIPdog1.jpg', N'Chó', 6, 15, 5, 5, 230000, N'🏡 Phòng VIP rộng rãi. 🛏️ Nội thất cao cấp. 🎾 Đồ chơi đa dạng. 🍽️ Chế độ ăn uống đặc biệt. 🛁 Chăm sóc toàn diện.', N'Còn phòng', 1),
+(N'VIP lớn', 'VIPdog1.jpg', N'Chó', 16, 30, 5, 5, 280000, N'🏡 Phòng lớn dành cho thú cưng VIP. 🛏️ Không gian riêng tư. 🎾 Đồ chơi cao cấp. 🍽️ Dinh dưỡng chuyên biệt. 🛁 Chăm sóc tận tâm.', N'Còn phòng', 1),
+(N'Luxury nhỏ', 'Luxurydog1.jpg', N'Chó', 1, 5, 5, 5, 300000, N'✨ Phòng Luxury dành cho thú cưng yêu sự sang trọng. 🏡 Nội thất cao cấp. 🍽️ Bữa ăn thượng hạng. 🛁 Dịch vụ chăm sóc 24/7.', N'Còn phòng', 1),
+(N'Luxury vừa', 'Luxurydog1.jpg', N'Chó', 6, 15, 5, 5, 400000, N'✨ Phòng rộng rãi, nội thất sang trọng. 🍽️ Thực đơn đặc biệt. 🛁 Chăm sóc spa nhỏ. 🏡 Dịch vụ toàn diện.', N'Còn phòng', 1),
+(N'Luxury lớn', 'Luxurydog1.jpg', N'Chó', 16, 30, 5, 5, 500000, N'✨ Không gian đẳng cấp. 🏡 Nội thất cao cấp. 🍽️ Dịch vụ ăn uống 5 sao. 🛁 Chăm sóc đặc biệt.', N'Còn phòng', 1),
+(N'Tiêu chuẩn nhỏ', 'tieuchuancat1.jpg', N'Mèo', 1, 5, 5, 5, 80000, N'🛏️ Phòng nhỏ ấm cúng. 🎾 Đồ chơi cơ bản. 🍖 Chăm sóc tận tâm.', N'Còn phòng', 1),
+(N'Tiêu chuẩn vừa', 'tieuchuancat1.jpg', N'Mèo', 6, 15, 5, 5, 120000, N'🛏️ Phòng rộng rãi hơn. 🎾 Đồ chơi phong phú. 🍖 Dịch vụ chăm sóc hàng ngày.', N'Còn phòng', 1),
+(N'Tiêu chuẩn lớn', 'tieuchuancat1.jpg', N'Mèo', 16, 30, 5, 5, 150000, N'🛏️ Không gian thoải mái. 🌞 Ánh sáng tự nhiên. 🍖 Chăm sóc chu đáo.', N'Còn phòng', 1),
+(N'VIP nhỏ', 'VIPcat1.jpg', N'Mèo', 1, 5, 5, 5, 120000, N'🏡 Phòng VIP trang trí đẹp mắt. 🛏️ Giường cao cấp. 🎾 Đồ chơi đa dạng. 🍽️ Chế độ ăn dinh dưỡng.', N'Còn phòng', 1),
+(N'VIP vừa', 'VIPcat1.jpg', N'Mèo', 6, 15, 5, 5, 160000, N'🏡 Không gian sang trọng. 🛏️ Giường mềm mại. 🍽️ Dịch vụ ăn uống cao cấp. 🎾 Đồ chơi phong phú.', N'Còn phòng', 1),
+(N'VIP lớn', 'VIPcat1.jpg', N'Mèo', 16, 30, 5, 5, 200000, N'🏡 Không gian riêng tư. 🛏️ Nội thất VIP. 🍽️ Bữa ăn chuẩn 5 sao. 🎾 Chăm sóc tận tình.', N'Còn phòng', 1),
+(N'Luxury nhỏ', 'Luxurycat1.jpg', N'Mèo', 1, 5, 5, 5, 150000, N'✨ Phòng Luxury dành cho mèo. 🏡 Nội thất cao cấp. 🍽️ Bữa ăn thượng hạng. 🛁 Dịch vụ chăm sóc spa.', N'Còn phòng', 1),
+(N'Luxury vừa', 'Luxurycat1.jpg', N'Mèo', 6, 15, 5, 5, 200000, N'✨ Phòng rộng rãi, đầy đủ tiện nghi. 🏡 Giường sang trọng. 🍽️ Thực đơn đặc biệt. 🛁 Chăm sóc sức khỏe.', N'Còn phòng', 1),
+(N'Luxury lớn', 'Luxurycat1.jpg', N'Mèo', 16, 30, 5, 5, 250000, N'✨ Không gian VIP cho mèo. 🏡 Nội thất cao cấp. 🍽️ Bữa ăn riêng. 🛁 Chăm sóc toàn diện.', N'Còn phòng', 1);
+
+
+
+
+
+-- Thêm dữ liệu vào bảng PetHotelBookings
+SET IDENTITY_INSERT [dbo].[PetHotelBookings] ON 
+
+INSERT [dbo].[PetHotelBookings] ([booking_id], [room_id], [customer_id], [staff_id], [pet_id], [check_in], [check_out], [total_price], [note], [status], [booking_date], [is_active]) VALUES (1, 5, 1, 1, 1, CAST(N'2025-03-27T16:30:00.000' AS DateTime), CAST(N'2025-03-28T16:30:00.000' AS DateTime), CAST(230000.00 AS Decimal(12, 2)), N'', N'Đã trả phòng', CAST(N'2025-03-26T16:30:31.553' AS DateTime), 1)
+INSERT [dbo].[PetHotelBookings] ([booking_id], [room_id], [customer_id], [staff_id], [pet_id], [check_in], [check_out], [total_price], [note], [status], [booking_date], [is_active]) VALUES (2, 7, 2, 1, 2, CAST(N'2025-03-27T16:33:00.000' AS DateTime), CAST(N'2025-03-28T16:33:00.000' AS DateTime), CAST(300000.00 AS Decimal(12, 2)), N'', N'Đã trả phòng', CAST(N'2025-03-26T16:33:10.753' AS DateTime), 1)
+INSERT [dbo].[PetHotelBookings] ([booking_id], [room_id], [customer_id], [staff_id], [pet_id], [check_in], [check_out], [total_price], [note], [status], [booking_date], [is_active]) VALUES (3, 4, 3, 1, 3, CAST(N'2025-03-27T16:36:00.000' AS DateTime), CAST(N'2025-03-28T16:36:00.000' AS DateTime), CAST(180000.00 AS Decimal(12, 2)), N'Cho ăn hạt mềm.', N'Đã trả phòng', CAST(N'2025-03-26T16:37:02.950' AS DateTime), 1)
+INSERT [dbo].[PetHotelBookings] ([booking_id], [room_id], [customer_id], [staff_id], [pet_id], [check_in], [check_out], [total_price], [note], [status], [booking_date], [is_active]) VALUES (4, 4, 3, 1, 3, CAST(N'2025-03-27T16:37:00.000' AS DateTime), CAST(N'2025-03-28T16:37:00.000' AS DateTime), CAST(180000.00 AS Decimal(12, 2)), N'Cho ăn hạt mềm.', N'Đã trả phòng', CAST(N'2025-03-26T16:37:36.930' AS DateTime), 1)
+INSERT [dbo].[PetHotelBookings] ([booking_id], [room_id], [customer_id], [staff_id], [pet_id], [check_in], [check_out], [total_price], [note], [status], [booking_date], [is_active]) VALUES (5, 5, 4, 1, 4, CAST(N'2025-03-27T16:39:00.000' AS DateTime), CAST(N'2025-03-28T16:39:00.000' AS DateTime), CAST(230000.00 AS Decimal(12, 2)), N'', N'Đã trả phòng', CAST(N'2025-03-26T16:39:55.513' AS DateTime), 1)
+INSERT [dbo].[PetHotelBookings] ([booking_id], [room_id], [customer_id], [staff_id], [pet_id], [check_in], [check_out], [total_price], [note], [status], [booking_date], [is_active]) VALUES (6, 8, 4, 1, 4, CAST(N'2025-03-29T16:40:00.000' AS DateTime), CAST(N'2025-03-31T16:40:00.000' AS DateTime), CAST(800000.00 AS Decimal(12, 2)), N'Không cho uống sữa. ', N'Đã trả phòng', CAST(N'2025-03-26T16:40:33.467' AS DateTime), 1)
+SET IDENTITY_INSERT [dbo].[PetHotelBookings] OFF
+
+
+
+-- Thêm dữ liệu vào bảng Feedbacks
+
+SET IDENTITY_INSERT [dbo].[Feedbacks] ON 
+
+INSERT [dbo].[Feedbacks] ([feedback_id], [customer_id], [staff_id], [product_id], [order_id], [rating], [comment], [reply], [image_path], [feedback_date], [is_visible]) VALUES (1, 3, 4, 32, 15, 5, N'Mình mua nhiều lần rồi nên biết chất lượng như thế nào', N'Shop cảm ơn bạn đã ủng hộ', NULL, CAST(N'2025-03-27T16:24:47.890' AS DateTime), 1)
+INSERT [dbo].[Feedbacks] ([feedback_id], [customer_id], [staff_id], [product_id], [order_id], [rating], [comment], [reply], [image_path], [feedback_date], [is_visible]) VALUES (2, 3, 4, 24, 15, 4, N'Lần đầu mua thử không biết như nào.', N'Dạ shop cảm ơn vì đã mua hàng tại shop ạ. Shop mong được gặp lại quý khách vào thời gian gần nhất', NULL, CAST(N'2025-03-27T16:25:20.243' AS DateTime), 1)
+INSERT [dbo].[Feedbacks] ([feedback_id], [customer_id], [staff_id], [product_id], [order_id], [rating], [comment], [reply], [image_path], [feedback_date], [is_visible]) VALUES (3, 3, 4, 13, 16, 3, N'Coi như xui, lần đầu mua mà không được như kỳ vọng', N'Shop xin lỗi vì đã không làm hài lòng quý khách. Lần sau có ghé shop sẽ bù voucher cho ạ', N'/img/feedbacks/6_1743067780717.jpg', CAST(N'2025-03-27T16:29:40.747' AS DateTime), 1)
+INSERT [dbo].[Feedbacks] ([feedback_id], [customer_id], [staff_id], [product_id], [order_id], [rating], [comment], [reply], [image_path], [feedback_date], [is_visible]) VALUES (4, 4, 4, 26, 17, 5, N'Rất ổn, mình xài cũng tầm được vài tháng rồi', N'Dạ shop cảm ơn nhiều ạ :>>', N'/img/feedbacks/meo-cung-shop-1.webp', CAST(N'2025-03-27T16:35:39.750' AS DateTime), 1)
+INSERT [dbo].[Feedbacks] ([feedback_id], [customer_id], [staff_id], [product_id], [order_id], [rating], [comment], [reply], [image_path], [feedback_date], [is_visible]) VALUES (5, 4, 4, 5, 17, 1, N'Mua 1 lần tởn, không dám đụng tới từ nay về sau', N'Dạ shop xin lỗi vì quý khách chưa hài lòng ạ. Shop sẽ cố gắng cải thiện hơn nữa. Mong quý khách thông cảm.', NULL, CAST(N'2025-03-27T16:38:10.283' AS DateTime), 1)
+INSERT [dbo].[Feedbacks] ([feedback_id], [customer_id], [staff_id], [product_id], [order_id], [rating], [comment], [reply], [image_path], [feedback_date], [is_visible]) VALUES (6, 4, 3, 7, 18, 5, N'Sản phẩm quốc dân nên mọi người khỏi phải bàn cãi', N'Cảm ơn quý khách đã ủng hộ :D', N'/img/feedbacks/thuc-an-cho-cho-1-1549964697.jpg', CAST(N'2025-03-27T16:41:30.200' AS DateTime), 1)
+INSERT [dbo].[Feedbacks] ([feedback_id], [customer_id], [staff_id], [product_id], [order_id], [rating], [comment], [reply], [image_path], [feedback_date], [is_visible]) VALUES (7, 5, NULL, 10, 19, 4, N'Lần đầu thấy hãng này luôn. Không biết chất lượng như nào!', NULL, NULL, CAST(N'2025-03-27T16:47:42.673' AS DateTime), 1)
+INSERT [dbo].[Feedbacks] ([feedback_id], [customer_id], [staff_id], [product_id], [order_id], [rating], [comment], [reply], [image_path], [feedback_date], [is_visible]) VALUES (8, 5, NULL, 11, 19, 5, N'Chưa mua lần nào nhưng nhìn bao bì mình mong chất lượng tương xứng', NULL, N'/img/feedbacks/nen-cho-cho-an-com-hay-hat3.webp', CAST(N'2025-03-27T16:49:17.087' AS DateTime), 1)
+SET IDENTITY_INSERT [dbo].[Feedbacks] OFF
+
+
+
+--- Thêm dữ liệu cho Voucher
+SET IDENTITY_INSERT [dbo].[Voucher] ON 
+
+INSERT [dbo].[Voucher] ([voucher_id], [code], [description], [discount_percentage], [discount_amount], [min_order_value], [max_discount], [start_date], [end_date], [is_active]) VALUES (1, N'KHTT', N'Khách hàng thân thiết.', 5, CAST(0.00 AS Decimal(12, 2)), CAST(120000.00 AS Decimal(12, 2)), CAST(20000.00 AS Decimal(12, 2)), CAST(N'2025-01-01T17:03:00.000' AS DateTime), CAST(N'2025-06-30T17:03:00.000' AS DateTime), 1)
+INSERT [dbo].[Voucher] ([voucher_id], [code], [description], [discount_percentage], [discount_amount], [min_order_value], [max_discount], [start_date], [end_date], [is_active]) VALUES (2, N'30T4', N'Chào mừng ngày Giải phỏng miền Nam.', 10, CAST(0.00 AS Decimal(12, 2)), CAST(300000.00 AS Decimal(12, 2)), CAST(80000.00 AS Decimal(12, 2)), CAST(N'2025-04-28T17:04:00.000' AS DateTime), CAST(N'2025-05-02T17:05:00.000' AS DateTime), 0)
+INSERT [dbo].[Voucher] ([voucher_id], [code], [description], [discount_percentage], [discount_amount], [min_order_value], [max_discount], [start_date], [end_date], [is_active]) VALUES (3, N'GOLDW', N'Tuần lễ vàng.', 5, CAST(0.00 AS Decimal(12, 2)), CAST(100000.00 AS Decimal(12, 2)), CAST(20000.00 AS Decimal(12, 2)), CAST(N'2025-04-13T17:06:00.000' AS DateTime), CAST(N'2025-04-19T17:06:00.000' AS DateTime), 1)
+INSERT [dbo].[Voucher] ([voucher_id], [code], [description], [discount_percentage], [discount_amount], [min_order_value], [max_discount], [start_date], [end_date], [is_active]) VALUES (4, N'LANDAU', N'giảm giá khách hàng mua lần đầu', 0, CAST(50000.00 AS Decimal(12, 2)), CAST(100000.00 AS Decimal(12, 2)), CAST(50000.00 AS Decimal(12, 2)), CAST(N'2025-03-27T14:46:00.000' AS DateTime), CAST(N'2025-03-30T13:26:00.000' AS DateTime), 1)
+SET IDENTITY_INSERT [dbo].[Voucher] OFF
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
